@@ -1,6 +1,6 @@
 Package: snedata
 Type: Package
-Title: SNE Datasets
+Title: SNE Simulation Dataset Functions
 Version: 0.0.0.9000
 Authors@R: person("Melville", "James", email = "jlmelville@gmail.com",
     role = c("aut", "cre"))
