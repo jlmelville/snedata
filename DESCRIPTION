@@ -1,0 +1,16 @@
+Package: snedata
+Type: Package
+Title: SNE Datasets
+Version: 0.0.0.9000
+Authors@R: person("Melville", "James", email = "jlmelville@gmail.com",
+    role = c("aut", "cre"))
+Description: Some simple simulation datasets used in Stochastic Neighbor
+    Embedding-related research, similar to those used by Lee and co-workers in
+    their JSE papers. Additionally, functions for visualizing two image
+    datasets: the Olivetti and Frey faces datasets. The latter requires the
+    RnavGraphImageData package to be installed.
+License: GPL-2
+Suggests:
+    RnavGraphImageData
+LazyData: TRUE
+RoxygenNote: 5.0.1
