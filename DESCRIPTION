@@ -9,7 +9,7 @@ Description: Some simple simulation datasets used in Stochastic Neighbor
     their JSE papers. Additionally, functions for visualizing two image
     datasets: the Olivetti and Frey faces datasets. The latter requires the
     RnavGraphImageData package to be installed.
-License: GPL-2
+License: MIT + file LICENSE
 Suggests:
     RnavGraphImageData
 LazyData: TRUE
