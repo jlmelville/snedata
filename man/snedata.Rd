@@ -20,13 +20,50 @@ Very simple datasets for characterizing the behavior of various embedding
 algorithms:
 
 \itemize{
- \item{\code{\link{gauss}} Data distributed according to a Gaussian
-   distribution.}
  \item{\code{\link{swiss_roll}}. Two 2D planes curled in a spiral.}
  \item{\code{\link{sphere}}. Points sampled from the surface of a 3D sphere.}
  \item{\code{\link{ball}}. Points sampled from the interior of a 3D sphere.}
  \item{\code{\link{helix}}. Points sampled from a 3D toroidal helix with
    the ends jointed together.}
+}
+}
+
+\section{Simulation functions from "How to use t-SNE Effectively"}{
+
+An article from researchers at Google Brain and Google Cloud,
+\url{http://distill.pub/2016/misread-tsne/} runs t-SNE in your browser,
+using some simulation data, much of it investigating clusters of gaussian
+data of varying dimensionality and heterogeneity and relative separation.
+There's quite a lot of these:
+\itemize{
+ \item{\code{\link{circle_data}}. A 2D circle.}
+ \item{\code{\link{cube_data}}. A cube.}
+ \item{\code{\link{gaussian_data}}. A Gaussian.}
+ \item{\code{\link{grid_data}}. A 2D grid.}
+ \item{\code{\link{link_data}}. Two linked circles.}
+ \item{\code{\link{long_cluster_data}}. Two long parallel clusters.}
+ \item{\code{\link{long_gaussian_data}}. A gaussian with unequal standard
+   deviation in its dimensions.}
+ \item{\code{\link{ortho_curve}}. Points related by mutually orthogonal
+   steps.}
+ \item{\code{\link{random_circle_cluster_data}}. Points sampled from a
+   circle and jittered.}
+ \item{\code{\link{random_circle_cluster_data}}. Points randomly sampled
+   from the circumference of a circle.}
+ \item{\code{\link{random_circle_cluster_data}}. Points generated from a
+   random walk with an extra gaussian perturbation.}
+ \item{\code{\link{random_walk}}. Points generated from a random walk.}
+ \item{\code{\link{simplex_data}}. Points arranged as a rough simplex.}
+ \item{\code{\link{subset_clusters_data}}. A small cluster inside a larger
+   one.}
+ \item{\code{\link{three_clusters_data}}. Points sampled from three gaussian
+   clusters with unequal relative distances.}
+ \item{\code{\link{trefoil_data}}. Points sampled in the shape of 3D trefoil
+   knot.}
+ \item{\code{\link{two_clusters_data}}. Two gaussian clusters.}
+ \item{\code{\link{two_different_clusters_data}}. Two gaussian clusters,
+   with differing standard deviations.}
+ \item{\code{\link{unlink_data}}. Two unlinked circles.}
 }
 }
 
@@ -50,20 +87,20 @@ the images.
 }
 }
 \examples{
- # 3000 points sampled from the surface of a sphere
- sphere3000 <- sphere(n = 3000)
+ # 300 points sampled from the surface of a sphere
+ sphere300 <- sphere(n = 300)
 
- # 1500 points sampled from a toroidal helix with 30 coils:
- helix1500 <- helix(n = 1500, nwinds = 30)
+ # 150 points sampled from a toroidal helix with 30 coils:
+ helix150 <- helix(n = 150, nwinds = 30)
 
- # 1500 points from a filled sphere:
- ball1500 <- ball(n = 1500)
+ # 150 points from a filled sphere:
+ ball150 <- ball(n = 150)
 
- # 1000 points from a five-dimensional gaussian:
- gauss1000 <- gauss(n = 1000, d = 5)
+ # 100 points from a "Swiss Roll" distribution:
+ swiss100 <- swiss_roll(n = 100)
 
- # 1000 points from a "Swiss Roll" distribution:
- swiss1000 <- swiss_roll(n = 1000)
+ # 50 points from a 2D gaussian
+ g2d <- gaussian_data(n = 50, dim = 2)
 
 \dontrun{
  # Load RnavGraphImageData
@@ -81,6 +118,10 @@ the images.
 }
 }
 \references{
+"How to Use t-SNE Effectively"
+\url{http://distill.pub/2016/misread-tsne/}
+\url{https://github.com/distillpub/post--misread-tsne}
+
 Lee, J. A., Peluffo-Ordo'nez, D. H., & Verleysen, M. (2015).
 Multi-scale similarities in stochastic neighbour embedding: Reducing
 dimensionality while preserving both local and global structure.

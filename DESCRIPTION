@@ -6,9 +6,11 @@ Authors@R: person("Melville", "James", email = "jlmelville@gmail.com",
     role = c("aut", "cre"))
 Description: Some simple simulation datasets used in Stochastic Neighbor
     Embedding-related research, similar to those used by Lee and co-workers in
-    their JSE papers. Additionally, functions for visualizing two image
-    datasets: the Olivetti and Frey faces datasets. The latter requires the
-    RnavGraphImageData package to be installed.
+    their JSE papers. Also, R translations of the JavaScript functions used to
+    generate data for the article "How to Use t-SNE Effectively" at
+    http://distill.pub/2016/misread-tsne/. Additionally, functions for
+    visualizing two image datasets: the Olivetti and Frey faces datasets. The
+    latter requires the RnavGraphImageData package to be installed.
 License: MIT + file LICENSE
 Suggests:
     RnavGraphImageData
