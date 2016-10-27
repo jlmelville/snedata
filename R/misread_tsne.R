@@ -2,143 +2,190 @@
 # http://distill.pub/2016/misread-tsne/
 # https://github.com/distillpub/post--misread-tsne
 
-# map a vector x to a new linear scale in the range (from, to)
-linear_map <- function(x, from, to) {
-  (x - min(x)) / max(x - min(x)) * (to - from) + from
+#' 2D Grid
+#'
+#' Grid simulation data function from "How to Use t-SNE Effectively".
+#'
+#' Creates a two-dimensional square grid with equal spacing between points.
+#' Point color goes from dark to light with increasing \code{x} coordinate and
+#' from green to blue with increasing \code{y}.
+#'
+#' @param n Number of points per side.
+#' @return Data frame with coordinates in the \code{x} and \code{y} columns,
+#'  and a per-point color in the \code{color} column.
+#' @examples
+#' df <- grid_data(n = 10)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
+grid_data <- function(n = 10) {
+  df <- expand.grid(1:n, 1:n)
+  colnames(df) <- c("x", "y")
+  g <- floor(linear_map(df$x, 0, 255))
+  b <- floor(linear_map(df$y, 0, 255))
+  df$color <- grDevices::rgb(red = 20, green = g, blue = b, maxColorValue = 255)
+  df
 }
 
-# For 2D data only: linearly map the x and y columns to values in the range
-# (0, 255) and set the green and blue channels to those values respectively.
-# The red channel is fixed at 20.
-add_spatial_colors <- function(points) {
-  c1 <- floor(linear_map(points$x, 0, 255))
-  c2 <- floor(linear_map(points$y, 0, 255))
-  points$color <- rgb(20, c1, c2, maxColorValue = 255, alpha = 255)
-  points
-}
-
-# Data in the shape of a 2D grid
-grid_data <- function(size) {
-  points <- expand.grid(1:size, 1:size)
-  colnames(points) <- c("x", "y")
-  add_spatial_colors(points)
-}
-
-# Gaussian cloud, symmetric, of given dimension.
+#' Symmetric Gaussian
+#'
+#' Symmetric gaussian simulation data function from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a randomly-sampled symmetric gaussian dataset of the specified
+#' dimension.
+#'
+#' @param n Number of points.
+#' @param dim Dimension of the gaussian.
+#' @param sd Standard deviation.
+#' @param color Color to assign to the data points.
+#' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
+#'  \code{Xdim} columns, and color in the \code{color} column.
+#' @examples
+#' df <- gaussian_data(n = 50, dim = 2)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 gaussian_data <- function(n, dim, sd = 1, color = NULL) {
-  df <- data.frame(matrix(rnorm(n * dim, sd = sd), ncol = dim))
+  df <- data.frame(matrix(stats::rnorm(n * dim, sd = sd), ncol = dim))
   if (!is.null(color)) {
     df$color <- color
   }
   df
 }
 
-# Elongated Gaussian ellipsoid.
-long_gaussian_data <- function(n, dim) {
-  df <- gaussian_data(n, dim)
+#' Elongated Gaussian Ellipsoid
+#'
+#' Gaussian simulation data function from "How to Use t-SNE Effectively".
+#'
+#' Creates a randomly-sampled gaussian dataset of the specified
+#' dimension, with standard deviation following the harmonic series: the first
+#' column has standard deviation 1, the second 1/2, the third 1/3 and so on.
+#'
+#' @param n Number of points.
+#' @param dim Dimension of the gaussian.
+#' @param color Color to assign to the data points.
+#' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
+#'  \code{Xdim} columns, and color in the \code{color} column.
+#' @examples
+#' df <- long_gaussian_data(n = 50, dim = 2)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
+long_gaussian_data <- function(n, dim, color = NULL) {
+  df <- gaussian_data(n, dim, color = color)
   for (j in 1:dim) {
     df[, j] <- df[, j] / j
   }
   df
 }
 
-# Return a color for the given angle (in radians)
-angle_color <- function(r) {
-  hue <- floor(300 * r / (2 * pi))
-  hsl_to_rgb(hue, 50, 50)
-}
-
-angle_colors <- function(x) {
-  vapply(x, angle_color, "")
-}
-
-# Helper function needed by hsl_to_rgb, from the CSS spec
-# https://www.w3.org/TR/2011/REC-css3-color-20110607/#hsl-color
-hue_to_rgb <- function(m1, m2, h) {
-  if (h < 0) h <- h + 1
-  if (h > 1) h <- h - 1
-  if (h * 6 < 1) return(m1 + (m2 - m1) * h * 6)
-  if (h * 2 < 1) return(m2)
-  if (h * 3 < 2) return(m1 + (m2 - m1) * (2 / 3 - h) * 6)
-  m1
-}
-
-# Converts HSL to RGB, using the algorithm specified by the CSS spec
-# https://www.w3.org/TR/2011/REC-css3-color-20110607/#hsl-color
-# h is the hue in degrees in the range (0, 360] (i.e. 360 is excluded).
-# s is the saturation as % in the range (0, 100)
-# l is the luminance as % in the range (0, 100).
-# Returns an RGB string.
-hsl_to_rgb <- function(h, s, l) {
-  # Map degrees to range (0, 360)
-  h <- (((h %% 360) + 360) %% 360) / 360
-  s <- s / 100
-  l <- l / 100
-
-  if (s == 0) {
-    # achromatic
-    r <- g <- b <- l
-  }
-  else {
-    if (l <= 0.5) {
-      m2 <- l * (s + 1)
-    }
-    else {
-      m2 <- l + s - l * s
-    }
-    m1 <- l * 2 - m2
-    r <- hue_to_rgb(m1, m2, h + 1 / 3)
-    g <- hue_to_rgb(m1, m2, h)
-    b <- hue_to_rgb(m1, m2, h - 1 / 3)
-  }
-  rgb(red = r, green = g, blue = b)
-}
-
-uniform_angle <- function(num_points) {
-  (0:(num_points - 1)) * (2 * pi / num_points)
-}
-
-angles_to_df <- function(angles) {
-  data.frame(x = cos(angles), y = sin(angles),
-             color = angle_colors(angles),
+# Helper function for circle_data and random_circle_data.
+# Creates a data frame where each point has x,y coordinates generated by the
+# parametric equation of a circle with unit radius, generated from theta, a
+# vector angles in radians. Each point also has a color value generated
+# by linearly mapping theta to a rainbow palette.
+theta_to_circle_df <- function(theta) {
+  data.frame(x = cos(theta), y = sin(theta),
+             color = linear_color_map(theta),
              stringsAsFactors = FALSE)
 }
 
-# Data in a 2D circle, regularly spaced.
-circle_data <- function(num_points) {
-  angles_to_df(uniform_angle(num_points))
+#' Uniform 2D Circle
+#'
+#' Circle simulation data function from "How to Use t-SNE Effectively".
+#'
+#' Creates a dataset where the points are located on the circumference of a
+#' circle of unit radius, where the angle subtended by the point at the center
+#' of the circle has been uniformly sampled. Each point has a color linearly
+#' mapped from the angle to a rainbow color scheme.
+#'
+#' @param n Number of points per side.
+#' @return Data frame with x and y coordinates in the columns \code{x} and
+#'  \code{y} respectively, and color in the \code{color} column.
+#' @examples
+#' df <- circle_data(n = 50)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
+circle_data <- function(n) {
+  theta_to_circle_df(theta_unif(n))
 }
 
-# Random points on a 2D circle.
-random_circle_data <- function(num_points) {
-  angles_to_df(runif(n = num_points, max = 2 * pi))
+#' Random 2D Circle
+#'
+#' Random points on a circle simulation data function from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a dataset where the points are located on the circumference of a
+#' circle of unit radius, where the angle subtended by the point at the center
+#' of the circle has been randomly sampled. Each point has a color linearly
+#' mapped from the angle to a rainbow color scheme.
+#'
+#' @param n Number of points.
+#' @return Data frame with x and y coordinates in the columns \code{x} and
+#'  \code{y} respectively, and color in the \code{color} column.
+#' @examples
+#' df <- random_circle_data(n = 50)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
+random_circle_data <- function(n) {
+  theta_to_circle_df(stats::runif(n = n, max = 2 * pi))
 }
 
-# Replicate each row in df n times
-# http://stackoverflow.com/questions/11121385/repeat-rows-of-a-data-frame
-replicate_rows <- function(df, n) {
-  df[rep(seq_len(nrow(df)), each = n),]
-}
-
-# Clusters arranged in a circle.
-random_circle_cluster_data <- function(num_points) {
-  df <- replicate_rows(circle_data(num_points), n = 20)
-  df$x <- df$x + rnorm(n = nrow(df), sd = 0.1)
-  df$y <- df$y + rnorm(n = nrow(df), sd = 0.1)
+#' Fuzzy 2D Circle
+#'
+#' Clusters arranged in a circle simulation data function from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a dataset where the points are located on the circumference of a
+#' circle of unit radius via \code{\link{circle_data}}, where the
+#' angle subtended by the point at the center of the circle has been uniformly
+#' sampled.
+#'
+#' Each point is then replicated 20 times, with a slight perturbation to the
+#' original coordinate (using a normal distribution with a standard deviation
+#' of 0.1). Only the twenty jittered points are added to the data frame. Each
+#' point has a color linearly mapped from the angle of the original unjittered
+#' point to a rainbow color scheme.
+#'
+#' @param n Number of points to define the circle. These are then jittered
+#'  as described in 'Details', so the total number of observations in the
+#'  data frame will be \code{20 * n}.
+#' @return Data frame with x and y coordinates in the columns \code{x} and
+#'  \code{y} respectively, and color in the \code{color} column.
+#' @examples
+#' df <- random_circle_data(n = 50)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
+random_circle_cluster_data <- function(n) {
+  df <- replicate_rows(circle_data(n), n = 20)
+  df$x <- df$x + stats::rnorm(n = nrow(df), sd = 0.1)
+  df$y <- df$y + stats::rnorm(n = nrow(df), sd = 0.1)
   df
 }
 
-# Two 2D clusters of different sizes.
-two_different_clusters_data_2D <- function(n) {
-  cluster1 <- gaussian_data(n = n, dim = 2, sd = 10, color = '#003399')
-
-  cluster2 <- gaussian_data(n = n, dim = 2, color = '#FF9900')
-  cluster2[, 1] <- cluster2[, 1] + 100
-
-  rbind(cluster1, cluster2)
-}
-
-# Two clusters of the same size.
+#' Two Equal Size Clusters
+#'
+#' Two gaussian clusters simulation data function from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a dataset consisting of two symmetric gaussian distributions with
+#' equal number of points and standard deviation 1, separated by a distance
+#' of 10 units. Points are colored depending on which cluster they belong to.
+#'
+#' @param n Number of points per gaussian.
+#' @param dim Dimension of the gaussians.
+#' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
+#'  \code{Xdim} columns, and color in the \code{color} column.
+#'
+#' @examples
+#' df <- two_clusters_data(n = 50, dim = 2)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 two_clusters_data <- function(n, dim = 50) {
   cluster1 <- gaussian_data(n = n, dim = dim, color = '#003399')
 
@@ -148,7 +195,29 @@ two_clusters_data <- function(n, dim = 50) {
   rbind(cluster1, cluster2)
 }
 
-# Two differently sized clusters, of arbitrary dimensions.
+#' Two Gaussian Clusters With Unequal Standard Deviations
+#'
+#' Two gaussian clusters simulation data function from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a dataset consisting of two symmetric gaussian distributions with
+#' equal number of points, but different standard deviations: the standard
+#' deviations of the second cluster will be \code{1/scale} of the other.
+#' Clusters are separated by 20 units. Points are colored depending on which
+#' cluster they belong to.
+#'
+#' @param n Number of points per gaussian.
+#' @param dim Dimension of the gaussians.
+#' @param scale Amount to reduce the standard deviation of the second cluster,
+#' relative to the first.
+#' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
+#'  \code{Xdim} columns, and color in the \code{color} column.
+#'
+#' @examples
+#' df <- two_different_clusters_data(n = 50, dim = 2, scale = 5)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 two_different_clusters_data <- function(n, dim = 50, scale = 10) {
   cluster1 <- gaussian_data(n = n, dim = dim, color = '#003399')
 
@@ -158,12 +227,27 @@ two_different_clusters_data <- function(n, dim = 50, scale = 10) {
   rbind(cluster1, cluster2)
 }
 
-# Three clusters, at different distances from each other, in 2D
-three_clusters_data_2d <- function(n) {
-  three_clusters_data(n = n, dim = 2)
-}
 
-# Three clusters, at different distances from each other, in any dimension.
+#' Three Gaussian Clusters With Equal Standard Deviations
+#'
+#' Three gaussian clusters simulation data function from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a dataset consisting of three symmetric gaussian distributions with
+#' equal number of points and standard deviation 1. The clusters are arranged
+#' in a line, with the second cluster 10 units from the first, and the third
+#' cluster 50 units from the first. Points are colored depending on which
+#' cluster they belong to.
+#'
+#' @param n Number of points per gaussian.
+#' @param dim Dimension of the gaussians.
+#' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
+#'  \code{Xdim} columns, and color in the \code{color} column.
+#' @examples
+#' df <- three_clusters_data(n = 50, dim = 2)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 three_clusters_data <- function(n, dim = 50) {
   cluster1 <- gaussian_data(n = n, dim = dim, color = '#003399')
 
@@ -176,35 +260,81 @@ three_clusters_data <- function(n, dim = 50) {
   rbind(cluster1, cluster2, cluster3)
 }
 
-# One tiny cluster inside of a big cluster.
+#' Subset Cluster Data
+#'
+#' One tiny cluster inside of a big cluster from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a dataset consisting of two gaussians with the same center, but
+#' with the first cluster having a standard deviation of 1, and the second
+#' having a standard deviation of 50. Points are colored depending on which
+#' cluster they belong to.
+#'
+#' @param n Number of points per gaussian.
+#' @param dim Dimension of the gaussians.
+#' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
+#'  \code{Xdim} columns, and color in the \code{color} column.
+#' @examples
+#' df <- subset_clusters_data(n = 50, dim = 2)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 subset_clusters_data <- function(n, dim = 2) {
   cluster1 <- gaussian_data(n = n, dim = dim, color = '#003399')
   cluster2 <- gaussian_data(n = n, dim = dim, sd = 50, color = '#FF9900')
   rbind(cluster1, cluster2)
 }
 
-# Data in a rough simplex.
-simplex_data <- function(n, noise = 0) {
-  df <- data.frame(matrix(0, nrow = n, ncol = n))
-  for (i in 0:n - 1) {
-    for (j in 0:n - 1) {
-      if (i == j) {
-        df[i, j] <- 1 + noise * rnorm(1)
-      }
-      else {
-        df[i, j] <- 0
-      }
-    }
-  }
-  df
+#' Simplex Data
+#'
+#' Data in a rough simplex from "How to Use t-SNE Effectively".
+#'
+#' Create a dataset of the specified number of points arranged in a rough
+#' simplex, which also determines the dimensionality of the dataset. Each
+#' point has a single non-zero coordinate in a different column to all the
+#' other points.
+#'
+#' @param n Number of points (and hence dimensionality) of the simplex.
+#' @param noise Degree by which to perturb the points from their original
+#'  locations. A normal distribution with the specified standard deviation is
+#'  applied to the non-zero coordinate.
+#' @param color Color to apply to each point.
+#' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
+#'  \code{Xn} columns, and color in the \code{color} column.
+#' @examples
+#' df <- simplex_data(n = 50)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
+simplex_data <- function(n, noise = 0.5, color = '#003399') {
+  m <- diag(n)
+  diag(m) <- 1 + noise * stats::rnorm(n)
+  data.frame(m, color = color, stringsAsFactors = FALSE)
 }
 
-# Uniform points from a cube.
-cube_data <- function(n, dim) {
-  data.frame(matrix(runif(n * dim), nrow = n))
+#' Cube Data
+#'
+#' Random points sampled from a cube, from "How to Use t-SNE Effectively".
+#'
+#' Create a dataset of the of points randomly sampled from a unit cube
+#' of the specified dimension.
+#'
+#' @param n Number of points to sample.
+#' @param dim Dimension of the cube.
+#' @param color Color to apply to each point.
+#' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
+#'  \code{Xdim} columns, and color in the \code{color} column.
+#' @examples
+#' df <- cube_data(n = 50, dim = 3)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
+cube_data <- function(n, dim, color = '#003399') {
+  data.frame(matrix(stats::runif(n * dim), nrow = n), color = color,
+             stringsAsFactors = FALSE)
 }
 
-
+# Helper function for unlink_data and link_data
 rotate <- function(df) {
   cs <- cos(.4)
   sn <- sin(.4)
@@ -213,69 +343,172 @@ rotate <- function(df) {
   df
 }
 
-# Points in two unlinked rings.
+#' Two Unlinked Rings
+#'
+#' Points sampled from two unlinked circles, from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a 3D dataset where points are uniformly sampled from two (2D)
+#' circles of unit radius, separated by 3 units. The two circles are not
+#' co-planar. Points are colored depending from which circle they are sampled
+#' from.
+#'
+#' For the linked version, see \code{\link{link_data}}.
+#'
+#' @param n Number of points to sample.
+#' @return Data frame with coordinates in the \code{x}, \code{y}, \code{z}
+#' columns, and color in the \code{color} column.
+#' @examples
+#' df <- unlink_data(n = 50)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 unlink_data <- function(n) {
-  t <- uniform_angle(n)
-  ring1 <- rotate(data.frame(x = cos(t), y = sin(t), z = 0, color = '#ff9900',
-                             stringsAsFactors = FALSE))
-  ring2 <- rotate(data.frame(x = 3 + cos(t), y = 0, z = sin(t),
+  theta <- theta_unif(n)
+  ring1 <- rotate(data.frame(x = cos(theta), y = sin(theta), z = 0,
+                             color = '#ff9900', stringsAsFactors = FALSE))
+  ring2 <- rotate(data.frame(x = 3 + cos(theta), y = 0, z = sin(theta),
                              color = '#003399', stringsAsFactors = FALSE))
   rbind(ring1, ring2)
 }
 
-# Points in linked rings.
+#' Two Linked Rings
+#'
+#' Points sampled from two linked circles, from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a 3D dataset where points are uniformly sampled from two (2D)
+#' circles of unit radius, separated by 1 unit, and hence are overlapping.
+#' The two circles are not co-planar. Points are colored depending from which
+#' circle they are sampled from.
+#'
+#' For the unlinked version, see \code{\link{unlink_data}}.
+#'
+#' @param n Number of points to sample.
+#' @return Data frame with coordinates in the \code{x}, \code{y}, \code{z}
+#' columns, and color in the \code{color} column.
+#' @examples
+#' df <- link_data(n = 50)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 link_data <- function(n) {
-  t <- uniform_angle(n)
-  ring1 <- rotate(data.frame(x = cos(t), y = sin(t), z = 0, color = '#ff9900',
-                             stringsAsFactors = FALSE))
-  ring2 <- rotate(data.frame(x = 1 + cos(t), y = 0, z = sin(t),
+  theta <- theta_unif(n)
+  ring1 <- rotate(data.frame(x = cos(theta), y = sin(theta), z = 0,
+                             color = '#ff9900', stringsAsFactors = FALSE))
+  ring2 <- rotate(data.frame(x = 1 + cos(theta), y = 0, z = sin(theta),
                              color = '#003399', stringsAsFactors = FALSE))
   rbind(ring1, ring2)
 }
 
-# Points in a trefoil knot.
+#' Trefoil Knot
+#'
+#' Points sampled from a trefoil know shape, from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a 3D dataset where points are uniformly sampled from a trefoil knot.
+#' Points are colored based on mapping the angle parameter values used to
+#' generate the knot coordinates to a rainbow color scheme.
+#'
+#' @param n Number of points to sample.
+#' @return Data frame with coordinates in the \code{x}, \code{y}, \code{z}
+#' columns, and color in the \code{color} column.
+#' @examples
+#' df <- trefoil_data(n = 50)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 trefoil_data <- function(n) {
-  t <- uniform_angle(n)
+  theta <- theta_unif(n)
   data.frame(
-    x = sin(t) + 2 * sin(2 * t),
-    y = cos(t) - 2 * cos(2 * t),
-    z = -sin(3 * t),
-    color = angle_colors(t),
+    x = sin(theta) + 2 * sin(2 * theta),
+    y = cos(theta) - 2 * cos(2 * theta),
+    z = -sin(3 * theta),
+    color = linear_color_map(theta),
     stringsAsFactors = FALSE
   )
 }
 
-# Two long, linear clusters in 2D.
+#' Long Cluster Data
+#'
+#' Two long, linear clusters in 2D from "How to Use t-SNE Effectively".
+#'
+#' Creates a 2D dataset where points are sampled from two long, linear,
+#' closely-separated clusters. Points are colored depending from which cluster
+#' they are sampled from.
+#'
+#' @param n Number of points to sample per cluster.
+#' @return Data frame with coordinates in the \code{x}, \code{y} columns, and
+#' color in the \code{color} column.
+#' @examples
+#' df <- long_cluster_data(n = 50)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 long_cluster_data <- function(n) {
   s <- .03 * n;
 
-  cluster1 <- data.frame(x = 0:(n - 1) + s * rnorm(n),
-                         y = 0:(n - 1) + s * rnorm(n),
+  cluster1 <- data.frame(x = 0:(n - 1) + s * stats::rnorm(n),
+                         y = 0:(n - 1) + s * stats::rnorm(n),
                          color = '#003399', stringsAsFactors = FALSE)
 
-  cluster2 <- data.frame(x = 0:(n - 1) + s * rnorm(n) + n / 5,
-                         y = 0:(n - 1) + s * rnorm(n) - n / 5,
+  cluster2 <- data.frame(x = 0:(n - 1) + s * stats::rnorm(n) + n / 5,
+                         y = 0:(n - 1) + s * stats::rnorm(n) - n / 5,
                          color = '#ff9900', stringsAsFactors = FALSE)
 
   rbind(cluster1, cluster2)
 }
 
-# Mutually orthogonal steps.
+#' Mutually Orthogonal Step Data
+#'
+#' Points related by mutually orthogonal steps, from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates N points from an N-dimensional space, where each point is related
+#' by a mutually orthogonal step. Coordinates from a triangular matrix, where
+#' the coordinates in the triangle are one, and are zero everywhere else.
+#' Points are linearly mapped from their row id to a rainbow color scheme.
+#'
+#' @param n Number of points to sample.
+#' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
+#'  \code{Xn} columns, and color in the \code{color} column.
+#' @examples
+#' df <- ortho_curve(n = 50)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 ortho_curve <- function(n) {
   m <- matrix(0, nrow = n, ncol = n)
   m[lower.tri(m)] <- 1
 
   df <- data.frame(m)
-  df$color <- angle_colors(1.5 * pi * 0:(n - 1) / n)
+  df$color <- linear_color_map(1.5 * pi * 0:(n - 1) / n)
   df
 }
 
-# Random walk
+#' Random Walk Data
+#'
+#' Simulation data from a random walk process, from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a dataset where the coordinate of each point is related to the
+#' previous point by a gaussian perturbation. Points are linearly mapped from
+#' their position in the walk to a rainbow color scheme.
+#'
+#' @param n Number of points to sample.
+#' @param dim Number of dimensions of the dataset.
+#' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
+#'  \code{Xn} columns, and color in the \code{color} column.
+#' @examples
+#' df <- random_walk(n = 100, dim = 100)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 random_walk <- function(n, dim) {
   current <- rep(0, dim)
   df <- data.frame(matrix(nrow = n, ncol = dim))
   for (i in 0:n - 1) {
-    step <- rnorm(dim)
+    step <- stats::rnorm(dim)
     next_step <- current
     for (j in 0:dim - 1) {
       next_step[j + 1] <- current[j + 1] + step[j + 1]
@@ -284,22 +517,40 @@ random_walk <- function(n, dim) {
     current <- next_step
   }
 
-  df$color <- angle_colors(1.5 * pi * 0:(n - 1) / n)
+  df$color <- linear_color_map(1.5 * pi * 0:(n - 1) / n)
   df
 }
 
+#' Random Jump Data
+#'
+#' Simulation data from a random jump process, from "How to Use t-SNE
+#' Effectively".
+#'
+#' Creates a dataset similar to \code{\link{random_walk}} but with
+#' additional gaussian noise added at each step. Points are linearly mapped from
+#' their position in the walk to a rainbow color scheme.
+#'
+#' @param n Number of points to sample.
+#' @param dim Number of dimensions of the dataset.
+#' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
+#'  \code{Xn} columns, and color in the \code{color} column.
+#' @examples
+#' df <- random_jump(n = 100, dim = 100)
+#' @family distill functions
+#' @references \url{http://distill.pub/2016/misread-tsne/}
+#' @export
 random_jump <- function(n, dim) {
   df <- data.frame(matrix(nrow = n, ncol = dim))
   current <- rep(0, dim)
   for (i in 0:n - 1) {
-    step <- rnorm(dim)
+    step <- stats::rnorm(dim)
     next_step <- step + current
-    r <- rnorm(dim)
+    r <- stats::rnorm(dim)
     r <- r * sqrt(dim)
     df[i + 1, ] <- r + next_step
     current <- next_step
   }
 
-  df$color <- angle_colors(1.5 * pi * 0:(n - 1) / n)
+  df$color <- linear_color_map(1.5 * pi * 0:(n - 1) / n)
   df
 }
