@@ -4,7 +4,7 @@
 \alias{show_olivetti_face}
 \title{Visualize Olivetti face.}
 \usage{
-show_olivetti_face(df, face, pose, col = gray(1/12:1))
+show_olivetti_face(df, face, pose, col = grDevices::gray(1/12:1))
 }
 \arguments{
 \item{df}{Data frame containing the Olivetti faces.}

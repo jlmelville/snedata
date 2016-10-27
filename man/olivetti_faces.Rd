@@ -11,12 +11,13 @@ olivetti_faces()
 the Olivetti Faces dataset as a dataframe.
 }
 \description{
-Sneer benchmarking data.
+SNE benchmarking data.
 }
 \details{
-Returns the Olivetti Faces dataset in a data frame reformatted to be suitable
-for use with Sneer. This is a series of 400 images (with dimension 64 x 64)
-of 40 individual's faces, with ten different poses per person.
+Returns the Olivetti Faces dataset in a data frame reformatted to have one
+face per row, rather than column. This is a series of 400 images (with
+dimension 64 x 64) of 40 individual's faces, with ten different poses per
+person.
 
 The variables are as follows:
 \itemize{

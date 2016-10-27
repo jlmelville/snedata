@@ -1,10 +1,11 @@
 #' Olivetti Faces dataset
 #'
-#' Sneer benchmarking data.
+#' SNE benchmarking data.
 #'
-#' Returns the Olivetti Faces dataset in a data frame reformatted to be suitable
-#' for use with Sneer. This is a series of 400 images (with dimension 64 x 64)
-#' of 40 individual's faces, with ten different poses per person.
+#' Returns the Olivetti Faces dataset in a data frame reformatted to have one
+#' face per row, rather than column. This is a series of 400 images (with
+#' dimension 64 x 64) of 40 individual's faces, with ten different poses per
+#' person.
 #'
 #' The variables are as follows:
 #' \itemize{
@@ -34,7 +35,7 @@ olivetti_faces <- function() {
     stop("olivetti_faces function requires 'RnavGraphImageData' package")
   }
   faces <- NULL
-  data("faces", envir = environment())
+  utils::data("faces", envir = environment())
 
   df <- as.data.frame(t(faces))
   npeople <- 40
@@ -58,7 +59,8 @@ olivetti_faces <- function() {
 #' 1 and 10.
 #' @param col List of colors to use in the display.
 #' @export
-show_olivetti_face <- function(df, face, pose, col = gray(1 / 12:1)) {
+show_olivetti_face <- function(df, face, pose,
+                               col = grDevices::gray(1 / 12:1)) {
   if (face < 1 || face > 400) {
     stop("face must be an integer between 1 and 400")
   }
@@ -67,5 +69,5 @@ show_olivetti_face <- function(df, face, pose, col = gray(1 / 12:1)) {
   }
   n <- paste(face, pose, sep = "_")
   im <- t(matrix(as.numeric(df[n, 4096:1]), ncol = 64, nrow = 64))
-  image(1:nrow(im), 1:nrow(im), im, xlab = "", ylab = "", col = col)
+  graphics::image(1:nrow(im), 1:nrow(im), im, xlab = "", ylab = "", col = col)
 }

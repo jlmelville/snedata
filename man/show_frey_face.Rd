@@ -4,7 +4,7 @@
 \alias{show_frey_face}
 \title{Visualize Frey face.}
 \usage{
-show_frey_face(df, n, col = gray(1/12:1))
+show_frey_face(df, n, col = grDevices::gray(1/12:1))
 }
 \arguments{
 \item{df}{Data frame containing the Frey faces.}

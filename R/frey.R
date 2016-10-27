@@ -31,7 +31,7 @@ frey_faces <- function() {
     stop("frey_faces function requires 'RnavGraphImageData' package")
   }
   frey <- NULL
-  data("frey", envir = environment())
+  utils::data("frey", envir = environment())
 
   df <- data.frame(t(frey))
   colnames(df) <- sapply(seq(1, 20 * 28), function(x) { paste0("px", x)})
@@ -48,10 +48,10 @@ frey_faces <- function() {
 #' @param n Frame index of the image to display.
 #' @param col List of colors to use in the display.
 #' @export
-show_frey_face <- function(df, n, col = gray(1 / 12:1)) {
+show_frey_face <- function(df, n, col = grDevices::gray(1 / 12:1)) {
   if (n < 1 || n > nrow(df)) {
     stop("n must be value between 1 and ", nrow(df))
   }
   im <- matrix(t(df[n, 560:1]), ncol = 28, nrow = 20)
-  image(1:nrow(im), 1:ncol(im), im, xlab = "", ylab = "", col = col)
+  graphics::image(1:nrow(im), 1:ncol(im), im, xlab = "", ylab = "", col = col)
 }
