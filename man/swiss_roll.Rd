@@ -4,15 +4,14 @@
 \alias{swiss_roll}
 \title{Swiss Roll Data Set}
 \usage{
-swiss_roll(n = 1000, nlabels = 6)
+swiss_roll(n = 1000)
 }
 \arguments{
 \item{n}{Number of points to create.}
-
-\item{nlabels}{Number of labels.}
 }
 \value{
-Data frame.
+Data frame with \code{x}, \code{y}, \code{z} columns containing the
+ coordinates of the points and \code{color} the RGB color.
 }
 \description{
 Simulation data.
@@ -31,8 +30,16 @@ and Xu:
 where \eqn{\phi}{phi} and z are random numbers in the intervals [5, 13]
 and [0, 10], respectively.
 
-Labels go from \code{0} to \code{nlabels - 1}. Points are classified into
-labels based on their z-coordinate.
+Points are colored based on the value of phi. If you unrolled the manifold
+into a flat sheet, you would see the color change linearly in the direction
+you unrolled it. Or just plot the x-y cross section (see the examples).
+}
+\examples{
+\dontrun{
+ swiss1000 <- swiss_roll(n = 1000)
+ # Coloring should be obvious with a 2D plot of the cross section:
+ plot(swiss1000$x, swiss1000$y, col = swiss1000$color, pch = 20)
+}
 }
 \references{
 Agrafiotis, D. K., & Xu, H. (2002).

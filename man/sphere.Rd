@@ -4,15 +4,14 @@
 \alias{sphere}
 \title{Sphere data set.}
 \usage{
-sphere(n = 1000, nlabels = 5)
+sphere(n = 1000)
 }
 \arguments{
 \item{n}{The number of points to create.}
-
-\item{nlabels}{Number of labels.}
 }
 \value{
-Data frame.
+Data frame with \code{x}, \code{y}, \code{z} columns containing the
+ coordinates of the points and \code{color} the RGB color.
 }
 \description{
 Simulation data.
@@ -20,10 +19,9 @@ Simulation data.
 \details{
 Creates a series of points sampled from a 3D spherical surface.
 
-Labels go from \code{0} to \code{nlabels - 1}. Points are classified into
-labels based on the angle theta in their spherical coordinate presentation.
-You can think of it as dividing the sphere surface like the segments of an
-orange.
+Points are colored based on the angle theta in their spherical coordinate
+presentation. You can think of it as dividing the sphere surface like the
+segments of an orange.
 }
 \references{
 A dataset like this was used in:

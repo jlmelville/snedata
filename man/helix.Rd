@@ -4,7 +4,7 @@
 \alias{helix}
 \title{Toroidal Helix Data Set}
 \usage{
-helix(n = 1000, rmajor = 2, rminor = 1, nwinds = 8, nlabels = 5)
+helix(n = 1000, rmajor = 2, rminor = 1, nwinds = 8)
 }
 \arguments{
 \item{n}{Number of points to create.}
@@ -14,11 +14,10 @@ helix(n = 1000, rmajor = 2, rminor = 1, nwinds = 8, nlabels = 5)
 \item{rminor}{Minor radius.}
 
 \item{nwinds}{Number of winds the helix makes.}
-
-\item{nlabels}{Number of labels.}
 }
 \value{
-Data frame.
+Data frame with \code{x}, \code{y}, \code{z} columns containing the
+ coordinates of the points and \code{color} the RGB color.
 }
 \description{
 Simulation data.
@@ -30,8 +29,14 @@ to each other.
 Unlike \code{\link{ball}} and \code{\link{sphere}}, this data set is not
 randomly sampled.
 
-Labels go from \code{1} to \code{nlabels}. Points are classified into
-equally-populated labels based on their z-coordinate.
+Points are colored based on their distances from the origin.
+}
+\examples{
+\dontrun{
+ helix1000 <- helix(n = 1000)
+ # Coloring should be obvious with a 2D plot of the cross section:
+ plot(helix1000$x, helix1000$y, col = helix1000$color, pch = 20)
+}
 }
 \references{
 A dataset like this was used in:

@@ -4,26 +4,23 @@
 \alias{ball}
 \title{Ball Data Set}
 \usage{
-ball(n = 1000, rad = 1, nlabels = 5)
+ball(n = 1000, rad = 1)
 }
 \arguments{
 \item{n}{Number of points to create.}
 
 \item{rad}{Radius of the ball.}
-
-\item{nlabels}{Number of labels.}
 }
 \value{
-Data frame.
+Data frame with \code{x}, \code{y}, \code{z} columns containing the
+ coordinates of the points and \code{color} the RGB color.
 }
 \description{
 Simulation data.
 }
 \details{
-Creates a series of points sampled from a 3D spherical volume.
-
-Labels go from \code{1} to \code{nlabels}. Points are classified into
-equally populated labels based on their distance from the origin.
+Creates a series of points sampled from a 3D spherical volume. Points are
+colored based on the square of their distance from the origin.
 }
 \references{
 A dataset like this was used in:
