@@ -4,7 +4,7 @@
 
 #' 2D Grid
 #'
-#' Grid simulation data function from "How to Use t-SNE Effectively".
+#' 2D grid data from "How to Use t-SNE Effectively".
 #'
 #' Creates a two-dimensional square grid with equal spacing between points.
 #' Point color goes from dark to light with increasing \code{x} coordinate and
@@ -29,8 +29,7 @@ grid_data <- function(n = 10) {
 
 #' Symmetric Gaussian
 #'
-#' Symmetric gaussian simulation data function from "How to Use t-SNE
-#' Effectively".
+#' Symmetric gaussian data from "How to Use t-SNE Effectively".
 #'
 #' Creates a randomly-sampled symmetric gaussian dataset of the specified
 #' dimension.
@@ -56,7 +55,7 @@ gaussian_data <- function(n, dim, sd = 1, color = NULL) {
 
 #' Elongated Gaussian Ellipsoid
 #'
-#' Gaussian simulation data function from "How to Use t-SNE Effectively".
+#' Elongated gaussian data from "How to Use t-SNE Effectively".
 #'
 #' Creates a randomly-sampled gaussian dataset of the specified
 #' dimension, with standard deviation following the harmonic series: the first
@@ -93,7 +92,7 @@ theta_to_circle_df <- function(theta) {
 
 #' Uniform 2D Circle
 #'
-#' Circle simulation data function from "How to Use t-SNE Effectively".
+#' 2D circle data with uniform spacing from "How to Use t-SNE Effectively".
 #'
 #' Creates a dataset where the points are located on the circumference of a
 #' circle of unit radius, where the angle subtended by the point at the center
@@ -114,8 +113,7 @@ circle_data <- function(n) {
 
 #' Random 2D Circle
 #'
-#' Random points on a circle simulation data function from "How to Use t-SNE
-#' Effectively".
+#' Random points on a 2D circle from "How to Use t-SNE Effectively".
 #'
 #' Creates a dataset where the points are located on the circumference of a
 #' circle of unit radius, where the angle subtended by the point at the center
@@ -136,8 +134,7 @@ random_circle_data <- function(n) {
 
 #' Fuzzy 2D Circle
 #'
-#' Clusters arranged in a circle simulation data function from "How to Use t-SNE
-#' Effectively".
+#' Clusters arranged in a circle from "How to Use t-SNE Effectively".
 #'
 #' Creates a dataset where the points are located on the circumference of a
 #' circle of unit radius via \code{\link{circle_data}}, where the
@@ -169,7 +166,7 @@ random_circle_cluster_data <- function(n) {
 
 #' Two Equal Size Clusters
 #'
-#' Two gaussian clusters simulation data function from "How to Use t-SNE
+#' Two gaussians with equal size and bandwidth, from "How to Use t-SNE
 #' Effectively".
 #'
 #' Creates a dataset consisting of two symmetric gaussian distributions with
@@ -197,7 +194,7 @@ two_clusters_data <- function(n, dim = 50) {
 
 #' Two Gaussian Clusters With Unequal Standard Deviations
 #'
-#' Two gaussian clusters simulation data function from "How to Use t-SNE
+#' Two gaussians with equal size but unequal bandwidths, from "How to Use t-SNE
 #' Effectively".
 #'
 #' Creates a dataset consisting of two symmetric gaussian distributions with
@@ -230,7 +227,7 @@ two_different_clusters_data <- function(n, dim = 50, scale = 10) {
 
 #' Three Gaussian Clusters With Equal Standard Deviations
 #'
-#' Three gaussian clusters simulation data function from "How to Use t-SNE
+#' Three gaussian clusters with equal size and bandwidth from "How to Use t-SNE
 #' Effectively".
 #'
 #' Creates a dataset consisting of three symmetric gaussian distributions with
@@ -262,7 +259,7 @@ three_clusters_data <- function(n, dim = 50) {
 
 #' Subset Cluster Data
 #'
-#' One tiny cluster inside of a big cluster from "How to Use t-SNE
+#' One tiny gaussian cluster inside of a big cluster from "How to Use t-SNE
 #' Effectively".
 #'
 #' Creates a dataset consisting of two gaussians with the same center, but
@@ -403,7 +400,7 @@ link_data <- function(n) {
 
 #' Trefoil Knot
 #'
-#' Points sampled from a trefoil know shape, from "How to Use t-SNE
+#' Points sampled from a trefoil knot shape, from "How to Use t-SNE
 #' Effectively".
 #'
 #' Creates a 3D dataset where points are uniformly sampled from a trefoil knot.

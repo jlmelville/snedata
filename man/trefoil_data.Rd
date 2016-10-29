@@ -14,7 +14,7 @@ Data frame with coordinates in the \code{x}, \code{y}, \code{z}
 columns, and color in the \code{color} column.
 }
 \description{
-Points sampled from a trefoil know shape, from "How to Use t-SNE
+Points sampled from a trefoil knot shape, from "How to Use t-SNE
 Effectively".
 }
 \details{

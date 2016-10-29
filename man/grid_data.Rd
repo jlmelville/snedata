@@ -14,7 +14,7 @@ Data frame with coordinates in the \code{x} and \code{y} columns,
  and a per-point color in the \code{color} column.
 }
 \description{
-Grid simulation data function from "How to Use t-SNE Effectively".
+2D grid data from "How to Use t-SNE Effectively".
 }
 \details{
 Creates a two-dimensional square grid with equal spacing between points.

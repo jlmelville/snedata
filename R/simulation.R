@@ -2,7 +2,7 @@
 
 #' Sphere data set.
 #'
-#' Simulation data.
+#' Simulation data randomly sampled from the surface of a 3D sphere.
 #'
 #' Creates a series of points sampled from a 3D spherical surface.
 #'
@@ -33,7 +33,7 @@ sphere <- function(n = 1000) {
 
 #' Ball Data Set
 #'
-#' Simulation data.
+#' Simulation data randomly sampled from the entire volume of a 3D sphere.
 #'
 #' Creates a series of points sampled from a 3D spherical volume. Points are
 #' colored based on the square of their distance from the origin.
@@ -63,7 +63,7 @@ ball <- function(n = 1000, rad = 1) {
 
 #' Toroidal Helix Data Set
 #'
-#' Simulation data.
+#' Simulation data in the shape of a 3D toroidal helix.
 #'
 #' Creates a series of points sampled from a 3D helix with the ends joined
 #' to each other.
@@ -110,7 +110,7 @@ helix <- function(n = 1000, rmajor = 2, rminor = 1, nwinds = 8) {
 
 #' Swiss Roll Data Set
 #'
-#' Simulation data.
+#' Simulation data randomly sampled from a 2D plane curled up into 3 dimensions.
 #'
 #' Creates a series of points randomly sampled from a swiss roll-shaped
 #' manifold: a two-dimensional plane which has been rolled up into a spiral

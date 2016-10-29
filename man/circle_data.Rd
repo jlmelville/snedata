@@ -14,7 +14,7 @@ Data frame with x and y coordinates in the columns \code{x} and
  \code{y} respectively, and color in the \code{color} column.
 }
 \description{
-Circle simulation data function from "How to Use t-SNE Effectively".
+2D circle data with uniform spacing from "How to Use t-SNE Effectively".
 }
 \details{
 Creates a dataset where the points are located on the circumference of a

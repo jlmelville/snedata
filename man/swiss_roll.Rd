@@ -14,7 +14,7 @@ Data frame with \code{x}, \code{y}, \code{z} columns containing the
  coordinates of the points and \code{color} the RGB color.
 }
 \description{
-Simulation data.
+Simulation data randomly sampled from a 2D plane curled up into 3 dimensions.
 }
 \details{
 Creates a series of points randomly sampled from a swiss roll-shaped

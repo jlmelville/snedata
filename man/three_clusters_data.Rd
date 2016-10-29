@@ -16,7 +16,7 @@ Data frame with coordinates in the \code{X1}, \code{X2} ...
  \code{Xdim} columns, and color in the \code{color} column.
 }
 \description{
-Three gaussian clusters simulation data function from "How to Use t-SNE
+Three gaussian clusters with equal size and bandwidth from "How to Use t-SNE
 Effectively".
 }
 \details{

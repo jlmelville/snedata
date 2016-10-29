@@ -6,7 +6,7 @@
 #' algorithms:
 #'
 #' \itemize{
-#'  \item{\code{\link{swiss_roll}}. Two 2D planes curled in a spiral.}
+#'  \item{\code{\link{swiss_roll}}. A 2D plane curled into 3D. }
 #'  \item{\code{\link{sphere}}. Points sampled from the surface of a 3D sphere.}
 #'  \item{\code{\link{ball}}. Points sampled from the interior of a 3D sphere.}
 #'  \item{\code{\link{helix}}. Points sampled from a 3D toroidal helix with

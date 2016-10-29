@@ -14,7 +14,7 @@ Data frame with \code{x}, \code{y}, \code{z} columns containing the
  coordinates of the points and \code{color} the RGB color.
 }
 \description{
-Simulation data.
+Simulation data randomly sampled from the surface of a 3D sphere.
 }
 \details{
 Creates a series of points sampled from a 3D spherical surface.

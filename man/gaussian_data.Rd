@@ -20,8 +20,7 @@ Data frame with coordinates in the \code{X1}, \code{X2} ...
  \code{Xdim} columns, and color in the \code{color} column.
 }
 \description{
-Symmetric gaussian simulation data function from "How to Use t-SNE
-Effectively".
+Symmetric gaussian data from "How to Use t-SNE Effectively".
 }
 \details{
 Creates a randomly-sampled symmetric gaussian dataset of the specified

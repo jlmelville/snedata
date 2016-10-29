@@ -16,8 +16,7 @@ Data frame with x and y coordinates in the columns \code{x} and
  \code{y} respectively, and color in the \code{color} column.
 }
 \description{
-Clusters arranged in a circle simulation data function from "How to Use t-SNE
-Effectively".
+Clusters arranged in a circle from "How to Use t-SNE Effectively".
 }
 \details{
 Creates a dataset where the points are located on the circumference of a

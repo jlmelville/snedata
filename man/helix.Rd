@@ -20,7 +20,7 @@ Data frame with \code{x}, \code{y}, \code{z} columns containing the
  coordinates of the points and \code{color} the RGB color.
 }
 \description{
-Simulation data.
+Simulation data in the shape of a 3D toroidal helix.
 }
 \details{
 Creates a series of points sampled from a 3D helix with the ends joined
