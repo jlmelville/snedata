@@ -3,7 +3,8 @@ SNE Dataset Functions for R
 
 This package provides functions for generating simple simulation datasets 
 for use in Stochastic Neighbor Embedding and related dimensionality reduction
-methods, similar to those used by Lee and co-workers in their JSE papers.
+methods, similar to those used by Lee and co-workers in their 
+[JSE](http://dx.doi.org/10.1016/j.neucom.2012.12.036) and [multi-JSE](http://dx.doi.org/10.1016/j.neucom.2014.12.095) papers.
 
 Recently, Martin Wattenberg, Fernanda Viégas and Ian Johnson published an 
 interactive article [How to use t-SNE Effectively](http://distill.pub/2016/misread-tsne/).
@@ -13,7 +14,7 @@ have been translated into R and are also hosted in this package.
 
 Additionally, if you have the [RnavGraphImageData](https://cran.r-project.org/web/packages/RnavGraphImageData/index.html)
 package installed, there are also functions to convert the Olivetti and Frey 
-faces datasets into a row-based dataframe and functions to visualize them.
+faces datasets into a row-based data frame and functions to visualize them.
 
 ### Installing:
 ```R
@@ -24,7 +25,7 @@ devtools::install_github("jlmelville/snedata")
 ### Documentation:
 ```R
 package?snedata # lists all the functions
-?gaussian_data # contains links to all the other distill.pub simulation functions
+?snedata::gaussian_data # contains links to all the other distill.pub functions
 ```
 
 ### Examples
