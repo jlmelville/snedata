@@ -118,24 +118,33 @@ helix <- function(n = 1000, rmajor = 2, rminor = 1, nwinds = 8) {
 #'
 #' The formula for sampling the x, y and z coordinates used in this dataset is
 #' from that given in the Stochastic Proximity Embedding paper by Agrafiotis
-#' and Xu:
-#' \deqn{x = \phi cos\phi, y = \phi sin \phi, z}
-#' {x = phi * cos(phi), y = phi * sin(phi), z}
+#' and Xu (I don't know who originally came up with the data set, though):
+#' \deqn{x = \phi cos\phi, y = \phi sin \phi, z}{x = phi * cos(phi), y = phi * sin(phi), z}
 #'
-#' where \eqn{\phi}{phi} and z are random numbers in the intervals [5, 13]
-#' and [0, 10], respectively.
+#' where \eqn{\phi}{phi} and z are random numbers in the intervals
+#' [\eqn{\frac{3\pi}{2}}{3/2 pi}, \eqn{\frac{5\pi}{2}}{5/2 pi}]
+#' and [0, 10], respectively (the range of \eqn{\phi} and \code{z} can
+#' be modified, if desired).
 #'
 #' Points are colored based on the value of phi. If you unrolled the manifold
 #' into a flat sheet, you would see the color change linearly in the direction
 #' you unrolled it. Or just plot the x-y cross section (see the examples).
 #'
 #' @param n Number of points to create.
+#' @param min_phi Minimum value of the range of \eqn{phi}{phi} to sample from
+#' @param max_phi Maximum value of the range of \eqn{phi}{phi} to sample from.
+#' @param max_z Maximum value of the \code{z} range to sample from (minimum
+#'  values is always 0).
 #' @return Data frame with \code{x}, \code{y}, \code{z} columns containing the
 #'  coordinates of the points and \code{color} the RGB color.
 #' @references
+#' I first saw the equations in:
 #' Agrafiotis, D. K., & Xu, H. (2002).
 #' A self-organizing principle for learning nonlinear manifolds.
 #' \emph{Proceedings of the National Academy of Sciences}, \emph{99}(25), 15869-15872.
+#'
+#' But the dataset turns up everywhere.
+#'
 #' @examples
 #' \dontrun{
 #'  swiss1000 <- swiss_roll(n = 1000)
@@ -143,11 +152,12 @@ helix <- function(n = 1000, rmajor = 2, rminor = 1, nwinds = 8) {
 #'  plot(swiss1000$x, swiss1000$y, col = swiss1000$color, pch = 20)
 #' }
 #' @export
-swiss_roll <- function(n = 1000) {
-  phi <- stats::runif(n, min = 5, max = 30)
+swiss_roll <- function(n = 1000, min_phi = 1.5 * pi, max_phi = 4.5 * pi,
+                       max_z = 10) {
+  phi <- stats::runif(n, min = min_phi, max = max_phi)
   x <- phi * cos(phi)
   y <- phi * sin(phi)
-  z <- stats::runif(n, max = 10)
+  z <- stats::runif(n, max = max_z)
 
   data.frame(x, y, z, color = linear_color_map(phi), stringsAsFactors = FALSE)
 }

@@ -4,10 +4,17 @@
 \alias{swiss_roll}
 \title{Swiss Roll Data Set}
 \usage{
-swiss_roll(n = 1000)
+swiss_roll(n = 1000, min_phi = 1.5 * pi, max_phi = 4.5 * pi, max_z = 10)
 }
 \arguments{
 \item{n}{Number of points to create.}
+
+\item{min_phi}{Minimum value of the range of \eqn{phi}{phi} to sample from}
+
+\item{max_phi}{Maximum value of the range of \eqn{phi}{phi} to sample from.}
+
+\item{max_z}{Maximum value of the \code{z} range to sample from (minimum
+values is always 0).}
 }
 \value{
 Data frame with \code{x}, \code{y}, \code{z} columns containing the
@@ -23,12 +30,13 @@ shape. Or just look at a swiss roll.
 
 The formula for sampling the x, y and z coordinates used in this dataset is
 from that given in the Stochastic Proximity Embedding paper by Agrafiotis
-and Xu:
-\deqn{x = \phi cos\phi, y = \phi sin \phi, z}
-{x = phi * cos(phi), y = phi * sin(phi), z}
+and Xu (I don't know who originally came up with the data set, though):
+\deqn{x = \phi cos\phi, y = \phi sin \phi, z}{x = phi * cos(phi), y = phi * sin(phi), z}
 
-where \eqn{\phi}{phi} and z are random numbers in the intervals [5, 13]
-and [0, 10], respectively.
+where \eqn{\phi}{phi} and z are random numbers in the intervals
+[\eqn{\frac{3\pi}{2}}{3/2 pi}, \eqn{\frac{5\pi}{2}}{5/2 pi}]
+and [0, 10], respectively (the range of \eqn{\phi} and \code{z} can
+be modified, if desired).
 
 Points are colored based on the value of phi. If you unrolled the manifold
 into a flat sheet, you would see the color change linearly in the direction
@@ -42,8 +50,11 @@ you unrolled it. Or just plot the x-y cross section (see the examples).
 }
 }
 \references{
+I first saw the equations in:
 Agrafiotis, D. K., & Xu, H. (2002).
 A self-organizing principle for learning nonlinear manifolds.
 \emph{Proceedings of the National Academy of Sciences}, \emph{99}(25), 15869-15872.
+
+But the dataset turns up everywhere.
 }
 
