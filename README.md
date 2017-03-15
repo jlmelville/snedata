@@ -57,6 +57,20 @@ show_frey_face(frey, 1)
 olivetti <- olivetti_faces()
 # Show the second pose of the first face
 show_olivetti_face(olivetti, 1, 2)
+
+# Generate datasets similar to those used in the main text of "How to Use t-SNE Effectively"
+misread_tsne <- list(
+	two_clusters = snedata::two_clusters_data(n = 50, dim = 2),
+	two_different_sized_clusters = snedata::two_different_clusters_data(n = 75, dim = 2),
+	three_clusters_50 = snedata::three_clusters_data(n = 50, dim = 2),
+	three_clusters_200 = snedata::three_clusters_data(n = 200, dim = 2),
+	gaussian_cloud = snedata::gaussian_data(n = 500, dim = 100),
+	ellipsoidal_gaussian_cloud = snedata::long_gaussian_data(n = 100, dim = 50),
+	two_long_linear_clusters = snedata::long_cluster_data(n = 75),
+	cluster_in_cluster = snedata::subset_clusters_data(n = 75, dim = 50),
+	linked_rings = snedata::link_data(n = 100),
+	trefoil_knot = snedata::trefoil_data(n = 150)
+)
 ```
 
 ### See also
