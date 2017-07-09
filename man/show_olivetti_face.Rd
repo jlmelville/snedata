@@ -20,4 +20,3 @@ show_olivetti_face(df, face, pose, col = grDevices::gray(1/12:1))
 \description{
 Display an image from the Olivetti faces dataset.
 }
-

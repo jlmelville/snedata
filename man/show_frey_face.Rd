@@ -16,4 +16,3 @@ show_frey_face(df, n, col = grDevices::gray(1/12:1))
 \description{
 Display an image from the Frey faces dataset.
 }
-

@@ -15,4 +15,4 @@ License: MIT + file LICENSE
 Suggests:
     RnavGraphImageData
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

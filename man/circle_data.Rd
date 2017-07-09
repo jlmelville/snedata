@@ -29,7 +29,7 @@ df <- circle_data(n = 50)
 \url{http://distill.pub/2016/misread-tsne/}
 }
 \seealso{
-Other distill.functions: \code{\link{cube_data}},
+Other distill functions: \code{\link{cube_data}},
   \code{\link{gaussian_data}}, \code{\link{grid_data}},
   \code{\link{link_data}}, \code{\link{long_cluster_data}},
   \code{\link{long_gaussian_data}},
@@ -45,4 +45,3 @@ Other distill.functions: \code{\link{cube_data}},
   \code{\link{two_different_clusters_data}},
   \code{\link{unlink_data}}
 }
-

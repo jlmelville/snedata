@@ -86,6 +86,7 @@ the images.
    Olivetti faces.}
 }
 }
+
 \examples{
  # 300 points sampled from the surface of a sphere
  sphere300 <- sphere(n = 300)
@@ -131,4 +132,3 @@ Agrafiotis, D. K., & Xu, H. (2002).
 A self-organizing principle for learning nonlinear manifolds.
 \emph{Proceedings of the National Academy of Sciences}, \emph{99}(25), 15869-15872.
 }
-

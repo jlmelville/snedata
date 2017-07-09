@@ -35,7 +35,7 @@ df <- simplex_data(n = 50)
 \url{http://distill.pub/2016/misread-tsne/}
 }
 \seealso{
-Other distill.functions: \code{\link{circle_data}},
+Other distill functions: \code{\link{circle_data}},
   \code{\link{cube_data}}, \code{\link{gaussian_data}},
   \code{\link{grid_data}}, \code{\link{link_data}},
   \code{\link{long_cluster_data}},
@@ -51,4 +51,3 @@ Other distill.functions: \code{\link{circle_data}},
   \code{\link{two_different_clusters_data}},
   \code{\link{unlink_data}}
 }
-

@@ -57,4 +57,3 @@ A self-organizing principle for learning nonlinear manifolds.
 
 But the dataset turns up everywhere.
 }
-

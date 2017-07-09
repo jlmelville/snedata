@@ -45,4 +45,3 @@ Multi-scale similarities in stochastic neighbour embedding: Reducing
 dimensionality while preserving both local and global structure.
 \emph{Neurocomputing}, \emph{169}, 246-261.
 }
-

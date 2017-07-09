@@ -41,4 +41,3 @@ Saul Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.
 Each row can be visualized as an image using
 \code{\link{show_olivetti_face}}.
 }
-
