@@ -9,7 +9,9 @@ two_clusters_data(n, dim = 50)
 \arguments{
 \item{n}{Number of points per gaussian.}
 
-\item{dim}{Dimension of the gaussians.}
+\item{dim}{Dimension of the gaussians. You may pass a vector of length 2 to
+create clusters of different dimensionalities, with the smaller cluster
+having zeros in the extra dimensions.}
 }
 \value{
 Data frame with coordinates in the \code{X1}, \code{X2} ...
@@ -26,6 +28,9 @@ of 10 units. Points are colored depending on which cluster they belong to.
 }
 \examples{
 df <- two_clusters_data(n = 50, dim = 2)
+# two clusters with 10 members each, first 10 sampled from a 3D gaussian,
+# second 10 are sampled from a 4D gaussian
+df <- two_clusters_data(n = 10, dim = c(3, 4))
 }
 \references{
 \url{http://distill.pub/2016/misread-tsne/}

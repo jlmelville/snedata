@@ -79,3 +79,32 @@ equal_factors <- function(x, nfactors) {
   cuts <- cut(x, breaks = breaks, include.lowest = TRUE, labels = FALSE)
   as.factor(cuts)
 }
+
+
+# Merge Two Data Frames By Row
+#
+# Merges two data frames in the style of an outer join.
+#
+# This function is intended to be used where two simulation sets of different
+# dimensionality should be merged. Resulting NA values are set to 0. If the data
+# frames have unequal numbers of columns, attempts to maintain the order of
+# columns in the dataframe with the larger number of columns.
+#
+# x, y - Data frames to merge
+# Returns a merged data frame.
+merge_by_row <- function(x, y) {
+  z <- merge(x, y, all = TRUE, sort = FALSE)
+
+  # keep column order of larger dataset
+  if (ncol(x) < ncol(y)) {
+    all_col_names <- union(names(y), names(x))
+  }
+  else {
+    all_col_names <- union(names(x), names(y))
+  }
+  z <- z[, all_col_names]
+
+  z[is.na(z)] <- 0
+
+  z
+}

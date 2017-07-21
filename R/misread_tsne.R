@@ -174,22 +174,30 @@ random_circle_cluster_data <- function(n) {
 #' of 10 units. Points are colored depending on which cluster they belong to.
 #'
 #' @param n Number of points per gaussian.
-#' @param dim Dimension of the gaussians.
+#' @param dim Dimension of the gaussians. You may pass a vector of length 2 to
+#' create clusters of different dimensionalities, with the smaller cluster
+#' having zeros in the extra dimensions.
 #' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
 #'  \code{Xdim} columns, and color in the \code{color} column.
 #'
 #' @examples
 #' df <- two_clusters_data(n = 50, dim = 2)
+#' # two clusters with 10 members each, first 10 sampled from a 3D gaussian,
+#' # second 10 are sampled from a 4D gaussian
+#' df <- two_clusters_data(n = 10, dim = c(3, 4))
 #' @family distill functions
 #' @references \url{http://distill.pub/2016/misread-tsne/}
 #' @export
 two_clusters_data <- function(n, dim = 50) {
-  cluster1 <- gaussian_data(n = n, dim = dim, color = '#003399')
+  if (length(dim) != 2) {
+    dim <- rep(dim, 2)
+  }
+  cluster1 <- gaussian_data(n = n, dim = dim[1], color = '#003399')
 
-  cluster2 <- gaussian_data(n = n, dim = dim, color = '#FF9900')
+  cluster2 <- gaussian_data(n = n, dim = dim[2], color = '#FF9900')
   cluster2[, 1] <- cluster2[, 1] + 10
 
-  rbind(cluster1, cluster2)
+  merge_by_row(cluster1, cluster2)
 }
 
 #' Two Gaussian Clusters With Unequal Standard Deviations
