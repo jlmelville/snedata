@@ -11,12 +11,12 @@ frey_faces()
 the Frey Faces dataset as a dataframe.
 }
 \description{
-Image dataset.
+Converts Frey Faces Image dataset.
 }
 \details{
-Returns the Frey Faces dataset in a data frame reformatted to be suitable
-for use with Sneer. This is a series of 1965 images (with dimension 20 x 28)
-of Brendan Frey's face taken from sequential frames of a video.
+Returns the Frey Faces dataset in a data frame where each row is one image.
+This is a series of 1965 images (with dimension 20 x 28) of Brendan Frey's
+face taken from sequential frames of a video.
 
 The variables are as follows:
 \itemize{
@@ -24,8 +24,7 @@ The variables are as follows:
 pixel values (0-255). The pixel index starts at the top right of the image
 (\code{px1}) and are then stored row-wise.
 \item \code{Label} An integer in the range (1-1965) indicating the frame.
-Provides the same information as the row id, but included to be consistent
-with other sneer datasets.
+Provides the same information as the row id, but formatted as a factor.
 }
 }
 \note{
