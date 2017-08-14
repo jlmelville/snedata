@@ -53,6 +53,10 @@ frey <- frey_faces()
 # Display the first pose
 show_frey_face(frey, 1)
 
+# PCA scores plot, with color indicating the frame index
+frey_pca <- prcomp(frey[, -561], retx = TRUE, rank. = 2)
+plot(frey_pca$x, col = frey$color, pch = 16, cex = 0.75)
+
 # Load the Olivetti faces dataset with each image as a row
 olivetti <- olivetti_faces()
 # Show the second pose of the first face

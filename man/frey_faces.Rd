@@ -23,14 +23,25 @@ The variables are as follows:
 \item \code{px1}, \code{px2}, \code{px3} ... \code{px560} 8-bit grayscale
 pixel values (0-255). The pixel index starts at the top right of the image
 (\code{px1}) and are then stored row-wise.
-\item \code{Label} An integer in the range (1-1965) indicating the frame.
-Provides the same information as the row id, but formatted as a factor.
+\item \code{color} A string representing a color in hex format. It can be
+used directly with e.g. the \code{col} parameter in the
+\code{\link[graphics]{plot}} function. The color goes from hsl(0, 50, 50)
+(red) at frame 1 to hsl(300, 50, 50) (purple) at frame 1965 and on a muted
+rainbow scale.
 }
 }
 \note{
 requires the \code{RnavGraphImageData} package.
 \url{https://cran.r-project.org/web/packages/RnavGraphImageData/index.html}
 to be installed and loaded.
+}
+\examples{
+\dontrun{
+frey <- frey_faces()
+# PCA Scores plot, with color indicating the frame index
+frey_pca <- prcomp(frey[, -561], retx = TRUE, rank. = 2)
+plot(frey_pca$x, col = frey$color, pch = 16, cex = 0.75)
+}
 }
 \seealso{
 Saul Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.
