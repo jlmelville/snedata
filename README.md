@@ -118,20 +118,13 @@ save(mnist, file = "mnist.Rda")
 
 ## See also
 
-I have a similar R packages for downloading the 
-[COIL-20](https://github.com/jlmelville/coil20) dataset (under a different 
+* I have a similar R package for downloading the [COIL-20](https://github.com/jlmelville/coil20) dataset (under a different 
 license).
-For downloading the MNIST digits database, there is a 
-[similar project](https://github.com/xrobin/mnist) by 
-[Xavier Robin](https://github.com/xrobin).
-Shamless plug: while the [Rtsne](https://cran.r-project.org/package=Rtsne) 
-package should probably be your first stop to play with embedding these 
-datasets with t-SNE in R, I have used these datasets successfully with my own 
-experimental (translation: slow) package 
-[sneer](https://github.com/jlmelville/sneer), 
-which has its roots -- now mangled beyond recognition -- in Justin Donaldson's
-[tsne](https://cran.r-project.org/package=tsne) package.
+* For downloading the MNIST digits database, there is a [similar project](https://github.com/xrobin/mnist) by [Xavier Robin](https://github.com/xrobin).
+* Shamless plug: while the [Rtsne](https://cran.r-project.org/package=Rtsne) package should probably be your first stop to play with embedding these datasets with t-SNE in R, I have used these datasets successfully with my own experimental (translation: slow) package 
+[sneer](https://github.com/jlmelville/sneer), which has its roots &mdash; now mangled beyond recognition &mdash; in Justin Donaldson's [tsne](https://cran.r-project.org/package=tsne) package.
 
 ## License
+
 This package is licensed under 
 [the MIT License](http://opensource.org/licenses/MIT).
