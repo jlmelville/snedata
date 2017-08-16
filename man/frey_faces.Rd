@@ -32,7 +32,7 @@ rainbow scale.
 }
 \note{
 requires the \code{RnavGraphImageData} package.
-\url{https://cran.r-project.org/web/packages/RnavGraphImageData/index.html}
+\url{https://cran.r-project.org/package=RnavGraphImageData}
 to be installed and loaded.
 }
 \examples{

@@ -33,7 +33,7 @@ the row with name \code{20_10} is the tenth pose of the twentieth face.
 }
 \note{
 requires the \code{RnavGraphImageData} package.
-\url{https://cran.r-project.org/web/packages/RnavGraphImageData/index.html}
+\url{https://cran.r-project.org/package=RnavGraphImageData}
 to be installed and loaded.
 }
 \seealso{

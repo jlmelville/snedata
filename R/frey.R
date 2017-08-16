@@ -19,7 +19,7 @@
 #' }
 #'
 #' @note requires the \code{RnavGraphImageData} package.
-#' \url{https://cran.r-project.org/web/packages/RnavGraphImageData/index.html}
+#' \url{https://cran.r-project.org/package=RnavGraphImageData}
 #' to be installed and loaded.
 #' @return the Frey Faces dataset as a dataframe.
 #' @format A data frame with 1965 rows and 561 variables.
