@@ -3,7 +3,7 @@
 #'
 #' @section Simulation functions:
 #' Very simple datasets for characterizing the behavior of various embedding
-#' algorithms:
+#' algorithms some, from Lee et al (2016) and Agrafiotis and Xu (2002).
 #'
 #' \itemize{
 #'  \item{\code{\link{swiss_roll}}. A 2D plane curled into 3D. }
@@ -14,11 +14,10 @@
 #' }
 #'
 #' @section Simulation functions from "How to use t-SNE Effectively":
-#' An article from researchers at Google Brain and Google Cloud,
-#' \url{http://distill.pub/2016/misread-tsne/} runs t-SNE in your browser,
-#' using some simulation data, much of it investigating clusters of gaussian
-#' data of varying dimensionality and heterogeneity and relative separation.
-#' There's quite a lot of these:
+#' An online article from Wattenberg et al (2016), this runs t-SNE live in your
+#' browser. Much of the data pertains to investigating the behavior of clusters
+#' of gaussians of varying dimensionality, heterogeneity and relative separation.
+#' There's quite a lot of functions:
 #' \itemize{
 #'  \item{\code{\link{circle_data}}. A 2D circle.}
 #'  \item{\code{\link{cube_data}}. A cube.}
@@ -53,25 +52,39 @@
 #'
 #' @section Faces dataset functions:
 #' If you have the \code{RnavGraphImageData} package
-#' \url{https://cran.r-project.org/web/packages/RnavGraphImageData/index.html}
+#' \url{https://cran.r-project.org/package=RnavGraphImageData}
 #' installed and loaded, then there are functions to convert the Olivetti
 #' and Frey faces datasets into a row-based format, and functions to visualize
 #' the images.
 #'
 #' \itemize{
-#'  \item{\code{\link{frey_faces}} Loads the Frey faces as a row-based data
+#'  \item{\code{\link{frey_faces}}. Loads the Frey faces as a row-based data
 #'    frame.}
 #'  \item{\code{\link{show_frey_face}}. Display one of the poses from the Frey
 #'    faces.}
-#'  \item{\code{\link{olivetti_faces}} Loads the Olivetti faces as a row-based
+#'  \item{\code{\link{olivetti_faces}}. Loads the Olivetti faces as a row-based
 #'    data frame.}
 #'  \item{\code{\link{show_olivetti_face}}. Display one of the poses from the
 #'    Olivetti faces.}
 #' }
 #'
+#' @section MNIST dataset functions:
+#' Another (much larger) image dataset is the MNIST digits dataset, available
+#' from \url{http://yann.lecun.com/exdb/mnist/}. Functions are available to
+#' download the dataset as a data frame and visualize individual digits:
+#'
+#' \itemize{
+#'   \item{\code{\link{download_mnist}}. Downloads the MNIST dataset files
+#'   as a row-based data frame.}
+#'   \item{\code{\link{show_mnist_digit}}. Display one of the MNIST digits.}
+#' }
+#'
 #' @note
 #' The faces datasets originate from Saul Roweis' dataset web page:
 #' \url{http://www.cs.nyu.edu/~roweis/data.html}.
+#'
+#' Code to download and visualize the MNIST digits dataset originates from a
+#' gist by Brendan O'Connor: \url{https://gist.github.com/brendano/39760}.
 #'
 #' @examples
 #'  # 300 points sampled from the surface of a sphere
@@ -103,19 +116,46 @@
 #'  # Show the second pose of the first face
 #'  show_olivetti_face(olivetti, 1, 2)
 #' }
+#'
+#' \dontrun{
+#' # fetch the MNIST data set from the MNIST website
+#' mnist <- download_mnist()
+#' # view the fifth digit
+#' show_digit(mnist, 5)
+#'
+#' # first 60,000 instances are the training set
+#' mnist_train <- head(mnist, 60000)
+#' # the remaining 10,000 are the test set
+#' mnist_test <- tail(mnist, 10000)
+#'
+#' # PCA on 1000 random training examples
+#' mnist_r1000 <- mnist_train[sample(nrow(mnist_train), 1000), ]
+#'
+#' pca <- prcomp(mnist_r1000[, 1:784], retx = TRUE, .rank = 2)
+#' # plot the scores of the first two components
+#' plot(pca$x[, 1:2], type = 'n')
+#' text(pca$x[, 1:2], labels = mnist_r1000$Label, cex = 0.5,
+#'      col = rainbow(length(levels(mnist_r1000$Label)))[mnist_r1000$Label])
+#'
+#' # save to disk
+#' save(mnist, file = "mnist.Rda")
+#' }
 #' @references
-#' "How to Use t-SNE Effectively"
-#' \url{http://distill.pub/2016/misread-tsne/}
-#' \url{https://github.com/distillpub/post--misread-tsne}
+#'
+#' Agrafiotis, D. K., & Xu, H. (2002).
+#' A self-organizing principle for learning nonlinear manifolds.
+#' \emph{Proceedings of the National Academy of Sciences}, \emph{99}(25), 15869-15872.
 #'
 #' Lee, J. A., Peluffo-Ordo'nez, D. H., & Verleysen, M. (2015).
 #' Multi-scale similarities in stochastic neighbour embedding: Reducing
 #' dimensionality while preserving both local and global structure.
 #' \emph{Neurocomputing}, \emph{169}, 246-261.
 #'
-#' Agrafiotis, D. K., & Xu, H. (2002).
-#' A self-organizing principle for learning nonlinear manifolds.
-#' \emph{Proceedings of the National Academy of Sciences}, \emph{99}(25), 15869-15872.
+#' Wattenberg, M., Vie'gas, F., & Johnson, I. (2016)
+#' How to Use t-SNE Effectively.
+#' \emph{Distill}
+#' \url{http://doi.org/10.23915/distill.00002}
+#'
 #' @docType package
 #' @name snedata
 NULL
