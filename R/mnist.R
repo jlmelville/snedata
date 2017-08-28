@@ -22,7 +22,7 @@ show_mnist_digit <- function(df, n, col = grDevices::gray(12:1 / 12), ...) {
                   col = col, ...)
 }
 
-# Base URL of the the MNIST digits dataset website
+# Base URL of the MNIST digits dataset website
 mnist_url <- "http://yann.lecun.com/exdb/mnist/"
 
 #' Download MNIST
@@ -67,7 +67,7 @@ mnist_url <- "http://yann.lecun.com/exdb/mnist/"
 #'
 #' # PCA on 1000 random training examples
 #' mnist_r1000 <- mnist_train[sample(nrow(mnist_train), 1000), ]
-#' pca <- prcomp(mnist_r1000[, 1:784], retx = TRUE, .rank = 2)
+#' pca <- prcomp(mnist_r1000[, 1:784], retx = TRUE, rank. = 2)
 #' # plot the scores of the first two components
 #' plot(pca$x[, 1:2], type = 'n')
 #' text(pca$x[, 1:2], labels = mnist_r1000$Label,
