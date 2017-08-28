@@ -121,7 +121,7 @@
 #' # fetch the MNIST data set from the MNIST website
 #' mnist <- download_mnist()
 #' # view the fifth digit
-#' show_digit(mnist, 5)
+#' show_mnist_digit(mnist, 5)
 #'
 #' # first 60,000 instances are the training set
 #' mnist_train <- head(mnist, 60000)
