@@ -47,6 +47,9 @@ mnist_url <- "http://yann.lecun.com/exdb/mnist/"
 #' set, as found in the \code{train-images-idx3-ubyte.gz} file. The remaining
 #' 10,000 are the test set, from the \code{t10k-images-idx3-ubyte.gz} file.
 #'
+#' Items in the dataset can be visualized with
+#' \code{\link{show_mnist_digit}}.
+#'
 #' For more information see \url{http://yann.lecun.com/exdb/mnist}.
 #'
 #' @param base_url Base URL that the MNIST files are located at.
@@ -170,4 +173,3 @@ parse_files <- function(image_filename, label_filename, base_url = mnist_url,
                                       verbose = verbose))
   df
 }
-

@@ -18,6 +18,9 @@ There are 70,000 digits in the data set. The first 60,000 are the training
 set, as found in the \code{train-images-idx3-ubyte.gz} file. The remaining
 10,000 are the test set, from the \code{t10k-images-idx3-ubyte.gz} file.
 
+Items in the dataset can be visualized with
+\code{\link{show_mnist_digit}}.
+
 For more information see \url{http://yann.lecun.com/exdb/mnist}.}
 \usage{
 download_mnist(base_url = mnist_url, verbose = FALSE)
