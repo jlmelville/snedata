@@ -23,10 +23,16 @@ have been translated into R and are also hosted in this package.
 package installed, there are also functions to convert the Olivetti and Frey 
 faces datasets into a row-based data frame and functions to visualize them.
 
-* Last but not least is code to download and visualize the 
+* Code to download and visualize the 
 [MNIST database](http://yann.lecun.com/exdb/mnist/), based on 
 [a gist by Brendan O'Connor](https://gist.github.com/brendano/39760), who 
 graciously allowed it to be MIT-licensed.
+
+* The [Fashion-MNIST](https://github.com/zalandoresearch/fashion-mnist) dataset 
+is intended as drop-in replacement for the MNIST digits database, but using 
+images of fashion items, and to be harder to perform well with machine learning
+benchmarks. Items can be visualized with the same function intended for the 
+MNIST digits.
 
 ## Installing:
 
@@ -114,6 +120,13 @@ text(pca$x[, 1:2], labels = mnist_r1000$Label, cex = 0.5,
 
 # save to disk
 save(mnist, file = "mnist.Rda")
+
+# fetch the Fashion-MNIST dataset
+fashion <- download_fashion_mnist()
+
+# Works as a drop-in replacement for the MNIST digits, can repeat the above
+# view the fifth item etc.
+show_mnist_digit(fashion, 5)
 ```
 
 ## See also

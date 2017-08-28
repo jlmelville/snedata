@@ -3,6 +3,7 @@
 export(ball)
 export(circle_data)
 export(cube_data)
+export(download_fashion_mnist)
 export(download_mnist)
 export(frey_faces)
 export(gaussian_data)

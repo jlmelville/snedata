@@ -79,12 +79,17 @@
 #'   \item{\code{\link{show_mnist_digit}}. Display one of the MNIST digits.}
 #' }
 #'
+#' @section Fashion-MNIST functions:
+#' The Fashion-MNIST dataset (Xiao et al. 2017) is designed as a drop-in
+#' replacement
+#'
 #' @note
 #' The faces datasets originate from Saul Roweis' dataset web page:
 #' \url{http://www.cs.nyu.edu/~roweis/data.html}.
 #'
-#' Code to download and visualize the MNIST digits dataset originates from a
-#' gist by Brendan O'Connor: \url{https://gist.github.com/brendano/39760}.
+#' Code to download and visualize the MNIST digits and fashions datasets
+#' originates from a gist by Brendan O'Connor:
+#' \url{https://gist.github.com/brendano/39760}.
 #'
 #' @examples
 #'  # 300 points sampled from the surface of a sphere
@@ -140,6 +145,17 @@
 #' # save to disk
 #' save(mnist, file = "mnist.Rda")
 #' }
+#'
+#' \dontrun{
+#' # fetch the Fashion-MNIST data
+#' fashion <- download_fashion_mnist()
+#'
+#' # You can repeat the same example as with the MNIST digits example.
+#' # Shows the fifth Fashion-MNIST "digit" (actually a dress)
+#' show_mnist_digit(fashion, 5)
+#'
+#' # and so on...
+#' }
 #' @references
 #'
 #' Agrafiotis, D. K., & Xu, H. (2002).
@@ -155,6 +171,11 @@
 #' How to Use t-SNE Effectively.
 #' \emph{Distill}
 #' \url{http://doi.org/10.23915/distill.00002}
+#'
+#' Xiao, H., Kashif, R., & Vollgraf, R. (2017).
+#' Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms.
+#' \emph{arXiv preprint} \emph{arXiv:1708.07747}.
+#' \url{https://github.com/zalandoresearch/fashion-mnist/}
 #'
 #' @docType package
 #' @name snedata
