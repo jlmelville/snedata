@@ -136,6 +136,7 @@ license).
 * For downloading the MNIST digits database, there is a [similar project](https://github.com/xrobin/mnist) by [Xavier Robin](https://github.com/xrobin).
 * Shamless plug: while the [Rtsne](https://cran.r-project.org/package=Rtsne) package should probably be your first stop to play with embedding these datasets with t-SNE in R, I have used these datasets successfully with my own experimental (translation: slow) package 
 [sneer](https://github.com/jlmelville/sneer), which has its roots &mdash; now mangled beyond recognition &mdash; in Justin Donaldson's [tsne](https://cran.r-project.org/package=tsne) package.
+* More shameless plugging: the [vizier](https://github.com/jlmelville/vizier) package might be useful for visualizing embeddings, and the [quadra](https://github.com/jlmelville/quadra) package might be (eventually) help for more quantitative assessments.
 
 ## License
 
