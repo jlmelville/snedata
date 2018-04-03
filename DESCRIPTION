@@ -16,6 +16,7 @@ Description: Some simple simulation datasets used in Stochastic Neighbor
     also functions for visualizing individual images in these datasets.
 License: MIT + file LICENSE
 Suggests:
-    RnavGraphImageData
+    RnavGraphImageData,
+    testthat
 LazyData: TRUE
 RoxygenNote: 6.0.1

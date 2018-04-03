@@ -343,8 +343,10 @@ cube_data <- function(n, dim, color = '#003399') {
 rotate <- function(df) {
   cs <- cos(.4)
   sn <- sin(.4)
-  df$y <- cs * df$y + sn * df$z
-  df$z <- -sn * df$y + cs * df$z
+  y <- df$y
+  z <- df$z
+  df$y <- cs * y + sn * z
+  df$z <- -sn * y + cs * z
   df
 }
 
