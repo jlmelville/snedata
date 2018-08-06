@@ -87,7 +87,7 @@ download_fashion_mnist <- function(base_url = fashion_mnist_url,
   description_levels <- c("T-shirt/top", "Trouser", "Pullover", "Dress",
                           "Coat", "Sandal", "Shirt", "Sneaker", "Bag",
                           "Ankle boot")
-  res$description <- factor(description_levels[as.numeric(labels)],
+  res$description <- factor(description_levels[as.numeric(res$Label)],
                             levels = description_levels)
   res
 }
