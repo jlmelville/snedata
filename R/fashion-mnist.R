@@ -11,13 +11,15 @@ fashion_mnist_url <-
 #' replacement for the MNIST digits dataset but with more relevance for
 #' benchmarking machine learning algorithms (i.e. it's more difficult).
 #'
-#' @format A data frame with 785 variables:
+#' @format A data frame with 786 variables:
 #'
 #' \describe{
 #' \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
 #'   value, from 0 (white) to 255 (black).}
 #' \item{\code{Label}}{The fashion item represented by the image, in the range
 #'  0-9.}
+#' \item{\code{Description}}{The name of the fashion item associated with the
+#'  \code{Label}}
 #' }
 #'
 #' Pixels are organized row-wise. The \code{Label} variable is stored as a
@@ -35,6 +37,8 @@ fashion_mnist_url <-
 #'   \item{\code{8}}{Bag}
 #'   \item{\code{9}}{Ankle boot}
 #' }
+#'
+#' and are also present as the \code{Description} factor.
 #'
 #' There are 70,000 items in the data set. The first 60,000 are the training
 #' set, as found in the \code{train-images-idx3-ubyte.gz} file. The remaining
@@ -78,5 +82,12 @@ fashion_mnist_url <-
 #' @export
 download_fashion_mnist <- function(base_url = fashion_mnist_url,
                                    verbose = FALSE) {
-  download_mnist(base_url = base_url, verbose = verbose)
+  res <- download_mnist(base_url = base_url, verbose = verbose)
+
+  description_levels <- c("T-shirt/top", "Trouser", "Pullover", "Dress",
+                          "Coat", "Sandal", "Shirt", "Sneaker", "Bag",
+                          "Ankle boot")
+  res$description <- factor(description_levels[as.numeric(labels)],
+                            levels = description_levels)
+  res
 }

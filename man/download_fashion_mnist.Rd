@@ -3,13 +3,15 @@
 \name{download_fashion_mnist}
 \alias{download_fashion_mnist}
 \title{Download Fashion-MNIST}
-\format{A data frame with 785 variables:
+\format{A data frame with 786 variables:
 
 \describe{
 \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
   value, from 0 (white) to 255 (black).}
 \item{\code{Label}}{The fashion item represented by the image, in the range
  0-9.}
+\item{\code{Description}}{The name of the fashion item associated with the
+ \code{Label}}
 }
 
 Pixels are organized row-wise. The \code{Label} variable is stored as a
@@ -27,6 +29,8 @@ factor. The labels correspond to:
   \item{\code{8}}{Bag}
   \item{\code{9}}{Ankle boot}
 }
+
+and are also present as the \code{Description} factor.
 
 There are 70,000 items in the data set. The first 60,000 are the training
 set, as found in the \code{train-images-idx3-ubyte.gz} file. The remaining
