@@ -45,3 +45,4 @@ Other distill functions: \code{\link{circle_data}},
   \code{\link{two_different_clusters_data}},
   \code{\link{unlink_data}}
 }
+\concept{distill functions}

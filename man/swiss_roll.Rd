@@ -4,7 +4,8 @@
 \alias{swiss_roll}
 \title{Swiss Roll Data Set}
 \usage{
-swiss_roll(n = 1000, min_phi = 1.5 * pi, max_phi = 4.5 * pi, max_z = 10)
+swiss_roll(n = 1000, min_phi = 1.5 * pi, max_phi = 4.5 * pi,
+  max_z = 10)
 }
 \arguments{
 \item{n}{Number of points to create.}
