@@ -4,8 +4,15 @@ SNE Dataset Functions for R
 
 This package provides functions for generating simple simulation datasets 
 for use in Stochastic Neighbor Embedding and related dimensionality reduction
-methods, most obviously the very popular 
-[t-SNE](https://lvdmaaten.github.io/tsne/). The datasets included are:
+methods, most obviously the very popular
+[t-SNE](https://lvdmaaten.github.io/tsne/).
+
+## News
+
+*December 14 2018*. Added [Kuzushiji-MNIST](https://github.com/rois-codh/kmnist).
+
+
+## Datasets
 
 * Synthetic data similar to those used by Lee and co-workers in their 
 [JSE](http://dx.doi.org/10.1016/j.neucom.2012.12.036) and 
@@ -33,6 +40,10 @@ is intended as drop-in replacement for the MNIST digits database, but using
 images of fashion items, and to be harder to perform well with machine learning
 benchmarks. Items can be visualized with the same function intended for the 
 MNIST digits.
+
+* The [Kuzushiji-MNIST](https://github.com/rois-codh/kmnist) dataset, another
+drop-in replacement for the MNIST digits, but this time of types of cursive
+Japanese characters.
 
 ## Installing:
 
@@ -127,16 +138,24 @@ fashion <- download_fashion_mnist()
 # Works as a drop-in replacement for the MNIST digits, can repeat the above
 # view the fifth item etc.
 show_mnist_digit(fashion, 5)
+
+# similarly for Kuzushiji-MNIST dataset of Japanese cursive characters
+# (set verbose flag to see download progress)
+kuzushiji <- download_kuzushiji_mnist(verbose = TRUE)
+# View the tenth character
+show_mnist_digit(kuzushiji, 10)
 ```
 
 ## See also
 
-* I have a similar R package for downloading the [COIL-20](https://github.com/jlmelville/coil20) dataset (under a different 
-license).
-* For downloading the MNIST digits database, there is a [similar project](https://github.com/xrobin/mnist) by [Xavier Robin](https://github.com/xrobin).
-* Shamless plug: while the [Rtsne](https://cran.r-project.org/package=Rtsne) package should probably be your first stop to play with embedding these datasets with t-SNE in R, I have used these datasets successfully with my own experimental (translation: slow) package 
-[sneer](https://github.com/jlmelville/sneer), which has its roots &mdash; now mangled beyond recognition &mdash; in Justin Donaldson's [tsne](https://cran.r-project.org/package=tsne) package.
-* More shameless plugging: the [vizier](https://github.com/jlmelville/vizier) package might be useful for visualizing embeddings, and the [quadra](https://github.com/jlmelville/quadra) package might be (eventually) help for more quantitative assessments.
+* I maintain a similar [R package](https://github.com/jlmelville/coil20) (under 
+a different license) for downloading the 
+[COIL-20](http://www.cs.columbia.edu/CAVE/software/softlib/coil-20.php) and
+[COIL-100](http://www.cs.columbia.edu/CAVE/software/softlib/coil-100.php)
+datasets.
+* For downloading the MNIST digits database, there is a 
+[similar project](https://github.com/xrobin/mnist) by 
+[Xavier Robin](https://github.com/xrobin).
 
 ## License
 
