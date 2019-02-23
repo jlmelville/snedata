@@ -48,8 +48,8 @@ Japanese characters.
 ## Installing:
 
 ```R
-install.packages("devtools")
-devtools::install_github("jlmelville/snedata")
+install.packages("remotes")
+remotes::install_github("jlmelville/snedata")
 ```
 
 ## Documentation:
