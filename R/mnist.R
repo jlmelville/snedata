@@ -17,7 +17,7 @@
 #' show_mnist_digit(mnist, 5)
 #' }
 #' @export
-show_mnist_digit <- function(df, n, col = grDevices::gray(12:1 / 12), ...) {
+show_mnist_digit <- function(df, n, col = grDevices::gray(1:255 / 255), ...) {
   graphics::image(matrix(as.numeric(df[n, 1:784]), nrow = 28)[, 28:1],
                   col = col, ...)
 }

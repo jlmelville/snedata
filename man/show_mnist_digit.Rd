@@ -4,7 +4,7 @@
 \alias{show_mnist_digit}
 \title{Visualize MNIST digit.}
 \usage{
-show_mnist_digit(df, n, col = grDevices::gray(12:1/12), ...)
+show_mnist_digit(df, n, col = grDevices::gray(255:1/255), ...)
 }
 \arguments{
 \item{df}{Data frame containing MNIST digits.}
