@@ -9,6 +9,8 @@ methods, most obviously the very popular
 
 ## News
 
+*February 23 2019*. Added [Small NORB](https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/).
+
 *December 14 2018*. Added [Kuzushiji-MNIST](https://github.com/rois-codh/kmnist).
 
 
@@ -44,6 +46,10 @@ MNIST digits.
 * The [Kuzushiji-MNIST](https://github.com/rois-codh/kmnist) dataset, another
 drop-in replacement for the MNIST digits, but this time of types of cursive
 Japanese characters.
+
+* The [Small NORB](https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/) dataset,
+which consists of pairs of images of 50 toys from different angles and under
+different lighting conditions.
 
 ## Installing:
 
@@ -144,6 +150,11 @@ show_mnist_digit(fashion, 5)
 kuzushiji <- download_kuzushiji_mnist(verbose = TRUE)
 # View the tenth character
 show_mnist_digit(kuzushiji, 10)
+
+# Download the small NORB dataset
+norb <- download_norb_small(verbose = TRUE)
+# View an image, compare with example at https://github.com/ndrplz/small_norb
+show_norb_object(norb, category = 2, instance = 6, elevation = 6, azimuth = 24, lighting = 2)
 ```
 
 ## See also
