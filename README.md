@@ -167,6 +167,7 @@ datasets.
 * For downloading the MNIST digits database, there is a 
 [similar project](https://github.com/xrobin/mnist) by 
 [Xavier Robin](https://github.com/xrobin).
+* A gist for [downloading the Isomap Swiss Roll and Faces as R dataframes](https://gist.github.com/jlmelville/339dfeb80c3e836e887d70a37679b244)
 
 ## License
 
