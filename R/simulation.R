@@ -138,12 +138,27 @@ helix <- function(n = 1000, rmajor = 2, rminor = 1, nwinds = 8) {
 #' @return Data frame with \code{x}, \code{y}, \code{z} columns containing the
 #'  coordinates of the points and \code{color} the RGB color.
 #' @references
-#' I first saw the equations in:
+#' I first saw the equations in
+#' 
 #' Agrafiotis, D. K., & Xu, H. (2002).
 #' A self-organizing principle for learning nonlinear manifolds.
 #' \emph{Proceedings of the National Academy of Sciences}, \emph{99}(25), 15869-15872.
 #'
-#' But the dataset turns up everywhere.
+#' But the dataset turns up everywhere, most notably:
+#' 
+#' Roweis, S. T., & Saul, L. K. (2000). 
+#' Nonlinear dimensionality reduction by locally linear embedding. 
+#' \emph{Science}, \emph{290}(5500), 2323-2326.
+#'
+#' If the idea of flattening a Swiss Roll didn't originate in that publication,
+#' it was certainly popularized for its use in nonlinear dimensionality
+#' reduction. A Matlab-formatted version of that dataset is still available at:
+#' 
+#' \url{http://web.mit.edu/cocosci/isomap/datasets.html}
+#' 
+#' I'm not sure exactly what parameters were used to generate it, but you
+#' can get something similar by calling:
+#' \code{swiss_roll(n = 20000, min_phi = 1.5 * pi, max_phi = 4.5 * pi, max_z = 50)}
 #'
 #' @examples
 #' \dontrun{
