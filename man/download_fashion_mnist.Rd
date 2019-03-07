@@ -81,7 +81,7 @@ pca <- prcomp(fashion_r1000[, 1:784], retx = TRUE, rank. = 2)
 # plot the scores of the first two components
 plot(pca$x[, 1:2], type = 'n')
 text(pca$x[, 1:2], labels = fashion_r1000$Label,
-     col = rainbow(length(levels(fashion_r1000$Label)))[fashion_r1000$Label])
+     col = rainbow(length(levels(fashion$Label)))[fashion_r1000$Label])
 }
 }
 \references{

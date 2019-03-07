@@ -105,7 +105,7 @@ pca <- prcomp(norb_r1000[, 1:(96 * 96 * 2)], retx = TRUE, rank. = 2)
 # plot the scores of the first two components
 plot(pca$x[, 1:2], type = 'n')
 text(pca$x[, 1:2], labels = norb_r1000$Label,
-     col = rainbow(length(levels(norb_r1000$Label)))[norb_r1000$Label])
+     col = rainbow(length(levels(norb$Label)))[norb_r1000$Label])
 }
 }
 \references{

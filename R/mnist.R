@@ -74,7 +74,7 @@ mnist_url <- "http://yann.lecun.com/exdb/mnist/"
 #' # plot the scores of the first two components
 #' plot(pca$x[, 1:2], type = 'n')
 #' text(pca$x[, 1:2], labels = mnist_r1000$Label,
-#'      col = rainbow(length(levels(mnist_r1000$Label)))[mnist_r1000$Label])
+#'      col = rainbow(length(levels(mnist$Label)))[mnist_r1000$Label])
 #'}
 #' @export
 download_mnist <- function(base_url = mnist_url, verbose = FALSE) {
