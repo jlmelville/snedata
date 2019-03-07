@@ -9,6 +9,8 @@ methods, most obviously the very popular
 
 ## News
 
+*March 6 2019*. Added [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html).
+
 *February 23 2019*. Added [Small NORB](https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/).
 
 *December 14 2018*. Added [Kuzushiji-MNIST](https://github.com/rois-codh/kmnist).
@@ -50,6 +52,9 @@ Japanese characters.
 * The [Small NORB](https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/) dataset,
 which consists of pairs of images of 50 toys from different angles and under
 different lighting conditions.
+
+* The [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset, which
+consists of 60000 32 x 32 color images in ten different classes. 
 
 ## Installing:
 
