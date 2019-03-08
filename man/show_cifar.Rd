@@ -4,12 +4,16 @@
 \alias{show_cifar}
 \title{Visualize CIFAR-10 image.}
 \usage{
-show_cifar(df, n)
+show_cifar(df, n, interpolate = FALSE)
 }
 \arguments{
 \item{df}{Data frame containing the CIFAR-10 dataframe.}
 
 \item{n}{Row index of the image to display.}
+
+\item{interpolate}{If \code{TRUE}, use linear interpolation to smooth the
+image. This can help when trying to confirm that you really are looking at
+a tiny image of a frog.}
 }
 \description{
 Display a CIFAR-10 image.
@@ -18,5 +22,7 @@ Display a CIFAR-10 image.
 \dontrun{
 # show the image at position 27001 (it's a plane)
 show_cifar(cifar10, 27001)
+# bit easier to see it's a plane
+show_cifar(cifar10, 27001, interpolate = TRUE)
 }
 }

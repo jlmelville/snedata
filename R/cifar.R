@@ -158,14 +158,19 @@ download_cifar10 <- function(url = "https://www.cs.toronto.edu/~kriz/cifar-10-bi
 #'
 #' @param df Data frame containing the CIFAR-10 dataframe.
 #' @param n Row index of the image to display.
+#' @param interpolate If \code{TRUE}, use linear interpolation to smooth the
+#'   image. This can help when trying to confirm that you really are looking at
+#'   a tiny image of a frog.
 #' @examples
 #' \dontrun{
 #' # show the image at position 27001 (it's a plane)
 #' show_cifar(cifar10, 27001)
+#' # bit easier to see it's a plane
+#' show_cifar(cifar10, 27001, interpolate = TRUE)
 #' }
 #' @export
-show_cifar <- function(df, n) {
-  show_cifarv(as.numeric(df[n, 1:3072]))
+show_cifar <- function(df, n, interpolate = FALSE) {
+  show_cifarv(as.numeric(df[n, 1:3072]), interpolate = interpolate)
 }
 
 read_cifar_bin <- function(file, verbose = FALSE) {
@@ -201,7 +206,8 @@ read_cifar_bin <- function(file, verbose = FALSE) {
   )
 }
 
-show_cifarv <- function(v, x1 = 100, x2 = 250, y1 = 300, y2 = 450) {
+show_cifarv <- function(v, x1 = 100, x2 = 250, y1 = 300, y2 = 450,
+                        interpolate = FALSE) {
   r <- v[1:1024]
   g <- v[1025:2048]
   b <- v[2049:3072]
@@ -212,5 +218,5 @@ show_cifarv <- function(v, x1 = 100, x2 = 250, y1 = 300, y2 = 450) {
 
   graphics::plot(c(x1, x2), c(y1, y2), type = "n", xlab = "", ylab = "",
                  axes = FALSE)
-  graphics::rasterImage(t(img), x1, y1, x2, y2, interpolate = FALSE)
+  graphics::rasterImage(t(img), x1, y1, x2, y2, interpolate = interpolate)
 }
