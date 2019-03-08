@@ -168,46 +168,6 @@ show_cifar <- function(df, n) {
   show_cifarv(as.numeric(df[n, 1:3072]))
 }
 
-# read_cifar_dir <- function(dir, cleanup = TRUE, verbose = FALSE) {
-#   res <- matrix(nrow = 3072, ncol = 60000)
-#   labels <- rep(0, 60000)
-#   
-#   for (i in 1:6) {
-#     if (i != 6) {
-#       file <- paste0("data_batch_", i, ".bin")
-#     }
-#     else {
-#       file <- paste0("test_batch.bin")
-#     }
-#     path <- base::file.path(dir, "cifar-10-batches-bin", file)
-#     
-#     batch_res <- read_cifar_bin(path, verbose = verbose)
-#     batch_range <- ((i - 1) * 10000 + 1):(i * 10000)
-#     res[, batch_range] <- batch_res$images
-#     labels[batch_range] <- batch_res$labels
-#   }
-#   
-#   if (cleanup) {
-#     if (verbose) {
-#       message("Deleting ", dir)
-#     }
-#     unlink(dir, recursive = TRUE)
-#   }
-#   
-#   res <- t(res)
-#   colnames(res) <- c(
-#     paste0("r", 1:(32 * 32)),
-#     paste0("g", 1:(32 * 32)),
-#     paste0("b", 1:(32 * 32))
-#   )
-#   res <- data.frame(res, Label = as.factor(labels))
-#   description_levels <- c("airplane", "automobile", "bird", "cat", "deer", 
-#                           "dog", "frog", "horse", "ship", "truck")
-#   res$Description <- factor(description_levels[as.numeric(res$Label)],
-#                             levels = description_levels)
-#   res
-# }
-
 read_cifar_bin <- function(file, verbose = FALSE) {
   if (verbose) {
     message("Reading ", file)
