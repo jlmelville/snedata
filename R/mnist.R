@@ -161,15 +161,19 @@ parse_label_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
 # @param label_filename The label filename corresponding to the images in
 #   \code{image_filename}.
 # @param base_url URL of the resource containing the files.
+# @param label_parser Function to parse label files. Default is 
+#  parse_label_file, which works with standard idx1-ubyte files used with most 
+#  MNIST-like projects.
 # @param verbose If \code{TRUE}, generate a diagnostic message as files are
 #   downloaded.
 # @return Data frame containing images and labels.
 parse_files <- function(image_filename, label_filename, base_url = mnist_url,
+                        label_parser = parse_label_file,
                         verbose = FALSE) {
   df <- as.data.frame(parse_image_file(image_filename, base_url = base_url,
                                        verbose = verbose))
   names(df) <- paste0("px", 1:ncol(df))
-  df$Label <- factor(parse_label_file(label_filename, base_url = base_url,
+  df$Label <- factor(label_parser(label_filename, base_url = base_url,
                                       verbose = verbose))
   df
 }

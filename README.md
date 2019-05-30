@@ -9,6 +9,8 @@ methods, most obviously the very popular
 
 ## News
 
+*June 29 2019*. Added [QMNIST](https://github.com/facebookresearch/qmnist).
+
 *March 6 2019*. Added [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html).
 
 *February 23 2019*. Added [Small NORB](https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/).
@@ -39,6 +41,9 @@ faces datasets into a row-based data frame and functions to visualize them.
 [a gist by Brendan O'Connor](https://gist.github.com/brendano/39760), who 
 graciously allowed it to be MIT-licensed.
 
+* [QMNIST](https://github.com/facebookresearch/qmnist) extends the MNIST test
+dataset to 60,000 digits.
+
 * The [Fashion-MNIST](https://github.com/zalandoresearch/fashion-mnist) dataset 
 is intended as drop-in replacement for the MNIST digits database, but using 
 images of fashion items, and to be harder to perform well with machine learning
@@ -54,7 +59,7 @@ which consists of pairs of images of 50 toys from different angles and under
 different lighting conditions.
 
 * The [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset, which
-consists of 60000 32 x 32 color images in ten different classes. 
+consists of 60,000 32 x 32 color images in ten different classes. 
 
 ## Installing:
 
