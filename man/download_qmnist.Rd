@@ -3,7 +3,8 @@
 \name{download_qmnist}
 \alias{download_qmnist}
 \title{Download QMNIST}
-\format{A data frame with 785 variables:
+\format{
+A data frame with 785 variables:
 
 \describe{
 \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
@@ -22,7 +23,8 @@ remaining 60,000 are the test set, from the
 Items in the dataset can be visualized with
 \code{\link{show_mnist_digit}}.
 
-For more information see \url{https://github.com/facebookresearch/qmnist}.}
+For more information see \url{https://github.com/facebookresearch/qmnist}.
+}
 \usage{
 download_qmnist(base_url = qmnist_url, verbose = FALSE)
 }

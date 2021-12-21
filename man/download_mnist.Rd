@@ -3,7 +3,8 @@
 \name{download_mnist}
 \alias{download_mnist}
 \title{Download MNIST}
-\format{A data frame with 785 variables:
+\format{
+A data frame with 785 variables:
 
 \describe{
 \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
@@ -21,7 +22,8 @@ set, as found in the \code{train-images-idx3-ubyte.gz} file. The remaining
 Items in the dataset can be visualized with
 \code{\link{show_mnist_digit}}.
 
-For more information see \url{http://yann.lecun.com/exdb/mnist}.}
+For more information see \url{http://yann.lecun.com/exdb/mnist}.
+}
 \usage{
 download_mnist(base_url = mnist_url, verbose = FALSE)
 }

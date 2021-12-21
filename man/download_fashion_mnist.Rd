@@ -3,7 +3,8 @@
 \name{download_fashion_mnist}
 \alias{download_fashion_mnist}
 \title{Download Fashion-MNIST}
-\format{A data frame with 786 variables:
+\format{
+A data frame with 786 variables:
 
 \describe{
 \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
@@ -40,7 +41,8 @@ Items in the dataset can be visualized with the
 \code{\link{show_mnist_digit}} function.
 
 For more information see
-\url{https://github.com/zalandoresearch/fashion-mnist}.}
+\url{https://github.com/zalandoresearch/fashion-mnist}.
+}
 \usage{
 download_fashion_mnist(base_url = fashion_mnist_url, verbose = FALSE)
 }

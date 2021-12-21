@@ -3,7 +3,8 @@
 \name{download_kuzushiji_mnist}
 \alias{download_kuzushiji_mnist}
 \title{Download Kuzushiji-MNIST}
-\format{A data frame with 786 variables:
+\format{
+A data frame with 786 variables:
 
 \describe{
 \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
@@ -23,10 +24,10 @@ Items in the dataset can be visualized with the
 \code{\link{show_mnist_digit}} function.
 
 For more information see
-\url{https://github.com/rois-codh/kmnist}.}
+\url{https://github.com/rois-codh/kmnist}.
+}
 \usage{
-download_kuzushiji_mnist(base_url = kuzushiji_mnist_url,
-  verbose = FALSE)
+download_kuzushiji_mnist(base_url = kuzushiji_mnist_url, verbose = FALSE)
 }
 \arguments{
 \item{base_url}{Base URL that the files are located at.}

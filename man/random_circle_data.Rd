@@ -29,20 +29,24 @@ df <- random_circle_data(n = 50)
 \url{http://distill.pub/2016/misread-tsne/}
 }
 \seealso{
-Other distill functions: \code{\link{circle_data}},
-  \code{\link{cube_data}}, \code{\link{gaussian_data}},
-  \code{\link{grid_data}}, \code{\link{link_data}},
-  \code{\link{long_cluster_data}},
-  \code{\link{long_gaussian_data}},
-  \code{\link{ortho_curve}},
-  \code{\link{random_circle_cluster_data}},
-  \code{\link{random_jump}}, \code{\link{random_walk}},
-  \code{\link{simplex_data}},
-  \code{\link{subset_clusters_data}},
-  \code{\link{three_clusters_data}},
-  \code{\link{trefoil_data}},
-  \code{\link{two_clusters_data}},
-  \code{\link{two_different_clusters_data}},
-  \code{\link{unlink_data}}
+Other distill functions: 
+\code{\link{circle_data}()},
+\code{\link{cube_data}()},
+\code{\link{gaussian_data}()},
+\code{\link{grid_data}()},
+\code{\link{link_data}()},
+\code{\link{long_cluster_data}()},
+\code{\link{long_gaussian_data}()},
+\code{\link{ortho_curve}()},
+\code{\link{random_circle_cluster_data}()},
+\code{\link{random_jump}()},
+\code{\link{random_walk}()},
+\code{\link{simplex_data}()},
+\code{\link{subset_clusters_data}()},
+\code{\link{three_clusters_data}()},
+\code{\link{trefoil_data}()},
+\code{\link{two_clusters_data}()},
+\code{\link{two_different_clusters_data}()},
+\code{\link{unlink_data}()}
 }
 \concept{distill functions}

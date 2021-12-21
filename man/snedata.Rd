@@ -3,12 +3,11 @@
 \docType{package}
 \name{snedata}
 \alias{snedata}
-\alias{snedata-package}
 \title{snedata: Dataset functions for Stochastic Neighbor Embedding and related
 dimensionality reduction methods.}
 \description{
-snedata: Dataset functions for Stochastic Neighbor Embedding and related
-dimensionality reduction methods.
+Functions to download or generate some datasets commonly used for
+benchmarking various dimensionality reduction methods.
 }
 \note{
 The faces datasets originate from Saul Roweis' dataset web page:

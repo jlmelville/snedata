@@ -4,8 +4,14 @@
 \alias{show_norb_object}
 \title{Visualize NORB object.}
 \usage{
-show_norb_object(df, category = 0, instance = 0, elevation = 0,
-  azimuth = 0, lighting = 0)
+show_norb_object(
+  df,
+  category = 0,
+  instance = 0,
+  elevation = 0,
+  azimuth = 0,
+  lighting = 0
+)
 }
 \arguments{
 \item{df}{Data frame containing NORB objects.}

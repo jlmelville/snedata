@@ -3,7 +3,8 @@
 \name{download_cifar10}
 \alias{download_cifar10}
 \title{Download CIFAR-10}
-\format{A data frame with 3074 variables:
+\format{
+A data frame with 3074 variables:
 
 \describe{
 \item{\code{r1}, \code{r2}, \code{r3} ... \code{r1024}}{Integer pixel value
@@ -41,11 +42,15 @@ Items in the dataset can be visualized with the
 \code{\link{show_cifar}} function.
 
 For more information see
-\url{https://www.cs.toronto.edu/~kriz/cifar.html}.}
+\url{https://www.cs.toronto.edu/~kriz/cifar.html}.
+}
 \usage{
-
-  download_cifar10(url = "https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz",
-  destfile = tempfile(), cleanup = TRUE, verbose = FALSE)
+download_cifar10(
+  url = "https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz",
+  destfile = tempfile(),
+  cleanup = TRUE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{url}{URL of the CIFAR-10 data.}

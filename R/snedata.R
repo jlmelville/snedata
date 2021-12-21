@@ -1,5 +1,8 @@
 #' snedata: Dataset functions for Stochastic Neighbor Embedding and related
 #' dimensionality reduction methods.
+#' 
+#' Functions to download or generate some datasets commonly used for
+#' benchmarking various dimensionality reduction methods.
 #'
 #' @section Simulation functions:
 #' Very simple datasets for characterizing the behavior of various embedding

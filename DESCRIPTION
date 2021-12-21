@@ -18,6 +18,5 @@ License: MIT + file LICENSE
 Suggests:
     RnavGraphImageData,
     testthat
-LazyData: TRUE
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8

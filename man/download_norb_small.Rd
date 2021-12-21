@@ -3,7 +3,8 @@
 \name{download_norb_small}
 \alias{download_norb_small}
 \title{Download Small NORB}
-\format{A data frame with 18,439 variables:
+\format{
+A data frame with 18,439 variables:
 
 \describe{
 \item{\code{c0px1}, \code{c0px2}, \code{c0px3} ... \code{c0px9216}}{Integer 
@@ -48,11 +49,13 @@ Items in the dataset can be visualized with the
 \code{\link{show_norb_object}} function.
 
 For more information see
-\url{https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/}.}
+\url{https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/}.
+}
 \usage{
-
-  download_norb_small(base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
-  verbose = FALSE)
+download_norb_small(
+  base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
+  verbose = FALSE
+)
 }
 \arguments{
 \item{base_url}{Base URL that the files are located at.}

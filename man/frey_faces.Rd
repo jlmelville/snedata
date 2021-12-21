@@ -3,7 +3,9 @@
 \name{frey_faces}
 \alias{frey_faces}
 \title{Frey Faces dataset}
-\format{A data frame with 1965 rows and 561 variables.}
+\format{
+A data frame with 1965 rows and 561 variables.
+}
 \usage{
 frey_faces()
 }

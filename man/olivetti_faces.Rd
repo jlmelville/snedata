@@ -3,7 +3,9 @@
 \name{olivetti_faces}
 \alias{olivetti_faces}
 \title{Olivetti Faces dataset}
-\format{A data frame with 400 rows and 4097 variables.}
+\format{
+A data frame with 400 rows and 4097 variables.
+}
 \usage{
 olivetti_faces()
 }
