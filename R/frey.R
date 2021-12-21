@@ -18,14 +18,16 @@
 #' rainbow scale.
 #' }
 #'
-#' @note requires the \code{RnavGraphImageData} package.
-#' \url{https://cran.r-project.org/package=RnavGraphImageData}
-#' to be installed and loaded.
-#' @return the Frey Faces dataset as a dataframe.
+#' @note Requires the 
+#' \href{https://cran.r-project.org/package=RnavGraphImageData}{RnavGraphImageData}
+#' package to be installed and loaded.
+#' @return The Frey Faces dataset as a dataframe.
 #' @format A data frame with 1965 rows and 561 variables.
 #' @seealso
-#' Saul Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.
-#' Each row can be visualized as an image using \code{\link{show_frey_face}}.
+#' \itemize{
+#' \item{Saul Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.}
+#' \item{Each row can be visualized as an image using \code{\link{show_frey_face}}.}
+#' }
 #' @export
 #' @examples
 #' \dontrun{
@@ -35,10 +37,7 @@
 #' plot(frey_pca$x, col = frey$color, pch = 16, cex = 0.75)
 #' }
 frey_faces <- function() {
-  if (!requireNamespace("RnavGraphImageData", quietly = TRUE,
-                        warn.conflicts = FALSE)) {
-    stop("frey_faces function requires 'RnavGraphImageData' package")
-  }
+  stop_if_not_installed("RnavGraphImageData")
   frey <- NULL
   utils::data("frey", envir = environment())
 

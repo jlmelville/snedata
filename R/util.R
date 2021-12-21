@@ -108,3 +108,10 @@ merge_by_row <- function(x, y) {
 
   z
 }
+
+stop_if_not_installed <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE,
+                        warn.conflicts = FALSE)) {
+    stop("Please install the '", pkg, "' package")
+  }
+}

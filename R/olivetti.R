@@ -19,21 +19,19 @@
 #' the index of the face, and \code{<pose>} is the index of the pose, e.g.
 #' the row with name \code{20_10} is the tenth pose of the twentieth face.
 #'
-#' @note requires the \code{RnavGraphImageData} package.
-#' \url{https://cran.r-project.org/package=RnavGraphImageData}
-#' to be installed and loaded.
-#' @return the Olivetti Faces dataset as a dataframe.
+#' @note Requires the 
+#' \href{https://cran.r-project.org/package=RnavGraphImageData}{RnavGraphImageData}
+#' package to be installed and loaded.
+#' @return The Olivetti Faces dataset as a dataframe.
 #' @format A data frame with 400 rows and 4097 variables.
 #' @seealso
-#' Saul Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.
-#' Each row can be visualized as an image using
-#' \code{\link{show_olivetti_face}}.
+#' \itemize{
+#' \item{Saul Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.}
+#' \item{Each row can be visualized as an image using \code{\link{show_olivetti_face}}.}
+#' }
 #' @export
 olivetti_faces <- function() {
-  if (!requireNamespace("RnavGraphImageData", quietly = TRUE,
-                        warn.conflicts = FALSE)) {
-    stop("olivetti_faces function requires 'RnavGraphImageData' package")
-  }
+  stop_if_not_installed("RnavGraphImageData")
   faces <- NULL
   utils::data("faces", envir = environment())
 
