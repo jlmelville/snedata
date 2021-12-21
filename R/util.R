@@ -109,6 +109,19 @@ merge_by_row <- function(x, y) {
   z
 }
 
+# Get the URL for the raw data version of a file on github
+# e.g.
+# https://raw.githubusercontent.com/PAIR-code/understanding-umap/master/raw_data/mammoth_3d.json
+# becomes
+# https://github.com/PAIR-code/understanding-umap/blob/master/raw_data/mammoth_3d.json
+gh_raw <- function(repo, filename, branch = "master") {
+  paste("https://raw.githubusercontent.com",
+        repo,
+        branch,
+        filename,
+        sep = "/")
+}
+
 stop_if_not_installed <- function(pkg) {
   if (!requireNamespace(pkg, quietly = TRUE,
                         warn.conflicts = FALSE)) {

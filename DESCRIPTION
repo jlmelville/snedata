@@ -17,6 +17,7 @@ Description: Some simple simulation datasets used in Stochastic Neighbor
 License: MIT + file LICENSE
 Suggests:
     RnavGraphImageData,
+    rjson,
     testthat
 RoxygenNote: 7.1.2
 Encoding: UTF-8

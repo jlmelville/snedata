@@ -9,6 +9,8 @@ methods, most obviously the very popular
 
 ## News
 
+*December 21 2021*. Added the mammoth datasets from [Understanding UMAP](https://pair-code.github.io/understanding-umap/).
+
 *June 29 2019*. Added [QMNIST](https://github.com/facebookresearch/qmnist).
 
 *March 6 2019*. Added [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html).
@@ -59,7 +61,13 @@ which consists of pairs of images of 50 toys from different angles and under
 different lighting conditions.
 
 * The [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset, which
-consists of 60,000 32 x 32 color images in ten different classes. 
+consists of 60,000 32 x 32 color images in ten different classes.
+
+* A 3D point cloud of a [mammoth at the
+Smithsonian](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12),
+from [Understanding UMAP](https://pair-code.github.io/understanding-umap/),
+based on work originally done by [Max
+Noichl](https://github.com/MNoichl/UMAP-examples-mammoth-).
 
 ## Installing:
 
