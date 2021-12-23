@@ -10,7 +10,7 @@ Functions to download or generate some datasets commonly used for
 benchmarking various dimensionality reduction methods.
 }
 \note{
-The faces datasets originate from Saul Roweis' dataset web page:
+The faces datasets originate from Sam Roweis' dataset web page:
 \url{http://www.cs.nyu.edu/~roweis/data.html}.
 
 Code to download and visualize the MNIST digits and fashions datasets

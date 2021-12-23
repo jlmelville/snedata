@@ -47,7 +47,7 @@ plot(frey_pca$x, col = frey$color, pch = 16, cex = 0.75)
 }
 \seealso{
 \itemize{
-\item{Saul Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.}
+\item{Sam Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.}
 \item{Each row can be visualized as an image using \code{\link{show_frey_face}}.}
 }
 }

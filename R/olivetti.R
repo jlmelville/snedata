@@ -26,7 +26,7 @@
 #' @format A data frame with 400 rows and 4097 variables.
 #' @seealso
 #' \itemize{
-#' \item{Saul Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.}
+#' \item{Sam Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.}
 #' \item{Each row can be visualized as an image using \code{\link{show_olivetti_face}}.}
 #' }
 #' @export
