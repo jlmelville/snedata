@@ -251,3 +251,32 @@ s_curve_hole <- function(n_samples = 100, noise = 0.0) {
   rownames(scurve) <- NULL
   scurve
 }
+
+#' 2D Curve Dataset.
+#'
+#' Simulation data of a 2D polynomial curve.
+#'
+#' This data set is used to assess the behavior of the PaCMAP method of Wang and
+#' co-workers (2021) and some related dimensionality reduction methods,
+#' specifically the effect of initialization on what should be an "easy" dataset
+#' to embed.
+#'  
+#' Points are colored based on their distance along the curve.
+#' 
+#' @return Data frame with 1450 rows, and 3 columns: \code{x}, \code{y} columns
+#'   contain the coordinates of the points and \code{color} the RGB color.
+#' @references
+#' Wang, Y., Huang, H., Rudin, C., & Shaposhnik, Y. (2021). 
+#' Understanding how dimension reduction tools work: an empirical approach to 
+#' deciphering t-SNE, UMAP, TriMAP, and PaCMAP for data visualization. 
+#' \emph{J Mach. Learn. Res}, \emph{22}, 1-73.
+#' @seealso the \href{https://github.com/YingfanWang/PaCMAP}{PaCMAP homepage}.
+#' @export
+curve2d <- function() {
+  x <- seq(from = -5.5, to = 9, by = 0.01)
+  # don't include value at 9 to be consistent with numpy arange
+  x <- x[-length(x)]
+  y <-  0.01 * (x + 5) * (x + 2) * (x - 2) * (x - 6) * (x - 8)
+  y <- y + stats::rnorm(n = length(x)) * 0.01
+  data.frame(x, y, color = linear_color_map(x), stringsAsFactors = FALSE)
+}

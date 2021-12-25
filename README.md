@@ -9,8 +9,8 @@ methods, most obviously the very popular
 
 ## News
 
-*December 24 2021*. Added the S-curve with a hole dataset used in the
-[PaCMAP](https://arxiv.org/abs/2012.04456) paper.
+*December 24 2021*. Added the S-curve with a hole and 2D curve datasets used in
+the [PaCMAP](https://arxiv.org/abs/2012.04456) paper.
 
 *December 21 2021*. Added the mammoth datasets from [Understanding UMAP](https://pair-code.github.io/understanding-umap/).
 
@@ -21,7 +21,6 @@ methods, most obviously the very popular
 *February 23 2019*. Added [Small NORB](https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/).
 
 *December 14 2018*. Added [Kuzushiji-MNIST](https://github.com/rois-codh/kmnist).
-
 
 ## Datasets
 
@@ -77,6 +76,7 @@ method](https://arxiv.org/abs/2012.04456) (see also the [github
 repo](https://github.com/YingfanWang/PaCMAP)). Bonus: a translation from Python
 of the [sklearn.datasets.make_s_curve
 function](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html).
+Also: a simple 2D curve dataset, useful for testing initialization strategies.
 
 ## Installing:
 

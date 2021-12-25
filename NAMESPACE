@@ -3,6 +3,7 @@
 export(ball)
 export(circle_data)
 export(cube_data)
+export(curve2d)
 export(download_cifar10)
 export(download_fashion_mnist)
 export(download_kuzushiji_mnist)
