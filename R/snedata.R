@@ -90,7 +90,7 @@
 #' The faces datasets originate from Sam Roweis' dataset web page:
 #' \url{http://www.cs.nyu.edu/~roweis/data.html}.
 #'
-#' Code to download and visualize the MNIST digits and fashions datasets
+#' Code to download and visualize the MNIST digits and fashion datasets
 #' originates from a gist by Brendan O'Connor:
 #' \url{https://gist.github.com/brendano/39760}.
 #'

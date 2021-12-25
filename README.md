@@ -2,12 +2,15 @@
 
 SNE Dataset Functions for R
 
-This package provides functions for generating simple simulation datasets 
-for use in Stochastic Neighbor Embedding and related dimensionality reduction
+This package provides functions for generating simple simulation datasets for
+use in Stochastic Neighbor Embedding and related dimensionality reduction
 methods, most obviously the very popular
 [t-SNE](https://lvdmaaten.github.io/tsne/).
 
 ## News
+
+*December 24 2021*. Added the S-curve with a hole dataset used in the
+[PaCMAP](https://arxiv.org/abs/2012.04456) paper.
 
 *December 21 2021*. Added the mammoth datasets from [Understanding UMAP](https://pair-code.github.io/understanding-umap/).
 
@@ -68,6 +71,12 @@ Smithsonian](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd
 from [Understanding UMAP](https://pair-code.github.io/understanding-umap/),
 based on work originally done by [Max
 Noichl](https://github.com/MNoichl/UMAP-examples-mammoth-).
+
+* A 3D S-curve with a hole data set, used to validate the [PaCMAP
+method](https://arxiv.org/abs/2012.04456) (see also the [github
+repo](https://github.com/YingfanWang/PaCMAP)). Bonus: a translation from Python
+of the [sklearn.datasets.make_s_curve
+function](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html).
 
 ## Installing:
 

@@ -176,3 +176,78 @@ swiss_roll <- function(n = 1000, min_phi = 1.5 * pi, max_phi = 4.5 * pi,
 
   data.frame(x, y, z, color = linear_color_map(phi), stringsAsFactors = FALSE)
 }
+
+
+#' S-curve data set.
+#'
+#' Simulation data randomly sampled from an S-shaped curve. Translated from the
+#' \href{https://scikit-learn.org/stable/index.html}{scikit-learn} Pythom 
+#' function \code{sklearn.datasets.make_s_curve}.
+#'
+#' Creates a series of points sampled from an S-shaped curve in 3D, with
+#' optional normally-distributed noise. The S shape is oriented such that you
+#' should be able to see it if you plot the X and Z columns.
+#' 
+#' Points are colored based on their distance along the curve.
+#' 
+#' @param n_samples The number of points to create.
+#' @param noise Add random noise normally-distributed with mean 0 and standard 
+#'   deviation \code{noise}.
+#' @return Data frame with \code{x}, \code{y}, \code{z} columns containing the
+#'  coordinates of the points and \code{color} the RGB color.
+#' @references
+#' Buitinck, L., Louppe, G., Blondel, M., Pedregosa, F., Mueller, A., 
+#' Grisel, O., ... & Varoquaux, G. (2013). 
+#' API design for machine learning software: experiences from the scikit-learn 
+#' project. 
+#' \emph{arXiv preprint} \emph{arXiv:1309.0238}.
+#' @export
+s_curve <- function(n_samples = 100, noise = 0.0) {
+  tt <- 3 * pi * stats::runif(n = n_samples, min = -0.5, max = 0.5)
+  x <- sin(tt)
+  y <- 2.0 * stats::runif(n = n_samples)
+  z <- sign(tt) * (cos(tt) - 1)
+  X <- cbind(x, y, z)
+  X <- X + noise * stats::rnorm(n_samples * 3)
+  
+  data.frame(X, color = linear_color_map(tt), stringsAsFactors = FALSE)
+}
+
+#' S-curve with a hole data set.
+#'
+#' Simulation data randomly sampled from an S-shaped curve with a hole.
+#'
+#' Creates a series of points sampled from an S-shaped curve in 3D, with
+#' optional normally-distributed noise. The S shape is oriented such that you
+#' should be able to see it if you plot the X and Z columns. There is a circular
+#' hole in the middle of the curve, centered at Y = 0.
+#'  
+#' Points are colored based on their distance along the curve.
+#' 
+#' This data set is based on \code{\link{s_curve}} is used to assess the
+#' behavior of the PaCMAP method of Wang and co-workers (2021).
+#' 
+#' @param n_samples The number of points to create making up the S-shaped curve.
+#'   Fewer than \code{n_samples} points will be returned because some are
+#'   removed to make the hole.
+#' @param noise Add random noise normally-distributed with mean 0 and standard
+#'   deviation \code{noise}.
+#' @return Data frame with \code{x}, \code{y}, \code{z} columns containing the
+#'   coordinates of the points and \code{color} the RGB color.
+#' @references
+#' Wang, Y., Huang, H., Rudin, C., & Shaposhnik, Y. (2021). 
+#' Understanding how dimension reduction tools work: an empirical approach to 
+#' deciphering t-SNE, UMAP, TriMAP, and PaCMAP for data visualization. 
+#' \emph{J Mach. Learn. Res}, \emph{22}, 1-73.
+#' @seealso the \href{https://github.com/YingfanWang/PaCMAP}{PaCMAP homepage}.
+#' @export
+s_curve_hole <- function(n_samples = 100, noise = 0.0) {
+  scurve <- s_curve(n_samples = n_samples, noise = noise)
+  X <- scurve[, 1:3]
+
+  anchor <- c(0, 1, 0)
+  indices <- rowSums((sweep(X, 2, anchor, `-`)) ^ 2) > 0.3
+  scurve <- scurve[indices, ]
+  rownames(scurve) <- NULL
+  scurve
+}
