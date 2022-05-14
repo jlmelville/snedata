@@ -9,6 +9,10 @@ methods, most obviously the very popular
 
 ## News
 
+*14 May 2022* Added the `taspheres` function to generate the "spheres" dataset
+of high dimensional spheres nested inside a larger sphere, as used in the 
+[Topological Autoencoders](https://arxiv.org/abs/1906.00722) paper.
+
 *December 24 2021*. Added the S-curve with a hole and 2D curve datasets used in
 the [PaCMAP](https://arxiv.org/abs/2012.04456) paper.
 

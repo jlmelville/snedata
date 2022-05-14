@@ -280,3 +280,74 @@ curve2d <- function() {
   y <- y + stats::rnorm(n = length(x)) * 0.01
   data.frame(x, y, color = linear_color_map(x), stringsAsFactors = FALSE)
 }
+
+# A matrix of `n` points randomly sampled from a `d`-sphere of radius `r`. 
+# The matrix has `d + 1` columns because a `d`-sphere is embedded in a `d+1`
+# Euclidean space.
+# Based on the `dsphere` Python function from 
+# <https://github.com/BorgwardtLab/topological-autoencoders>
+dsphere <- function(n = 100, d = 2, r = 1) {
+  nc <- d + 1
+  m <- matrix(stats::rnorm(n = n * nc), nrow = n, ncol = nc)
+  r * m / sqrt(rowSums(m * m))
+}
+
+#' High Dimensional Spheres Dataset
+#' 
+#' Creates a dataframe consisting of samples from the d-spheres of radius
+#' \code{r} enclosed within a larger d-sphere of radius \code{5 * r}.
+#' 
+#' This dataset was used by Moor and co-workers in their "Topological
+#' Autoencoders" paper and this function is based on the Python code in the 
+#' github repo for the paper.
+#' 
+#' @param n_samples Number of points to sample from each of the \code{n_spheres}
+#'   d-spheres. The larger d-sphere has \code{10 * n_samples} points.
+#' @param d The dimensionality of each sphere. The returned dataframe will have
+#'   the \code{d + 1} dimensions of the Euclidean space in which the sphere is 
+#'   embedded.
+#' @param n_spheres Number of spheres to return. There will be 
+#'   \code{n_spheres - 1} small spheres and 1 larger sphere.
+#' @param r The radius of each of the smaller spheres. The larger sphere has 
+#'   radius \code{5 * r}. 
+#' @return Data frame with \code{d + 1} numerical columns containing the
+#'   coordinates of the d-spheres and a \code{"label"} factor column giving the
+#'   identity of each d-sphere: levels \code{0 .. n_spheres - 2} are the smaller
+#'   d-spheres. Level \code{n_spheres - 1} is the label for the big d-sphere.
+#' @references
+#' Moor, M., Horn, M., Rieck, B., & Borgwardt, K. (2020).
+#' Topological Autoencoders.
+#' In \emph{Proceedings of the 37th International Conference on Machine Learning (ICML)}
+#' (pp. 7045–7054). PMLR.
+#' 
+#' \url{https://michaelmoor.ml/blog/topoae/main/}
+#' 
+#' \url{https://github.com/BorgwardtLab/topological-autoencoders}
+#' 
+#' @export
+taspheres <- function(n_samples = 500, d = 100, n_spheres = 11, r = 5) {
+  norm_scale <- 10 / sqrt(d)
+  d1 <- d + 1
+
+  # Create n_spheres - 1 smaller spheres each translated by a small amount
+  # (that's what the sweep part is doing)
+  small_spheres <-
+    replicate(n_spheres - 1,
+      sweep(
+        dsphere(n = n_samples, d = d, r = r), 2,
+        stats::rnorm(n = d1, sd = norm_scale), `+`
+      ),
+      simplify = FALSE
+    )
+
+  # The larger encompassing sphere
+  n_big_samples <- 10 * n_samples
+  big_sphere <- dsphere(n = n_big_samples, d = d, r = r * 5)
+
+  x <- rbind(do.call(rbind, small_spheres), big_sphere)
+  labels <- factor(c(
+    rep(0:(n_spheres - 2), each = n_samples),
+    rep.int(n_spheres - 1, n_big_samples)
+  ))
+  data.frame(x, labels)
+}
