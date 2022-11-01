@@ -272,21 +272,31 @@ three_clusters_data <- function(n, dim = 50) {
 #'
 #' Creates a dataset consisting of two gaussians with the same center, but
 #' with the first cluster having a standard deviation of 1, and the second
-#' having a standard deviation of 50. Points are colored depending on which
-#' cluster they belong to.
+#' having a standard deviation of \code{big_sdev} (default 50). Points are 
+#' colored depending on which cluster they belong to (small cluster is dark 
+#' powder blue, large is light orange).
 #'
 #' @param n Number of points per gaussian.
 #' @param dim Dimension of the gaussians.
+#' @param big_sdev Standard deviation of the bigger cluster, default 50. The
+#' smaller cluster has a standard deviation of 1.
 #' @return Data frame with coordinates in the \code{X1}, \code{X2} ...
 #'  \code{Xdim} columns, and color in the \code{color} column.
 #' @examples
 #' df <- subset_clusters_data(n = 50, dim = 2)
+#' 
+#' # 10D example where the big cluster is only twice the standard deviation of
+#' # the small cluster
+#' df <- subset_clusters_data(n = 50, dim = 10, big_sdev = 2)
 #' @family distill functions
 #' @references \url{http://distill.pub/2016/misread-tsne/}
 #' @export
-subset_clusters_data <- function(n, dim = 2) {
+subset_clusters_data <- function(n, dim = 2, big_sdev = 50) {
+  if (!is.numeric(big_sdev) || length(big_sdev) != 1 || big_sdev <= 0) {
+    stop("big_sdev should be a scalar positive value")
+  }
   cluster1 <- gaussian_data(n = n, dim = dim, color = '#003399')
-  cluster2 <- gaussian_data(n = n, dim = dim, sd = 50, color = '#FF9900')
+  cluster2 <- gaussian_data(n = n, dim = dim, sd = big_sdev, color = '#FF9900')
   rbind(cluster1, cluster2)
 }
 

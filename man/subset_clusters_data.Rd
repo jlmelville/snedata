@@ -4,12 +4,15 @@
 \alias{subset_clusters_data}
 \title{Subset Cluster Data}
 \usage{
-subset_clusters_data(n, dim = 2)
+subset_clusters_data(n, dim = 2, big_sdev = 50)
 }
 \arguments{
 \item{n}{Number of points per gaussian.}
 
 \item{dim}{Dimension of the gaussians.}
+
+\item{big_sdev}{Standard deviation of the bigger cluster, default 50. The
+smaller cluster has a standard deviation of 1.}
 }
 \value{
 Data frame with coordinates in the \code{X1}, \code{X2} ...
@@ -22,11 +25,16 @@ Effectively".
 \details{
 Creates a dataset consisting of two gaussians with the same center, but
 with the first cluster having a standard deviation of 1, and the second
-having a standard deviation of 50. Points are colored depending on which
-cluster they belong to.
+having a standard deviation of \code{big_sdev} (default 50). Points are 
+colored depending on which cluster they belong to (small cluster is dark 
+powder blue, large is light orange).
 }
 \examples{
 df <- subset_clusters_data(n = 50, dim = 2)
+
+# 10D example where the big cluster is only twice the standard deviation of
+# the small cluster
+df <- subset_clusters_data(n = 50, dim = 10, big_sdev = 2)
 }
 \references{
 \url{http://distill.pub/2016/misread-tsne/}
