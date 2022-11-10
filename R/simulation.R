@@ -33,13 +33,16 @@ sphere <- function(n = 1000) {
 
 #' Ball Data Set
 #'
-#' Simulation data randomly sampled from the entire volume of a 3D sphere.
+#' Simulation data randomly sampled from the entire volume of a ball of the
+#' specified dimension (by default, 3-dimensional).
 #'
-#' Creates a series of points sampled from a 3D spherical volume. Points are
-#' colored based on the square of their distance from the origin.
+#' Creates a series of points sampled from an \code{ndim}-dimensional spherical 
+#' volume. Points are colored based on the square of their distance from the 
+#' origin.
 #'
 #' @param n Number of points to create.
 #' @param rad Radius of the ball.
+#' @param ndim Dimension of the ball.
 #' @return Data frame with \code{x}, \code{y}, \code{z} columns containing the
 #'  coordinates of the points and \code{color} the RGB color.
 #' @references
@@ -49,13 +52,21 @@ sphere <- function(n = 1000) {
 #' dimensionality while preserving both local and global structure.
 #' \emph{Neurocomputing}, \emph{169}, 246-261.
 #' @export
-ball <- function(n = 1000, rad = 1) {
+ball <- function(n = 1000, rad = 1, ndim = 3) {
   # from http://math.stackexchange.com/questions/87230/picking-random-points-in-the-volume-of-sphere-with-uniform-probability
+  # and https://stats.stackexchange.com/a/481716
   u <- stats::runif(n)
-  xyz <- matrix(stats::rnorm(3 * n), nrow = n,
-                dimnames = list(NULL, c("x", "y", "z")))
-
-  df <- data.frame((xyz * rad * u ^ (1 / 3)) / sqrt(rowSums(xyz ^ 2)))
+  
+  if (ndim == 3) {
+    # this to maintain backwards compatibility from when this function only
+    # supported a 3D ball
+    dnames <- list(NULL, c("x", "y", "z"))
+  }
+  else {
+    dnames <- NULL
+  }
+  z <- matrix(stats::rnorm(ndim * n), nrow = n, dimnames = dnames)
+  df <- data.frame((z * rad * u ^ (1 / ndim)) / sqrt(rowSums(z ^ 2)))
   dist2 <- rowSums(df ^ 2)
   df$color <- linear_color_map(dist2)
   df

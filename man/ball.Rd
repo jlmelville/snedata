@@ -4,23 +4,27 @@
 \alias{ball}
 \title{Ball Data Set}
 \usage{
-ball(n = 1000, rad = 1)
+ball(n = 1000, rad = 1, ndim = 3)
 }
 \arguments{
 \item{n}{Number of points to create.}
 
 \item{rad}{Radius of the ball.}
+
+\item{ndim}{Dimension of the ball.}
 }
 \value{
 Data frame with \code{x}, \code{y}, \code{z} columns containing the
  coordinates of the points and \code{color} the RGB color.
 }
 \description{
-Simulation data randomly sampled from the entire volume of a 3D sphere.
+Simulation data randomly sampled from the entire volume of a ball of the
+specified dimension (by default, 3-dimensional).
 }
 \details{
-Creates a series of points sampled from a 3D spherical volume. Points are
-colored based on the square of their distance from the origin.
+Creates a series of points sampled from an \code{ndim}-dimensional spherical 
+volume. Points are colored based on the square of their distance from the 
+origin.
 }
 \references{
 A dataset like this was used in:
