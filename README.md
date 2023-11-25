@@ -190,6 +190,7 @@ show_norb_object(norb, category = 2, instance = 6, elevation = 6, azimuth = 24, 
 
 ## See also
 
+* The [mlbench](https://cran.r-project.org/package=mlbench) package.
 * I maintain a similar [R package](https://github.com/jlmelville/coil20) (under 
 a different license) for downloading the 
 [COIL-20](http://www.cs.columbia.edu/CAVE/software/softlib/coil-20.php) and
