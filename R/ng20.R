@@ -6,21 +6,25 @@
 #'
 #' To do any analysis on this text, you will want to use tools from packages
 #' such as \href{https://cran.r-project.org/package=tm}{tm} and
-#' \href{https://cran.r-project.org/package=tidytext}{tidytext}.
+#' \href{https://cran.r-project.org/package=tidytext}{tidytext}. The files
+#' are read as \code{latin1} encoding, but there can still be some odd control
+#' codes in some of the messages.
 #'
 #' @format A data frame with 5 variables:
 #'
 #' \describe{
-#' \item{\code{Id}}{The integer identifier of the document, from the filename of
-#' the downloaded data.}
+#' \item{\code{Id}}{A unique identifier for the document, consisting of the
+#'  subset concatenated with the position in the subset, e.g. \code{train_1}.}
+#' \item{\code{FileId}}{The integer identifier of the document, from the
+#'  filename of the downloaded data. Be aware that these are \emph{not} unique.}
 #' \item{\code{Text}}{The full text of the message including any header, footer,
-#' and quotes. Newlines are preserved.}
+#'  and quotes. Newlines are preserved.}
 #' \item{\code{Subset}}{A factor with two levels: \code{train} and \code{test},
-#' indicating whether the document is from the training or test subset.}
+#'  indicating whether the document is from the training or test subset.}
 #' \item{\code{Label}}{The newsgroup represented by an integer id, in the range
 #'  0-19.}
-#' \item{\code{Newsgroup}}{A factor with 20 levels, indicating the newsgroup that the
-#'  document belongs to.}
+#' \item{\code{Newsgroup}}{A factor with 20 levels, indicating the newsgroup
+#'  that the document belongs to.}
 #' }
 #'
 #' The labels correspond to:
@@ -49,7 +53,7 @@
 #'
 #' and are also present as the \code{Newsgroup} factor.
 #'
-#' There are 11,314 items in the \code{train} dataset and 7532 items in the
+#' There are 11,314 items in the \code{train} dataset and 7,532 items in the
 #' \code{test} for a total of 18,846 items if you choose \code{subset = "all"}.
 #' @param subset A string specifying which subset of the dataset to download and
 #'   process. Acceptable values are \code{"train"} for the training set,
@@ -155,7 +159,7 @@ read_newsgroup_directory <- function(directory_path) {
   }
 
   data.frame(
-    Id = ids,
+    FileId = ids,
     Text = texts,
     Newsgroup = factor(newsgroup_name, levels = unique(newsgroup_name))
   )
@@ -202,8 +206,17 @@ read_newsgroups_data <-
       combined_data <- read_newsgroups_subset(root_dir, subset, verbose)
       combined_data$Subset <- factor(subset, levels = subset_levels)
     }
-    combined_data$Label <- factor((as.integer(combined_data$Newsgroup) - 1))
-    combined_data <- combined_data[, c("Id", "Text", "Subset", "Label", "Newsgroup")]
+    combined_data$Label <-
+      factor((as.integer(combined_data$Newsgroup) - 1))
+    combined_data$Id <-
+      paste0(
+        combined_data$Subset,
+        "_",
+        ave(seq_along(combined_data$Subset), combined_data$Subset, FUN = seq_along)
+      )
+
+    combined_data <-
+      combined_data[, c("Id", "FileId", "Text", "Subset", "Label", "Newsgroup")]
     combined_data
   }
 

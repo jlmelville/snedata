@@ -7,16 +7,18 @@
 A data frame with 5 variables:
 
 \describe{
-\item{\code{Id}}{The integer identifier of the document, from the filename of
-the downloaded data.}
+\item{\code{Id}}{A unique identifier for the document, consisting of the 
+ subset concatenated with the position in the subset, e.g. \code{train_1}.}
+\item{\code{FileId}}{The integer identifier of the document, from the 
+ filename of the downloaded data. Be aware that these are \emph{not} unique.}
 \item{\code{Text}}{The full text of the message including any header, footer,
-and quotes.}
+ and quotes. Newlines are preserved.}
 \item{\code{Subset}}{A factor with two levels: \code{train} and \code{test},
-indicating whether the document is from the training or test subset.}
+ indicating whether the document is from the training or test subset.}
 \item{\code{Label}}{The newsgroup represented by an integer id, in the range
  0-19.}
-\item{\code{Newsgroup}}{A factor with 20 levels, indicating the newsgroup that the
- document belongs to.}
+\item{\code{Newsgroup}}{A factor with 20 levels, indicating the newsgroup 
+ that the document belongs to.}
 }
 
 The labels correspond to:
@@ -45,7 +47,7 @@ The labels correspond to:
 
 and are also present as the \code{Newsgroup} factor.
 
-There are 11,314 items in the \code{train} dataset and 7532 items in the
+There are 11,314 items in the \code{train} dataset and 7,532 items in the
 \code{test} for a total of 18,846 items if you choose \code{subset = "all"}.
 }
 \usage{
@@ -85,7 +87,9 @@ approximately balanced.
 \details{
 To do any analysis on this text, you will want to use tools from packages
 such as \href{https://cran.r-project.org/package=tm}{tm} and
-\href{https://cran.r-project.org/package=tidytext}{tidytext}.
+\href{https://cran.r-project.org/package=tidytext}{tidytext}. The files
+are read as \code{latin1} encoding, but there can still be some odd control
+codes in some of the messages.
 }
 \examples{
 \dontrun{
