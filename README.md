@@ -9,7 +9,12 @@ methods, most obviously the very popular
 
 ## News
 
-*14 May 2022* Added the `taspheres` function to generate the "spheres" dataset
+*November 25 2023* Added the [20 Newsgroups](http://qwone.com/~jason/20Newsgroups/)
+text dataset. You'll need to look at packages like [tm](https://cran.r-project.org/package=tm)
+or [tidytext](https://cran.r-project.org/package=tidytext) to process this into 
+a form suitable for embedding.
+
+*May 14 2022* Added the `taspheres` function to generate the "spheres" dataset
 of high dimensional spheres nested inside a larger sphere, as used in the 
 [Topological Autoencoders](https://arxiv.org/abs/1906.00722) paper.
 

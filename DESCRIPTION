@@ -17,6 +17,7 @@ Description: Some simple simulation datasets used in Stochastic Neighbor
     visualizing individual images in these datasets.
 License: MIT + file LICENSE
 Suggests:
+    httr,
     rjson,
     RnavGraphImageData,
     testthat
