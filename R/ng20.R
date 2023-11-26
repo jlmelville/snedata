@@ -14,7 +14,7 @@
 #' \item{\code{Id}}{The integer identifier of the document, from the filename of
 #' the downloaded data.}
 #' \item{\code{Text}}{The full text of the message including any header, footer,
-#' and quotes.}
+#' and quotes. Newlines are preserved.}
 #' \item{\code{Subset}}{A factor with two levels: \code{train} and \code{test},
 #' indicating whether the document is from the training or test subset.}
 #' \item{\code{Label}}{The newsgroup represented by an integer id, in the range
@@ -135,8 +135,8 @@ extract_text_from_file <- function(file_path) {
   if (!file.exists(file_path)) {
     stop("File does not exist: ", file_path)
   }
-  content <- readLines(file_path, warn = FALSE)
-  paste(content, collapse = " ")
+  content <- readLines(file_path, warn = FALSE, encoding = "latin1")
+  paste(content, collapse = "\n")
 }
 
 read_newsgroup_directory <- function(directory_path) {
