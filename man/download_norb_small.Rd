@@ -7,31 +7,31 @@
 A data frame with 18,439 variables:
 
 \describe{
-\item{\code{c0px1}, \code{c0px2}, \code{c0px3} ... \code{c0px9216}}{Integer 
-  pixel value, from 0 (white) to 255 (black) for the first image in the 
+\item{\code{c0px1}, \code{c0px2}, \code{c0px3} ... \code{c0px9216}}{Integer
+  pixel value, from 0 (white) to 255 (black) for the first image in the
   pair}
-\item{\code{c1px1}, \code{c1px2}, \code{c1px3} ... \code{c1px9216}}{Integer 
-  pixel value, from 0 (white) to 255 (black) for the second image in the 
+\item{\code{c1px1}, \code{c1px2}, \code{c1px3} ... \code{c1px9216}}{Integer
+  pixel value, from 0 (white) to 255 (black) for the second image in the
   pair}
-\item{\code{Instance}}{The index of the toy in a particular category, 
+\item{\code{Instance}}{The index of the toy in a particular category,
   represented by a factor in the range 0-9. The training set consists of
   instances 0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.}
-\item{\code{Elevation}}{The elevation of the camera represented by a 
+\item{\code{Elevation}}{The elevation of the camera represented by a
   factor in the range 0-8. These represent elevations of 30 to 70 degrees
   from the horizontal, in increments of 5 degrees.}
-\item{\code{Azimuth}}{The azimuth, represented by a factor in the range 
+\item{\code{Azimuth}}{The azimuth, represented by a factor in the range
   0, 2, 4 .. 34. Multiply by ten to get the value in degrees.}
 \item{\code{Lighting}}{The lighting condition, represened by a factor in
   the range 0-5.}
-\item{\code{Label}}{The toy category, represented by a factor in the 
+\item{\code{Label}}{The toy category, represented by a factor in the
   range 0-4.}
-\item{\code{Split}}{Whether the toy in is in the \code{training} or 
+\item{\code{Split}}{Whether the toy in is in the \code{training} or
   \code{testing} set, represented by a factor}
-\item{\code{Description}}{The name of the toy category associated with 
+\item{\code{Description}}{The name of the toy category associated with
   \code{Label}, represented by a factor.}
 }
 
-The pixel features are organized row-wise from the top left of each image. 
+The pixel features are organized row-wise from the top left of each image.
 The \code{Label} levels correspond to:
 \describe{
   \item{\code{0}}{Four-legged animal}
@@ -106,18 +106,20 @@ identical(norb_test, norb_test2) # also TRUE
 norb_r1000 <- norb[sample(nrow(norb), 1000), ]
 pca <- prcomp(norb_r1000[, 1:(96 * 96 * 2)], retx = TRUE, rank. = 2)
 # plot the scores of the first two components
-plot(pca$x[, 1:2], type = 'n')
-text(pca$x[, 1:2], labels = norb_r1000$Label,
-     col = rainbow(length(levels(norb$Label)))[norb_r1000$Label])
+plot(pca$x[, 1:2], type = "n")
+text(pca$x[, 1:2],
+  labels = norb_r1000$Label,
+  col = rainbow(length(levels(norb$Label)))[norb_r1000$Label]
+)
 }
 }
 \references{
 The Small NORB Dataset, v1.0
 \url{https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/}
 
-LeCun, Y., Huang, F. J., & Bottou, L. (2004, June). 
-Learning methods for generic object recognition with invariance to pose and lighting. 
-In \emph{IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR) 2004} 
+LeCun, Y., Huang, F. J., & Bottou, L. (2004, June).
+Learning methods for generic object recognition with invariance to pose and lighting.
+In \emph{IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR) 2004}
 (pp. 97-104).
 IEEE.
 \url{http://doi.ieeecomputersociety.org/10.1109/CVPR.2004.144}

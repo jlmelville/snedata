@@ -33,9 +33,9 @@ Points are colored based on their distances from the origin.
 }
 \examples{
 \dontrun{
- helix1000 <- helix(n = 1000)
- # Coloring should be obvious with a 2D plot of the cross section:
- plot(helix1000$x, helix1000$y, col = helix1000$color, pch = 20)
+helix1000 <- helix(n = 1000)
+# Coloring should be obvious with a 2D plot of the cross section:
+plot(helix1000$x, helix1000$y, col = helix1000$color, pch = 20)
 }
 }
 \references{

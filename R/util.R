@@ -6,8 +6,12 @@ linear_map <- function(x, from = 0, to = 1) {
 # Linearly maps a numeric vector x onto a color scale ranging from
 # hsl(0, s, l) to hsl(300, s, l) (basically a rainbow color scale).
 linear_color_map <- function(x, h = 300, s = 50, l = 50) {
-  vapply(linear_map(x, from = 0, to = 1),
-         function(e) { hsl_to_rgb(h = floor(h * e), s = s, l = l) }, "")
+  vapply(
+    linear_map(x, from = 0, to = 1),
+    function(e) {
+      hsl_to_rgb(h = floor(h * e), s = s, l = l)
+    }, ""
+  )
 }
 
 # Helper function needed by hsl_to_rgb, from the CSS spec
@@ -15,9 +19,15 @@ linear_color_map <- function(x, h = 300, s = 50, l = 50) {
 hue_to_rgb <- function(m1, m2, h) {
   if (h < 0) h <- h + 1
   if (h > 1) h <- h - 1
-  if (h * 6 < 1) return(m1 + (m2 - m1) * h * 6)
-  if (h * 2 < 1) return(m2)
-  if (h * 3 < 2) return(m1 + (m2 - m1) * (2 / 3 - h) * 6)
+  if (h * 6 < 1) {
+    return(m1 + (m2 - m1) * h * 6)
+  }
+  if (h * 2 < 1) {
+    return(m2)
+  }
+  if (h * 3 < 2) {
+    return(m1 + (m2 - m1) * (2 / 3 - h) * 6)
+  }
   m1
 }
 
@@ -36,12 +46,10 @@ hsl_to_rgb <- function(h, s, l) {
   if (s == 0) {
     # achromatic
     r <- g <- b <- l
-  }
-  else {
+  } else {
     if (l <= 0.5) {
       m2 <- l * (s + 1)
-    }
-    else {
+    } else {
       m2 <- l + s - l * s
     }
     m1 <- l * 2 - m2
@@ -60,7 +68,7 @@ theta_unif <- function(n) {
 # Replicate each row in df n times
 # http://stackoverflow.com/questions/11121385/repeat-rows-of-a-data-frame
 replicate_rows <- function(df, n) {
-  df[rep(seq_len(nrow(df)), each = n),]
+  df[rep(seq_len(nrow(df)), each = n), ]
 }
 
 
@@ -98,8 +106,7 @@ merge_by_row <- function(x, y) {
   # keep column order of larger dataset
   if (ncol(x) < ncol(y)) {
     all_col_names <- union(names(y), names(x))
-  }
-  else {
+  } else {
     all_col_names <- union(names(x), names(y))
   }
   z <- z[, all_col_names]
@@ -116,15 +123,39 @@ merge_by_row <- function(x, y) {
 # https://github.com/PAIR-code/understanding-umap/blob/master/raw_data/mammoth_3d.json
 gh_raw <- function(repo, filename, branch = "master") {
   paste("https://raw.githubusercontent.com",
-        repo,
-        branch,
-        filename,
-        sep = "/")
+    repo,
+    branch,
+    filename,
+    sep = "/"
+  )
 }
 
 stop_if_not_installed <- function(pkg) {
-  if (!requireNamespace(pkg, quietly = TRUE,
-                        warn.conflicts = FALSE)) {
+  if (!requireNamespace(pkg,
+    quietly = TRUE,
+    warn.conflicts = FALSE
+  )) {
     stop("Please install the '", pkg, "' package")
+  }
+}
+
+stime <- function() {
+  format(Sys.time(), "%T")
+}
+
+tsmessage <- function(...,
+                      domain = NULL,
+                      appendLF = TRUE,
+                      force = FALSE,
+                      time_stamp = TRUE) {
+  verbose <- get0("verbose", envir = sys.parent())
+
+  if (force || (!is.null(verbose) && verbose)) {
+    msg <- ""
+    if (time_stamp) {
+      msg <- paste0(stime(), " ")
+    }
+    message(msg, ..., domain = domain, appendLF = appendLF)
+    utils::flush.console()
   }
 }

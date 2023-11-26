@@ -85,9 +85,11 @@ long_gaussian_data <- function(n, dim, color = NULL) {
 # vector angles in radians. Each point also has a color value generated
 # by linearly mapping theta to a rainbow palette.
 theta_to_circle_df <- function(theta) {
-  data.frame(x = cos(theta), y = sin(theta),
-             color = linear_color_map(theta),
-             stringsAsFactors = FALSE)
+  data.frame(
+    x = cos(theta), y = sin(theta),
+    color = linear_color_map(theta),
+    stringsAsFactors = FALSE
+  )
 }
 
 #' Uniform 2D Circle
@@ -192,9 +194,9 @@ two_clusters_data <- function(n, dim = 50) {
   if (length(dim) != 2) {
     dim <- rep(dim, 2)
   }
-  cluster1 <- gaussian_data(n = n, dim = dim[1], color = '#003399')
+  cluster1 <- gaussian_data(n = n, dim = dim[1], color = "#003399")
 
-  cluster2 <- gaussian_data(n = n, dim = dim[2], color = '#FF9900')
+  cluster2 <- gaussian_data(n = n, dim = dim[2], color = "#FF9900")
   cluster2[, 1] <- cluster2[, 1] + 10
 
   merge_by_row(cluster1, cluster2)
@@ -224,9 +226,9 @@ two_clusters_data <- function(n, dim = 50) {
 #' @references \url{http://distill.pub/2016/misread-tsne/}
 #' @export
 two_different_clusters_data <- function(n, dim = 50, scale = 10) {
-  cluster1 <- gaussian_data(n = n, dim = dim, color = '#003399')
+  cluster1 <- gaussian_data(n = n, dim = dim, color = "#003399")
 
-  cluster2 <- gaussian_data(n = n, dim = dim, sd = 1 / scale, color = '#FF9900')
+  cluster2 <- gaussian_data(n = n, dim = dim, sd = 1 / scale, color = "#FF9900")
   cluster2[, 1] <- cluster2[, 1] + 20
 
   rbind(cluster1, cluster2)
@@ -254,12 +256,12 @@ two_different_clusters_data <- function(n, dim = 50, scale = 10) {
 #' @references \url{http://distill.pub/2016/misread-tsne/}
 #' @export
 three_clusters_data <- function(n, dim = 50) {
-  cluster1 <- gaussian_data(n = n, dim = dim, color = '#003399')
+  cluster1 <- gaussian_data(n = n, dim = dim, color = "#003399")
 
-  cluster2 <- gaussian_data(n = n, dim = dim, color = '#FF9900')
+  cluster2 <- gaussian_data(n = n, dim = dim, color = "#FF9900")
   cluster2[, 1] <- cluster2[, 1] + 10
 
-  cluster3 <- gaussian_data(n = n, dim = dim, color = '#66AA33')
+  cluster3 <- gaussian_data(n = n, dim = dim, color = "#66AA33")
   cluster3[, 1] <- cluster3[, 1] + 50
 
   rbind(cluster1, cluster2, cluster3)
@@ -272,8 +274,8 @@ three_clusters_data <- function(n, dim = 50) {
 #'
 #' Creates a dataset consisting of two gaussians with the same center, but
 #' with the first cluster having a standard deviation of 1, and the second
-#' having a standard deviation of \code{big_sdev} (default 50). Points are 
-#' colored depending on which cluster they belong to (small cluster is dark 
+#' having a standard deviation of \code{big_sdev} (default 50). Points are
+#' colored depending on which cluster they belong to (small cluster is dark
 #' powder blue, large is light orange).
 #'
 #' @param n Number of points per gaussian.
@@ -284,7 +286,7 @@ three_clusters_data <- function(n, dim = 50) {
 #'  \code{Xdim} columns, and color in the \code{color} column.
 #' @examples
 #' df <- subset_clusters_data(n = 50, dim = 2)
-#' 
+#'
 #' # 10D example where the big cluster is only twice the standard deviation of
 #' # the small cluster
 #' df <- subset_clusters_data(n = 50, dim = 10, big_sdev = 2)
@@ -295,8 +297,8 @@ subset_clusters_data <- function(n, dim = 2, big_sdev = 50) {
   if (!is.numeric(big_sdev) || length(big_sdev) != 1 || big_sdev <= 0) {
     stop("big_sdev should be a scalar positive value")
   }
-  cluster1 <- gaussian_data(n = n, dim = dim, color = '#003399')
-  cluster2 <- gaussian_data(n = n, dim = dim, sd = big_sdev, color = '#FF9900')
+  cluster1 <- gaussian_data(n = n, dim = dim, color = "#003399")
+  cluster2 <- gaussian_data(n = n, dim = dim, sd = big_sdev, color = "#FF9900")
   rbind(cluster1, cluster2)
 }
 
@@ -321,7 +323,7 @@ subset_clusters_data <- function(n, dim = 2, big_sdev = 50) {
 #' @family distill functions
 #' @references \url{http://distill.pub/2016/misread-tsne/}
 #' @export
-simplex_data <- function(n, noise = 0.5, color = '#003399') {
+simplex_data <- function(n, noise = 0.5, color = "#003399") {
   m <- diag(n)
   diag(m) <- 1 + noise * stats::rnorm(n)
   data.frame(m, color = color, stringsAsFactors = FALSE)
@@ -344,9 +346,11 @@ simplex_data <- function(n, noise = 0.5, color = '#003399') {
 #' @family distill functions
 #' @references \url{http://distill.pub/2016/misread-tsne/}
 #' @export
-cube_data <- function(n, dim, color = '#003399') {
-  data.frame(matrix(stats::runif(n * dim), nrow = n), color = color,
-             stringsAsFactors = FALSE)
+cube_data <- function(n, dim, color = "#003399") {
+  data.frame(matrix(stats::runif(n * dim), nrow = n),
+    color = color,
+    stringsAsFactors = FALSE
+  )
 }
 
 # Helper function for unlink_data and link_data
@@ -382,10 +386,14 @@ rotate <- function(df) {
 #' @export
 unlink_data <- function(n) {
   theta <- theta_unif(n)
-  ring1 <- rotate(data.frame(x = cos(theta), y = sin(theta), z = 0,
-                             color = '#ff9900', stringsAsFactors = FALSE))
-  ring2 <- rotate(data.frame(x = 3 + cos(theta), y = 0, z = sin(theta),
-                             color = '#003399', stringsAsFactors = FALSE))
+  ring1 <- rotate(data.frame(
+    x = cos(theta), y = sin(theta), z = 0,
+    color = "#ff9900", stringsAsFactors = FALSE
+  ))
+  ring2 <- rotate(data.frame(
+    x = 3 + cos(theta), y = 0, z = sin(theta),
+    color = "#003399", stringsAsFactors = FALSE
+  ))
   rbind(ring1, ring2)
 }
 
@@ -411,10 +419,14 @@ unlink_data <- function(n) {
 #' @export
 link_data <- function(n) {
   theta <- theta_unif(n)
-  ring1 <- rotate(data.frame(x = cos(theta), y = sin(theta), z = 0,
-                             color = '#ff9900', stringsAsFactors = FALSE))
-  ring2 <- rotate(data.frame(x = 1 + cos(theta), y = 0, z = sin(theta),
-                             color = '#003399', stringsAsFactors = FALSE))
+  ring1 <- rotate(data.frame(
+    x = cos(theta), y = sin(theta), z = 0,
+    color = "#ff9900", stringsAsFactors = FALSE
+  ))
+  ring2 <- rotate(data.frame(
+    x = 1 + cos(theta), y = 0, z = sin(theta),
+    color = "#003399", stringsAsFactors = FALSE
+  ))
   rbind(ring1, ring2)
 }
 
@@ -463,15 +475,19 @@ trefoil_data <- function(n) {
 #' @references \url{http://distill.pub/2016/misread-tsne/}
 #' @export
 long_cluster_data <- function(n) {
-  s <- .03 * n;
+  s <- .03 * n
 
-  cluster1 <- data.frame(x = 0:(n - 1) + s * stats::rnorm(n),
-                         y = 0:(n - 1) + s * stats::rnorm(n),
-                         color = '#003399', stringsAsFactors = FALSE)
+  cluster1 <- data.frame(
+    x = 0:(n - 1) + s * stats::rnorm(n),
+    y = 0:(n - 1) + s * stats::rnorm(n),
+    color = "#003399", stringsAsFactors = FALSE
+  )
 
-  cluster2 <- data.frame(x = 0:(n - 1) + s * stats::rnorm(n) + n / 5,
-                         y = 0:(n - 1) + s * stats::rnorm(n) - n / 5,
-                         color = '#ff9900', stringsAsFactors = FALSE)
+  cluster2 <- data.frame(
+    x = 0:(n - 1) + s * stats::rnorm(n) + n / 5,
+    y = 0:(n - 1) + s * stats::rnorm(n) - n / 5,
+    color = "#ff9900", stringsAsFactors = FALSE
+  )
 
   rbind(cluster1, cluster2)
 }

@@ -9,7 +9,7 @@ s_curve(n_samples = 100, noise = 0)
 \arguments{
 \item{n_samples}{The number of points to create.}
 
-\item{noise}{Add random noise normally-distributed with mean 0 and standard 
+\item{noise}{Add random noise normally-distributed with mean 0 and standard
 deviation \code{noise}.}
 }
 \value{
@@ -18,7 +18,7 @@ Data frame with \code{x}, \code{y}, \code{z} columns containing the
 }
 \description{
 Simulation data randomly sampled from an S-shaped curve. Translated from the
-\href{https://scikit-learn.org/stable/index.html}{scikit-learn} Pythom 
+\href{https://scikit-learn.org/stable/index.html}{scikit-learn} Pythom
 function \code{sklearn.datasets.make_s_curve}.
 }
 \details{
@@ -29,9 +29,9 @@ should be able to see it if you plot the X and Z columns.
 Points are colored based on their distance along the curve.
 }
 \references{
-Buitinck, L., Louppe, G., Blondel, M., Pedregosa, F., Mueller, A., 
-Grisel, O., ... & Varoquaux, G. (2013). 
-API design for machine learning software: experiences from the scikit-learn 
-project. 
+Buitinck, L., Louppe, G., Blondel, M., Pedregosa, F., Mueller, A.,
+Grisel, O., ... & Varoquaux, G. (2013).
+API design for machine learning software: experiences from the scikit-learn
+project.
 \emph{arXiv preprint} \emph{arXiv:1309.0238}.
 }

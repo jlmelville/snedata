@@ -34,7 +34,7 @@ the index of the face, and \code{<pose>} is the index of the pose, e.g.
 the row with name \code{20_10} is the tenth pose of the twentieth face.
 }
 \note{
-Requires the 
+Requires the
 \href{https://cran.r-project.org/package=RnavGraphImageData}{RnavGraphImageData}
 package to be installed and loaded.
 }

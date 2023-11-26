@@ -16,8 +16,8 @@ Pixels are organized row-wise. The \code{Label} variable is stored as a
 factor.
 
 There are 120,000 digits in the data set. The first 60,000 are the training
-set, as found in the \code{qmnist-train-images-idx3-ubyte.hz} file. The 
-remaining 60,000 are the test set, from the 
+set, as found in the \code{qmnist-train-images-idx3-ubyte.hz} file. The
+remaining 60,000 are the test set, from the
 \code{qmnist-test-images-idx3-ubyte.gz} file.
 
 Items in the dataset can be visualized with
@@ -43,7 +43,7 @@ MNIST digits, but with an extended test dataset of 60,000 digits.
 }
 \details{
 Downloads the image and label files for the training and test datasets from
-\url{https://github.com/facebookresearch/qmnist} and converts them to a data 
+\url{https://github.com/facebookresearch/qmnist} and converts them to a data
 frame.
 }
 \examples{
@@ -58,8 +58,8 @@ qmnist_test <- tail(mnist, 60000)
 }
 }
 \references{
-Yadav, C., & Bottou, L. (2019, May). 
-Cold Case: The Lost MNIST Digits 
+Yadav, C., & Bottou, L. (2019, May).
+Cold Case: The Lost MNIST Digits
 \emph{arXiv preprint} \emph{arXiv:1905.10498}.
 \url{https://github.com/facebookresearch/qmnist}
 }

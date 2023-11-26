@@ -20,7 +20,7 @@ show_norb_object(
 
 \item{instance}{The instance in the category, an integer from 0 to 9.}
 
-\item{elevation}{The elevation of the camera, an integer from 0 to 8, 
+\item{elevation}{The elevation of the camera, an integer from 0 to 8,
 representing elevations of 30 to 70 degrees from the horizontal, in
 increments of 5 degrees.}
 
@@ -39,8 +39,10 @@ in the pair on top, and the second image in the pair below it.
 }
 \examples{
 \dontrun{
-show_norb_object(norb, category = 2, instance = 6, elevation = 6, 
-                 azimuth = 24, lighting = 2)
+show_norb_object(norb,
+  category = 2, instance = 6, elevation = 6,
+  azimuth = 24, lighting = 2
+)
 # Compare with example at https://github.com/ndrplz/small_norb
 }
 }

@@ -11,13 +11,13 @@ taspheres(n_samples = 500, d = 100, n_spheres = 11, r = 5)
 d-spheres. The larger d-sphere has \code{10 * n_samples} points.}
 
 \item{d}{The dimensionality of each sphere. The returned dataframe will have
-the \code{d + 1} dimensions of the Euclidean space in which the sphere is 
+the \code{d + 1} dimensions of the Euclidean space in which the sphere is
 embedded.}
 
-\item{n_spheres}{Number of spheres to return. There will be 
+\item{n_spheres}{Number of spheres to return. There will be
 \code{n_spheres - 1} small spheres and 1 larger sphere.}
 
-\item{r}{The radius of each of the smaller spheres. The larger sphere has 
+\item{r}{The radius of each of the smaller spheres. The larger sphere has
 radius \code{5 * r}.}
 }
 \value{
@@ -32,7 +32,7 @@ Creates a dataframe consisting of samples from the d-spheres of radius
 }
 \details{
 This dataset was used by Moor and co-workers in their "Topological
-Autoencoders" paper and this function is based on the Python code in the 
+Autoencoders" paper and this function is based on the Python code in the
 github repo for the paper.
 }
 \references{

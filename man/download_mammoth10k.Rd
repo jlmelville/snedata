@@ -21,7 +21,7 @@ download_mammoth10k()
 Data frame containing the Mammoth coordinates.
 }
 \description{
-Downloads the 10,000 point 'Mammoth' dataset, a 3D point cloud of a mammoth 
+Downloads the 10,000 point 'Mammoth' dataset, a 3D point cloud of a mammoth
 skeleton.
 }
 \details{
@@ -29,14 +29,14 @@ Downloads a dataframe containing the 10,000 3D coordinates of a mammoth
 skeleton, digitized by
 \href{https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12}{The Smithsonian Institute}.
 
-This dataset is from 
+This dataset is from
 \href{https://pair-code.github.io/understanding-umap/}{Understanding UMAP},
-based on work originally done by 
+based on work originally done by
 \href{https://github.com/MNoichl/UMAP-examples-mammoth-}{Max Noichl}. It
 consists of 10,000 points randomly sampled from the 50,000 point data set.
 }
 \note{
-Requires the \href{https://cran.r-project.org/package=rjson}{rjson} 
+Requires the \href{https://cran.r-project.org/package=rjson}{rjson}
 package to be installed and loaded.
 }
 \examples{

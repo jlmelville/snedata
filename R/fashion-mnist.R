@@ -55,7 +55,6 @@ fashion_mnist_url <-
 #'   message.
 #' @return Data frame containing Fashion-MNIST.
 #' @note Originally based on a function by Brendan O'Connor.
-#' @export
 #' @examples
 #' \dontrun{
 #' # download the data set
@@ -70,10 +69,12 @@ fashion_mnist_url <-
 #' fashion_r1000 <- fashion[sample(nrow(fashion), 1000), ]
 #' pca <- prcomp(fashion_r1000[, 1:784], retx = TRUE, rank. = 2)
 #' # plot the scores of the first two components
-#' plot(pca$x[, 1:2], type = 'n')
-#' text(pca$x[, 1:2], labels = fashion_r1000$Label,
-#'      col = rainbow(length(levels(fashion$Label)))[fashion_r1000$Label])
-#'}
+#' plot(pca$x[, 1:2], type = "n")
+#' text(pca$x[, 1:2],
+#'   labels = fashion_r1000$Label,
+#'   col = rainbow(length(levels(fashion$Label)))[fashion_r1000$Label]
+#' )
+#' }
 #' @references
 #' Xiao, H., Kashif, R., & Vollgraf, R. (2017).
 #' Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms.
@@ -84,10 +85,13 @@ download_fashion_mnist <- function(base_url = fashion_mnist_url,
                                    verbose = FALSE) {
   res <- download_mnist(base_url = base_url, verbose = verbose)
 
-  description_levels <- c("T-shirt/top", "Trouser", "Pullover", "Dress",
-                          "Coat", "Sandal", "Shirt", "Sneaker", "Bag",
-                          "Ankle boot")
+  description_levels <- c(
+    "T-shirt/top", "Trouser", "Pullover", "Dress",
+    "Coat", "Sandal", "Shirt", "Sneaker", "Bag",
+    "Ankle boot"
+  )
   res$Description <- factor(description_levels[as.numeric(res$Label)],
-                            levels = description_levels)
+    levels = description_levels
+  )
   res
 }

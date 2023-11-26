@@ -19,7 +19,8 @@
 #' @export
 show_mnist_digit <- function(df, n, col = grDevices::gray(1:255 / 255), ...) {
   graphics::image(matrix(as.numeric(df[n, 1:784]), nrow = 28)[, 28:1],
-                  col = col, ...)
+    col = col, ...
+  )
 }
 
 # Base URL of the MNIST digits dataset website
@@ -72,18 +73,22 @@ mnist_url <- "http://yann.lecun.com/exdb/mnist/"
 #' mnist_r1000 <- mnist_train[sample(nrow(mnist_train), 1000), ]
 #' pca <- prcomp(mnist_r1000[, 1:784], retx = TRUE, rank. = 2)
 #' # plot the scores of the first two components
-#' plot(pca$x[, 1:2], type = 'n')
-#' text(pca$x[, 1:2], labels = mnist_r1000$Label,
-#'      col = rainbow(length(levels(mnist$Label)))[mnist_r1000$Label])
-#'}
+#' plot(pca$x[, 1:2], type = "n")
+#' text(pca$x[, 1:2],
+#'   labels = mnist_r1000$Label,
+#'   col = rainbow(length(levels(mnist$Label)))[mnist_r1000$Label]
+#' )
+#' }
 #' @export
 download_mnist <- function(base_url = mnist_url, verbose = FALSE) {
   train <- parse_files("train-images-idx3-ubyte.gz",
-                       "train-labels-idx1-ubyte.gz",
-                       base_url = base_url, verbose = verbose)
+    "train-labels-idx1-ubyte.gz",
+    base_url = base_url, verbose = verbose
+  )
   test <- parse_files("t10k-images-idx3-ubyte.gz",
-                      "t10k-labels-idx1-ubyte.gz",
-                      base_url = base_url, verbose = verbose)
+    "t10k-labels-idx1-ubyte.gz",
+    base_url = base_url, verbose = verbose
+  )
   rbind(train, test)
 }
 
@@ -119,8 +124,10 @@ parse_image_file <- function(filename, base_url = mnist_url,
   f <- open_binary_file(filename, base_url = base_url, verbose = verbose)
   magic <- readBin(f, "integer", n = 1, size = 4, endian = "big")
   if (magic != 2051) {
-    stop("First four bytes of image file should be magic number 2051 but was ",
-         magic)
+    stop(
+      "First four bytes of image file should be magic number 2051 but was ",
+      magic
+    )
   }
   n <- readBin(f, "integer", n = 1, size = 4, endian = "big")
   nrow <- readBin(f, "integer", n = 1, size = 4, endian = "big")
@@ -143,8 +150,10 @@ parse_label_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
   f <- open_binary_file(filename, base_url = base_url, verbose = verbose)
   magic <- readBin(f, "integer", n = 1, size = 4, endian = "big")
   if (magic != 2049) {
-    stop("First four bytes of label file should be magic number 2049 but was ",
-         magic)
+    stop(
+      "First four bytes of label file should be magic number 2049 but was ",
+      magic
+    )
   }
   n <- readBin(f, "integer", n = 1, size = 4, endian = "big")
   y <- readBin(f, "integer", n = n, size = 1, signed = FALSE)
@@ -161,8 +170,8 @@ parse_label_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
 # @param label_filename The label filename corresponding to the images in
 #   \code{image_filename}.
 # @param base_url URL of the resource containing the files.
-# @param label_parser Function to parse label files. Default is 
-#  parse_label_file, which works with standard idx1-ubyte files used with most 
+# @param label_parser Function to parse label files. Default is
+#  parse_label_file, which works with standard idx1-ubyte files used with most
 #  MNIST-like projects.
 # @param verbose If \code{TRUE}, generate a diagnostic message as files are
 #   downloaded.
@@ -170,10 +179,14 @@ parse_label_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
 parse_files <- function(image_filename, label_filename, base_url = mnist_url,
                         label_parser = parse_label_file,
                         verbose = FALSE) {
-  df <- as.data.frame(parse_image_file(image_filename, base_url = base_url,
-                                       verbose = verbose))
+  df <- as.data.frame(parse_image_file(image_filename,
+    base_url = base_url,
+    verbose = verbose
+  ))
   names(df) <- paste0("px", 1:ncol(df))
-  df$Label <- factor(label_parser(label_filename, base_url = base_url,
-                                      verbose = verbose))
+  df$Label <- factor(label_parser(label_filename,
+    base_url = base_url,
+    verbose = verbose
+  ))
   df
 }

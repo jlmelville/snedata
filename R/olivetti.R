@@ -19,7 +19,7 @@
 #' the index of the face, and \code{<pose>} is the index of the pose, e.g.
 #' the row with name \code{20_10} is the tenth pose of the twentieth face.
 #'
-#' @note Requires the 
+#' @note Requires the
 #' \href{https://cran.r-project.org/package=RnavGraphImageData}{RnavGraphImageData}
 #' package to be installed and loaded.
 #' @return The Olivetti Faces dataset as a dataframe.
@@ -38,10 +38,16 @@ olivetti_faces <- function() {
   df <- as.data.frame(t(faces))
   npeople <- 40
   nposes <- 10
-  colnames(df) <- sapply(seq(1, 4096), function(x) { paste0("px", x)})
-  rownames(df) <- apply(expand.grid(seq(1, nposes), seq(1, npeople)), 1,
-                        function(x) { paste(x[2], x[1], sep = "_") })
-  df$Label <-  factor(as.numeric(cut(1:nrow(df), npeople)))
+  colnames(df) <- sapply(seq(1, 4096), function(x) {
+    paste0("px", x)
+  })
+  rownames(df) <- apply(
+    expand.grid(seq(1, nposes), seq(1, npeople)), 1,
+    function(x) {
+      paste(x[2], x[1], sep = "_")
+    }
+  )
+  df$Label <- factor(as.numeric(cut(1:nrow(df), npeople)))
 
   df
 }

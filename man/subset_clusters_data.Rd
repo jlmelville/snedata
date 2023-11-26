@@ -25,8 +25,8 @@ Effectively".
 \details{
 Creates a dataset consisting of two gaussians with the same center, but
 with the first cluster having a standard deviation of 1, and the second
-having a standard deviation of \code{big_sdev} (default 50). Points are 
-colored depending on which cluster they belong to (small cluster is dark 
+having a standard deviation of \code{big_sdev} (default 50). Points are
+colored depending on which cluster they belong to (small cluster is dark
 powder blue, large is light orange).
 }
 \examples{

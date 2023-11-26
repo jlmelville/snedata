@@ -44,9 +44,9 @@ you unrolled it. Or just plot the x-y cross section (see the examples).
 }
 \examples{
 \dontrun{
- swiss1000 <- swiss_roll(n = 1000)
- # Coloring should be obvious with a 2D plot of the cross section:
- plot(swiss1000$x, swiss1000$y, col = swiss1000$color, pch = 20)
+swiss1000 <- swiss_roll(n = 1000)
+# Coloring should be obvious with a 2D plot of the cross section:
+plot(swiss1000$x, swiss1000$y, col = swiss1000$color, pch = 20)
 }
 }
 \references{
@@ -58,8 +58,8 @@ A self-organizing principle for learning nonlinear manifolds.
 
 But the dataset turns up everywhere, most notably:
 
-Roweis, S. T., & Saul, L. K. (2000). 
-Nonlinear dimensionality reduction by locally linear embedding. 
+Roweis, S. T., & Saul, L. K. (2000).
+Nonlinear dimensionality reduction by locally linear embedding.
 \emph{Science}, \emph{290}(5500), 2323-2326.
 
 If the idea of flattening a Swiss Roll didn't originate in that publication,

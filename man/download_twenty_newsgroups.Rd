@@ -96,10 +96,12 @@ ng_train <- download_twenty_newsgroups(subset = "train")
 # Download and process both training and test sets, with verbose output
 ng_all <- download_twenty_newsgroups(subset = "all", verbose = TRUE)
 
-# Download and process the test set, using a specific directory and enabling 
+# Download and process the test set, using a specific directory and enabling
 # cleanup
-ng_test <- download_twenty_newsgroups(subset = "test", 
-  tmpdir = "path/to/dir", cleanup = TRUE)
+ng_test <- download_twenty_newsgroups(
+  subset = "test",
+  tmpdir = "path/to/dir", cleanup = TRUE
+)
 }
 
 }

@@ -1,15 +1,15 @@
 #' Mammoth 10K
 #'
-#' Downloads the 10,000 point 'Mammoth' dataset, a 3D point cloud of a mammoth 
+#' Downloads the 10,000 point 'Mammoth' dataset, a 3D point cloud of a mammoth
 #' skeleton.
 #'
 #' Downloads a dataframe containing the 10,000 3D coordinates of a mammoth
 #' skeleton, digitized by
 #' \href{https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12}{The Smithsonian Institute}.
-#' 
-#' This dataset is from 
+#'
+#' This dataset is from
 #' \href{https://pair-code.github.io/understanding-umap/}{Understanding UMAP},
-#' based on work originally done by 
+#' based on work originally done by
 #' \href{https://github.com/MNoichl/UMAP-examples-mammoth-}{Max Noichl}. It
 #' consists of 10,000 points randomly sampled from the 50,000 point data set.
 #'
@@ -24,7 +24,7 @@
 #' For more information see \url{https://pair-code.github.io/understanding-umap/}.
 #'
 #' @return Data frame containing the Mammoth coordinates.
-#' @note Requires the \href{https://cran.r-project.org/package=rjson}{rjson} 
+#' @note Requires the \href{https://cran.r-project.org/package=rjson}{rjson}
 #' package to be installed and loaded.
 #' @seealso
 #' \itemize{
@@ -52,16 +52,16 @@ download_mammoth10k <- function() {
 
 #' Mammoth 50K
 #'
-#' Downloads the 50,000 point 'Mammoth' dataset, a 3D point cloud of a mammoth 
+#' Downloads the 50,000 point 'Mammoth' dataset, a 3D point cloud of a mammoth
 #' skeleton.
 #'
 #' Downloads a dataframe containing the 50,000 3D coordinates of a mammoth
 #' skeleton, digitized by
 #' \href{https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12}{The Smithsonian Institute}.
-#' 
-#' This dataset is from 
+#'
+#' This dataset is from
 #' \href{https://pair-code.github.io/understanding-umap/}{Understanding UMAP},
-#' based on work originally done by 
+#' based on work originally done by
 #' \href{https://github.com/MNoichl/UMAP-examples-mammoth-}{Max Noichl}. 50,000
 #' points were down-sampled from the raw data used by Max Noichl.
 #'
@@ -76,7 +76,7 @@ download_mammoth10k <- function() {
 #' For more information see \url{https://pair-code.github.io/understanding-umap/}.
 #'
 #' @return Data frame containing the Mammoth coordinates.
-#' @note Requires the \href{https://cran.r-project.org/package=rjson}{rjson} 
+#' @note Requires the \href{https://cran.r-project.org/package=rjson}{rjson}
 #' package to be installed and loaded.
 #' @seealso
 #' \itemize{

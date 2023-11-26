@@ -26,16 +26,16 @@ Creates a series of points sampled from an S-shaped curve in 3D, with
 optional normally-distributed noise. The S shape is oriented such that you
 should be able to see it if you plot the X and Z columns. There is a circular
 hole in the middle of the curve, centered at Y = 0.
- 
+
 Points are colored based on their distance along the curve.
 
 This data set is based on \code{\link{s_curve}} is used to assess the
 behavior of the PaCMAP method of Wang and co-workers (2021).
 }
 \references{
-Wang, Y., Huang, H., Rudin, C., & Shaposhnik, Y. (2021). 
-Understanding how dimension reduction tools work: an empirical approach to 
-deciphering t-SNE, UMAP, TriMAP, and PaCMAP for data visualization. 
+Wang, Y., Huang, H., Rudin, C., & Shaposhnik, Y. (2021).
+Understanding how dimension reduction tools work: an empirical approach to
+deciphering t-SNE, UMAP, TriMAP, and PaCMAP for data visualization.
 \emph{J Mach. Learn. Res}, \emph{22}, 1-73.
 }
 \seealso{

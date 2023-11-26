@@ -1,6 +1,6 @@
 #' snedata: Dataset functions for Stochastic Neighbor Embedding and related
 #' dimensionality reduction methods.
-#' 
+#'
 #' Functions to download or generate some datasets commonly used for
 #' benchmarking various dimensionality reduction methods.
 #'
@@ -95,34 +95,34 @@
 #' \url{https://gist.github.com/brendano/39760}.
 #'
 #' @examples
-#'  # 300 points sampled from the surface of a sphere
-#'  sphere300 <- sphere(n = 300)
+#' # 300 points sampled from the surface of a sphere
+#' sphere300 <- sphere(n = 300)
 #'
-#'  # 150 points sampled from a toroidal helix with 30 coils:
-#'  helix150 <- helix(n = 150, nwinds = 30)
+#' # 150 points sampled from a toroidal helix with 30 coils:
+#' helix150 <- helix(n = 150, nwinds = 30)
 #'
-#'  # 150 points from a filled sphere:
-#'  ball150 <- ball(n = 150)
+#' # 150 points from a filled sphere:
+#' ball150 <- ball(n = 150)
 #'
-#'  # 100 points from a "Swiss Roll" distribution:
-#'  swiss100 <- swiss_roll(n = 100)
+#' # 100 points from a "Swiss Roll" distribution:
+#' swiss100 <- swiss_roll(n = 100)
 #'
-#'  # 50 points from a 2D gaussian
-#'  g2d <- gaussian_data(n = 50, dim = 2)
+#' # 50 points from a 2D gaussian
+#' g2d <- gaussian_data(n = 50, dim = 2)
 #'
 #' \dontrun{
-#'  # Load RnavGraphImageData
-#'  library(RnavGraphImageData)
+#' # Load RnavGraphImageData
+#' library(RnavGraphImageData)
 #'
-#'  # Load the Frey faces dataset with each image as a row
-#'  frey <- frey_faces()
-#'  # Display the first pose
-#'  show_frey_face(frey, 1)
+#' # Load the Frey faces dataset with each image as a row
+#' frey <- frey_faces()
+#' # Display the first pose
+#' show_frey_face(frey, 1)
 #'
-#'  # Load the Olivetti faces dataset with each image as a row
-#'  olivetti <- olivetti_faces()
-#'  # Show the second pose of the first face
-#'  show_olivetti_face(olivetti, 1, 2)
+#' # Load the Olivetti faces dataset with each image as a row
+#' olivetti <- olivetti_faces()
+#' # Show the second pose of the first face
+#' show_olivetti_face(olivetti, 1, 2)
 #' }
 #'
 #' \dontrun{
@@ -141,9 +141,11 @@
 #'
 #' pca <- prcomp(mnist_r1000[, 1:784], retx = TRUE, rank. = 2)
 #' # plot the scores of the first two components
-#' plot(pca$x[, 1:2], type = 'n')
-#' text(pca$x[, 1:2], labels = mnist_r1000$Label, cex = 0.5,
-#'      col = rainbow(length(levels(mnist_r1000$Label)))[mnist_r1000$Label])
+#' plot(pca$x[, 1:2], type = "n")
+#' text(pca$x[, 1:2],
+#'   labels = mnist_r1000$Label, cex = 0.5,
+#'   col = rainbow(length(levels(mnist_r1000$Label)))[mnist_r1000$Label]
+#' )
 #'
 #' # save to disk
 #' save(mnist, file = "mnist.Rda")

@@ -22,8 +22,8 @@ Simulation data randomly sampled from the entire volume of a ball of the
 specified dimension (by default, 3-dimensional).
 }
 \details{
-Creates a series of points sampled from an \code{ndim}-dimensional spherical 
-volume. Points are colored based on the square of their distance from the 
+Creates a series of points sampled from an \code{ndim}-dimensional spherical
+volume. Points are colored based on the square of their distance from the
 origin.
 }
 \references{

@@ -15,7 +15,7 @@ kuzushiji_mnist_url <-
 #' \describe{
 #' \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
 #'   value, from 0 (white) to 255 (black).}
-#' \item{\code{Label}}{The character, represented by an integer in the 
+#' \item{\code{Label}}{The character, represented by an integer in the
 #' range 0-9.}
 #' }
 #'
@@ -52,22 +52,24 @@ kuzushiji_mnist_url <-
 #' kuzushiji_r1000 <- kuzushiji[sample(nrow(kuzushiji), 1000), ]
 #' pca <- prcomp(kuzushiji_r1000[, 1:784], retx = TRUE, rank. = 2)
 #' # plot the scores of the first two components
-#' plot(pca$x[, 1:2], type = 'n')
-#' text(pca$x[, 1:2], labels = kuzushiji_r1000$Label,
-#'      col = rainbow(length(levels(kuzushiji_r1000$Label)))[kuzushiji$Label])
-#'}
+#' plot(pca$x[, 1:2], type = "n")
+#' text(pca$x[, 1:2],
+#'   labels = kuzushiji_r1000$Label,
+#'   col = rainbow(length(levels(kuzushiji_r1000$Label)))[kuzushiji$Label]
+#' )
+#' }
 #' @references
-#' "KMNIST Dataset" (created by CODH), adapted from "Kuzushiji Dataset" (created by NIJL and others), 
+#' "KMNIST Dataset" (created by CODH), adapted from "Kuzushiji Dataset" (created by NIJL and others),
 #' doi:10.20676/00000341
 #' \url{https://github.com/rois-codh/kmnist}
-#' 
-#' Clanuwat, T., Bober-Irizar, M., Kitamoto, A., Lamb, A., Yamamoto, K., & Ha, D. (2018). 
-#' Deep Learning for Classical Japanese Literature. 
+#'
+#' Clanuwat, T., Bober-Irizar, M., Kitamoto, A., Lamb, A., Yamamoto, K., & Ha, D. (2018).
+#' Deep Learning for Classical Japanese Literature.
 #' \emph{arXiv preprint} \emph{arXiv:1812.01718}.
-#' 
+#'
 #' @export
 download_kuzushiji_mnist <- function(base_url = kuzushiji_mnist_url,
-                                   verbose = FALSE) {
+                                     verbose = FALSE) {
   res <- download_mnist(base_url = base_url, verbose = verbose)
 
   res

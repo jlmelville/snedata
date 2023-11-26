@@ -18,7 +18,7 @@
 #' rainbow scale.
 #' }
 #'
-#' @note Requires the 
+#' @note Requires the
 #' \href{https://cran.r-project.org/package=RnavGraphImageData}{RnavGraphImageData}
 #' package to be installed and loaded.
 #' @return The Frey Faces dataset as a dataframe.
@@ -42,7 +42,9 @@ frey_faces <- function() {
   utils::data("frey", envir = environment())
 
   df <- data.frame(t(frey))
-  colnames(df) <- sapply(seq(1, 20 * 28), function(x) { paste0("px", x)})
+  colnames(df) <- sapply(seq(1, 20 * 28), function(x) {
+    paste0("px", x)
+  })
 
   df$color <- linear_color_map(1:1965)
   df
