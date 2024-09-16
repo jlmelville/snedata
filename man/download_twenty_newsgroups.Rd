@@ -7,9 +7,9 @@
 A data frame with 5 variables:
 
 \describe{
-\item{\code{Id}}{A unique identifier for the document, consisting of the 
+\item{\code{Id}}{A unique identifier for the document, consisting of the
  subset concatenated with the position in the subset, e.g. \code{train_1}.}
-\item{\code{FileId}}{The integer identifier of the document, from the 
+\item{\code{FileId}}{The integer identifier of the document, from the
  filename of the downloaded data. Be aware that these are \emph{not} unique.}
 \item{\code{Text}}{The full text of the message including any header, footer,
  and quotes. Newlines are preserved.}
@@ -17,7 +17,7 @@ A data frame with 5 variables:
  indicating whether the document is from the training or test subset.}
 \item{\code{Label}}{The newsgroup represented by an integer id, in the range
  0-19.}
-\item{\code{Newsgroup}}{A factor with 20 levels, indicating the newsgroup 
+\item{\code{Newsgroup}}{A factor with 20 levels, indicating the newsgroup
  that the document belongs to.}
 }
 

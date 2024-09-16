@@ -2,6 +2,7 @@
 % Please edit documentation in R/snedata.R
 \docType{package}
 \name{snedata}
+\alias{snedata-package}
 \alias{snedata}
 \title{snedata: Dataset functions for Stochastic Neighbor Embedding and related
 dimensionality reduction methods.}
@@ -195,4 +196,8 @@ Xiao, H., Kashif, R., & Vollgraf, R. (2017).
 Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms.
 \emph{arXiv preprint} \emph{arXiv:1708.07747}.
 \url{https://github.com/zalandoresearch/fashion-mnist/}
+}
+\author{
+\strong{Maintainer}: James Melville \email{jlmelville@gmail.com}
+
 }

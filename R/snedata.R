@@ -182,6 +182,5 @@
 #' \emph{arXiv preprint} \emph{arXiv:1708.07747}.
 #' \url{https://github.com/zalandoresearch/fashion-mnist/}
 #'
-#' @docType package
 #' @name snedata
-NULL
+"_PACKAGE"

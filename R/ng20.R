@@ -212,7 +212,11 @@ read_newsgroups_data <-
       paste0(
         combined_data$Subset,
         "_",
-        ave(seq_along(combined_data$Subset), combined_data$Subset, FUN = seq_along)
+        stats::ave(
+          seq_along(combined_data$Subset),
+          combined_data$Subset,
+          FUN = seq_along
+        )
       )
 
     combined_data <-
