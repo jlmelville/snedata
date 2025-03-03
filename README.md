@@ -9,6 +9,10 @@ methods, most obviously the very popular
 
 ## News
 
+*March 2 2025* New link to download the MNIST digits. The original pages on 
+Yann LeCun's website seem to have gone kaput. Fortunately 
+<https://github.com/fgnt/mnist> maintained a mirror.
+
 *November 25 2023* Added the [20 Newsgroups](http://qwone.com/~jason/20Newsgroups/)
 text dataset. You'll need to look at packages like [tm](https://cran.r-project.org/package=tm)
 or [tidytext](https://cran.r-project.org/package=tidytext) to process this into 

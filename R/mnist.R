@@ -24,7 +24,7 @@ show_mnist_digit <- function(df, n, col = grDevices::gray(1:255 / 255), ...) {
 }
 
 # Base URL of the MNIST digits dataset website
-mnist_url <- "http://yann.lecun.com/exdb/mnist/"
+mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 
 #' Download MNIST
 #'

@@ -1,7 +1,7 @@
 Type: Package
 Package: snedata
 Title: SNE Simulation Dataset Functions
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person("James", "Melville", , "jlmelville@gmail.com", role = c("aut", "cre"))
 Description: Some simple simulation datasets used in Stochastic Neighbor
