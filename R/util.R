@@ -130,11 +130,14 @@ gh_raw <- function(repo, filename, branch = "master") {
   )
 }
 
+
+is_installed <- function(pkgname) {
+  requireNamespace(pkgname, quietly = TRUE)
+  isNamespaceLoaded(pkgname)
+}
+
 stop_if_not_installed <- function(pkg) {
-  if (!requireNamespace(pkg,
-    quietly = TRUE,
-    warn.conflicts = FALSE
-  )) {
+  if (!(is_installed(pkg))) {
     stop("Please install the '", pkg, "' package")
   }
 }
