@@ -10,7 +10,7 @@ show_olivetti_face(df, face, pose, col = grDevices::gray(1/12:1))
 \item{df}{Data frame containing the Olivetti faces.}
 
 \item{face}{Face index of the image to display. Must be an integer between
-1 and 400.}
+1 and 40.}
 
 \item{pose}{Pose index of the image to display. Must be an integer between
 1 and 10.}

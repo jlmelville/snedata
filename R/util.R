@@ -1,6 +1,31 @@
 # Map a vector x to a new linear scale in the range (from, to)
 linear_map <- function(x, from = 0, to = 1) {
-  (x - min(x)) / max(x - min(x)) * (to - from) + from
+  if (!is.numeric(x)) {
+    stop("x must be numeric", call. = FALSE)
+  }
+  if (!is.numeric(from) || length(from) != 1 || !is.finite(from)) {
+    stop("from must be a finite numeric scalar", call. = FALSE)
+  }
+  if (!is.numeric(to) || length(to) != 1 || !is.finite(to)) {
+    stop("to must be a finite numeric scalar", call. = FALSE)
+  }
+  if (length(x) == 0) {
+    return(numeric())
+  }
+  if (any(!is.finite(x))) {
+    stop("x must contain only finite values", call. = FALSE)
+  }
+
+  x_min <- min(x)
+  x_range <- max(x) - x_min
+
+  if (x_range == 0) {
+    mapped <- rep((from + to) / 2, length(x))
+    names(mapped) <- names(x)
+    return(mapped)
+  }
+
+  (x - x_min) / x_range * (to - from) + from
 }
 
 # Linearly maps a numeric vector x onto a color scale ranging from
@@ -101,19 +126,20 @@ equal_factors <- function(x, nfactors) {
 # x, y - Data frames to merge
 # Returns a merged data frame.
 merge_by_row <- function(x, y) {
-  z <- merge(x, y, all = TRUE, sort = FALSE)
-
   # keep column order of larger dataset
   if (ncol(x) < ncol(y)) {
     all_col_names <- union(names(y), names(x))
   } else {
     all_col_names <- union(names(x), names(y))
   }
-  z <- z[, all_col_names]
 
-  z[is.na(z)] <- 0
+  x[setdiff(all_col_names, names(x))] <- 0
+  y[setdiff(all_col_names, names(y))] <- 0
 
-  z
+  rbind(
+    x[, all_col_names, drop = FALSE],
+    y[, all_col_names, drop = FALSE]
+  )
 }
 
 # Get the URL for the raw data version of a file on github

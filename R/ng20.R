@@ -121,18 +121,22 @@ download_twenty_newsgroups <-
 
 
 download_twenty_newsgroups_data <-
-  function(tmpdir = NULL, verbose = FALSE) {
-    ng20url <-
-      "http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
+  function(tmpdir = NULL, verbose = FALSE,
+           url = "http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz") {
+    if (is.null(tmpdir)) {
+      tmpdir <- tempdir()
+    }
+    if (!dir.exists(tmpdir)) {
+      dir.create(tmpdir, recursive = TRUE)
+    }
 
-    tsmessage("Downloading ", ng20url)
-    response <- httr::GET(ng20url)
-    raw_data <- httr::content(response, "raw")
-    gz_conn <- gzcon(rawConnection(raw_data))
+    tarfile <- tempfile("20news-bydate-", fileext = ".tar.gz", tmpdir = tmpdir)
+    on.exit(unlink(tarfile), add = TRUE)
 
+    tsmessage("Downloading ", url)
+    utils::download.file(url, tarfile, quiet = !verbose, mode = "wb")
     tsmessage("Extracting to ", tmpdir)
-    utils::untar(gz_conn, exdir = tmpdir)
-    close(gz_conn)
+    utils::untar(tarfile, exdir = tmpdir)
   }
 
 extract_text_from_file <- function(file_path) {

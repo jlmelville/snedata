@@ -54,7 +54,8 @@ For more information see
 \usage{
 download_norb_small(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
-  verbose = FALSE
+  verbose = FALSE,
+  split = c("all", "training", "testing")
 )
 }
 \arguments{
@@ -62,6 +63,9 @@ download_norb_small(
 
 \item{verbose}{If \code{TRUE}, then download progress will be logged as a
 message.}
+
+\item{split}{Which split to download. Use \code{"all"} for both the training
+and testing sets, or \code{"training"} or \code{"testing"} for one split.}
 }
 \value{
 Data frame containing Small NORB dataset.

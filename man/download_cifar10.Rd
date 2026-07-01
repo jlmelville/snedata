@@ -47,7 +47,7 @@ For more information see
 \usage{
 download_cifar10(
   url = "https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz",
-  destfile = tempfile(),
+  destfile = NULL,
   cleanup = TRUE,
   verbose = FALSE
 )
@@ -55,8 +55,9 @@ download_cifar10(
 \arguments{
 \item{url}{URL of the CIFAR-10 data.}
 
-\item{destfile}{Filename for where to download the CIFAR-10 tarfile. It will
-be untarred and processed in the same directory.}
+\item{destfile}{Filename for where to download the CIFAR-10 tarfile. If
+\code{NULL}, a file in a temporary work directory is used. It will be
+untarred and processed in the same directory.}
 
 \item{cleanup}{If \code{TRUE}, then \code{destfile} and the untarred data
 will be deleted before the function returns. Only worth setting to

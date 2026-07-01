@@ -72,10 +72,11 @@ download_qmnist <- function(base_url = qmnist_url, verbose = FALSE) {
 parse_extended_label_file <- function(filename, base_url = qmnist_url,
                                       verbose = FALSE) {
   f <- open_binary_file(filename, base_url = base_url, verbose = verbose)
+  on.exit(close(f), add = TRUE)
   magic <- readBin(f, "integer", n = 1, size = 4, endian = "big")
   if (magic != 3074) {
     stop(
-      "First four bytes of label file should be magic number 2049 but was ",
+      "First four bytes of label file should be magic number 3074 but was ",
       magic
     )
   }
@@ -90,6 +91,5 @@ parse_extended_label_file <- function(filename, base_url = qmnist_url,
     y[n] <- row_data[1]
   }
 
-  close(f)
   y
 }

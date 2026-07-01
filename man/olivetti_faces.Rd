@@ -23,7 +23,7 @@ person.
 
 The variables are as follows:
 \itemize{
-\item \code{px1}, \code{px2}, \code{px3} ... \code{px560} 8-bit grayscale
+\item \code{px1}, \code{px2}, \code{px3} ... \code{px4096} 8-bit grayscale
 pixel values (0-255). The pixel index starts at the top right of the image
 (\code{px1}) and are then stored column-wise.
 \item \code{Label} An integer in the range (1-40) indicating the person.

@@ -67,6 +67,8 @@
 #' @param base_url Base URL that the files are located at.
 #' @param verbose If \code{TRUE}, then download progress will be logged as a
 #'   message.
+#' @param split Which split to download. Use \code{"all"} for both the training
+#'   and testing sets, or \code{"training"} or \code{"testing"} for one split.
 #' @return Data frame containing Small NORB dataset.
 #' @export
 #' @examples
@@ -109,7 +111,16 @@
 #' @export
 download_norb_small <- function(
     base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
-    verbose = FALSE) {
+    verbose = FALSE,
+    split = c("all", "training", "testing")) {
+  split <- match.arg(split)
+  if (split != "all") {
+    return(read_norb_data(
+      base_url = base_url, split = split,
+      verbose = verbose
+    ))
+  }
+
   training <- read_norb_data(
     base_url = base_url, split = "training",
     verbose = verbose
@@ -194,6 +205,7 @@ read_norb_data <- function(
 
   images <- read_norb_images(
     file = paste0(file_base, "-dat.mat.gz"),
+    base_url = base_url,
     verbose = verbose
   )
   rownames(images) <- c(
@@ -203,10 +215,12 @@ read_norb_data <- function(
 
   cats <- read_norb_categories(
     file = paste0(file_base, "-cat.mat.gz"),
+    base_url = base_url,
     verbose = verbose
   )
   info <- read_norb_info(
     file = paste0(file_base, "-info.mat.gz"),
+    base_url = base_url,
     verbose = verbose
   )
 
@@ -230,6 +244,7 @@ read_norb_images <-
            file = "smallnorb-5x46789x9x18x6x2x96x96-training-dat.mat.gz",
            verbose = TRUE) {
     f <- open_binary_file(base_url = base_url, filename = file, verbose)
+    on.exit(close(f), add = TRUE)
     check_header(f, "byte")
 
     ndim <- readBin(f,
@@ -259,7 +274,6 @@ read_norb_images <-
       )
     }
 
-    close(f)
     res
   }
 
@@ -268,6 +282,7 @@ read_norb_categories <-
            file = "smallnorb-5x46789x9x18x6x2x96x96-training-cat.mat.gz",
            verbose = TRUE) {
     f <- open_binary_file(base_url = base_url, filename = file, verbose)
+    on.exit(close(f), add = TRUE)
     check_header(f, "integer")
 
     ndim <- readBin(f,
@@ -299,7 +314,6 @@ read_norb_categories <-
       endian = "little"
     )
 
-    close(f)
     res
   }
 
@@ -308,6 +322,7 @@ read_norb_info <-
            file = "smallnorb-5x46789x9x18x6x2x96x96-training-info.mat.gz",
            verbose = TRUE) {
     f <- open_binary_file(base_url = base_url, filename = file, verbose)
+    on.exit(close(f), add = TRUE)
     check_header(f, "integer")
 
     ndim <- readBin(f,
@@ -341,7 +356,6 @@ read_norb_info <-
       )
     }
 
-    close(f)
     res
   }
 

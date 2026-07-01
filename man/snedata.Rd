@@ -51,9 +51,9 @@ There's quite a lot of functions:
    steps.}
  \item{\code{\link{random_circle_cluster_data}}. Points sampled from a
    circle and jittered.}
- \item{\code{\link{random_circle_cluster_data}}. Points randomly sampled
+ \item{\code{\link{random_circle_data}}. Points randomly sampled
    from the circumference of a circle.}
- \item{\code{\link{random_circle_cluster_data}}. Points generated from a
+ \item{\code{\link{random_jump}}. Points generated from a
    random walk with an extra gaussian perturbation.}
  \item{\code{\link{random_walk}}. Points generated from a random walk.}
  \item{\code{\link{simplex_data}}. Points arranged as a rough simplex.}
@@ -199,5 +199,10 @@ Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithm
 }
 \author{
 \strong{Maintainer}: James Melville \email{jlmelville@gmail.com}
+
+Authors:
+\itemize{
+  \item James Melville \email{jlmelville@gmail.com}
+}
 
 }

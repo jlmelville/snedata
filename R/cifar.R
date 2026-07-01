@@ -49,8 +49,9 @@
 #' \url{https://www.cs.toronto.edu/~kriz/cifar.html}.
 #'
 #' @param url URL of the CIFAR-10 data.
-#' @param destfile Filename for where to download the CIFAR-10 tarfile. It will
-#'   be untarred and processed in the same directory.
+#' @param destfile Filename for where to download the CIFAR-10 tarfile. If
+#'   \code{NULL}, a file in a temporary work directory is used. It will be
+#'   untarred and processed in the same directory.
 #' @param cleanup If \code{TRUE}, then \code{destfile} and the untarred data
 #'  will be deleted before the function returns. Only worth setting to
 #'  \code{FALSE} to debug problems.
@@ -88,20 +89,45 @@
 #' Technical report, University of Toronto.
 #' @export
 download_cifar10 <- function(url = "https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz",
-                             destfile = tempfile(),
+                             destfile = NULL,
                              cleanup = TRUE,
                              verbose = FALSE) {
+  owned_paths <- character()
+
+  if (is.null(destfile)) {
+    workdir <- tempfile("cifar10-")
+    dir.create(workdir)
+    destfile <- file.path(workdir, basename(url))
+    owned_paths <- workdir
+  } else {
+    if (!endsWith(destfile, "tar.gz")) {
+      destfile <- paste0(destfile, ".tar.gz")
+    }
+    owned_paths <- destfile
+  }
+
   if (!endsWith(destfile, "tar.gz")) {
     destfile <- paste0(destfile, ".tar.gz")
   }
+
+  exdir <- dirname(destfile)
+  extracted_dir <- base::file.path(exdir, "cifar-10-batches-bin")
+  extracted_dir_existed <- dir.exists(extracted_dir)
+
+  if (cleanup) {
+    on.exit(cleanup_owned_paths(owned_paths, verbose = verbose), add = TRUE)
+  }
+
   if (verbose) {
     message("Downloading ", url, " to ", destfile)
     utils::flush.console()
   }
-  utils::download.file(url, destfile, quiet = !verbose)
+  utils::download.file(url, destfile, quiet = !verbose, mode = "wb")
 
-  exdir <- dirname(destfile)
   utils::untar(tarfile = destfile, exdir = exdir)
+  if (!is.null(destfile) && !extracted_dir_existed) {
+    owned_paths <- c(owned_paths, extracted_dir)
+  }
 
   # inside exdir is cifar-10-batches-bin
   # inside cifar-10-batches-bin is data_batch_bin.1 .. 10
@@ -140,19 +166,18 @@ download_cifar10 <- function(url = "https://www.cs.toronto.edu/~kriz/cifar-10-bi
     levels = description_levels
   )
 
-  if (cleanup) {
-    if (verbose) {
-      message("Deleting ", file)
-    }
-    unlink(file)
-
-    if (verbose) {
-      message("Deleting ", exdir)
-    }
-    unlink(exdir, recursive = TRUE)
-  }
-
   res
+}
+
+cleanup_owned_paths <- function(paths, verbose = FALSE) {
+  for (path in unique(paths)) {
+    if (file.exists(path) || dir.exists(path)) {
+      if (verbose) {
+        message("Deleting ", path)
+      }
+      unlink(path, recursive = TRUE)
+    }
+  }
 }
 
 #' Visualize CIFAR-10 image.
@@ -181,31 +206,35 @@ read_cifar_bin <- function(file, verbose = FALSE) {
     message("Reading ", file)
   }
   f <- base::file(file, "rb")
+  on.exit(close(f), add = TRUE)
 
   n_images <- 10000
   n_pixels <- 3072
-  images <- matrix(nrow = n_pixels, ncol = n_images)
-  labels <- rep(0, n_images)
+  record_size <- n_pixels + 1
+  expected_bytes <- n_images * record_size
 
-  for (i in 1:n_images) {
-    # first byte is a label between 0-9
-    labels[i] <- readBin(f,
-      what = "integer", n = 1, size = 1, signed = FALSE,
-      endian = "little"
+  batch <- readBin(f,
+    what = "integer", n = expected_bytes, size = 1, signed = FALSE,
+    endian = "little"
+  )
+  if (length(batch) != expected_bytes) {
+    stop(
+      "Expected ", expected_bytes, " bytes in CIFAR batch but read ",
+      length(batch)
     )
-    # Next 3072 bytes are the red channel pixels, then green channel, then blue
-    # 1024 per channel (32 x 32) in row order
-    img <- readBin(f,
-      what = "integer", n = n_pixels, size = 1, signed = FALSE,
-      endian = "little"
-    )
-    if (length(img) != n_pixels) {
-      close(f)
-      stop("Ran out of data at image ", i)
-    }
-    images[, i] <- img
   }
-  close(f)
+
+  extra <- readBin(f,
+    what = "integer", n = 1, size = 1, signed = FALSE,
+    endian = "little"
+  )
+  if (length(extra) != 0) {
+    stop("CIFAR batch contains more than ", expected_bytes, " bytes")
+  }
+
+  records <- matrix(batch, nrow = record_size)
+  labels <- records[1, ]
+  images <- records[-1, , drop = FALSE]
 
   list(
     images = images,

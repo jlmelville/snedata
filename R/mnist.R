@@ -120,8 +120,9 @@ open_binary_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
 # downloaded.
 # @return Vector of integers representing the digits.
 parse_image_file <- function(filename, base_url = mnist_url,
-                             verbose = verbose) {
+                             verbose = FALSE) {
   f <- open_binary_file(filename, base_url = base_url, verbose = verbose)
+  on.exit(close(f), add = TRUE)
   magic <- readBin(f, "integer", n = 1, size = 4, endian = "big")
   if (magic != 2051) {
     stop(
@@ -133,7 +134,6 @@ parse_image_file <- function(filename, base_url = mnist_url,
   nrow <- readBin(f, "integer", n = 1, size = 4, endian = "big")
   ncol <- readBin(f, "integer", n = 1, size = 4, endian = "big")
   x <- readBin(f, "integer", n = n * nrow * ncol, size = 1, signed = FALSE)
-  close(f)
   matrix(x, ncol = nrow * ncol, byrow = TRUE)
 }
 
@@ -148,6 +148,7 @@ parse_image_file <- function(filename, base_url = mnist_url,
 # @return Vector of integers representing the digits.
 parse_label_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
   f <- open_binary_file(filename, base_url = base_url, verbose = verbose)
+  on.exit(close(f), add = TRUE)
   magic <- readBin(f, "integer", n = 1, size = 4, endian = "big")
   if (magic != 2049) {
     stop(
@@ -157,7 +158,6 @@ parse_label_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
   }
   n <- readBin(f, "integer", n = 1, size = 4, endian = "big")
   y <- readBin(f, "integer", n = n, size = 1, signed = FALSE)
-  close(f)
   y
 }
 

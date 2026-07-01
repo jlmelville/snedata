@@ -193,7 +193,7 @@ swiss_roll <- function(n = 1000, min_phi = 1.5 * pi, max_phi = 4.5 * pi,
 #' S-curve data set.
 #'
 #' Simulation data randomly sampled from an S-shaped curve. Translated from the
-#' \href{https://scikit-learn.org/stable/index.html}{scikit-learn} Pythom
+#' \href{https://scikit-learn.org/stable/index.html}{scikit-learn} Python
 #' function \code{sklearn.datasets.make_s_curve}.
 #'
 #' Creates a series of points sampled from an S-shaped curve in 3D, with

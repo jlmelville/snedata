@@ -40,24 +40,24 @@ df <- subset_clusters_data(n = 50, dim = 10, big_sdev = 2)
 \url{http://distill.pub/2016/misread-tsne/}
 }
 \seealso{
-Other distill functions: 
-\code{\link{circle_data}()},
-\code{\link{cube_data}()},
-\code{\link{gaussian_data}()},
-\code{\link{grid_data}()},
-\code{\link{link_data}()},
-\code{\link{long_cluster_data}()},
-\code{\link{long_gaussian_data}()},
-\code{\link{ortho_curve}()},
-\code{\link{random_circle_cluster_data}()},
-\code{\link{random_circle_data}()},
-\code{\link{random_jump}()},
-\code{\link{random_walk}()},
-\code{\link{simplex_data}()},
-\code{\link{three_clusters_data}()},
-\code{\link{trefoil_data}()},
-\code{\link{two_clusters_data}()},
-\code{\link{two_different_clusters_data}()},
-\code{\link{unlink_data}()}
+Other distill functions:
+\code{\link[=circle_data]{circle_data()}},
+\code{\link[=cube_data]{cube_data()}},
+\code{\link[=gaussian_data]{gaussian_data()}},
+\code{\link[=grid_data]{grid_data()}},
+\code{\link[=link_data]{link_data()}},
+\code{\link[=long_cluster_data]{long_cluster_data()}},
+\code{\link[=long_gaussian_data]{long_gaussian_data()}},
+\code{\link[=ortho_curve]{ortho_curve()}},
+\code{\link[=random_circle_cluster_data]{random_circle_cluster_data()}},
+\code{\link[=random_circle_data]{random_circle_data()}},
+\code{\link[=random_jump]{random_jump()}},
+\code{\link[=random_walk]{random_walk()}},
+\code{\link[=simplex_data]{simplex_data()}},
+\code{\link[=three_clusters_data]{three_clusters_data()}},
+\code{\link[=trefoil_data]{trefoil_data()}},
+\code{\link[=two_clusters_data]{two_clusters_data()}},
+\code{\link[=two_different_clusters_data]{two_different_clusters_data()}},
+\code{\link[=unlink_data]{unlink_data()}}
 }
 \concept{distill functions}

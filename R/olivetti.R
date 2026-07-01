@@ -9,7 +9,7 @@
 #'
 #' The variables are as follows:
 #' \itemize{
-#' \item \code{px1}, \code{px2}, \code{px3} ... \code{px560} 8-bit grayscale
+#' \item \code{px1}, \code{px2}, \code{px3} ... \code{px4096} 8-bit grayscale
 #' pixel values (0-255). The pixel index starts at the top right of the image
 #' (\code{px1}) and are then stored column-wise.
 #' \item \code{Label} An integer in the range (1-40) indicating the person.
@@ -58,17 +58,31 @@ olivetti_faces <- function() {
 #'
 #' @param df Data frame containing the Olivetti faces.
 #' @param face Face index of the image to display. Must be an integer between
-#' 1 and 400.
+#' 1 and 40.
 #' @param pose Pose index of the image to display. Must be an integer between
 #' 1 and 10.
 #' @param col List of colors to use in the display.
 #' @export
 show_olivetti_face <- function(df, face, pose,
                                col = grDevices::gray(1 / 12:1)) {
-  if (face < 1 || face > 400) {
-    stop("face must be an integer between 1 and 400")
+  if (
+    !is.numeric(face) ||
+      length(face) != 1 ||
+      !is.finite(face) ||
+      face < 1 ||
+      face > 40 ||
+      face != floor(face)
+  ) {
+    stop("face must be an integer between 1 and 40")
   }
-  if (pose < 1 || pose > 10) {
+  if (
+    !is.numeric(pose) ||
+      length(pose) != 1 ||
+      !is.finite(pose) ||
+      pose < 1 ||
+      pose > 10 ||
+      pose != floor(pose)
+  ) {
     stop("pose must be an integer between 1 and 10")
   }
   n <- paste(face, pose, sep = "_")

@@ -538,20 +538,32 @@ ortho_curve <- function(n) {
 #' @references \url{http://distill.pub/2016/misread-tsne/}
 #' @export
 random_walk <- function(n, dim) {
+  n <- positive_integer_scalar(n, "n")
+  dim <- positive_integer_scalar(dim, "dim")
+
   current <- rep(0, dim)
-  df <- data.frame(matrix(nrow = n, ncol = dim))
-  for (i in 0:n - 1) {
-    step <- stats::rnorm(dim)
-    next_step <- current
-    for (j in 0:dim - 1) {
-      next_step[j + 1] <- current[j + 1] + step[j + 1]
-    }
-    df[i + 1, ] <- next_step
-    current <- next_step
+  m <- matrix(NA_real_, nrow = n, ncol = dim)
+  for (i in seq_len(n)) {
+    current <- current + stats::rnorm(dim)
+    m[i, ] <- current
   }
 
+  df <- data.frame(m)
   df$color <- linear_color_map(1.5 * pi * 0:(n - 1) / n)
   df
+}
+
+positive_integer_scalar <- function(x, name) {
+  if (
+    !is.numeric(x) ||
+      length(x) != 1 ||
+      !is.finite(x) ||
+      x < 1 ||
+      x != floor(x)
+  ) {
+    stop(name, " must be a positive integer", call. = FALSE)
+  }
+  as.integer(x)
 }
 
 #' Random Jump Data
@@ -573,17 +585,17 @@ random_walk <- function(n, dim) {
 #' @references \url{http://distill.pub/2016/misread-tsne/}
 #' @export
 random_jump <- function(n, dim) {
-  df <- data.frame(matrix(nrow = n, ncol = dim))
+  n <- positive_integer_scalar(n, "n")
+  dim <- positive_integer_scalar(dim, "dim")
+
+  m <- matrix(NA_real_, nrow = n, ncol = dim)
   current <- rep(0, dim)
-  for (i in 0:n - 1) {
-    step <- stats::rnorm(dim)
-    next_step <- step + current
-    r <- stats::rnorm(dim)
-    r <- r * sqrt(dim)
-    df[i + 1, ] <- r + next_step
-    current <- next_step
+  for (i in seq_len(n)) {
+    current <- current + stats::rnorm(dim)
+    m[i, ] <- current + stats::rnorm(dim) * sqrt(dim)
   }
 
+  df <- data.frame(m)
   df$color <- linear_color_map(1.5 * pi * 0:(n - 1) / n)
   df
 }
