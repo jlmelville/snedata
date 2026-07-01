@@ -1,5 +1,4 @@
 library("snedata")
-context("rotate bug")
 
 rot <- function(x, y, z) {
   res <- snedata:::rotate(list(x = x, y = y, z = z))

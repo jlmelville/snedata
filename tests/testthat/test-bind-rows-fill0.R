@@ -1,5 +1,3 @@
-context("row binding with zero-filled dimensions")
-
 test_that("two_clusters_data preserves extra dimensions with zeros", {
   set.seed(42)
   df <- two_clusters_data(n = 3, dim = c(2, 4))

@@ -1,5 +1,3 @@
-context("download parser safety")
-
 file_base_url <- function(path) {
   paste0("file://", normalizePath(path, winslash = "/", mustWork = TRUE), "/")
 }
@@ -126,15 +124,18 @@ test_that("NORB parsers read small local gzip fixtures through base_url", {
 
   images <- snedata:::read_norb_images(
     file = "images.mat.gz",
-    base_url = file_base_url(tmpdir)
+    base_url = file_base_url(tmpdir),
+    verbose = FALSE
   )
   categories <- snedata:::read_norb_categories(
     file = "categories.mat.gz",
-    base_url = file_base_url(tmpdir)
+    base_url = file_base_url(tmpdir),
+    verbose = FALSE
   )
   info <- snedata:::read_norb_info(
     file = "info.mat.gz",
-    base_url = file_base_url(tmpdir)
+    base_url = file_base_url(tmpdir),
+    verbose = FALSE
   )
 
   expect_equal(dim(images), c(4L, 2L))

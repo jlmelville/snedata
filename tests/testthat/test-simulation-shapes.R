@@ -1,5 +1,3 @@
-context("simulation shapes")
-
 test_that("random_walk returns the requested shape", {
   set.seed(42)
   df <- random_walk(n = 5, dim = 3)
