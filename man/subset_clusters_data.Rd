@@ -16,7 +16,7 @@ smaller cluster has a standard deviation of 1.}
 }
 \value{
 Data frame with coordinates in the \code{X1}, \code{X2} ...
- \code{Xdim} columns, and color in the \code{color} column.
+\code{Xdim} columns, and color in the \code{color} column.
 }
 \description{
 One tiny gaussian cluster inside of a big cluster from "How to Use t-SNE

@@ -66,7 +66,7 @@
 #'
 #' # first 50,000 instances are the training set
 #' cifar10_train <- head(cifar10, 50000)
-#' # the remaining 24,300 are the test set
+#' # the remaining 10,000 are the test set
 #' cifar10_test <- tail(cifar10, 10000)
 #'
 #' # PCA on 1000 examples

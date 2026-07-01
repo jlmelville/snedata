@@ -72,9 +72,11 @@
 #' }
 #'
 #' @section MNIST dataset functions:
-#' Another (much larger) image dataset is the MNIST digits dataset, available
-#' from \url{http://yann.lecun.com/exdb/mnist/}. Functions are available to
-#' download the dataset as a data frame and visualize individual digits:
+#' Another (much larger) image dataset is the MNIST digits dataset. The
+#' original data set is described at \url{http://yann.lecun.com/exdb/mnist/},
+#' and this package downloads from the \url{https://github.com/fgnt/mnist}
+#' mirror. Functions are available to download the dataset as a data frame and
+#' visualize individual digits:
 #'
 #' \itemize{
 #'   \item{\code{\link{download_mnist}}. Downloads the MNIST dataset files
@@ -126,7 +128,7 @@
 #' }
 #'
 #' \dontrun{
-#' # fetch the MNIST data set from the MNIST website
+#' # fetch the MNIST data set from the configured mirror
 #' mnist <- download_mnist()
 #' # view the fifth digit
 #' show_mnist_digit(mnist, 5)

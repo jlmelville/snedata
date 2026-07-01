@@ -8,7 +8,7 @@ A data frame with 785 variables:
 
 \describe{
 \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
-  value, from 0 (white) to 255 (black).}
+value, from 0 (white) to 255 (black).}
 \item{\code{Label}}{The digit represented by the image, in the range 0-9.}
 }
 
@@ -16,7 +16,7 @@ Pixels are organized row-wise. The \code{Label} variable is stored as a
 factor.
 
 There are 120,000 digits in the data set. The first 60,000 are the training
-set, as found in the \code{qmnist-train-images-idx3-ubyte.hz} file. The
+set, as found in the \code{qmnist-train-images-idx3-ubyte.gz} file. The
 remaining 60,000 are the test set, from the
 \code{qmnist-test-images-idx3-ubyte.gz} file.
 
@@ -54,7 +54,7 @@ qmnist <- download_qmnist()
 # first 60,000 instances are the training set
 qmnist_train <- head(qmnist, 60000)
 # the remaining 60,000 are the test set
-qmnist_test <- tail(mnist, 60000)
+qmnist_test <- tail(qmnist, 60000)
 }
 }
 \references{

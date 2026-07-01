@@ -13,7 +13,7 @@ data frame will be \code{20 * n}.}
 }
 \value{
 Data frame with x and y coordinates in the columns \code{x} and
- \code{y} respectively, and color in the \code{color} column.
+\code{y} respectively, and color in the \code{color} column.
 }
 \description{
 Clusters arranged in a circle from "How to Use t-SNE Effectively".

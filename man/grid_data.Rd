@@ -11,7 +11,7 @@ grid_data(n = 10)
 }
 \value{
 Data frame with coordinates in the \code{x} and \code{y} columns,
- and a per-point color in the \code{color} column.
+and a per-point color in the \code{color} column.
 }
 \description{
 2D grid data from "How to Use t-SNE Effectively".

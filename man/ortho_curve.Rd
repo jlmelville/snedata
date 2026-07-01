@@ -11,7 +11,7 @@ ortho_curve(n)
 }
 \value{
 Data frame with coordinates in the \code{X1}, \code{X2} ...
- \code{Xn} columns, and color in the \code{color} column.
+\code{Xn} columns, and color in the \code{color} column.
 }
 \description{
 Points related by mutually orthogonal steps, from "How to Use t-SNE

@@ -8,7 +8,7 @@ A data frame with 786 variables:
 
 \describe{
 \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
-  value, from 0 (white) to 255 (black).}
+value, from 0 (white) to 255 (black).}
 \item{\code{Label}}{The character, represented by an integer in the
 range 0-9.}
 }

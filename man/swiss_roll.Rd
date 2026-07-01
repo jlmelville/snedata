@@ -18,7 +18,7 @@ values is always 0).}
 }
 \value{
 Data frame with \code{x}, \code{y}, \code{z} columns containing the
- coordinates of the points and \code{color} the RGB color.
+coordinates of the points and \code{color} the RGB color.
 }
 \description{
 Simulation data randomly sampled from a 2D plane curled up into 3 dimensions.
@@ -33,9 +33,10 @@ from that given in the Stochastic Proximity Embedding paper by Agrafiotis
 and Xu (I don't know who originally came up with the data set, though):
 \deqn{x = \phi cos\phi, y = \phi sin \phi, z}{x = phi * cos(phi), y = phi * sin(phi), z}
 
-where \eqn{\phi}{phi} and z are random numbers in the intervals
-[\eqn{\frac{3\pi}{2}}{3/2 pi}, \eqn{\frac{5\pi}{2}}{5/2 pi}]
-and [0, 10], respectively (the range of \eqn{\phi} and \code{z} can
+where \eqn{\phi}{phi} is sampled between
+\eqn{\frac{3\pi}{2}}{3/2 pi} and
+\eqn{\frac{5\pi}{2}}{5/2 pi}, and \code{z} is sampled between 0 and 10
+(the range of \eqn{\phi} and \code{z} can
 be modified, if desired).
 
 Points are colored based on the value of phi. If you unrolled the manifold

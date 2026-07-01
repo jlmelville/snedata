@@ -21,7 +21,7 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/master/"
 #' factor.
 #'
 #' There are 120,000 digits in the data set. The first 60,000 are the training
-#' set, as found in the \code{qmnist-train-images-idx3-ubyte.hz} file. The
+#' set, as found in the \code{qmnist-train-images-idx3-ubyte.gz} file. The
 #' remaining 60,000 are the test set, from the
 #' \code{qmnist-test-images-idx3-ubyte.gz} file.
 #'
@@ -43,7 +43,7 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/master/"
 #' # first 60,000 instances are the training set
 #' qmnist_train <- head(qmnist, 60000)
 #' # the remaining 60,000 are the test set
-#' qmnist_test <- tail(mnist, 60000)
+#' qmnist_test <- tail(qmnist, 60000)
 #' }
 #' @references
 #' Yadav, C., & Bottou, L. (2019, May).

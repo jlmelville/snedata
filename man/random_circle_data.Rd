@@ -11,7 +11,7 @@ random_circle_data(n)
 }
 \value{
 Data frame with x and y coordinates in the columns \code{x} and
- \code{y} respectively, and color in the \code{color} column.
+\code{y} respectively, and color in the \code{color} column.
 }
 \description{
 Random points on a 2D circle from "How to Use t-SNE Effectively".

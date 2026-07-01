@@ -13,7 +13,7 @@ three_clusters_data(n, dim = 50)
 }
 \value{
 Data frame with coordinates in the \code{X1}, \code{X2} ...
- \code{Xdim} columns, and color in the \code{color} column.
+\code{Xdim} columns, and color in the \code{color} column.
 }
 \description{
 Three gaussian clusters with equal size and bandwidth from "How to Use t-SNE

@@ -11,7 +11,7 @@ circle_data(n)
 }
 \value{
 Data frame with x and y coordinates in the columns \code{x} and
- \code{y} respectively, and color in the \code{color} column.
+\code{y} respectively, and color in the \code{color} column.
 }
 \description{
 2D circle data with uniform spacing from "How to Use t-SNE Effectively".

@@ -8,7 +8,7 @@ A data frame with 785 variables:
 
 \describe{
 \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
-  value, from 0 (white) to 255 (black).}
+value, from 0 (white) to 255 (black).}
 \item{\code{Label}}{The digit represented by the image, in the range 0-9.}
 }
 
@@ -22,7 +22,8 @@ set, as found in the \code{train-images-idx3-ubyte.gz} file. The remaining
 Items in the dataset can be visualized with
 \code{\link{show_mnist_digit}}.
 
-For more information see \url{http://yann.lecun.com/exdb/mnist}.
+For more information about the original dataset see
+\url{http://yann.lecun.com/exdb/mnist}.
 }
 \usage{
 download_mnist(base_url = mnist_url, verbose = FALSE)
@@ -41,7 +42,8 @@ Download MNIST database of handwritten digits.
 }
 \details{
 Downloads the image and label files for the training and test datasets from
-\url{http://yann.lecun.com/exdb/mnist} and converts them to a data frame.
+the \url{https://github.com/fgnt/mnist} mirror of the original MNIST files
+and converts them to a data frame.
 }
 \note{
 Originally based on a function by Brendan O'Connor.

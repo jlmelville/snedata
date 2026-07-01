@@ -11,7 +11,7 @@ sphere(n = 1000)
 }
 \value{
 Data frame with \code{x}, \code{y}, \code{z} columns containing the
- coordinates of the points and \code{color} the RGB color.
+coordinates of the points and \code{color} the RGB color.
 }
 \description{
 Simulation data randomly sampled from the surface of a 3D sphere.

@@ -15,7 +15,7 @@ cube_data(n, dim, color = "#003399")
 }
 \value{
 Data frame with coordinates in the \code{X1}, \code{X2} ...
- \code{Xdim} columns, and color in the \code{color} column.
+\code{Xdim} columns, and color in the \code{color} column.
 }
 \description{
 Random points sampled from a cube, from "How to Use t-SNE Effectively".

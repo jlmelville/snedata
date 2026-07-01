@@ -9,10 +9,10 @@
 #' five categories (animal, human, airplane, truck, car) with ten examples per
 #' category. Each object was then images under 6 different lighting conditions,
 #' 9 elevations and 18 different azimuths, so there are 972 images per toy. The
-#' process was then repeated with a different camera, so there are actually 972
-#' * 2 = 1944 images per toy. This dataset stores each pair of images for a
-#' given toy, lighting, elevation and azimuth as a single row. Each image is 96
-#' * 96 pixels, so the first 9,216 columns contain the pixels of the first
+#' process was then repeated with a different camera, so there are actually
+#' 1,944 images per toy. This dataset stores each pair of images for a
+#' given toy, lighting, elevation and azimuth as a single row. Each image is
+#' 96 by 96 pixels, so the first 9,216 columns contain the pixels of the first
 #' image, and the second 9,216 (\code{9217:18432}) columns contain the pixels of
 #' the second image. The other information (lighting and so on) are also stored
 #' as factors.
@@ -82,8 +82,8 @@
 #' norb_test <- tail(norb, 24300)
 #'
 #' # Or equivalently
-#' norb_train <- norb[norb$Split == "training", ]
-#' norb_test <- norb[norb$Split == "testing", ]
+#' norb_train2 <- norb[norb$Split == "training", ]
+#' norb_test2 <- norb[norb$Split == "testing", ]
 #'
 #' identical(norb_train, norb_train2) # TRUE
 #' identical(norb_test, norb_test2) # also TRUE

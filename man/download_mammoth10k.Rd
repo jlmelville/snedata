@@ -5,12 +5,12 @@
 \title{Mammoth 10K}
 \format{
 A data frame with 10,000 rows and 3 variables, \code{X}, \code{Z},
-  \code{Y}, containing the X, Z, and Y coordinates respectively. This
-  labeling of axes preserves the ordering of the data, and makes the
-  Z-coordinate the "height", i.e. the height of the mammoth varies with Z.
-  Note that the ordering of the axes differs from that of
-  \code{\link{download_mammoth50k}}. Use the X, Y, and Z labels rather than
-  numerical indices for consistency between the two datasets.
+\code{Y}, containing the X, Z, and Y coordinates respectively. This
+labeling of axes preserves the ordering of the data, and makes the
+Z-coordinate the "height", i.e. the height of the mammoth varies with Z.
+Note that the ordering of the axes differs from that of
+\code{\link{download_mammoth50k}}. Use the X, Y, and Z labels rather than
+numerical indices for consistency between the two datasets.
 
 For more information see \url{https://pair-code.github.io/understanding-umap/}.
 }

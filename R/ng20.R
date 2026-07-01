@@ -10,7 +10,7 @@
 #' are read as \code{latin1} encoding, but there can still be some odd control
 #' codes in some of the messages.
 #'
-#' @format A data frame with 5 variables:
+#' @format A data frame with 6 variables:
 #'
 #' \describe{
 #' \item{\code{Id}}{A unique identifier for the document, consisting of the

@@ -23,7 +23,7 @@ show_mnist_digit <- function(df, n, col = grDevices::gray(1:255 / 255), ...) {
   )
 }
 
-# Base URL of the MNIST digits dataset website
+# Base URL of the MNIST digits dataset mirror
 mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 
 #' Download MNIST
@@ -31,7 +31,8 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 #' Download MNIST database of handwritten digits.
 #'
 #' Downloads the image and label files for the training and test datasets from
-#' \url{http://yann.lecun.com/exdb/mnist} and converts them to a data frame.
+#' the \url{https://github.com/fgnt/mnist} mirror of the original MNIST files
+#' and converts them to a data frame.
 #'
 #' @format A data frame with 785 variables:
 #'
@@ -51,7 +52,8 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 #' Items in the dataset can be visualized with
 #' \code{\link{show_mnist_digit}}.
 #'
-#' For more information see \url{http://yann.lecun.com/exdb/mnist}.
+#' For more information about the original dataset see
+#' \url{http://yann.lecun.com/exdb/mnist}.
 #'
 #' @param base_url Base URL that the MNIST files are located at.
 #' @param verbose If \code{TRUE}, then download progress will be logged as a

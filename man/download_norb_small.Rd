@@ -8,37 +8,37 @@ A data frame with 18,439 variables:
 
 \describe{
 \item{\code{c0px1}, \code{c0px2}, \code{c0px3} ... \code{c0px9216}}{Integer
-  pixel value, from 0 (white) to 255 (black) for the first image in the
-  pair}
+pixel value, from 0 (white) to 255 (black) for the first image in the
+pair}
 \item{\code{c1px1}, \code{c1px2}, \code{c1px3} ... \code{c1px9216}}{Integer
-  pixel value, from 0 (white) to 255 (black) for the second image in the
-  pair}
+pixel value, from 0 (white) to 255 (black) for the second image in the
+pair}
 \item{\code{Instance}}{The index of the toy in a particular category,
-  represented by a factor in the range 0-9. The training set consists of
-  instances 0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.}
+represented by a factor in the range 0-9. The training set consists of
+instances 0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.}
 \item{\code{Elevation}}{The elevation of the camera represented by a
-  factor in the range 0-8. These represent elevations of 30 to 70 degrees
-  from the horizontal, in increments of 5 degrees.}
+factor in the range 0-8. These represent elevations of 30 to 70 degrees
+from the horizontal, in increments of 5 degrees.}
 \item{\code{Azimuth}}{The azimuth, represented by a factor in the range
-  0, 2, 4 .. 34. Multiply by ten to get the value in degrees.}
+0, 2, 4 .. 34. Multiply by ten to get the value in degrees.}
 \item{\code{Lighting}}{The lighting condition, represened by a factor in
-  the range 0-5.}
+the range 0-5.}
 \item{\code{Label}}{The toy category, represented by a factor in the
-  range 0-4.}
+range 0-4.}
 \item{\code{Split}}{Whether the toy in is in the \code{training} or
-  \code{testing} set, represented by a factor}
+\code{testing} set, represented by a factor}
 \item{\code{Description}}{The name of the toy category associated with
-  \code{Label}, represented by a factor.}
+\code{Label}, represented by a factor.}
 }
 
 The pixel features are organized row-wise from the top left of each image.
 The \code{Label} levels correspond to:
 \describe{
-  \item{\code{0}}{Four-legged animal}
-  \item{\code{1}}{Human figure}
-  \item{\code{2}}{Airplane}
-  \item{\code{3}}{Truck}
-  \item{\code{4}}{Car}
+\item{\code{0}}{Four-legged animal}
+\item{\code{1}}{Human figure}
+\item{\code{2}}{Airplane}
+\item{\code{3}}{Truck}
+\item{\code{4}}{Car}
 }
 
 There are 48,600 items in the data set. The first 24,300 are the training
@@ -81,10 +81,10 @@ The Small NORB dataset contains images of 50 toys. The toys are divided into
 five categories (animal, human, airplane, truck, car) with ten examples per
 category. Each object was then images under 6 different lighting conditions,
 9 elevations and 18 different azimuths, so there are 972 images per toy. The
-process was then repeated with a different camera, so there are actually 972
-* 2 = 1944 images per toy. This dataset stores each pair of images for a
-given toy, lighting, elevation and azimuth as a single row. Each image is 96
-* 96 pixels, so the first 9,216 columns contain the pixels of the first
+process was then repeated with a different camera, so there are actually
+1,944 images per toy. This dataset stores each pair of images for a
+given toy, lighting, elevation and azimuth as a single row. Each image is
+96 by 96 pixels, so the first 9,216 columns contain the pixels of the first
 image, and the second 9,216 (\code{9217:18432}) columns contain the pixels of
 the second image. The other information (lighting and so on) are also stored
 as factors.
@@ -100,8 +100,8 @@ norb_train <- head(norb, 24300)
 norb_test <- tail(norb, 24300)
 
 # Or equivalently
-norb_train <- norb[norb$Split == "training", ]
-norb_test <- norb[norb$Split == "testing", ]
+norb_train2 <- norb[norb$Split == "training", ]
+norb_test2 <- norb[norb$Split == "testing", ]
 
 identical(norb_train, norb_train2) # TRUE
 identical(norb_test, norb_test2) # also TRUE

@@ -29,7 +29,7 @@ pixel values (0-255). The pixel index starts at the top right of the image
 \item \code{Label} An integer in the range (1-40) indicating the person.
 }
 
-Each row has a name with the format "<face>_<pose>", where \code{<face>} is
+Each row has a name with the format "\if{html}{\out{<face>}}_\if{html}{\out{<pose>}}", where \code{<face>} is
 the index of the face, and \code{<pose>} is the index of the pose, e.g.
 the row with name \code{20_10} is the tenth pose of the twentieth face.
 }

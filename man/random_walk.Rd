@@ -13,7 +13,7 @@ random_walk(n, dim)
 }
 \value{
 Data frame with coordinates in the \code{X1}, \code{X2} ...
- \code{Xn} columns, and color in the \code{color} column.
+\code{Xn} columns, and color in the \code{color} column.
 }
 \description{
 Simulation data from a random walk process, from "How to Use t-SNE

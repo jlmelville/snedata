@@ -17,7 +17,7 @@ gaussian_data(n, dim, sd = 1, color = NULL)
 }
 \value{
 Data frame with coordinates in the \code{X1}, \code{X2} ...
- \code{Xdim} columns, and color in the \code{color} column.
+\code{Xdim} columns, and color in the \code{color} column.
 }
 \description{
 Symmetric gaussian data from "How to Use t-SNE Effectively".

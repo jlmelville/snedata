@@ -17,7 +17,7 @@ helix(n = 1000, rmajor = 2, rminor = 1, nwinds = 8)
 }
 \value{
 Data frame with \code{x}, \code{y}, \code{z} columns containing the
- coordinates of the points and \code{color} the RGB color.
+coordinates of the points and \code{color} the RGB color.
 }
 \description{
 Simulation data in the shape of a 3D toroidal helix.

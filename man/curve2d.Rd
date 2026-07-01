@@ -8,7 +8,7 @@ curve2d()
 }
 \value{
 Data frame with 1450 rows, and 3 columns: \code{x}, \code{y} columns
-  contain the coordinates of the points and \code{color} the RGB color.
+contain the coordinates of the points and \code{color} the RGB color.
 }
 \description{
 Simulation data of a 2D polynomial curve.
