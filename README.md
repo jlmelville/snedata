@@ -2,6 +2,11 @@
 
 SNE Dataset Functions for R
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/jlmelville/snedata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jlmelville/snedata/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/jlmelville/snedata/branch/master/graph/badge.svg)](https://app.codecov.io/gh/jlmelville/snedata?branch=master)
+<!-- badges: end -->
+
 This package provides functions for generating simple simulation datasets for
 use in Stochastic Neighbor Embedding and related dimensionality reduction
 methods, most obviously the very popular
