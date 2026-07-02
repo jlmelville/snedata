@@ -3,3 +3,6 @@
 ^\.github$
 ^\.lintr$
 ^air\.toml$
+^_pkgdown\.yml$
+^docs$
+^vignettes/articles$

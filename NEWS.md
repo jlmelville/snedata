@@ -1,8 +1,10 @@
-# News
+# snedata 0.0.0.9002
 
 *July 1 2026* Version 0.0.9002 adds no new datasets, but did a lot of tidying up, especially around
 cleaning up temp files and network connections. Also, instead of a dataframe, you can now return
 a list containing the matrix of the numeric data and any labels separately. Supply `as = "matrix"`.
+
+# snedata 0.0.0.9001 and earlier
 
 *March 2 2025* New link to download the MNIST digits. The original pages on Yann LeCun's website
 seem to have gone kaput. Fortunately <https://github.com/fgnt/mnist> maintained a mirror.

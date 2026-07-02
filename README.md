@@ -9,75 +9,32 @@ methods, most obviously the very popular
 
 ## Datasets
 
-* Synthetic data similar to those used by Lee and co-workers in their 
-[JSE](http://dx.doi.org/10.1016/j.neucom.2012.12.036) and 
-[multi-JSE](http://dx.doi.org/10.1016/j.neucom.2014.12.095) papers.
+The package includes simulation datasets, the datasets from
+[How to use t-SNE Effectively](http://distill.pub/2016/misread-tsne/), optional
+Frey and Olivetti face helpers, MNIST-like datasets, CIFAR-10, Small NORB,
+mammoth point clouds, 20 Newsgroups, and a few other examples used in
+dimensionality reduction papers.
 
-* Also, Martin Wattenberg, Fernanda Viégas and Ian Johnson published an 
-interactive article 
-[How to use t-SNE Effectively](http://distill.pub/2016/misread-tsne/).
-The JavaScript functions used to create the simulation datasets
-(which can also be found at https://github.com/distillpub/post--misread-tsne),
-have been translated into R and are also hosted in this package.
+The pkgdown site has a fuller
+[datasets article](https://jlmelville.github.io/snedata/articles/datasets.html)
+with a table, notes, and longer examples.
 
-* Additionally, if you have the 
-[RnavGraphImageData](https://cran.r-project.org/package=RnavGraphImageData)
-package installed, there are also functions to convert the Olivetti and Frey 
-faces datasets into a row-based data frame and functions to visualize them.
-
-* Code to download and visualize the 
-[MNIST database](http://yann.lecun.com/exdb/mnist/), based on 
-[a gist by Brendan O'Connor](https://gist.github.com/brendano/39760), who 
-graciously allowed it to be MIT-licensed.
-
-* [QMNIST](https://github.com/facebookresearch/qmnist) extends the MNIST test
-dataset to 60,000 digits.
-
-* The [Fashion-MNIST](https://github.com/zalandoresearch/fashion-mnist) dataset 
-is intended as drop-in replacement for the MNIST digits database, but using 
-images of fashion items, and to be harder to perform well with machine learning
-benchmarks. Items can be visualized with the same function intended for the 
-MNIST digits.
-
-* The [Kuzushiji-MNIST](https://github.com/rois-codh/kmnist) dataset, another
-drop-in replacement for the MNIST digits, but this time of types of cursive
-Japanese characters.
-
-* The [Small NORB](https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/) dataset,
-which consists of pairs of images of 50 toys from different angles and under
-different lighting conditions.
-
-* The [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset, which
-consists of 60,000 32 x 32 color images in ten different classes.
-
-* A 3D point cloud of a [mammoth at the
-Smithsonian](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12),
-from [Understanding UMAP](https://pair-code.github.io/understanding-umap/),
-based on work originally done by [Max
-Noichl](https://github.com/MNoichl/UMAP-examples-mammoth-).
-
-* A 3D S-curve with a hole data set, used to validate the [PaCMAP
-method](https://arxiv.org/abs/2012.04456) (see also the [github
-repo](https://github.com/YingfanWang/PaCMAP)). Bonus: a translation from Python
-of the [sklearn.datasets.make_s_curve
-function](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html).
-Also: a simple 2D curve dataset, useful for testing initialization strategies.
-
-## Installing:
+## Install
 
 ```R
-install.packages("remotes")
-remotes::install_github("jlmelville/snedata")
+install.packages("pak")
+pak::pak("jlmelville/snedata")
 ```
 
-## Documentation:
+## Documentation
 
 ```R
 package?snedata # lists all the functions
 ?snedata::gaussian_data # contains links to all the other distill.pub functions
 ```
 
-# Examples
+## Examples
+
 ```R
 library(snedata)
 
@@ -95,23 +52,6 @@ swiss1000 <- swiss_roll(n = 1000)
 
 # 1000 points from a five-dimensional gaussian:
 gauss1000 <- gaussian_data(n = 1000, dim = 5)
-
-# Load RnavGraphImageData
-library(RnavGraphImageData)
-
-# Load the Frey faces dataset with each image as a row
-frey <- frey_faces()
-# Display the first pose
-show_frey_face(frey, 1)
-
-# PCA scores plot, with color indicating the frame index
-frey_pca <- prcomp(frey[, -561], retx = TRUE, rank. = 2)
-plot(frey_pca$x, col = frey$color, pch = 16, cex = 0.75)
-
-# Load the Olivetti faces dataset with each image as a row
-olivetti <- olivetti_faces()
-# Show the second pose of the first face
-show_olivetti_face(olivetti, 1, 2)
 
 # Generate datasets similar to those used in the main text of "How to Use t-SNE Effectively"
 misread_tsne <- list(
@@ -150,23 +90,8 @@ text(pca$x[, 1:2], labels = mnist_r1000$Label, cex = 0.5,
 # save to disk
 save(mnist, file = "mnist.Rda")
 
-# fetch the Fashion-MNIST dataset
-fashion <- download_fashion_mnist()
-
-# Works as a drop-in replacement for the MNIST digits, can repeat the above
-# view the fifth item etc.
-show_mnist_digit(fashion, 5)
-
-# similarly for Kuzushiji-MNIST dataset of Japanese cursive characters
-# (set verbose flag to see download progress)
-kuzushiji <- download_kuzushiji_mnist(verbose = TRUE)
-# View the tenth character
-show_mnist_digit(kuzushiji, 10)
-
-# Download the small NORB dataset
-norb <- download_norb_small(verbose = TRUE)
-# View an image, compare with example at https://github.com/ndrplz/small_norb
-show_norb_object(norb, category = 2, instance = 6, elevation = 6, azimuth = 24, lighting = 2)
+# To avoid a very wide data frame for larger image datasets:
+mnist_matrix <- download_mnist(as = "matrix")
 ```
 
 ## See also
