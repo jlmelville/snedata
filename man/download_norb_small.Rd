@@ -55,7 +55,8 @@ For more information see
 download_norb_small(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
   verbose = FALSE,
-  split = c("all", "training", "testing")
+  split = c("all", "training", "testing"),
+  as = c("data.frame", "matrix")
 )
 }
 \arguments{
@@ -66,16 +67,22 @@ message.}
 
 \item{split}{Which split to download. Use \code{"all"} for both the training
 and testing sets, or \code{"training"} or \code{"testing"} for one split.}
+
+\item{as}{Return format. Use \code{"data.frame"} for the original data frame
+shape, or \code{"matrix"} for a list with \code{data} and \code{meta}.}
 }
 \value{
-Data frame containing Small NORB dataset.
+If \code{as = "data.frame"}, a data frame containing the Small NORB
+dataset. If \code{as = "matrix"}, a list with \code{data}, an integer
+matrix with one image pair per row, and \code{meta}, a data frame with the
+non-pixel metadata columns.
 }
 \description{
 Download Small NORB database of images of toys.
 }
 \details{
 Downloads the image and label files for the training and test datasets and
-converts them to a data frame.
+converts them to a data frame or a matrix/list result.
 
 The Small NORB dataset contains images of 50 toys. The toys are divided into
 five categories (animal, human, airplane, truck, car) with ten examples per

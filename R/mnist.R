@@ -34,7 +34,7 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 #'
 #' Downloads the image and label files for the training and test datasets from
 #' the \url{https://github.com/fgnt/mnist} mirror of the original MNIST files
-#' and converts them to a data frame.
+#' and converts them to a data frame or a matrix/list result.
 #'
 #' @format A data frame with 785 variables:
 #'
@@ -60,7 +60,11 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 #' @param base_url Base URL that the MNIST files are located at.
 #' @param verbose If \code{TRUE}, then download progress will be logged as a
 #'   message.
-#' @return Data frame containing the MNIST digits.
+#' @param as Return format. Use \code{"data.frame"} for the original data frame
+#'   shape, or \code{"matrix"} for a list with \code{data} and \code{labels}.
+#' @return If \code{as = "data.frame"}, a data frame containing the MNIST
+#'   digits. If \code{as = "matrix"}, a list with \code{data}, an integer matrix
+#'   with one image per row, and \code{labels}, a factor of digit labels.
 #' @note Originally based on a function by Brendan O'Connor.
 #' @export
 #' @examples
@@ -84,20 +88,27 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 #' )
 #' }
 #' @export
-download_mnist <- function(base_url = mnist_url, verbose = FALSE) {
+download_mnist <- function(
+  base_url = mnist_url,
+  verbose = FALSE,
+  as = c("data.frame", "matrix")
+) {
+  as <- match.arg(as)
   train <- parse_files(
     "train-images-idx3-ubyte.gz",
     "train-labels-idx1-ubyte.gz",
     base_url = base_url,
-    verbose = verbose
+    verbose = verbose,
+    as = as
   )
   test <- parse_files(
     "t10k-images-idx3-ubyte.gz",
     "t10k-labels-idx1-ubyte.gz",
     base_url = base_url,
-    verbose = verbose
+    verbose = verbose,
+    as = as
   )
-  rbind(train, test)
+  combine_image_label_results(train, test, as = as)
 }
 
 # Open Gzipped Binary File at URL
@@ -182,24 +193,72 @@ parse_label_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
 #  MNIST-like projects.
 # @param verbose If \code{TRUE}, generate a diagnostic message as files are
 #   downloaded.
-# @return Data frame containing images and labels.
+# @param as Return format. See \code{\link{download_mnist}}.
+# @return Data frame or matrix/list result containing images and labels.
 parse_files <- function(
   image_filename,
   label_filename,
   base_url = mnist_url,
   label_parser = parse_label_file,
-  verbose = FALSE
+  verbose = FALSE,
+  as = c("data.frame", "matrix")
 ) {
-  df <- as.data.frame(parse_image_file(
+  as <- match.arg(as)
+  images <- parse_image_file(
     image_filename,
     base_url = base_url,
     verbose = verbose
-  ))
-  names(df) <- paste0("px", seq_len(ncol(df)))
-  df$Label <- factor(label_parser(
+  )
+  labels <- label_parser(
     label_filename,
     base_url = base_url,
     verbose = verbose
-  ))
+  )
+
+  format_image_label_result(images, labels, as = as)
+}
+
+format_image_label_result <- function(
+  images,
+  labels,
+  as = c("data.frame", "matrix")
+) {
+  as <- match.arg(as)
+  labels <- factor(labels)
+
+  if (nrow(images) != length(labels)) {
+    stop(
+      "Image row count (",
+      nrow(images),
+      ") does not match label count (",
+      length(labels),
+      ")"
+    )
+  }
+
+  colnames(images) <- paste0("px", seq_len(ncol(images)))
+
+  if (as == "matrix") {
+    return(list(data = images, labels = labels))
+  }
+
+  df <- as.data.frame(images)
+  df$Label <- labels
   df
+}
+
+combine_image_label_results <- function(
+  train,
+  test,
+  as = c("data.frame", "matrix")
+) {
+  as <- match.arg(as)
+  if (as == "matrix") {
+    return(list(
+      data = rbind(train$data, test$data),
+      labels = c(train$labels, test$labels)
+    ))
+  }
+
+  rbind(train, test)
 }

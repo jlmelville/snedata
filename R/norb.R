@@ -3,7 +3,7 @@
 #' Download Small NORB database of images of toys.
 #'
 #' Downloads the image and label files for the training and test datasets and
-#' converts them to a data frame.
+#' converts them to a data frame or a matrix/list result.
 #'
 #' The Small NORB dataset contains images of 50 toys. The toys are divided into
 #' five categories (animal, human, airplane, truck, car) with ten examples per
@@ -69,7 +69,12 @@
 #'   message.
 #' @param split Which split to download. Use \code{"all"} for both the training
 #'   and testing sets, or \code{"training"} or \code{"testing"} for one split.
-#' @return Data frame containing Small NORB dataset.
+#' @param as Return format. Use \code{"data.frame"} for the original data frame
+#'   shape, or \code{"matrix"} for a list with \code{data} and \code{meta}.
+#' @return If \code{as = "data.frame"}, a data frame containing the Small NORB
+#'   dataset. If \code{as = "matrix"}, a list with \code{data}, an integer
+#'   matrix with one image pair per row, and \code{meta}, a data frame with the
+#'   non-pixel metadata columns.
 #' @export
 #' @examples
 #' \dontrun{
@@ -112,28 +117,33 @@
 download_norb_small <- function(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
   verbose = FALSE,
-  split = c("all", "training", "testing")
+  split = c("all", "training", "testing"),
+  as = c("data.frame", "matrix")
 ) {
   split <- match.arg(split)
+  as <- match.arg(as)
   if (split != "all") {
     return(read_norb_data(
       base_url = base_url,
       split = split,
-      verbose = verbose
+      verbose = verbose,
+      as = as
     ))
   }
 
   training <- read_norb_data(
     base_url = base_url,
     split = "training",
-    verbose = verbose
+    verbose = verbose,
+    as = as
   )
   testing <- read_norb_data(
     base_url = base_url,
     split = "testing",
-    verbose = verbose
+    verbose = verbose,
+    as = as
   )
-  rbind(training, testing)
+  combine_norb_results(training, testing, as = as)
 }
 
 #' Visualize NORB object.
@@ -207,8 +217,10 @@ show_norb_object <- function(
 read_norb_data <- function(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
   split = "training",
-  verbose = TRUE
+  verbose = TRUE,
+  as = c("data.frame", "matrix")
 ) {
+  as <- match.arg(as)
   ids <- switch(
     split,
     training = "46789",
@@ -223,11 +235,6 @@ read_norb_data <- function(
     base_url = base_url,
     verbose = verbose
   )
-  rownames(images) <- c(
-    paste0("c0px", 1:(96 * 96)),
-    paste0("c1px", 1:(96 * 96))
-  )
-
   cats <- read_norb_categories(
     file = paste0(file_base, "-cat.mat.gz"),
     base_url = base_url,
@@ -239,22 +246,91 @@ read_norb_data <- function(
     verbose = verbose
   )
 
-  split_col <- factor(
-    rep(split, ncol(images)),
-    levels = c("training", "testing")
+  format_norb_result(images, info, cats, split = split, as = as)
+}
+
+norb_pixel_names <- function(n_pixels = 96 * 96 * 2) {
+  if (n_pixels %% 2 != 0) {
+    stop("NORB pixel matrix must have a row count divisible by 2")
+  }
+  n_camera_pixels <- n_pixels / 2
+  c(
+    paste0("c0px", seq_len(n_camera_pixels)),
+    paste0("c1px", seq_len(n_camera_pixels))
   )
+}
+
+norb_description_levels <- function() {
+  c("Animal", "Human", "Airplane", "Truck", "Car")
+}
+
+format_norb_result <- function(
+  images,
+  info,
+  cats,
+  split,
+  as = c("data.frame", "matrix")
+) {
+  as <- match.arg(as)
+  data <- t(images)
+  colnames(data) <- norb_pixel_names(nrow(images))
+  meta <- format_norb_meta(info, cats, split = split, n_images = ncol(images))
+
+  if (as == "matrix") {
+    return(list(data = data, meta = meta))
+  }
+
+  data.frame(data, meta)
+}
+
+format_norb_meta <- function(info, cats, split, n_images) {
+  if (ncol(info) != n_images) {
+    stop(
+      "Info column count (",
+      ncol(info),
+      ") does not match image count (",
+      n_images,
+      ")"
+    )
+  }
+  if (length(cats) != n_images) {
+    stop(
+      "Category count (",
+      length(cats),
+      ") does not match image count (",
+      n_images,
+      ")"
+    )
+  }
 
   rownames(info) <- c("Instance", "Elevation", "Azimuth", "Lighting")
-  res <- data.frame(t(images), t(info), Split = split_col, Label = cats)
-  res$Instance <- factor(res$Instance, levels = 0:9)
-  res$Elevation <- factor(res$Elevation, levels = 0:8)
-  res$Azimuth <- factor(res$Azimuth, levels = seq(0, 34, 2))
-  res$Lighting <- factor(res$Lighting, levels = 0:5)
-  res$Label <- factor(res$Label, levels = 0:4)
-  res$Description <- res$Label
-  levels(res$Description) <- c("Animal", "Human", "Airplane", "Truck", "Car")
+  split_col <- factor(rep(split, n_images), levels = c("training", "testing"))
+  meta <- data.frame(t(info), Split = split_col, Label = cats)
+  meta$Instance <- factor(meta$Instance, levels = 0:9)
+  meta$Elevation <- factor(meta$Elevation, levels = 0:8)
+  meta$Azimuth <- factor(meta$Azimuth, levels = seq(0, 34, 2))
+  meta$Lighting <- factor(meta$Lighting, levels = 0:5)
+  meta$Label <- factor(meta$Label, levels = 0:4)
+  meta$Description <- meta$Label
+  levels(meta$Description) <- norb_description_levels()
 
-  res
+  meta
+}
+
+combine_norb_results <- function(
+  training,
+  testing,
+  as = c("data.frame", "matrix")
+) {
+  as <- match.arg(as)
+  if (as == "matrix") {
+    return(list(
+      data = rbind(training$data, testing$data),
+      meta = rbind(training$meta, testing$meta)
+    ))
+  }
+
+  rbind(training, testing)
 }
 
 read_norb_images <-

@@ -7,7 +7,7 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/master/"
 #'
 #' Downloads the image and label files for the training and test datasets from
 #' \url{https://github.com/facebookresearch/qmnist} and converts them to a data
-#' frame.
+#' frame or a matrix/list result.
 #'
 #' @format A data frame with 785 variables:
 #'
@@ -33,7 +33,11 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/master/"
 #' @param base_url Base URL that the QMNIST files are located at.
 #' @param verbose If \code{TRUE}, then download progress will be logged as a
 #'   message.
-#' @return Data frame containing the QMNIST digits.
+#' @param as Return format. Use \code{"data.frame"} for the original data frame
+#'   shape, or \code{"matrix"} for a list with \code{data} and \code{labels}.
+#' @return If \code{as = "data.frame"}, a data frame containing the QMNIST
+#'   digits. If \code{as = "matrix"}, a list with \code{data}, an integer matrix
+#'   with one image per row, and \code{labels}, a factor of digit labels.
 #' @export
 #' @examples
 #' \dontrun{
@@ -51,24 +55,33 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/master/"
 #' \emph{arXiv preprint} \emph{arXiv:1905.10498}.
 #' \url{https://github.com/facebookresearch/qmnist}
 #' @export
-download_qmnist <- function(base_url = qmnist_url, verbose = FALSE) {
+download_qmnist <- function(
+  base_url = qmnist_url,
+  verbose = FALSE,
+  as = c("data.frame", "matrix")
+) {
+  as <- match.arg(as)
   train <- parse_files(
     "qmnist-train-images-idx3-ubyte.gz",
     "qmnist-train-labels-idx2-int.gz",
     label_parser = parse_extended_label_file,
     base_url = base_url,
-    verbose = verbose
+    verbose = verbose,
+    as = as
   )
   test <- parse_files(
     "qmnist-test-images-idx3-ubyte.gz",
     "qmnist-test-labels-idx1-ubyte.gz",
     base_url = base_url,
-    verbose = verbose
+    verbose = verbose,
+    as = as
   )
   if (verbose) {
-    message("Read ", nrow(train), " training and ", nrow(test), " images")
+    n_train <- if (as == "matrix") nrow(train$data) else nrow(train)
+    n_test <- if (as == "matrix") nrow(test$data) else nrow(test)
+    message("Read ", n_train, " training and ", n_test, " images")
   }
-  rbind(train, test)
+  combine_image_label_results(train, test, as = as)
 }
 
 # QMNIST test labels are stored as extended labels. We only extract the digit

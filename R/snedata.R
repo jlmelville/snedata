@@ -75,12 +75,13 @@
 #' Another (much larger) image dataset is the MNIST digits dataset. The
 #' original data set is described at \url{http://yann.lecun.com/exdb/mnist/},
 #' and this package downloads from the \url{https://github.com/fgnt/mnist}
-#' mirror. Functions are available to download the dataset as a data frame and
-#' visualize individual digits:
+#' mirror. Functions are available to download the dataset as a data frame or
+#' matrix/list result and visualize individual digits:
 #'
 #' \itemize{
-#'   \item{\code{\link{download_mnist}}. Downloads the MNIST dataset files
-#'   as a row-based data frame.}
+#'   \item{\code{\link{download_mnist}}. Downloads the MNIST dataset files as
+#'   a row-based data frame by default, or as a matrix/list result with
+#'   \code{as = "matrix"}.}
 #'   \item{\code{\link{show_mnist_digit}}. Display one of the MNIST digits.}
 #' }
 #'

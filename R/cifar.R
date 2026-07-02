@@ -3,7 +3,7 @@
 #' Download CIFAR-10 database of images.
 #'
 #' Downloads the image and label files for the training and test datasets and
-#' converts them to a data frame.
+#' converts them to a data frame or a matrix/list result.
 #'
 #' The CIFAR-10 dataset contains 60000 32 x 32 color images, divided into ten
 #' different classes, with 6000 images per class.
@@ -57,7 +57,13 @@
 #'  \code{FALSE} to debug problems.
 #' @param verbose If \code{TRUE}, then download progress will be logged as a
 #'   message.
-#' @return Data frame containing the CIFAR-10 dataset.
+#' @param as Return format. Use \code{"data.frame"} for the original data frame
+#'   shape, or \code{"matrix"} for a list with \code{data}, \code{labels}, and
+#'   \code{descriptions}.
+#' @return If \code{as = "data.frame"}, a data frame containing the CIFAR-10
+#'   dataset. If \code{as = "matrix"}, a list with \code{data}, an integer
+#'   matrix with one image per row, \code{labels}, a factor of numeric class
+#'   labels, and \code{descriptions}, a factor of class names.
 #' @export
 #' @examples
 #' \dontrun{
@@ -92,8 +98,10 @@ download_cifar10 <- function(
   url = "https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz",
   destfile = NULL,
   cleanup = TRUE,
-  verbose = FALSE
+  verbose = FALSE,
+  as = c("data.frame", "matrix")
 ) {
+  as <- match.arg(as)
   owned_paths <- character()
 
   if (is.null(destfile)) {
@@ -154,13 +162,11 @@ download_cifar10 <- function(
   }
 
   res <- t(res)
-  colnames(res) <- c(
-    paste0("r", 1:(32 * 32)),
-    paste0("g", 1:(32 * 32)),
-    paste0("b", 1:(32 * 32))
-  )
-  res <- data.frame(res, Label = as.factor(labels))
-  description_levels <- c(
+  format_cifar_result(res, labels, as = as)
+}
+
+cifar_description_levels <- function() {
+  c(
     "airplane",
     "automobile",
     "bird",
@@ -172,12 +178,59 @@ download_cifar10 <- function(
     "ship",
     "truck"
   )
-  res$Description <- factor(
-    description_levels[as.numeric(res$Label)],
+}
+
+cifar_pixel_names <- function(n_pixels = 32 * 32 * 3) {
+  if (n_pixels %% 3 != 0) {
+    stop("CIFAR pixel matrix must have a column count divisible by 3")
+  }
+  n_channel_pixels <- n_pixels / 3
+  c(
+    paste0("r", seq_len(n_channel_pixels)),
+    paste0("g", seq_len(n_channel_pixels)),
+    paste0("b", seq_len(n_channel_pixels))
+  )
+}
+
+format_cifar_result <- function(
+  images,
+  labels,
+  as = c("data.frame", "matrix")
+) {
+  as <- match.arg(as)
+  label_values <- if (is.factor(labels)) {
+    as.integer(as.character(labels))
+  } else {
+    as.integer(labels)
+  }
+  label_factor <- factor(label_values, levels = 0:9)
+  description_levels <- cifar_description_levels()
+  descriptions <- factor(
+    description_levels[label_values + 1L],
     levels = description_levels
   )
 
-  res
+  if (nrow(images) != length(label_factor)) {
+    stop(
+      "Image row count (",
+      nrow(images),
+      ") does not match label count (",
+      length(label_factor),
+      ")"
+    )
+  }
+
+  colnames(images) <- cifar_pixel_names(ncol(images))
+
+  if (as == "matrix") {
+    return(list(
+      data = images,
+      labels = label_factor,
+      descriptions = descriptions
+    ))
+  }
+
+  data.frame(images, Label = label_factor, Description = descriptions)
 }
 
 cleanup_owned_paths <- function(paths, verbose = FALSE) {

@@ -49,7 +49,8 @@ download_cifar10(
   url = "https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz",
   destfile = NULL,
   cleanup = TRUE,
-  verbose = FALSE
+  verbose = FALSE,
+  as = c("data.frame", "matrix")
 )
 }
 \arguments{
@@ -65,16 +66,23 @@ will be deleted before the function returns. Only worth setting to
 
 \item{verbose}{If \code{TRUE}, then download progress will be logged as a
 message.}
+
+\item{as}{Return format. Use \code{"data.frame"} for the original data frame
+shape, or \code{"matrix"} for a list with \code{data}, \code{labels}, and
+\code{descriptions}.}
 }
 \value{
-Data frame containing the CIFAR-10 dataset.
+If \code{as = "data.frame"}, a data frame containing the CIFAR-10
+dataset. If \code{as = "matrix"}, a list with \code{data}, an integer
+matrix with one image per row, \code{labels}, a factor of numeric class
+labels, and \code{descriptions}, a factor of class names.
 }
 \description{
 Download CIFAR-10 database of images.
 }
 \details{
 Downloads the image and label files for the training and test datasets and
-converts them to a data frame.
+converts them to a data frame or a matrix/list result.
 
 The CIFAR-10 dataset contains 60000 32 x 32 color images, divided into ten
 different classes, with 6000 images per class.

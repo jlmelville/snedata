@@ -2,34 +2,41 @@ file_base_url <- function(path) {
   paste0("file://", normalizePath(path, winslash = "/", mustWork = TRUE), "/")
 }
 
-write_gz_mnist_images <- function(path) {
+write_gz_mnist_images <- function(
+  path,
+  n_images = 2,
+  n_rows = 2,
+  n_cols = 2,
+  pixels = seq_len(n_images * n_rows * n_cols)
+) {
   f <- gzfile(path, "wb")
   on.exit(close(f), add = TRUE)
 
   writeBin(as.integer(2051), f, size = 4, endian = "big")
-  writeBin(as.integer(2), f, size = 4, endian = "big")
-  writeBin(as.integer(2), f, size = 4, endian = "big")
-  writeBin(as.integer(2), f, size = 4, endian = "big")
-  writeBin(as.integer(1:8), f, size = 1)
+  writeBin(as.integer(n_images), f, size = 4, endian = "big")
+  writeBin(as.integer(n_rows), f, size = 4, endian = "big")
+  writeBin(as.integer(n_cols), f, size = 4, endian = "big")
+  writeBin(as.integer(pixels), f, size = 1)
 }
 
-write_gz_mnist_labels <- function(path) {
+write_gz_mnist_labels <- function(path, labels = c(0, 5, 9)) {
   f <- gzfile(path, "wb")
   on.exit(close(f), add = TRUE)
 
   writeBin(as.integer(2049), f, size = 4, endian = "big")
-  writeBin(as.integer(3), f, size = 4, endian = "big")
-  writeBin(as.integer(c(0, 5, 9)), f, size = 1)
+  writeBin(as.integer(length(labels)), f, size = 4, endian = "big")
+  writeBin(as.integer(labels), f, size = 1)
 }
 
-write_gz_qmnist_labels <- function(path, magic = 3074) {
+write_gz_qmnist_labels <- function(path, magic = 3074, labels = c(7, 4)) {
   f <- gzfile(path, "wb")
   on.exit(close(f), add = TRUE)
 
   writeBin(as.integer(magic), f, size = 4, endian = "big")
-  writeBin(as.integer(2), f, size = 4, endian = "big")
+  writeBin(as.integer(length(labels)), f, size = 4, endian = "big")
   writeBin(as.integer(3), f, size = 4, endian = "big")
-  writeBin(as.integer(c(7, 100, 101, 4, 200, 201)), f, size = 4, endian = "big")
+  label_rows <- unlist(lapply(labels, function(label) c(label, 0, 0)))
+  writeBin(as.integer(label_rows), f, size = 4, endian = "big")
 }
 
 write_norb_matrix_header <- function(f, type, ndim) {
@@ -89,6 +96,40 @@ test_that("MNIST parsers read small local gzip fixtures", {
   expect_equal(labels, c(0L, 5L, 9L))
 })
 
+test_that("MNIST downloader can return the original data frame or a matrix list", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+
+  write_gz_mnist_images(
+    file.path(tmpdir, "train-images-idx3-ubyte.gz"),
+    pixels = 1:8
+  )
+  write_gz_mnist_labels(
+    file.path(tmpdir, "train-labels-idx1-ubyte.gz"),
+    labels = c(1, 2)
+  )
+  write_gz_mnist_images(
+    file.path(tmpdir, "t10k-images-idx3-ubyte.gz"),
+    pixels = 9:16
+  )
+  write_gz_mnist_labels(
+    file.path(tmpdir, "t10k-labels-idx1-ubyte.gz"),
+    labels = c(3, 4)
+  )
+
+  df <- download_mnist(base_url = file_base_url(tmpdir))
+  mat <- download_mnist(base_url = file_base_url(tmpdir), as = "matrix")
+
+  expect_s3_class(df, "data.frame")
+  expect_equal(names(df), c(paste0("px", 1:4), "Label"))
+  expect_equal(dim(df), c(4L, 5L))
+  expect_named(mat, c("data", "labels"))
+  expect_equal(dim(mat$data), c(4L, 4L))
+  expect_equal(unname(mat$data[1, ]), 1:4)
+  expect_equal(unname(mat$data[4, ]), 13:16)
+  expect_equal(as.character(mat$labels), as.character(1:4))
+})
+
 test_that("QMNIST extended label parser reads labels and reports magic 3074", {
   tmpdir <- tempdir()
   write_gz_qmnist_labels(file.path(tmpdir, "labels.gz"))
@@ -109,6 +150,35 @@ test_that("QMNIST extended label parser reads labels and reports magic 3074", {
   )
 })
 
+test_that("QMNIST downloader can return a matrix list", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+
+  write_gz_mnist_images(
+    file.path(tmpdir, "qmnist-train-images-idx3-ubyte.gz"),
+    pixels = 1:8
+  )
+  write_gz_qmnist_labels(
+    file.path(tmpdir, "qmnist-train-labels-idx2-int.gz"),
+    labels = c(7, 4)
+  )
+  write_gz_mnist_images(
+    file.path(tmpdir, "qmnist-test-images-idx3-ubyte.gz"),
+    pixels = 9:16
+  )
+  write_gz_mnist_labels(
+    file.path(tmpdir, "qmnist-test-labels-idx1-ubyte.gz"),
+    labels = c(1, 0)
+  )
+
+  mat <- download_qmnist(base_url = file_base_url(tmpdir), as = "matrix")
+
+  expect_named(mat, c("data", "labels"))
+  expect_equal(dim(mat$data), c(4L, 4L))
+  expect_equal(unname(mat$data[3, ]), 9:12)
+  expect_equal(as.character(mat$labels), c("7", "4", "1", "0"))
+})
+
 test_that("CIFAR parser rejects incomplete fixed-size batches", {
   path <- tempfile()
   f <- file(path, "wb")
@@ -119,6 +189,25 @@ test_that("CIFAR parser rejects incomplete fixed-size batches", {
     snedata:::read_cifar_bin(path),
     "Expected 30730000 bytes"
   )
+})
+
+test_that("CIFAR formatter can return a data frame or a matrix list", {
+  images <- matrix(1:12, nrow = 2)
+  labels <- c(0, 9)
+
+  df <- snedata:::format_cifar_result(images, labels)
+  mat <- snedata:::format_cifar_result(images, labels, as = "matrix")
+
+  expect_s3_class(df, "data.frame")
+  expect_equal(
+    names(df),
+    c("r1", "r2", "g1", "g2", "b1", "b2", "Label", "Description")
+  )
+  expect_equal(as.character(df$Description), c("airplane", "truck"))
+  expect_named(mat, c("data", "labels", "descriptions"))
+  expect_equal(dim(mat$data), c(2L, 6L))
+  expect_equal(as.character(mat$labels), c("0", "9"))
+  expect_equal(as.character(mat$descriptions), c("airplane", "truck"))
 })
 
 test_that("NORB parsers read small local gzip fixtures through base_url", {
@@ -150,6 +239,60 @@ test_that("NORB parsers read small local gzip fixtures through base_url", {
   expect_equal(dim(info), c(4L, 2L))
   expect_equal(info[, 1], 1:4)
   expect_equal(info[, 2], 5:8)
+})
+
+test_that("NORB formatter can return a data frame or a matrix list", {
+  images <- matrix(1:8, nrow = 4)
+  info <- matrix(
+    c(
+      1,
+      2,
+      4,
+      5,
+      5,
+      6,
+      8,
+      0
+    ),
+    nrow = 4
+  )
+  cats <- c(0, 4)
+
+  df <- snedata:::format_norb_result(
+    images,
+    info,
+    cats,
+    split = "training"
+  )
+  mat <- snedata:::format_norb_result(
+    images,
+    info,
+    cats,
+    split = "training",
+    as = "matrix"
+  )
+
+  expect_s3_class(df, "data.frame")
+  expect_equal(
+    names(df),
+    c(
+      "c0px1",
+      "c0px2",
+      "c1px1",
+      "c1px2",
+      "Instance",
+      "Elevation",
+      "Azimuth",
+      "Lighting",
+      "Split",
+      "Label",
+      "Description"
+    )
+  )
+  expect_equal(dim(mat$data), c(2L, 4L))
+  expect_named(mat, c("data", "meta"))
+  expect_equal(names(mat$meta), names(df)[5:11])
+  expect_equal(as.character(mat$meta$Description), c("Animal", "Car"))
 })
 
 test_that("20 Newsgroups downloader extracts a local tarball and removes it", {

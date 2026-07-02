@@ -26,16 +26,25 @@ Items in the dataset can be visualized with
 For more information see \url{https://github.com/facebookresearch/qmnist}.
 }
 \usage{
-download_qmnist(base_url = qmnist_url, verbose = FALSE)
+download_qmnist(
+  base_url = qmnist_url,
+  verbose = FALSE,
+  as = c("data.frame", "matrix")
+)
 }
 \arguments{
 \item{base_url}{Base URL that the QMNIST files are located at.}
 
 \item{verbose}{If \code{TRUE}, then download progress will be logged as a
 message.}
+
+\item{as}{Return format. Use \code{"data.frame"} for the original data frame
+shape, or \code{"matrix"} for a list with \code{data} and \code{labels}.}
 }
 \value{
-Data frame containing the QMNIST digits.
+If \code{as = "data.frame"}, a data frame containing the QMNIST
+digits. If \code{as = "matrix"}, a list with \code{data}, an integer matrix
+with one image per row, and \code{labels}, a factor of digit labels.
 }
 \description{
 Download QMNIST database of handwritten digits. This is the same as the
@@ -44,7 +53,7 @@ MNIST digits, but with an extended test dataset of 60,000 digits.
 \details{
 Downloads the image and label files for the training and test datasets from
 \url{https://github.com/facebookresearch/qmnist} and converts them to a data
-frame.
+frame or a matrix/list result.
 }
 \examples{
 \dontrun{

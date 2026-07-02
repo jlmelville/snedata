@@ -26,16 +26,25 @@ For more information about the original dataset see
 \url{http://yann.lecun.com/exdb/mnist}.
 }
 \usage{
-download_mnist(base_url = mnist_url, verbose = FALSE)
+download_mnist(
+  base_url = mnist_url,
+  verbose = FALSE,
+  as = c("data.frame", "matrix")
+)
 }
 \arguments{
 \item{base_url}{Base URL that the MNIST files are located at.}
 
 \item{verbose}{If \code{TRUE}, then download progress will be logged as a
 message.}
+
+\item{as}{Return format. Use \code{"data.frame"} for the original data frame
+shape, or \code{"matrix"} for a list with \code{data} and \code{labels}.}
 }
 \value{
-Data frame containing the MNIST digits.
+If \code{as = "data.frame"}, a data frame containing the MNIST
+digits. If \code{as = "matrix"}, a list with \code{data}, an integer matrix
+with one image per row, and \code{labels}, a factor of digit labels.
 }
 \description{
 Download MNIST database of handwritten digits.
@@ -43,7 +52,7 @@ Download MNIST database of handwritten digits.
 \details{
 Downloads the image and label files for the training and test datasets from
 the \url{https://github.com/fgnt/mnist} mirror of the original MNIST files
-and converts them to a data frame.
+and converts them to a data frame or a matrix/list result.
 }
 \note{
 Originally based on a function by Brendan O'Connor.
