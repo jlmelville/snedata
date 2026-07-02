@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   format:
     name: Check formatting
@@ -16,6 +20,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
 
       - uses: posit-dev/setup-air@cf390573ff4fe0f198f35df3a642b1409328d859 # v1
         with:

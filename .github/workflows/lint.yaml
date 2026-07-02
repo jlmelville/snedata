@@ -9,13 +9,21 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
-    name: lint
+    name: Lint
     runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
 
       - uses: r-lib/actions/setup-r@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
         with:
@@ -23,8 +31,8 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
         with:
-          dependencies: '"hard"'
-          extra-packages: any::lintr
+          extra-packages: any::lintr, local::.
+          needs: lint
 
       - name: Lint
         run: Rscript -e 'lintr::lint_package()'
