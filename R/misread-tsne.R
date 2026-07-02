@@ -86,7 +86,8 @@ long_gaussian_data <- function(n, dim, color = NULL) {
 # by linearly mapping theta to a rainbow palette.
 theta_to_circle_df <- function(theta) {
   data.frame(
-    x = cos(theta), y = sin(theta),
+    x = cos(theta),
+    y = sin(theta),
     color = linear_color_map(theta),
     stringsAsFactors = FALSE
   )
@@ -347,7 +348,8 @@ simplex_data <- function(n, noise = 0.5, color = "#003399") {
 #' @references \url{http://distill.pub/2016/misread-tsne/}
 #' @export
 cube_data <- function(n, dim, color = "#003399") {
-  data.frame(matrix(stats::runif(n * dim), nrow = n),
+  data.frame(
+    matrix(stats::runif(n * dim), nrow = n),
     color = color,
     stringsAsFactors = FALSE
   )
@@ -387,12 +389,18 @@ rotate <- function(df) {
 unlink_data <- function(n) {
   theta <- theta_unif(n)
   ring1 <- rotate(data.frame(
-    x = cos(theta), y = sin(theta), z = 0,
-    color = "#ff9900", stringsAsFactors = FALSE
+    x = cos(theta),
+    y = sin(theta),
+    z = 0,
+    color = "#ff9900",
+    stringsAsFactors = FALSE
   ))
   ring2 <- rotate(data.frame(
-    x = 3 + cos(theta), y = 0, z = sin(theta),
-    color = "#003399", stringsAsFactors = FALSE
+    x = 3 + cos(theta),
+    y = 0,
+    z = sin(theta),
+    color = "#003399",
+    stringsAsFactors = FALSE
   ))
   rbind(ring1, ring2)
 }
@@ -420,12 +428,18 @@ unlink_data <- function(n) {
 link_data <- function(n) {
   theta <- theta_unif(n)
   ring1 <- rotate(data.frame(
-    x = cos(theta), y = sin(theta), z = 0,
-    color = "#ff9900", stringsAsFactors = FALSE
+    x = cos(theta),
+    y = sin(theta),
+    z = 0,
+    color = "#ff9900",
+    stringsAsFactors = FALSE
   ))
   ring2 <- rotate(data.frame(
-    x = 1 + cos(theta), y = 0, z = sin(theta),
-    color = "#003399", stringsAsFactors = FALSE
+    x = 1 + cos(theta),
+    y = 0,
+    z = sin(theta),
+    color = "#003399",
+    stringsAsFactors = FALSE
   ))
   rbind(ring1, ring2)
 }
@@ -480,13 +494,15 @@ long_cluster_data <- function(n) {
   cluster1 <- data.frame(
     x = 0:(n - 1) + s * stats::rnorm(n),
     y = 0:(n - 1) + s * stats::rnorm(n),
-    color = "#003399", stringsAsFactors = FALSE
+    color = "#003399",
+    stringsAsFactors = FALSE
   )
 
   cluster2 <- data.frame(
     x = 0:(n - 1) + s * stats::rnorm(n) + n / 5,
     y = 0:(n - 1) + s * stats::rnorm(n) - n / 5,
-    color = "#ff9900", stringsAsFactors = FALSE
+    color = "#ff9900",
+    stringsAsFactors = FALSE
   )
 
   rbind(cluster1, cluster2)

@@ -88,10 +88,12 @@
 #' (Vol. 1, No. 4, p. 7).
 #' Technical report, University of Toronto.
 #' @export
-download_cifar10 <- function(url = "https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz",
-                             destfile = NULL,
-                             cleanup = TRUE,
-                             verbose = FALSE) {
+download_cifar10 <- function(
+  url = "https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz",
+  destfile = NULL,
+  cleanup = TRUE,
+  verbose = FALSE
+) {
   owned_paths <- character()
 
   if (is.null(destfile)) {
@@ -159,10 +161,19 @@ download_cifar10 <- function(url = "https://www.cs.toronto.edu/~kriz/cifar-10-bi
   )
   res <- data.frame(res, Label = as.factor(labels))
   description_levels <- c(
-    "airplane", "automobile", "bird", "cat", "deer",
-    "dog", "frog", "horse", "ship", "truck"
+    "airplane",
+    "automobile",
+    "bird",
+    "cat",
+    "deer",
+    "dog",
+    "frog",
+    "horse",
+    "ship",
+    "truck"
   )
-  res$Description <- factor(description_levels[as.numeric(res$Label)],
+  res$Description <- factor(
+    description_levels[as.numeric(res$Label)],
     levels = description_levels
   )
 
@@ -213,19 +224,29 @@ read_cifar_bin <- function(file, verbose = FALSE) {
   record_size <- n_pixels + 1
   expected_bytes <- n_images * record_size
 
-  batch <- readBin(f,
-    what = "integer", n = expected_bytes, size = 1, signed = FALSE,
+  batch <- readBin(
+    f,
+    what = "integer",
+    n = expected_bytes,
+    size = 1,
+    signed = FALSE,
     endian = "little"
   )
   if (length(batch) != expected_bytes) {
     stop(
-      "Expected ", expected_bytes, " bytes in CIFAR batch but read ",
+      "Expected ",
+      expected_bytes,
+      " bytes in CIFAR batch but read ",
       length(batch)
     )
   }
 
-  extra <- readBin(f,
-    what = "integer", n = 1, size = 1, signed = FALSE,
+  extra <- readBin(
+    f,
+    what = "integer",
+    n = 1,
+    size = 1,
+    signed = FALSE,
     endian = "little"
   )
   if (length(extra) != 0) {
@@ -242,8 +263,14 @@ read_cifar_bin <- function(file, verbose = FALSE) {
   )
 }
 
-show_cifarv <- function(v, x1 = 100, x2 = 250, y1 = 300, y2 = 450,
-                        interpolate = FALSE) {
+show_cifarv <- function(
+  v,
+  x1 = 100,
+  x2 = 250,
+  y1 = 300,
+  y2 = 450,
+  interpolate = FALSE
+) {
   r <- v[1:1024]
   g <- v[1025:2048]
   b <- v[2049:3072]
@@ -251,9 +278,12 @@ show_cifarv <- function(v, x1 = 100, x2 = 250, y1 = 300, y2 = 450,
   img <- grDevices::rgb(r, g, b, maxColorValue = 255)
   dim(img) <- c(32, 32)
 
-
-  graphics::plot(c(x1, x2), c(y1, y2),
-    type = "n", xlab = "", ylab = "",
+  graphics::plot(
+    c(x1, x2),
+    c(y1, y2),
+    type = "n",
+    xlab = "",
+    ylab = "",
     axes = FALSE
   )
   graphics::rasterImage(t(img), x1, y1, x2, y2, interpolate = interpolate)

@@ -42,12 +42,13 @@ olivetti_faces <- function() {
     paste0("px", x)
   })
   rownames(df) <- apply(
-    expand.grid(seq(1, nposes), seq(1, npeople)), 1,
+    expand.grid(seq(1, nposes), seq(1, npeople)),
+    1,
     function(x) {
       paste(x[2], x[1], sep = "_")
     }
   )
-  df$Label <- factor(as.numeric(cut(1:nrow(df), npeople)))
+  df$Label <- factor(as.numeric(cut(seq_len(nrow(df)), npeople)))
 
   df
 }
@@ -63,8 +64,12 @@ olivetti_faces <- function() {
 #' 1 and 10.
 #' @param col List of colors to use in the display.
 #' @export
-show_olivetti_face <- function(df, face, pose,
-                               col = grDevices::gray(1 / 12:1)) {
+show_olivetti_face <- function(
+  df,
+  face,
+  pose,
+  col = grDevices::gray(1 / 12:1)
+) {
   if (
     !is.numeric(face) ||
       length(face) != 1 ||
@@ -87,5 +92,12 @@ show_olivetti_face <- function(df, face, pose,
   }
   n <- paste(face, pose, sep = "_")
   im <- t(matrix(as.numeric(df[n, 4096:1]), ncol = 64, nrow = 64))
-  graphics::image(1:nrow(im), 1:nrow(im), im, xlab = "", ylab = "", col = col)
+  graphics::image(
+    seq_len(nrow(im)),
+    seq_len(nrow(im)),
+    im,
+    xlab = "",
+    ylab = "",
+    col = col
+  )
 }

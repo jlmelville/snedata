@@ -27,7 +27,10 @@ sphere <- function(n = 1000) {
   x <- sin(theta) * sqrt(1 - z^2)
   y <- cos(theta) * sqrt(1 - z^2)
 
-  data.frame(x, y, z,
+  data.frame(
+    x,
+    y,
+    z,
     color = linear_color_map(theta + pi),
     stringsAsFactors = FALSE
   )
@@ -180,8 +183,12 @@ helix <- function(n = 1000, rmajor = 2, rminor = 1, nwinds = 8) {
 #' plot(swiss1000$x, swiss1000$y, col = swiss1000$color, pch = 20)
 #' }
 #' @export
-swiss_roll <- function(n = 1000, min_phi = 1.5 * pi, max_phi = 4.5 * pi,
-                       max_z = 10) {
+swiss_roll <- function(
+  n = 1000,
+  min_phi = 1.5 * pi,
+  max_phi = 4.5 * pi,
+  max_z = 10
+) {
   phi <- stats::runif(n, min = min_phi, max = max_phi)
   x <- phi * cos(phi)
   y <- phi * sin(phi)
@@ -345,10 +352,13 @@ taspheres <- function(n_samples = 500, d = 100, n_spheres = 11, r = 5) {
   # Create n_spheres - 1 smaller spheres each translated by a small amount
   # (that's what the sweep part is doing)
   small_spheres <-
-    replicate(n_spheres - 1,
+    replicate(
+      n_spheres - 1,
       sweep(
-        dsphere(n = n_samples, d = d, r = r), 2,
-        stats::rnorm(n = d1, sd = norm_scale), `+`
+        dsphere(n = n_samples, d = d, r = r),
+        2,
+        stats::rnorm(n = d1, sd = norm_scale),
+        `+`
       ),
       simplify = FALSE
     )

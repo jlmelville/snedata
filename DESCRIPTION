@@ -1,6 +1,6 @@
 Type: Package
 Package: snedata
-Title: SNE Simulation Dataset Functions
+Title: SNE and Dimensionality Reduction Dataset Functions
 Version: 0.0.0.9001
 Authors@R: 
     person("James", "Melville", , "jlmelville@gmail.com", role = c("aut", "cre"))
@@ -16,9 +16,13 @@ Description: Some simple simulation datasets used in Stochastic Neighbor
     the internet to download the files. There are also functions for
     visualizing individual images in these datasets.
 License: MIT + file LICENSE
+URL: https://github.com/jlmelville/snedata
+BugReports: https://github.com/jlmelville/snedata/issues
 Suggests:
     rjson,
     RnavGraphImageData,
     testthat
 Encoding: UTF-8
+Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0
+Roxygen: list(markdown = TRUE)

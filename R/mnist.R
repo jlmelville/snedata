@@ -18,8 +18,10 @@
 #' }
 #' @export
 show_mnist_digit <- function(df, n, col = grDevices::gray(1:255 / 255), ...) {
-  graphics::image(matrix(as.numeric(df[n, 1:784]), nrow = 28)[, 28:1],
-    col = col, ...
+  graphics::image(
+    matrix(as.numeric(df[n, 1:784]), nrow = 28)[, 28:1],
+    col = col,
+    ...
   )
 }
 
@@ -83,13 +85,17 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 #' }
 #' @export
 download_mnist <- function(base_url = mnist_url, verbose = FALSE) {
-  train <- parse_files("train-images-idx3-ubyte.gz",
+  train <- parse_files(
+    "train-images-idx3-ubyte.gz",
     "train-labels-idx1-ubyte.gz",
-    base_url = base_url, verbose = verbose
+    base_url = base_url,
+    verbose = verbose
   )
-  test <- parse_files("t10k-images-idx3-ubyte.gz",
+  test <- parse_files(
+    "t10k-images-idx3-ubyte.gz",
     "t10k-labels-idx1-ubyte.gz",
-    base_url = base_url, verbose = verbose
+    base_url = base_url,
+    verbose = verbose
   )
   rbind(train, test)
 }
@@ -121,8 +127,7 @@ open_binary_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
 # @param verbose If \code{TRUE}, generate a diagnostic message as files are
 # downloaded.
 # @return Vector of integers representing the digits.
-parse_image_file <- function(filename, base_url = mnist_url,
-                             verbose = FALSE) {
+parse_image_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
   f <- open_binary_file(filename, base_url = base_url, verbose = verbose)
   on.exit(close(f), add = TRUE)
   magic <- readBin(f, "integer", n = 1, size = 4, endian = "big")
@@ -178,15 +183,21 @@ parse_label_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
 # @param verbose If \code{TRUE}, generate a diagnostic message as files are
 #   downloaded.
 # @return Data frame containing images and labels.
-parse_files <- function(image_filename, label_filename, base_url = mnist_url,
-                        label_parser = parse_label_file,
-                        verbose = FALSE) {
-  df <- as.data.frame(parse_image_file(image_filename,
+parse_files <- function(
+  image_filename,
+  label_filename,
+  base_url = mnist_url,
+  label_parser = parse_label_file,
+  verbose = FALSE
+) {
+  df <- as.data.frame(parse_image_file(
+    image_filename,
     base_url = base_url,
     verbose = verbose
   ))
-  names(df) <- paste0("px", 1:ncol(df))
-  df$Label <- factor(label_parser(label_filename,
+  names(df) <- paste0("px", seq_len(ncol(df)))
+  df$Label <- factor(label_parser(
+    label_filename,
     base_url = base_url,
     verbose = verbose
   ))

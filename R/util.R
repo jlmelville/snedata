@@ -35,7 +35,8 @@ linear_color_map <- function(x, h = 300, s = 50, l = 50) {
     linear_map(x, from = 0, to = 1),
     function(e) {
       hsl_to_rgb(h = floor(h * e), s = s, l = l)
-    }, ""
+    },
+    ""
   )
 }
 
@@ -148,12 +149,7 @@ merge_by_row <- function(x, y) {
 # becomes
 # https://github.com/PAIR-code/understanding-umap/blob/master/raw_data/mammoth_3d.json
 gh_raw <- function(repo, filename, branch = "master") {
-  paste("https://raw.githubusercontent.com",
-    repo,
-    branch,
-    filename,
-    sep = "/"
-  )
+  paste("https://raw.githubusercontent.com", repo, branch, filename, sep = "/")
 }
 
 
@@ -172,11 +168,13 @@ stime <- function() {
   format(Sys.time(), "%T")
 }
 
-tsmessage <- function(...,
-                      domain = NULL,
-                      appendLF = TRUE,
-                      force = FALSE,
-                      time_stamp = TRUE) {
+tsmessage <- function(
+  ...,
+  domain = NULL,
+  appendLF = TRUE,
+  force = FALSE,
+  time_stamp = TRUE
+) {
   verbose <- get0("verbose", envir = sys.parent())
 
   if (force || (!is.null(verbose) && verbose)) {

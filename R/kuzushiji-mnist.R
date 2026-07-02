@@ -68,8 +68,10 @@ kuzushiji_mnist_url <-
 #' \emph{arXiv preprint} \emph{arXiv:1812.01718}.
 #'
 #' @export
-download_kuzushiji_mnist <- function(base_url = kuzushiji_mnist_url,
-                                     verbose = FALSE) {
+download_kuzushiji_mnist <- function(
+  base_url = kuzushiji_mnist_url,
+  verbose = FALSE
+) {
   res <- download_mnist(base_url = base_url, verbose = verbose)
 
   res

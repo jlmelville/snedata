@@ -81,16 +81,26 @@ fashion_mnist_url <-
 #' \emph{arXiv preprint} \emph{arXiv:1708.07747}.
 #' \url{https://github.com/zalandoresearch/fashion-mnist/}
 #' @export
-download_fashion_mnist <- function(base_url = fashion_mnist_url,
-                                   verbose = FALSE) {
+download_fashion_mnist <- function(
+  base_url = fashion_mnist_url,
+  verbose = FALSE
+) {
   res <- download_mnist(base_url = base_url, verbose = verbose)
 
   description_levels <- c(
-    "T-shirt/top", "Trouser", "Pullover", "Dress",
-    "Coat", "Sandal", "Shirt", "Sneaker", "Bag",
+    "T-shirt/top",
+    "Trouser",
+    "Pullover",
+    "Dress",
+    "Coat",
+    "Sandal",
+    "Shirt",
+    "Sneaker",
+    "Bag",
     "Ankle boot"
   )
-  res$Description <- factor(description_levels[as.numeric(res$Label)],
+  res$Description <- factor(
+    description_levels[as.numeric(res$Label)],
     levels = description_levels
   )
   res

@@ -52,14 +52,18 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/master/"
 #' \url{https://github.com/facebookresearch/qmnist}
 #' @export
 download_qmnist <- function(base_url = qmnist_url, verbose = FALSE) {
-  train <- parse_files("qmnist-train-images-idx3-ubyte.gz",
+  train <- parse_files(
+    "qmnist-train-images-idx3-ubyte.gz",
     "qmnist-train-labels-idx2-int.gz",
     label_parser = parse_extended_label_file,
-    base_url = base_url, verbose = verbose
+    base_url = base_url,
+    verbose = verbose
   )
-  test <- parse_files("qmnist-test-images-idx3-ubyte.gz",
+  test <- parse_files(
+    "qmnist-test-images-idx3-ubyte.gz",
     "qmnist-test-labels-idx1-ubyte.gz",
-    base_url = base_url, verbose = verbose
+    base_url = base_url,
+    verbose = verbose
   )
   if (verbose) {
     message("Read ", nrow(train), " training and ", nrow(test), " images")
@@ -69,8 +73,11 @@ download_qmnist <- function(base_url = qmnist_url, verbose = FALSE) {
 
 # QMNIST test labels are stored as extended labels. We only extract the digit
 # class.
-parse_extended_label_file <- function(filename, base_url = qmnist_url,
-                                      verbose = FALSE) {
+parse_extended_label_file <- function(
+  filename,
+  base_url = qmnist_url,
+  verbose = FALSE
+) {
   f <- open_binary_file(filename, base_url = base_url, verbose = verbose)
   on.exit(close(f), add = TRUE)
   magic <- readBin(f, "integer", n = 1, size = 4, endian = "big")

@@ -29,13 +29,12 @@ write_gz_qmnist_labels <- function(path, magic = 3074) {
   writeBin(as.integer(magic), f, size = 4, endian = "big")
   writeBin(as.integer(2), f, size = 4, endian = "big")
   writeBin(as.integer(3), f, size = 4, endian = "big")
-  writeBin(as.integer(c(7, 100, 101, 4, 200, 201)), f,
-    size = 4, endian = "big"
-  )
+  writeBin(as.integer(c(7, 100, 101, 4, 200, 201)), f, size = 4, endian = "big")
 }
 
 write_norb_matrix_header <- function(f, type, ndim) {
-  magic <- switch(type,
+  magic <- switch(
+    type,
     byte = c(85L, 76L, 61L, 30L),
     integer = c(84L, 76L, 61L, 30L)
   )
@@ -75,8 +74,14 @@ test_that("MNIST parsers read small local gzip fixtures", {
   write_gz_mnist_images(file.path(tmpdir, "images.gz"))
   write_gz_mnist_labels(file.path(tmpdir, "labels.gz"))
 
-  images <- snedata:::parse_image_file("images.gz", base_url = file_base_url(tmpdir))
-  labels <- snedata:::parse_label_file("labels.gz", base_url = file_base_url(tmpdir))
+  images <- snedata:::parse_image_file(
+    "images.gz",
+    base_url = file_base_url(tmpdir)
+  )
+  labels <- snedata:::parse_label_file(
+    "labels.gz",
+    base_url = file_base_url(tmpdir)
+  )
 
   expect_equal(dim(images), c(2L, 4L))
   expect_equal(images[1, ], 1:4)
@@ -156,7 +161,8 @@ test_that("20 Newsgroups downloader extracts a local tarball and removes it", {
   tarball <- tempfile(fileext = ".tar.gz")
   oldwd <- setwd(source_root)
   on.exit(setwd(oldwd), add = TRUE)
-  utils::tar(tarball,
+  utils::tar(
+    tarball,
     files = "20news-bydate-train",
     compression = "gzip",
     tar = "internal"
@@ -169,6 +175,11 @@ test_that("20 Newsgroups downloader extracts a local tarball and removes it", {
     url = paste0("file://", normalizePath(tarball, winslash = "/"))
   )
 
-  expect_true(file.exists(file.path(outdir, "20news-bydate-train", "alt.atheism", "1")))
+  expect_true(file.exists(file.path(
+    outdir,
+    "20news-bydate-train",
+    "alt.atheism",
+    "1"
+  )))
   expect_length(list.files(outdir, pattern = "\\.tar\\.gz$"), 0)
 })

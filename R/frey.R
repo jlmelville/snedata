@@ -63,5 +63,12 @@ show_frey_face <- function(df, n, col = grDevices::gray(1 / 12:1)) {
     stop("n must be value between 1 and ", nrow(df))
   }
   im <- matrix(t(df[n, 560:1]), ncol = 28, nrow = 20)
-  graphics::image(1:nrow(im), 1:ncol(im), im, xlab = "", ylab = "", col = col)
+  graphics::image(
+    seq_len(nrow(im)),
+    seq_len(ncol(im)),
+    im,
+    xlab = "",
+    ylab = "",
+    col = col
+  )
 }

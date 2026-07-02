@@ -98,10 +98,7 @@
 #'
 #' @export
 download_twenty_newsgroups <-
-  function(subset = "all",
-           verbose = FALSE,
-           tmpdir = NULL,
-           cleanup = TRUE) {
+  function(subset = "all", verbose = FALSE, tmpdir = NULL, cleanup = TRUE) {
     temp_info <- setup_temp_directory(tmpdir)
     tmpdir <- temp_info$tmpdir
     created_tmpdir <- temp_info$created_tmpdir
@@ -121,8 +118,11 @@ download_twenty_newsgroups <-
 
 
 download_twenty_newsgroups_data <-
-  function(tmpdir = NULL, verbose = FALSE,
-           url = "http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz") {
+  function(
+    tmpdir = NULL,
+    verbose = FALSE,
+    url = "http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
+  ) {
     if (is.null(tmpdir)) {
       tmpdir <- tempdir()
     }
@@ -170,9 +170,7 @@ read_newsgroup_directory <- function(directory_path) {
 }
 
 read_newsgroups_subset <-
-  function(root_dir,
-           subset = "train",
-           verbose = FALSE) {
+  function(root_dir, subset = "train", verbose = FALSE) {
     tsmessage("Fetching subset: ", subset)
     subset_dir <-
       file.path(root_dir, paste0("20news-bydate-", subset))
@@ -191,9 +189,7 @@ read_newsgroups_subset <-
   }
 
 read_newsgroups_data <-
-  function(root_dir,
-           subset = "all",
-           verbose = FALSE) {
+  function(root_dir, subset = "all", verbose = FALSE) {
     subset_levels <- c("train", "test")
     subset <- match.arg(subset, choices = c(subset_levels, "all"))
 
@@ -242,5 +238,5 @@ setup_temp_directory <- function(tmpdir) {
     }
   }
 
-  return(list(tmpdir = tmpdir, created_tmpdir = created_tmpdir))
+  list(tmpdir = tmpdir, created_tmpdir = created_tmpdir)
 }

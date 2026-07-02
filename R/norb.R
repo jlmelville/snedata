@@ -110,23 +110,27 @@
 #' \url{http://doi.ieeecomputersociety.org/10.1109/CVPR.2004.144}
 #' @export
 download_norb_small <- function(
-    base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
-    verbose = FALSE,
-    split = c("all", "training", "testing")) {
+  base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
+  verbose = FALSE,
+  split = c("all", "training", "testing")
+) {
   split <- match.arg(split)
   if (split != "all") {
     return(read_norb_data(
-      base_url = base_url, split = split,
+      base_url = base_url,
+      split = split,
       verbose = verbose
     ))
   }
 
   training <- read_norb_data(
-    base_url = base_url, split = "training",
+    base_url = base_url,
+    split = "training",
     verbose = verbose
   )
   testing <- read_norb_data(
-    base_url = base_url, split = "testing",
+    base_url = base_url,
+    split = "testing",
     verbose = verbose
   )
   rbind(training, testing)
@@ -158,33 +162,42 @@ download_norb_small <- function(
 #' # Compare with example at https://github.com/ndrplz/small_norb
 #' }
 #' @export
-show_norb_object <- function(df,
-                             category = 0,
-                             instance = 0,
-                             elevation = 0,
-                             azimuth = 0,
-                             lighting = 0) {
-  x <- df[df$Label == category &
-    df$Instance == instance &
-    df$Elevation == elevation &
-    df$Azimuth == azimuth &
-    df$Lighting == lighting, ]
+show_norb_object <- function(
+  df,
+  category = 0,
+  instance = 0,
+  elevation = 0,
+  azimuth = 0,
+  lighting = 0
+) {
+  x <- df[
+    df$Label == category &
+      df$Instance == instance &
+      df$Elevation == elevation &
+      df$Azimuth == azimuth &
+      df$Lighting == lighting,
+  ]
   if (nrow(x) != 1) {
     stop("Found ", nrow(x), " entries, but need 1")
   }
   show_norb_vec(as.numeric(x[, 1:(96 * 96 * 2)]))
   title <- paste0(
     c(
-      "Category:", category,
-      "Instance:", instance
+      "Category:",
+      category,
+      "Instance:",
+      instance
     ),
     collapse = " "
   )
   sub <- paste0(
     c(
-      "Elevation:", elevation,
-      "Azimuth:", azimuth,
-      "Lighting:", lighting
+      "Elevation:",
+      elevation,
+      "Azimuth:",
+      azimuth,
+      "Lighting:",
+      lighting
     ),
     collapse = " "
   )
@@ -192,10 +205,12 @@ show_norb_object <- function(df,
 }
 
 read_norb_data <- function(
-    base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
-    split = "training",
-    verbose = TRUE) {
-  ids <- switch(split,
+  base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
+  split = "training",
+  verbose = TRUE
+) {
+  ids <- switch(
+    split,
     training = "46789",
     testing = "01235",
     stop("Unknown split '", split, "'")
@@ -224,7 +239,10 @@ read_norb_data <- function(
     verbose = verbose
   )
 
-  split_col <- factor(rep(split, ncol(images)), levels = c("training", "testing"))
+  split_col <- factor(
+    rep(split, ncol(images)),
+    levels = c("training", "testing")
+  )
 
   rownames(info) <- c("Instance", "Elevation", "Azimuth", "Lighting")
   res <- data.frame(t(images), t(info), Split = split_col, Label = cats)
@@ -240,15 +258,21 @@ read_norb_data <- function(
 }
 
 read_norb_images <-
-  function(base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
-           file = "smallnorb-5x46789x9x18x6x2x96x96-training-dat.mat.gz",
-           verbose = TRUE) {
+  function(
+    base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
+    file = "smallnorb-5x46789x9x18x6x2x96x96-training-dat.mat.gz",
+    verbose = TRUE
+  ) {
     f <- open_binary_file(base_url = base_url, filename = file, verbose)
     on.exit(close(f), add = TRUE)
     check_header(f, "byte")
 
-    ndim <- readBin(f,
-      what = "integer", n = 4, size = 1, signed = FALSE,
+    ndim <- readBin(
+      f,
+      what = "integer",
+      n = 4,
+      size = 1,
+      signed = FALSE,
       endian = "little"
     )[1]
     if (ndim != 4) {
@@ -257,8 +281,12 @@ read_norb_images <-
 
     dims <- rep(0, ndim)
     for (i in 1:ndim) {
-      dims[i] <- readBin(f,
-        what = "integer", n = 1, size = 4, signed = TRUE,
+      dims[i] <- readBin(
+        f,
+        what = "integer",
+        n = 1,
+        size = 4,
+        signed = TRUE,
         endian = "little"
       )
     }
@@ -268,9 +296,13 @@ read_norb_images <-
     res <- matrix(nrow = img_size, ncol = n_imgs)
 
     for (i in 1:dims[1]) {
-      res[, i] <- readBin(f,
-        what = "integer", n = img_size,
-        size = 1, signed = FALSE, endian = "little"
+      res[, i] <- readBin(
+        f,
+        what = "integer",
+        n = img_size,
+        size = 1,
+        signed = FALSE,
+        endian = "little"
       )
     }
 
@@ -278,39 +310,61 @@ read_norb_images <-
   }
 
 read_norb_categories <-
-  function(base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
-           file = "smallnorb-5x46789x9x18x6x2x96x96-training-cat.mat.gz",
-           verbose = TRUE) {
+  function(
+    base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
+    file = "smallnorb-5x46789x9x18x6x2x96x96-training-cat.mat.gz",
+    verbose = TRUE
+  ) {
     f <- open_binary_file(base_url = base_url, filename = file, verbose)
     on.exit(close(f), add = TRUE)
     check_header(f, "integer")
 
-    ndim <- readBin(f,
-      what = "integer", n = 4, size = 1, signed = FALSE,
+    ndim <- readBin(
+      f,
+      what = "integer",
+      n = 4,
+      size = 1,
+      signed = FALSE,
       endian = "little"
     )[1]
     if (ndim != 1) {
       stop("Was expecting 1 dimension, but found ", ndim)
     }
 
-    n_imgs <- readBin(f,
-      what = "integer", n = 1, size = 4, signed = TRUE,
+    n_imgs <- readBin(
+      f,
+      what = "integer",
+      n = 1,
+      size = 4,
+      signed = TRUE,
       endian = "little"
     )
 
     # Ignore next two lines representing (non-existent in this case) 2nd
     # and 3rd dimension sizes
-    readBin(f,
-      what = "integer", n = 1, size = 4, signed = TRUE,
+    readBin(
+      f,
+      what = "integer",
+      n = 1,
+      size = 4,
+      signed = TRUE,
       endian = "little"
     )
-    readBin(f,
-      what = "integer", n = 1, size = 4, signed = TRUE,
+    readBin(
+      f,
+      what = "integer",
+      n = 1,
+      size = 4,
+      signed = TRUE,
       endian = "little"
     )
 
-    res <- readBin(f,
-      what = "integer", n = n_imgs, size = 4, signed = TRUE,
+    res <- readBin(
+      f,
+      what = "integer",
+      n = n_imgs,
+      size = 4,
+      signed = TRUE,
       endian = "little"
     )
 
@@ -318,41 +372,63 @@ read_norb_categories <-
   }
 
 read_norb_info <-
-  function(base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
-           file = "smallnorb-5x46789x9x18x6x2x96x96-training-info.mat.gz",
-           verbose = TRUE) {
+  function(
+    base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
+    file = "smallnorb-5x46789x9x18x6x2x96x96-training-info.mat.gz",
+    verbose = TRUE
+  ) {
     f <- open_binary_file(base_url = base_url, filename = file, verbose)
     on.exit(close(f), add = TRUE)
     check_header(f, "integer")
 
-    ndim <- readBin(f,
-      what = "integer", n = 4, size = 1, signed = FALSE,
+    ndim <- readBin(
+      f,
+      what = "integer",
+      n = 4,
+      size = 1,
+      signed = FALSE,
       endian = "little"
     )[1]
     if (ndim != 2) {
       stop("Was expecting 1 dimension, but found ", ndim)
     }
 
-    n_imgs <- readBin(f,
-      what = "integer", n = 1, size = 4, signed = TRUE,
+    n_imgs <- readBin(
+      f,
+      what = "integer",
+      n = 1,
+      size = 4,
+      signed = TRUE,
       endian = "little"
     )
-    n_features <- readBin(f,
-      what = "integer", n = 1, size = 4, signed = TRUE,
+    n_features <- readBin(
+      f,
+      what = "integer",
+      n = 1,
+      size = 4,
+      signed = TRUE,
       endian = "little"
     )
 
     # Ignore next lines representing (non-existent in this case) 3rd dimension
-    readBin(f,
-      what = "integer", n = 1, size = 4, signed = TRUE,
+    readBin(
+      f,
+      what = "integer",
+      n = 1,
+      size = 4,
+      signed = TRUE,
       endian = "little"
     )
 
     res <- matrix(nrow = n_features, ncol = n_imgs)
     for (i in 1:n_imgs) {
-      res[, i] <- readBin(f,
-        what = "integer", n = n_features, size = 4,
-        signed = TRUE, endian = "little"
+      res[, i] <- readBin(
+        f,
+        what = "integer",
+        n = n_features,
+        size = 4,
+        signed = TRUE,
+        endian = "little"
       )
     }
 
@@ -361,7 +437,8 @@ read_norb_info <-
 
 show_norb_vec <- function(x) {
   nc <- length(x) / 96
-  graphics::image(matrix(x, nrow = 96, ncol = nc)[, nc:1],
+  graphics::image(
+    matrix(x, nrow = 96, ncol = nc)[, nc:1],
     col = grDevices::gray(1:255 / 255)
   )
 }
@@ -374,7 +451,8 @@ show_norb_vec <- function(x) {
 # - 0x1E3D4C56 for a short matrix
 # Function uses the equivalent integer string
 magic_to_matrix_type <- function(magic) {
-  switch(magic,
+  switch(
+    magic,
     "81766130" = "single precision",
     "82766130" = "packed",
     "83766130" = "double precision",
@@ -387,7 +465,8 @@ magic_to_matrix_type <- function(magic) {
 
 # Convert a binary matrix type to its magic number indentifier
 matrix_type_to_magic <- function(type) {
-  switch(type,
+  switch(
+    type,
     "single precision" = "81766130",
     packed = "82766130",
     "double precision" = "83766130",
@@ -401,15 +480,21 @@ matrix_type_to_magic <- function(type) {
 # Ensure we are reading the binary matrix file we think we should be
 check_header <- function(f, type) {
   magic <- paste0(
-    readBin(f,
-      what = "integer", n = 4, size = 1, signed = FALSE,
+    readBin(
+      f,
+      what = "integer",
+      n = 4,
+      size = 1,
+      signed = FALSE,
       endian = "little"
     ),
     collapse = ""
   )
   if (magic != matrix_type_to_magic(type)) {
     stop(
-      "Was expecting a ", type, " matrix, but found: ",
+      "Was expecting a ",
+      type,
+      " matrix, but found: ",
       magic_to_matrix_type(magic)
     )
   }
@@ -419,7 +504,8 @@ check_header <- function(f, type) {
 # e.g. magic("1E3D4C51") # [1] 81 76 61 30
 magic <- function(hexstr) {
   as.integer(as.hexmode(rev(substring(
-    hexstr, seq(1, nchar(hexstr) - 1, 2),
+    hexstr,
+    seq(1, nchar(hexstr) - 1, 2),
     seq(2, nchar(hexstr), 2)
   ))))
 }

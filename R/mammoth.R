@@ -42,10 +42,15 @@
 #' @export
 download_mammoth10k <- function() {
   stop_if_not_installed("rjson")
-  df <- data.frame(do.call(rbind, rjson::fromJSON(
-    file =
-      gh_raw(repo = "PAIR-code/understanding-umap", filename = "raw_data/mammoth_3d.json")
-  )))
+  df <- data.frame(do.call(
+    rbind,
+    rjson::fromJSON(
+      file = gh_raw(
+        repo = "PAIR-code/understanding-umap",
+        filename = "raw_data/mammoth_3d.json"
+      )
+    )
+  ))
   colnames(df) <- c("X", "Z", "Y")
   df
 }
@@ -94,10 +99,15 @@ download_mammoth10k <- function() {
 #' @export
 download_mammoth50k <- function() {
   stop_if_not_installed("rjson")
-  df <- data.frame(do.call(rbind, rjson::fromJSON(
-    file =
-      gh_raw(repo = "PAIR-code/understanding-umap", filename = "raw_data/mammoth_3d_50k.json")
-  )))
+  df <- data.frame(do.call(
+    rbind,
+    rjson::fromJSON(
+      file = gh_raw(
+        repo = "PAIR-code/understanding-umap",
+        filename = "raw_data/mammoth_3d_50k.json"
+      )
+    )
+  ))
   colnames(df) <- c("Y", "X", "Z")
   df
 }
