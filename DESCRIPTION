@@ -1,20 +1,12 @@
 Type: Package
 Package: snedata
 Title: SNE and Dimensionality Reduction Dataset Functions
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Authors@R: 
     person("James", "Melville", , "jlmelville@gmail.com", role = c("aut", "cre"))
-Description: Some simple simulation datasets used in Stochastic Neighbor
-    Embedding-related research, similar to those used by Lee and
-    co-workers in their JSE papers. Also, R translations of the JavaScript
-    functions used to generate data for the article "How to Use t-SNE
-    Effectively" at <http://distill.pub/2016/misread-tsne/>. Additionally,
-    three real-world image datasets: the Olivetti faces dataset, the Frey
-    faces dataset and the MNIST digits dataset. Access to the Olivetti and
-    Frey faces datasets requires the RnavGraphImageData package be
-    installed. Access to the MNIST digits dataset requires a connection to
-    the internet to download the files. There are also functions for
-    visualizing individual images in these datasets.
+Description: Generate simulation datasets and download example datasets used
+    for Stochastic Neighbor Embedding and related dimensionality reduction
+    methods.
 License: MIT + file LICENSE
 URL: https://github.com/jlmelville/snedata
 BugReports: https://github.com/jlmelville/snedata/issues
