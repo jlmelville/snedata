@@ -28,7 +28,7 @@ The two circles are not co-planar. Points are colored depending from
 which circle they are sampled from.
 
 For the unlinked version, see
-[`unlink_data`](https://jlmelville.github.io/snedata/reference/unlink_data.md).
+[`unlink_data()`](https://jlmelville.github.io/snedata/reference/unlink_data.md).
 
 ## References
 

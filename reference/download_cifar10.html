@@ -51,65 +51,32 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with 3074 variables:</p>
-<dl><dt><code>r1</code>, <code>r2</code>, <code>r3</code> ... <code>r1024</code></dt>
-<dd><p>Integer pixel value
-of the red channel of the image, from 0 to 255.</p></dd>
-
-<dt><code>g1</code>, <code>g2</code>, <code>g3</code> ... <code>g1024</code></dt>
-<dd><p>Integer pixel value
-of the green channel of the image, from 0 to 255.</p></dd>
-
-<dt><code>b1</code>, <code>b2</code>, <code>b3</code> ... <code>b1024</code></dt>
-<dd><p>Integer pixel value
-of the blue channel of the image, from 0 to 255.</p></dd>
-
-<dt><code>Label</code></dt>
-<dd><p>The image category, represented by a factor in the
-range 0-9.</p></dd>
-
-<dt><code>Description</code></dt>
-<dd><p>The name of the image category associated with
-<code>Label</code>, represented by a factor.</p></dd>
-
-
-</dl><p>The pixel features are organized row-wise from the top left of each image.
+    <p>A data frame with 3074 variables:</p><ul><li><p><code>r1</code>, <code>r2</code>, <code>r3</code> ... <code>r1024</code>: Integer pixel value
+of the red channel of the image, from 0 to 255.</p></li>
+<li><p><code>g1</code>, <code>g2</code>, <code>g3</code> ... <code>g1024</code>: Integer pixel value
+of the green channel of the image, from 0 to 255.</p></li>
+<li><p><code>b1</code>, <code>b2</code>, <code>b3</code> ... <code>b1024</code>: Integer pixel value
+of the blue channel of the image, from 0 to 255.</p></li>
+<li><p><code>Label</code>: The image category, represented by a factor in the
+range 0-9.</p></li>
+<li><p><code>Description</code>: The name of the image category associated with
+<code>Label</code>, represented by a factor.</p></li>
+</ul><p>The pixel features are organized row-wise from the top left of each image.
 The <code>Label</code> levels correspond to the following class names (stored in
-the <code>Description</code> column):</p><dl><dt><code>0</code></dt>
-<dd><p>Airplane</p></dd>
-
-<dt><code>1</code></dt>
-<dd><p>Automobile</p></dd>
-
-<dt><code>2</code></dt>
-<dd><p>Bird</p></dd>
-
-<dt><code>3</code></dt>
-<dd><p>Cat</p></dd>
-
-<dt><code>4</code></dt>
-<dd><p>Deer</p></dd>
-
-<dt><code>5</code></dt>
-<dd><p>Dog</p></dd>
-
-<dt><code>6</code></dt>
-<dd><p>Frog</p></dd>
-
-<dt><code>7</code></dt>
-<dd><p>Horse</p></dd>
-
-<dt><code>8</code></dt>
-<dd><p>Ship</p></dd>
-
-<dt><code>9</code></dt>
-<dd><p>Truck</p></dd>
-
-
-</dl><p>There are 60,000 items in the data set. The first 50,000 are the training
+the <code>Description</code> column):</p><ul><li><p><code>0</code>: Airplane</p></li>
+<li><p><code>1</code>: Automobile</p></li>
+<li><p><code>2</code>: Bird</p></li>
+<li><p><code>3</code>: Cat</p></li>
+<li><p><code>4</code>: Deer</p></li>
+<li><p><code>5</code>: Dog</p></li>
+<li><p><code>6</code>: Frog</p></li>
+<li><p><code>7</code>: Horse</p></li>
+<li><p><code>8</code>: Ship</p></li>
+<li><p><code>9</code>: Truck</p></li>
+</ul><p>There are 60,000 items in the data set. The first 50,000 are the training
 set, and the remaining 10,000 are the testing set.</p>
 <p>Items in the dataset can be visualized with the
-<code><a href="show_cifar.html">show_cifar</a></code> function.</p>
+<code><a href="show_cifar.html">show_cifar()</a></code> function.</p>
 <p>For more information see
 <a href="https://www.cs.toronto.edu/~kriz/cifar.html" class="external-link">https://www.cs.toronto.edu/~kriz/cifar.html</a>.</p>
     </div>

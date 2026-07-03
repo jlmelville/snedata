@@ -13,7 +13,7 @@ show_isomap_face(df, n, col = grDevices::gray(1:255/255), ...)
 - df:
 
   Data frame containing Isomap faces, as returned by
-  [`download_isomap_faces`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md).
+  [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md).
 
 - n:
 
@@ -26,4 +26,4 @@ show_isomap_face(df, n, col = grDevices::gray(1:255/255), ...)
 - ...:
 
   Other arguments passed onto the
-  [`image`](https://rdrr.io/r/graphics/image.html) function.
+  [`graphics::image()`](https://rdrr.io/r/graphics/image.html) function.

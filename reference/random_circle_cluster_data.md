@@ -25,7 +25,7 @@ respectively, and color in the `color` column.
 
 Creates a dataset where the points are located on the circumference of a
 circle of unit radius via
-[`circle_data`](https://jlmelville.github.io/snedata/reference/circle_data.md),
+[`circle_data()`](https://jlmelville.github.io/snedata/reference/circle_data.md),
 where the angle subtended by the point at the center of the circle has
 been uniformly sampled.
 

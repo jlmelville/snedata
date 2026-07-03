@@ -56,94 +56,39 @@ approximately balanced.</p>
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with 6 variables:</p>
-<dl><dt><code>Id</code></dt>
-<dd><p>A unique identifier for the document, consisting of the
-subset concatenated with the position in the subset, e.g. <code>train_1</code>.</p></dd>
-
-<dt><code>FileId</code></dt>
-<dd><p>The integer identifier of the document, from the
-filename of the downloaded data. Be aware that these are <em>not</em> unique.</p></dd>
-
-<dt><code>Text</code></dt>
-<dd><p>The full text of the message including any header, footer,
-and quotes. Newlines are preserved.</p></dd>
-
-<dt><code>Subset</code></dt>
-<dd><p>A factor with two levels: <code>train</code> and <code>test</code>,
-indicating whether the document is from the training or test subset.</p></dd>
-
-<dt><code>Label</code></dt>
-<dd><p>The newsgroup represented by an integer id, in the range
-0-19.</p></dd>
-
-<dt><code>Newsgroup</code></dt>
-<dd><p>A factor with 20 levels, indicating the newsgroup
-that the document belongs to.</p></dd>
-
-
-</dl><p>The labels correspond to:</p><dl><dt><code>0</code></dt>
-<dd><p>alt.atheism</p></dd>
-
-<dt><code>1</code></dt>
-<dd><p>comp.graphics</p></dd>
-
-<dt><code>2</code></dt>
-<dd><p>comp.os.ms-windows.misc</p></dd>
-
-<dt><code>3</code></dt>
-<dd><p>comp.sys.ibm.pc.hardware</p></dd>
-
-<dt><code>4</code></dt>
-<dd><p>comp.sys.mac.hardware</p></dd>
-
-<dt><code>5</code></dt>
-<dd><p>comp.windows.x</p></dd>
-
-<dt><code>6</code></dt>
-<dd><p>misc.forsale</p></dd>
-
-<dt><code>7</code></dt>
-<dd><p>rec.autos</p></dd>
-
-<dt><code>8</code></dt>
-<dd><p>rec.motorcycles</p></dd>
-
-<dt><code>9</code></dt>
-<dd><p>rec.sport.baseball</p></dd>
-
-<dt><code>10</code></dt>
-<dd><p>rec.sport.hockey</p></dd>
-
-<dt><code>11</code></dt>
-<dd><p>sci.crypt</p></dd>
-
-<dt><code>12</code></dt>
-<dd><p>sci.electronics</p></dd>
-
-<dt><code>13</code></dt>
-<dd><p>sci.med</p></dd>
-
-<dt><code>14</code></dt>
-<dd><p>sci.space</p></dd>
-
-<dt><code>15</code></dt>
-<dd><p>soc.religion.christian</p></dd>
-
-<dt><code>16</code></dt>
-<dd><p>talk.politics.guns</p></dd>
-
-<dt><code>17</code></dt>
-<dd><p>talk.politics.mideast</p></dd>
-
-<dt><code>18</code></dt>
-<dd><p>talk.politics.misc</p></dd>
-
-<dt><code>19</code></dt>
-<dd><p>talk.religion.misc</p></dd>
-
-
-</dl><p>and are also present as the <code>Newsgroup</code> factor.</p>
+    <p>A data frame with 6 variables:</p><ul><li><p><code>Id</code>: A unique identifier for the document, consisting of the
+subset concatenated with the position in the subset, e.g. <code>train_1</code>.</p></li>
+<li><p><code>FileId</code>: The integer identifier of the document, from the
+filename of the downloaded data. Be aware that these are <em>not</em> unique.</p></li>
+<li><p><code>Text</code>: The full text of the message including any header, footer,
+and quotes. Newlines are preserved.</p></li>
+<li><p><code>Subset</code>: A factor with two levels: <code>train</code> and <code>test</code>,
+indicating whether the document is from the training or test subset.</p></li>
+<li><p><code>Label</code>: The newsgroup represented by an integer id, in the range
+0-19.</p></li>
+<li><p><code>Newsgroup</code>: A factor with 20 levels, indicating the newsgroup
+that the document belongs to.</p></li>
+</ul><p>The labels correspond to:</p><ul><li><p><code>0</code>: alt.atheism</p></li>
+<li><p><code>1</code>: comp.graphics</p></li>
+<li><p><code>2</code>: comp.os.ms-windows.misc</p></li>
+<li><p><code>3</code>: comp.sys.ibm.pc.hardware</p></li>
+<li><p><code>4</code>: comp.sys.mac.hardware</p></li>
+<li><p><code>5</code>: comp.windows.x</p></li>
+<li><p><code>6</code>: misc.forsale</p></li>
+<li><p><code>7</code>: rec.autos</p></li>
+<li><p><code>8</code>: rec.motorcycles</p></li>
+<li><p><code>9</code>: rec.sport.baseball</p></li>
+<li><p><code>10</code>: rec.sport.hockey</p></li>
+<li><p><code>11</code>: sci.crypt</p></li>
+<li><p><code>12</code>: sci.electronics</p></li>
+<li><p><code>13</code>: sci.med</p></li>
+<li><p><code>14</code>: sci.space</p></li>
+<li><p><code>15</code>: soc.religion.christian</p></li>
+<li><p><code>16</code>: talk.politics.guns</p></li>
+<li><p><code>17</code>: talk.politics.mideast</p></li>
+<li><p><code>18</code>: talk.politics.misc</p></li>
+<li><p><code>19</code>: talk.religion.misc</p></li>
+</ul><p>and are also present as the <code>Newsgroup</code> factor.</p>
 <p>There are 11,314 items in the <code>train</code> dataset and 7,532 items in the
 <code>test</code> for a total of 18,846 items if you choose <code>subset = "all"</code>.</p>
     </div>

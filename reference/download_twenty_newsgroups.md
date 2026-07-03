@@ -19,116 +19,65 @@ download_twenty_newsgroups(
 
 A data frame with 6 variables:
 
-- `Id`:
-
-  A unique identifier for the document, consisting of the subset
+- `Id`: A unique identifier for the document, consisting of the subset
   concatenated with the position in the subset, e.g. `train_1`.
 
-- `FileId`:
+- `FileId`: The integer identifier of the document, from the filename of
+  the downloaded data. Be aware that these are *not* unique.
 
-  The integer identifier of the document, from the filename of the
-  downloaded data. Be aware that these are *not* unique.
+- `Text`: The full text of the message including any header, footer, and
+  quotes. Newlines are preserved.
 
-- `Text`:
+- `Subset`: A factor with two levels: `train` and `test`, indicating
+  whether the document is from the training or test subset.
 
-  The full text of the message including any header, footer, and quotes.
-  Newlines are preserved.
+- `Label`: The newsgroup represented by an integer id, in the range
+  0-19.
 
-- `Subset`:
-
-  A factor with two levels: `train` and `test`, indicating whether the
-  document is from the training or test subset.
-
-- `Label`:
-
-  The newsgroup represented by an integer id, in the range 0-19.
-
-- `Newsgroup`:
-
-  A factor with 20 levels, indicating the newsgroup that the document
-  belongs to.
+- `Newsgroup`: A factor with 20 levels, indicating the newsgroup that
+  the document belongs to.
 
 The labels correspond to:
 
-- `0`:
+- `0`: alt.atheism
 
-  alt.atheism
+- `1`: comp.graphics
 
-- `1`:
+- `2`: comp.os.ms-windows.misc
 
-  comp.graphics
+- `3`: comp.sys.ibm.pc.hardware
 
-- `2`:
+- `4`: comp.sys.mac.hardware
 
-  comp.os.ms-windows.misc
+- `5`: comp.windows.x
 
-- `3`:
+- `6`: misc.forsale
 
-  comp.sys.ibm.pc.hardware
+- `7`: rec.autos
 
-- `4`:
+- `8`: rec.motorcycles
 
-  comp.sys.mac.hardware
+- `9`: rec.sport.baseball
 
-- `5`:
+- `10`: rec.sport.hockey
 
-  comp.windows.x
+- `11`: sci.crypt
 
-- `6`:
+- `12`: sci.electronics
 
-  misc.forsale
+- `13`: sci.med
 
-- `7`:
+- `14`: sci.space
 
-  rec.autos
+- `15`: soc.religion.christian
 
-- `8`:
+- `16`: talk.politics.guns
 
-  rec.motorcycles
+- `17`: talk.politics.mideast
 
-- `9`:
+- `18`: talk.politics.misc
 
-  rec.sport.baseball
-
-- `10`:
-
-  rec.sport.hockey
-
-- `11`:
-
-  sci.crypt
-
-- `12`:
-
-  sci.electronics
-
-- `13`:
-
-  sci.med
-
-- `14`:
-
-  sci.space
-
-- `15`:
-
-  soc.religion.christian
-
-- `16`:
-
-  talk.politics.guns
-
-- `17`:
-
-  talk.politics.mideast
-
-- `18`:
-
-  talk.politics.misc
-
-- `19`:
-
-  talk.religion.misc
+- `19`: talk.religion.misc
 
 and are also present as the `Newsgroup` factor.
 

@@ -17,80 +17,53 @@ download_norb_small(
 
 A data frame with 18,439 variables:
 
-- `c0px1`, `c0px2`, `c0px3` ... `c0px9216`:
+- `c0px1`, `c0px2`, `c0px3` ... `c0px9216`: Integer pixel value, from 0
+  (white) to 255 (black) for the first image in the pair
 
-  Integer pixel value, from 0 (white) to 255 (black) for the first image
-  in the pair
+- `c1px1`, `c1px2`, `c1px3` ... `c1px9216`: Integer pixel value, from 0
+  (white) to 255 (black) for the second image in the pair
 
-- `c1px1`, `c1px2`, `c1px3` ... `c1px9216`:
+- `Instance`: The index of the toy in a particular category, represented
+  by a factor in the range 0-9. The training set consists of instances
+  0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.
 
-  Integer pixel value, from 0 (white) to 255 (black) for the second
-  image in the pair
+- `Elevation`: The elevation of the camera represented by a factor in
+  the range 0-8. These represent elevations of 30 to 70 degrees from the
+  horizontal, in increments of 5 degrees.
 
-- `Instance`:
+- `Azimuth`: The azimuth, represented by a factor in the range 0, 2, 4
+  .. 34. Multiply by ten to get the value in degrees.
 
-  The index of the toy in a particular category, represented by a factor
-  in the range 0-9. The training set consists of instances 0, 1, 2, 3
-  and 5, and the test set consists of 4, 6, 7, 8 and 9.
+- `Lighting`: The lighting condition, represened by a factor in the
+  range 0-5.
 
-- `Elevation`:
+- `Label`: The toy category, represented by a factor in the range 0-4.
 
-  The elevation of the camera represented by a factor in the range 0-8.
-  These represent elevations of 30 to 70 degrees from the horizontal, in
-  increments of 5 degrees.
+- `Split`: Whether the toy in is in the `training` or `testing` set,
+  represented by a factor
 
-- `Azimuth`:
-
-  The azimuth, represented by a factor in the range 0, 2, 4 .. 34.
-  Multiply by ten to get the value in degrees.
-
-- `Lighting`:
-
-  The lighting condition, represened by a factor in the range 0-5.
-
-- `Label`:
-
-  The toy category, represented by a factor in the range 0-4.
-
-- `Split`:
-
-  Whether the toy in is in the `training` or `testing` set, represented
-  by a factor
-
-- `Description`:
-
-  The name of the toy category associated with `Label`, represented by a
-  factor.
+- `Description`: The name of the toy category associated with `Label`,
+  represented by a factor.
 
 The pixel features are organized row-wise from the top left of each
 image. The `Label` levels correspond to:
 
-- `0`:
+- `0`: Four-legged animal
 
-  Four-legged animal
+- `1`: Human figure
 
-- `1`:
+- `2`: Airplane
 
-  Human figure
+- `3`: Truck
 
-- `2`:
-
-  Airplane
-
-- `3`:
-
-  Truck
-
-- `4`:
-
-  Car
+- `4`: Car
 
 There are 48,600 items in the data set. The first 24,300 are the
 training set, and the remaining 24,300 are the testing set, but you can
 also use the `Split` column to determine which split a given row is in.
 
 Items in the dataset can be visualized with the
-[`show_norb_object`](https://jlmelville.github.io/snedata/reference/show_norb_object.md)
+[`show_norb_object()`](https://jlmelville.github.io/snedata/reference/show_norb_object.md)
 function.
 
 For more information see

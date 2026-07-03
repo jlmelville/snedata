@@ -16,7 +16,7 @@ the Y, X, and Z coordinates respectively. This labeling of axes
 preserves the ordering of the raw data, and makes the Z-coordinate the
 "height", i.e. the height of the mammoth varies with Z. Note that the
 ordering of the axes differs from that of
-[`download_mammoth10k`](https://jlmelville.github.io/snedata/reference/download_mammoth10k.md).
+[`download_mammoth10k()`](https://jlmelville.github.io/snedata/reference/download_mammoth10k.md).
 Use the X, Y, and Z labels rather than numerical indices for consistency
 between the two datasets.
 
@@ -54,7 +54,7 @@ to be installed and loaded.
 - The Smithsonian page:
   <https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12>.
 
-- [`download_mammoth10k`](https://jlmelville.github.io/snedata/reference/download_mammoth10k.md)
+- [`download_mammoth10k()`](https://jlmelville.github.io/snedata/reference/download_mammoth10k.md)
   to download a 10,000 point random sub-sample of this data.
 
 ## Examples

@@ -17,11 +17,11 @@ swiss_roll(n = 1000, min_phi = 1.5 * pi, max_phi = 4.5 * pi, max_z = 10)
 
 - min_phi:
 
-  Minimum value of the range of \\phi\\ to sample from
+  Minimum value of the range of `phi` to sample from.
 
 - max_phi:
 
-  Maximum value of the range of \\phi\\ to sample from.
+  Maximum value of the range of `phi` to sample from.
 
 - max_z:
 
@@ -39,14 +39,17 @@ Creates a series of points randomly sampled from a swiss roll-shaped
 manifold: a two-dimensional plane which has been rolled up into a spiral
 shape. Or just look at a swiss roll.
 
-The formula for sampling the x, y and z coordinates used in this dataset
-is from that given in the Stochastic Proximity Embedding paper by
-Agrafiotis and Xu (I don't know who originally came up with the data
-set, though): \$\$x = \phi cos\phi, y = \phi sin \phi, z\$\$
+The formula for sampling the x, y, and z coordinates used in this
+dataset is from that given in the Stochastic Proximity Embedding paper
+by Agrafiotis and Xu (I don't know who originally came up with the data
+set, though):
 
-where \\\phi\\ is sampled between \\\frac{3\pi}{2}\\ and
-\\\frac{5\pi}{2}\\, and `z` is sampled between 0 and 10 (the range of
-\\\phi\\ and `z` can be modified, if desired).
+    x <- phi * cos(phi)
+    y <- phi * sin(phi)
+
+where `phi` is sampled between `3 * pi / 2` and `5 * pi / 2`, and `z` is
+sampled between 0 and 10. The ranges of `phi` and `z` can be modified,
+if desired.
 
 Points are colored based on the value of phi. If you unrolled the
 manifold into a flat sheet, you would see the color change linearly in

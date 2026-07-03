@@ -27,7 +27,7 @@ color in the `color` column.
 ## Details
 
 Creates a dataset similar to
-[`random_walk`](https://jlmelville.github.io/snedata/reference/random_walk.md)
+[`random_walk()`](https://jlmelville.github.io/snedata/reference/random_walk.md)
 but with additional gaussian noise added at each step. Points are
 linearly mapped from their position in the walk to a rainbow color
 scheme.

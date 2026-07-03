@@ -18,16 +18,16 @@ Very simple datasets for characterizing the behavior of various
 embedding algorithms some, from Lee et al (2016) and Agrafiotis and Xu
 (2002).
 
-- [`swiss_roll`](https://jlmelville.github.io/snedata/reference/swiss_roll.md).
+- [`swiss_roll()`](https://jlmelville.github.io/snedata/reference/swiss_roll.md).
   A 2D plane curled into 3D.
 
-- [`sphere`](https://jlmelville.github.io/snedata/reference/sphere.md).
+- [`sphere()`](https://jlmelville.github.io/snedata/reference/sphere.md).
   Points sampled from the surface of a 3D sphere.
 
-- [`ball`](https://jlmelville.github.io/snedata/reference/ball.md).
+- [`ball()`](https://jlmelville.github.io/snedata/reference/ball.md).
   Points sampled from the interior of a 3D sphere.
 
-- [`helix`](https://jlmelville.github.io/snedata/reference/helix.md).
+- [`helix()`](https://jlmelville.github.io/snedata/reference/helix.md).
   Points sampled from a 3D toroidal helix with the ends jointed
   together.
 
@@ -38,63 +38,63 @@ your browser. Much of the data pertains to investigating the behavior of
 clusters of gaussians of varying dimensionality, heterogeneity and
 relative separation. There's quite a lot of functions:
 
-- [`circle_data`](https://jlmelville.github.io/snedata/reference/circle_data.md).
+- [`circle_data()`](https://jlmelville.github.io/snedata/reference/circle_data.md).
   A 2D circle.
 
-- [`cube_data`](https://jlmelville.github.io/snedata/reference/cube_data.md).
+- [`cube_data()`](https://jlmelville.github.io/snedata/reference/cube_data.md).
   A cube.
 
-- [`gaussian_data`](https://jlmelville.github.io/snedata/reference/gaussian_data.md).
+- [`gaussian_data()`](https://jlmelville.github.io/snedata/reference/gaussian_data.md).
   A Gaussian.
 
-- [`grid_data`](https://jlmelville.github.io/snedata/reference/grid_data.md).
+- [`grid_data()`](https://jlmelville.github.io/snedata/reference/grid_data.md).
   A 2D grid.
 
-- [`link_data`](https://jlmelville.github.io/snedata/reference/link_data.md).
+- [`link_data()`](https://jlmelville.github.io/snedata/reference/link_data.md).
   Two linked circles.
 
-- [`long_cluster_data`](https://jlmelville.github.io/snedata/reference/long_cluster_data.md).
+- [`long_cluster_data()`](https://jlmelville.github.io/snedata/reference/long_cluster_data.md).
   Two long parallel clusters.
 
-- [`long_gaussian_data`](https://jlmelville.github.io/snedata/reference/long_gaussian_data.md).
+- [`long_gaussian_data()`](https://jlmelville.github.io/snedata/reference/long_gaussian_data.md).
   A gaussian with unequal standard deviation in its dimensions.
 
-- [`ortho_curve`](https://jlmelville.github.io/snedata/reference/ortho_curve.md).
+- [`ortho_curve()`](https://jlmelville.github.io/snedata/reference/ortho_curve.md).
   Points related by mutually orthogonal steps.
 
-- [`random_circle_cluster_data`](https://jlmelville.github.io/snedata/reference/random_circle_cluster_data.md).
+- [`random_circle_cluster_data()`](https://jlmelville.github.io/snedata/reference/random_circle_cluster_data.md).
   Points sampled from a circle and jittered.
 
-- [`random_circle_data`](https://jlmelville.github.io/snedata/reference/random_circle_data.md).
+- [`random_circle_data()`](https://jlmelville.github.io/snedata/reference/random_circle_data.md).
   Points randomly sampled from the circumference of a circle.
 
-- [`random_jump`](https://jlmelville.github.io/snedata/reference/random_jump.md).
+- [`random_jump()`](https://jlmelville.github.io/snedata/reference/random_jump.md).
   Points generated from a random walk with an extra gaussian
   perturbation.
 
-- [`random_walk`](https://jlmelville.github.io/snedata/reference/random_walk.md).
+- [`random_walk()`](https://jlmelville.github.io/snedata/reference/random_walk.md).
   Points generated from a random walk.
 
-- [`simplex_data`](https://jlmelville.github.io/snedata/reference/simplex_data.md).
+- [`simplex_data()`](https://jlmelville.github.io/snedata/reference/simplex_data.md).
   Points arranged as a rough simplex.
 
-- [`subset_clusters_data`](https://jlmelville.github.io/snedata/reference/subset_clusters_data.md).
+- [`subset_clusters_data()`](https://jlmelville.github.io/snedata/reference/subset_clusters_data.md).
   A small cluster inside a larger one.
 
-- [`three_clusters_data`](https://jlmelville.github.io/snedata/reference/three_clusters_data.md).
+- [`three_clusters_data()`](https://jlmelville.github.io/snedata/reference/three_clusters_data.md).
   Points sampled from three gaussian clusters with unequal relative
   distances.
 
-- [`trefoil_data`](https://jlmelville.github.io/snedata/reference/trefoil_data.md).
+- [`trefoil_data()`](https://jlmelville.github.io/snedata/reference/trefoil_data.md).
   Points sampled in the shape of 3D trefoil knot.
 
-- [`two_clusters_data`](https://jlmelville.github.io/snedata/reference/two_clusters_data.md).
+- [`two_clusters_data()`](https://jlmelville.github.io/snedata/reference/two_clusters_data.md).
   Two gaussian clusters.
 
-- [`two_different_clusters_data`](https://jlmelville.github.io/snedata/reference/two_different_clusters_data.md).
+- [`two_different_clusters_data()`](https://jlmelville.github.io/snedata/reference/two_different_clusters_data.md).
   Two gaussian clusters, with differing standard deviations.
 
-- [`unlink_data`](https://jlmelville.github.io/snedata/reference/unlink_data.md).
+- [`unlink_data()`](https://jlmelville.github.io/snedata/reference/unlink_data.md).
   Two unlinked circles.
 
 ## Faces dataset functions
@@ -104,16 +104,16 @@ If you have the `RnavGraphImageData` package
 loaded, then there are functions to convert the Olivetti and Frey faces
 datasets into a row-based format, and functions to visualize the images.
 
-- [`frey_faces`](https://jlmelville.github.io/snedata/reference/frey_faces.md).
+- [`frey_faces()`](https://jlmelville.github.io/snedata/reference/frey_faces.md).
   Loads the Frey faces as a row-based data frame.
 
-- [`show_frey_face`](https://jlmelville.github.io/snedata/reference/show_frey_face.md).
+- [`show_frey_face()`](https://jlmelville.github.io/snedata/reference/show_frey_face.md).
   Display one of the poses from the Frey faces.
 
-- [`olivetti_faces`](https://jlmelville.github.io/snedata/reference/olivetti_faces.md).
+- [`olivetti_faces()`](https://jlmelville.github.io/snedata/reference/olivetti_faces.md).
   Loads the Olivetti faces as a row-based data frame.
 
-- [`show_olivetti_face`](https://jlmelville.github.io/snedata/reference/show_olivetti_face.md).
+- [`show_olivetti_face()`](https://jlmelville.github.io/snedata/reference/show_olivetti_face.md).
   Display one of the poses from the Olivetti faces.
 
 ## Historical Isomap dataset functions
@@ -123,15 +123,15 @@ from the Internet Archive. The download functions require optional
 packages: `R.matlab` for Matlab files. The compressed face data also
 requires an external `gzip` or `uncompress` command.
 
-- [`download_isomap_swiss_roll`](https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.md).
+- [`download_isomap_swiss_roll()`](https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.md).
   Downloads the original Isomap Swiss-roll data as a row-based data
   frame.
 
-- [`download_isomap_faces`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md).
+- [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md).
   Downloads the original Isomap face-pose data as a row-based data
   frame.
 
-- [`show_isomap_face`](https://jlmelville.github.io/snedata/reference/show_isomap_face.md).
+- [`show_isomap_face()`](https://jlmelville.github.io/snedata/reference/show_isomap_face.md).
   Display one of the Isomap faces.
 
 ## MNIST dataset functions
@@ -142,11 +142,11 @@ and this package downloads from the <https://github.com/fgnt/mnist>
 mirror. Functions are available to download the dataset as a data frame
 or matrix/list result and visualize individual digits:
 
-- [`download_mnist`](https://jlmelville.github.io/snedata/reference/download_mnist.md).
+- [`download_mnist()`](https://jlmelville.github.io/snedata/reference/download_mnist.md).
   Downloads the MNIST dataset files as a row-based data frame by
   default, or as a matrix/list result with `as = "matrix"`.
 
-- [`show_mnist_digit`](https://jlmelville.github.io/snedata/reference/show_mnist_digit.md).
+- [`show_mnist_digit()`](https://jlmelville.github.io/snedata/reference/show_mnist_digit.md).
   Display one of the MNIST digits.
 
 ## Fashion-MNIST functions

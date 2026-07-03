@@ -52,11 +52,11 @@
 
 
 <dt id="arg-min-phi">min_phi<a class="anchor" aria-label="anchor" href="#arg-min-phi"></a></dt>
-<dd><p>Minimum value of the range of \(phi\) to sample from</p></dd>
+<dd><p>Minimum value of the range of <code>phi</code> to sample from.</p></dd>
 
 
 <dt id="arg-max-phi">max_phi<a class="anchor" aria-label="anchor" href="#arg-max-phi"></a></dt>
-<dd><p>Maximum value of the range of \(phi\) to sample from.</p></dd>
+<dd><p>Maximum value of the range of <code>phi</code> to sample from.</p></dd>
 
 
 <dt id="arg-max-z">max_z<a class="anchor" aria-label="anchor" href="#arg-max-z"></a></dt>
@@ -74,15 +74,14 @@ coordinates of the points and <code>color</code> the RGB color.</p>
     <p>Creates a series of points randomly sampled from a swiss roll-shaped
 manifold: a two-dimensional plane which has been rolled up into a spiral
 shape. Or just look at a swiss roll.</p>
-<p>The formula for sampling the x, y and z coordinates used in this dataset is
+<p>The formula for sampling the x, y, and z coordinates used in this dataset is
 from that given in the Stochastic Proximity Embedding paper by Agrafiotis
-and Xu (I don't know who originally came up with the data set, though):
-$$x = \phi cos\phi, y = \phi sin \phi, z$$</p>
-<p>where \(\phi\) is sampled between
-\(\frac{3\pi}{2}\) and
-\(\frac{5\pi}{2}\), and <code>z</code> is sampled between 0 and 10
-(the range of \(\phi\) and <code>z</code> can
-be modified, if desired).</p>
+and Xu (I don't know who originally came up with the data set, though):</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">phi</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">phi</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">phi</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">phi</span><span class="op">)</span></span></code></pre><p></p></div>
+<p>where <code>phi</code> is sampled between <code>3 * pi / 2</code> and <code>5 * pi / 2</code>, and <code>z</code> is
+sampled between 0 and 10. The ranges of <code>phi</code> and <code>z</code> can be modified, if
+desired.</p>
 <p>Points are colored based on the value of phi. If you unrolled the manifold
 into a flat sheet, you would see the color change linearly in the direction
 you unrolled it. Or just plot the x-y cross section (see the examples).</p>

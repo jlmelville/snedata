@@ -26,7 +26,7 @@ show_mnist_digit(df, n, col = grDevices::gray(1:255/255), ...)
 - ...:
 
   Other arguments passed onto the
-  [`image`](https://rdrr.io/r/graphics/image.html) function.
+  [`graphics::image()`](https://rdrr.io/r/graphics/image.html) function.
 
 ## Note
 

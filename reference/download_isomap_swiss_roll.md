@@ -12,17 +12,14 @@ download_isomap_swiss_roll(url = isomap_swiss_roll_url, verbose = FALSE)
 
 A data frame with 20,000 rows and 6 variables:
 
-- `x`, `y`, `z`:
+- `x`, `y`, `z`: Coordinates of the points in the rolled
+  three-dimensional space.
 
-  Coordinates of the points in the rolled three-dimensional space.
+- `u`, `v`: Coordinates of the points in the unrolled two-dimensional
+  space.
 
-- `u`, `v`:
-
-  Coordinates of the points in the unrolled two-dimensional space.
-
-- `color`:
-
-  A string representing a color in hex format, generated from `u`.
+- `color`: A string representing a color in hex format, generated from
+  `u`.
 
 ## Arguments
 

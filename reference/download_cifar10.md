@@ -18,76 +18,49 @@ download_cifar10(
 
 A data frame with 3074 variables:
 
-- `r1`, `r2`, `r3` ... `r1024`:
+- `r1`, `r2`, `r3` ... `r1024`: Integer pixel value of the red channel
+  of the image, from 0 to 255.
 
-  Integer pixel value of the red channel of the image, from 0 to 255.
+- `g1`, `g2`, `g3` ... `g1024`: Integer pixel value of the green channel
+  of the image, from 0 to 255.
 
-- `g1`, `g2`, `g3` ... `g1024`:
+- `b1`, `b2`, `b3` ... `b1024`: Integer pixel value of the blue channel
+  of the image, from 0 to 255.
 
-  Integer pixel value of the green channel of the image, from 0 to 255.
+- `Label`: The image category, represented by a factor in the range 0-9.
 
-- `b1`, `b2`, `b3` ... `b1024`:
-
-  Integer pixel value of the blue channel of the image, from 0 to 255.
-
-- `Label`:
-
-  The image category, represented by a factor in the range 0-9.
-
-- `Description`:
-
-  The name of the image category associated with `Label`, represented by
-  a factor.
+- `Description`: The name of the image category associated with `Label`,
+  represented by a factor.
 
 The pixel features are organized row-wise from the top left of each
 image. The `Label` levels correspond to the following class names
 (stored in the `Description` column):
 
-- `0`:
+- `0`: Airplane
 
-  Airplane
+- `1`: Automobile
 
-- `1`:
+- `2`: Bird
 
-  Automobile
+- `3`: Cat
 
-- `2`:
+- `4`: Deer
 
-  Bird
+- `5`: Dog
 
-- `3`:
+- `6`: Frog
 
-  Cat
+- `7`: Horse
 
-- `4`:
+- `8`: Ship
 
-  Deer
-
-- `5`:
-
-  Dog
-
-- `6`:
-
-  Frog
-
-- `7`:
-
-  Horse
-
-- `8`:
-
-  Ship
-
-- `9`:
-
-  Truck
+- `9`: Truck
 
 There are 60,000 items in the data set. The first 50,000 are the
 training set, and the remaining 10,000 are the testing set.
 
 Items in the dataset can be visualized with the
-[`show_cifar`](https://jlmelville.github.io/snedata/reference/show_cifar.md)
+[`show_cifar()`](https://jlmelville.github.io/snedata/reference/show_cifar.md)
 function.
 
 For more information see <https://www.cs.toronto.edu/~kriz/cifar.html>.

@@ -28,7 +28,7 @@ co-planar. Points are colored depending from which circle they are
 sampled from.
 
 For the linked version, see
-[`link_data`](https://jlmelville.github.io/snedata/reference/link_data.md).
+[`link_data()`](https://jlmelville.github.io/snedata/reference/link_data.md).
 
 ## References
 

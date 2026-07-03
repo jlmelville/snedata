@@ -36,8 +36,8 @@ circular hole in the middle of the curve, centered at Y = 0.
 Points are colored based on their distance along the curve.
 
 This data set is based on
-[`s_curve`](https://jlmelville.github.io/snedata/reference/s_curve.md)
-is used to assess the behavior of the PaCMAP method of Wang and
+[`s_curve()`](https://jlmelville.github.io/snedata/reference/s_curve.md)
+and is used to assess the behavior of the PaCMAP method of Wang and
 co-workers (2021).
 
 ## References

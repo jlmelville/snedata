@@ -50,70 +50,39 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with 18,439 variables:</p>
-<dl><dt><code>c0px1</code>, <code>c0px2</code>, <code>c0px3</code> ... <code>c0px9216</code></dt>
-<dd><p>Integer
+    <p>A data frame with 18,439 variables:</p><ul><li><p><code>c0px1</code>, <code>c0px2</code>, <code>c0px3</code> ... <code>c0px9216</code>: Integer
 pixel value, from 0 (white) to 255 (black) for the first image in the
-pair</p></dd>
-
-<dt><code>c1px1</code>, <code>c1px2</code>, <code>c1px3</code> ... <code>c1px9216</code></dt>
-<dd><p>Integer
+pair</p></li>
+<li><p><code>c1px1</code>, <code>c1px2</code>, <code>c1px3</code> ... <code>c1px9216</code>: Integer
 pixel value, from 0 (white) to 255 (black) for the second image in the
-pair</p></dd>
-
-<dt><code>Instance</code></dt>
-<dd><p>The index of the toy in a particular category,
+pair</p></li>
+<li><p><code>Instance</code>: The index of the toy in a particular category,
 represented by a factor in the range 0-9. The training set consists of
-instances 0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.</p></dd>
-
-<dt><code>Elevation</code></dt>
-<dd><p>The elevation of the camera represented by a
+instances 0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.</p></li>
+<li><p><code>Elevation</code>: The elevation of the camera represented by a
 factor in the range 0-8. These represent elevations of 30 to 70 degrees
-from the horizontal, in increments of 5 degrees.</p></dd>
-
-<dt><code>Azimuth</code></dt>
-<dd><p>The azimuth, represented by a factor in the range
-0, 2, 4 .. 34. Multiply by ten to get the value in degrees.</p></dd>
-
-<dt><code>Lighting</code></dt>
-<dd><p>The lighting condition, represened by a factor in
-the range 0-5.</p></dd>
-
-<dt><code>Label</code></dt>
-<dd><p>The toy category, represented by a factor in the
-range 0-4.</p></dd>
-
-<dt><code>Split</code></dt>
-<dd><p>Whether the toy in is in the <code>training</code> or
-<code>testing</code> set, represented by a factor</p></dd>
-
-<dt><code>Description</code></dt>
-<dd><p>The name of the toy category associated with
-<code>Label</code>, represented by a factor.</p></dd>
-
-
-</dl><p>The pixel features are organized row-wise from the top left of each image.
-The <code>Label</code> levels correspond to:</p><dl><dt><code>0</code></dt>
-<dd><p>Four-legged animal</p></dd>
-
-<dt><code>1</code></dt>
-<dd><p>Human figure</p></dd>
-
-<dt><code>2</code></dt>
-<dd><p>Airplane</p></dd>
-
-<dt><code>3</code></dt>
-<dd><p>Truck</p></dd>
-
-<dt><code>4</code></dt>
-<dd><p>Car</p></dd>
-
-
-</dl><p>There are 48,600 items in the data set. The first 24,300 are the training
+from the horizontal, in increments of 5 degrees.</p></li>
+<li><p><code>Azimuth</code>: The azimuth, represented by a factor in the range
+0, 2, 4 .. 34. Multiply by ten to get the value in degrees.</p></li>
+<li><p><code>Lighting</code>: The lighting condition, represened by a factor in
+the range 0-5.</p></li>
+<li><p><code>Label</code>: The toy category, represented by a factor in the
+range 0-4.</p></li>
+<li><p><code>Split</code>: Whether the toy in is in the <code>training</code> or
+<code>testing</code> set, represented by a factor</p></li>
+<li><p><code>Description</code>: The name of the toy category associated with
+<code>Label</code>, represented by a factor.</p></li>
+</ul><p>The pixel features are organized row-wise from the top left of each image.
+The <code>Label</code> levels correspond to:</p><ul><li><p><code>0</code>: Four-legged animal</p></li>
+<li><p><code>1</code>: Human figure</p></li>
+<li><p><code>2</code>: Airplane</p></li>
+<li><p><code>3</code>: Truck</p></li>
+<li><p><code>4</code>: Car</p></li>
+</ul><p>There are 48,600 items in the data set. The first 24,300 are the training
 set, and the remaining 24,300 are the testing set, but you can also use
 the <code>Split</code> column to determine which split a given row is in.</p>
 <p>Items in the dataset can be visualized with the
-<code><a href="show_norb_object.html">show_norb_object</a></code> function.</p>
+<code><a href="show_norb_object.html">show_norb_object()</a></code> function.</p>
 <p>For more information see
 <a href="https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/" class="external-link">https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/</a>.</p>
     </div>

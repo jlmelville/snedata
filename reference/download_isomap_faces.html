@@ -45,17 +45,11 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with 698 rows and 4,098 variables:</p>
-<dl><dt><code>px1</code>, <code>px2</code>, <code>px3</code> ... <code>px4096</code></dt>
-<dd><p>Grayscale pixel
-values for a 64 x 64 image.</p></dd>
-
-<dt><code>pose1</code>, <code>pose2</code></dt>
-<dd><p>Pose values supplied with the original
-dataset.</p></dd>
-
-
-</dl></div>
+    <p>A data frame with 698 rows and 4,098 variables:</p><ul><li><p><code>px1</code>, <code>px2</code>, <code>px3</code> ... <code>px4096</code>: Grayscale pixel
+values for a 64 x 64 image.</p></li>
+<li><p><code>pose1</code>, <code>pose2</code>: Pose values supplied with the original
+dataset.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
@@ -78,14 +72,14 @@ message.</p></dd>
     <p>The original Stanford URL for this dataset is no longer available, so the
 default URL uses an archived copy from the Internet Archive. The archived
 data is stored as a Unix <code>compress</code> file, and this function uses an
-external <code class="command">gzip</code> or <code class="command">uncompress</code> command for decompression.</p>
+external <code>gzip</code> or <code>uncompress</code> command for decompression.</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     <p>Requires the
 <a href="https://cran.r-project.org/package=R.matlab" class="external-link">R.matlab</a>
 package to be installed. The face data also requires an external
-<code class="command">gzip</code> or <code class="command">uncompress</code> command that can decompress Unix
+<code>gzip</code> or <code>uncompress</code> command that can decompress Unix
 <code>compress</code> files.</p>
     </div>
     <div class="section level2">
@@ -96,7 +90,7 @@ A global geometric framework for nonlinear dimensionality reduction.
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Each row can be visualized using <code><a href="show_isomap_face.html">show_isomap_face</a></code>.</p></div>
+    <div class="dont-index"><p>Each row can be visualized using <code><a href="show_isomap_face.html">show_isomap_face()</a></code>.</p></div>
     </div>
 
     <div class="section level2">

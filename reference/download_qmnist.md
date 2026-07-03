@@ -17,13 +17,10 @@ download_qmnist(
 
 A data frame with 785 variables:
 
-- `px1`, `px2`, `px3` ... `px784`:
+- `px1`, `px2`, `px3` ... `px784`: Integer pixel value, from 0 (white)
+  to 255 (black).
 
-  Integer pixel value, from 0 (white) to 255 (black).
-
-- `Label`:
-
-  The digit represented by the image, in the range 0-9.
+- `Label`: The digit represented by the image, in the range 0-9.
 
 Pixels are organized row-wise. The `Label` variable is stored as a
 factor.
@@ -34,7 +31,7 @@ The remaining 60,000 are the test set, from the
 `qmnist-test-images-idx3-ubyte.gz` file.
 
 Items in the dataset can be visualized with
-[`show_mnist_digit`](https://jlmelville.github.io/snedata/reference/show_mnist_digit.md).
+[`show_mnist_digit()`](https://jlmelville.github.io/snedata/reference/show_mnist_digit.md).
 
 For more information see <https://github.com/facebookresearch/qmnist>.
 

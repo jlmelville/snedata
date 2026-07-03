@@ -60,10 +60,10 @@ person.</p>
 <p>The variables are as follows:</p><ul><li><p><code>px1</code>, <code>px2</code>, <code>px3</code> ... <code>px4096</code> 8-bit grayscale
 pixel values (0-255). The pixel index starts at the top right of the image
 (<code>px1</code>) and are then stored column-wise.</p></li>
-<li><p><code>Label</code> An integer in the range (1-40) indicating the person.</p></li>
-</ul><p>Each row has a name with the format "<face>_<pose>", where <code>&lt;face&gt;</code> is
-the index of the face, and <code>&lt;pose&gt;</code> is the index of the pose, e.g.
-the row with name <code>20_10</code> is the tenth pose of the twentieth face.</pose></face></p>
+<li><p><code>Label</code>: An integer in the range (1-40) indicating the person.</p></li>
+</ul><p>Each row has a name with the format <code>face_pose</code>, where <code>face</code> is the index
+of the face, and <code>pose</code> is the index of the pose, e.g. the row with name
+<code>20_10</code> is the tenth pose of the twentieth face.</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
@@ -75,7 +75,7 @@ package to be installed and loaded.</p>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index">
 <ul><li><p>Sam Roweis' dataset web page: <a href="http://www.cs.nyu.edu/~roweis/data.html" class="external-link">http://www.cs.nyu.edu/~roweis/data.html</a>.</p></li>
-<li><p>Each row can be visualized as an image using <code><a href="show_olivetti_face.html">show_olivetti_face</a></code>.</p></li>
+<li><p>Each row can be visualized as an image using <code><a href="show_olivetti_face.html">show_olivetti_face()</a></code>.</p></li>
 </ul></div>
     </div>
 

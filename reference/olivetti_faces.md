@@ -29,11 +29,11 @@ The variables are as follows:
   The pixel index starts at the top right of the image (`px1`) and are
   then stored column-wise.
 
-- `Label` An integer in the range (1-40) indicating the person.
+- `Label`: An integer in the range (1-40) indicating the person.
 
-Each row has a name with the format "\_", where `<face>` is the index of
-the face, and `<pose>` is the index of the pose, e.g. the row with name
-`20_10` is the tenth pose of the twentieth face.
+Each row has a name with the format `face_pose`, where `face` is the
+index of the face, and `pose` is the index of the pose, e.g. the row
+with name `20_10` is the tenth pose of the twentieth face.
 
 ## Note
 
@@ -47,4 +47,4 @@ package to be installed and loaded.
   [http://www.cs.nyu.edu/~roweis/data.html](http://www.cs.nyu.edu/~roweis/data.md).
 
 - Each row can be visualized as an image using
-  [`show_olivetti_face`](https://jlmelville.github.io/snedata/reference/show_olivetti_face.md).
+  [`show_olivetti_face()`](https://jlmelville.github.io/snedata/reference/show_olivetti_face.md).

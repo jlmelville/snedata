@@ -36,9 +36,9 @@ points and `color` the RGB color.
 Creates a series of points sampled from a 3D helix with the ends joined
 to each other.
 
-Unlike [`ball`](https://jlmelville.github.io/snedata/reference/ball.md)
-and
-[`sphere`](https://jlmelville.github.io/snedata/reference/sphere.md),
+Unlike
+[`ball()`](https://jlmelville.github.io/snedata/reference/ball.md) and
+[`sphere()`](https://jlmelville.github.io/snedata/reference/sphere.md),
 this data set is not randomly sampled.
 
 Points are colored based on their distances from the origin.

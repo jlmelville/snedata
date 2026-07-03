@@ -12,13 +12,10 @@ download_isomap_faces(url = isomap_faces_url, verbose = FALSE)
 
 A data frame with 698 rows and 4,098 variables:
 
-- `px1`, `px2`, `px3` ... `px4096`:
+- `px1`, `px2`, `px3` ... `px4096`: Grayscale pixel values for a 64 x 64
+  image.
 
-  Grayscale pixel values for a 64 x 64 image.
-
-- `pose1`, `pose2`:
-
-  Pose values supplied with the original dataset.
+- `pose1`, `pose2`: Pose values supplied with the original dataset.
 
 ## Arguments
 
@@ -56,7 +53,7 @@ geometric framework for nonlinear dimensionality reduction. *Science*,
 ## See also
 
 Each row can be visualized using
-[`show_isomap_face`](https://jlmelville.github.io/snedata/reference/show_isomap_face.md).
+[`show_isomap_face()`](https://jlmelville.github.io/snedata/reference/show_isomap_face.md).
 
 ## Examples
 

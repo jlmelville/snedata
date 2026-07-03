@@ -28,11 +28,11 @@ The variables are as follows:
   The pixel index starts at the top right of the image (`px1`) and are
   then stored row-wise.
 
-- `color` A string representing a color in hex format. It can be used
+- `color`: A string representing a color in hex format. It can be used
   directly with e.g. the `col` parameter in the
-  [`plot`](https://rdrr.io/r/graphics/plot.default.html) function. The
-  color goes from hsl(0, 50, 50) (red) at frame 1 to hsl(300, 50, 50)
-  (purple) at frame 1965 and on a muted rainbow scale.
+  [`graphics::plot()`](https://rdrr.io/r/graphics/plot.default.html)
+  function. The color goes from hsl(0, 50, 50) (red) at frame 1 to
+  hsl(300, 50, 50) (purple) at frame 1965 and on a muted rainbow scale.
 
 ## Note
 
@@ -46,7 +46,7 @@ package to be installed and loaded.
   [http://www.cs.nyu.edu/~roweis/data.html](http://www.cs.nyu.edu/~roweis/data.md).
 
 - Each row can be visualized as an image using
-  [`show_frey_face`](https://jlmelville.github.io/snedata/reference/show_frey_face.md).
+  [`show_frey_face()`](https://jlmelville.github.io/snedata/reference/show_frey_face.md).
 
 ## Examples
 

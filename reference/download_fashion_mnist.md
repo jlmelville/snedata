@@ -12,60 +12,36 @@ download_fashion_mnist(base_url = fashion_mnist_url, verbose = FALSE)
 
 A data frame with 786 variables:
 
-- `px1`, `px2`, `px3` ... `px784`:
+- `px1`, `px2`, `px3` ... `px784`: Integer pixel value, from 0 (white)
+  to 255 (black).
 
-  Integer pixel value, from 0 (white) to 255 (black).
+- `Label`: The fashion item represented by the image, in the range 0-9.
 
-- `Label`:
-
-  The fashion item represented by the image, in the range 0-9.
-
-- `Description`:
-
-  The name of the fashion item associated with the `Label`
+- `Description`: The name of the fashion item associated with the
+  `Label`
 
 Pixels are organized row-wise. The `Label` variable is stored as a
 factor. The labels correspond to:
 
-- `0`:
+- `0`: T-shirt/top
 
-  T-shirt/top
+- `1`: Trouser
 
-- `1`:
+- `2`: Pullover
 
-  Trouser
+- `3`: Dress
 
-- `2`:
+- `4`: Coat
 
-  Pullover
+- `5`: Sandal
 
-- `3`:
+- `6`: Shirt
 
-  Dress
+- `7`: Sneaker
 
-- `4`:
+- `8`: Bag
 
-  Coat
-
-- `5`:
-
-  Sandal
-
-- `6`:
-
-  Shirt
-
-- `7`:
-
-  Sneaker
-
-- `8`:
-
-  Bag
-
-- `9`:
-
-  Ankle boot
+- `9`: Ankle boot
 
 and are also present as the `Description` factor.
 
@@ -75,7 +51,7 @@ remaining 10,000 are the test set, from the `t10k-images-idx3-ubyte.gz`
 file.
 
 Items in the dataset can be visualized with the
-[`show_mnist_digit`](https://jlmelville.github.io/snedata/reference/show_mnist_digit.md)
+[`show_mnist_digit()`](https://jlmelville.github.io/snedata/reference/show_mnist_digit.md)
 function.
 
 For more information see
