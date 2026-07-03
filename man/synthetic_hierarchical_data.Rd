@@ -49,5 +49,8 @@ deciphering t-SNE, UMAP, TriMAP, and PaCMAP for data visualization.
 \emph{J Mach. Learn. Res}, \emph{22}, 1-73.
 }
 \seealso{
-the \href{https://github.com/YingfanWang/PaCMAP}{PaCMAP homepage}.
+The \href{https://github.com/hyhuang00/scRNA-DR2020/}{gitub repo} for
+the paper \href{https://doi.org/10.1038/s42003-022-03628-x}{"Towards a comprehensive evaluation of dimension reduction methods for transcriptomic data visualization"},
+which contains a numpy-formatted version of data generated under a similar
+distribution, under the name \code{hierarchical_threelayer_dataset}.
 }

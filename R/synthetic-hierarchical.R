@@ -28,7 +28,11 @@
 #' Understanding how dimension reduction tools work: an empirical approach to
 #' deciphering t-SNE, UMAP, TriMAP, and PaCMAP for data visualization.
 #' *J Mach. Learn. Res*, *22*, 1-73.
-#' @seealso the [PaCMAP homepage](https://github.com/YingfanWang/PaCMAP).
+#' @seealso The [gitub repo](https://github.com/hyhuang00/scRNA-DR2020/) for
+#'   the paper ["Towards a comprehensive evaluation of dimension reduction methods for transcriptomic data visualization"](https://doi.org/10.1038/s42003-022-03628-x),
+#'   which contains a numpy-formatted version of data generated under a similar
+#'   distribution, under the name `hierarchical_threelayer_dataset`.
+#'
 #' @examples
 #' \dontrun{
 #' df <- synthetic_hierarchical_data()
