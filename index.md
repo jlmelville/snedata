@@ -12,8 +12,8 @@ dimensionality reduction methods, most obviously the very popular
 The package includes simulation datasets, the datasets from [How to use
 t-SNE Effectively](http://distill.pub/2016/misread-tsne/), optional Frey
 and Olivetti face helpers, MNIST-like datasets, CIFAR-10, Small NORB,
-mammoth point clouds, 20 Newsgroups, and a few other examples used in
-dimensionality reduction papers.
+mammoth point clouds, 20 Newsgroups, historical Isomap datasets, and a
+few other examples used in dimensionality reduction papers.
 
 The pkgdown site has a fuller [datasets
 article](https://jlmelville.github.io/snedata/articles/datasets.html)
@@ -95,6 +95,15 @@ save(mnist, file = "mnist.Rda")
 
 # To avoid a very wide data frame for larger image datasets:
 mnist_matrix <- download_mnist(as = "matrix")
+
+# download the original Isomap Swiss Roll dataset from the Internet Archive
+# requires the optional R.matlab package
+isomap_swiss <- download_isomap_swiss_roll()
+
+# download the original Isomap faces dataset from the Internet Archive
+# requires R.matlab and an external gzip or uncompress command
+isomap_faces <- download_isomap_faces()
+show_isomap_face(isomap_faces, 1)
 ```
 
 ## See also
@@ -109,8 +118,6 @@ mnist_matrix <- download_mnist(as = "matrix")
 - For downloading the MNIST digits database, there is a [similar
   project](https://github.com/xrobin/mnist) by [Xavier
   Robin](https://github.com/xrobin).
-- A gist for [downloading the Isomap Swiss Roll and Faces as R
-  dataframes](https://gist.github.com/jlmelville/339dfeb80c3e836e887d70a37679b244)
 
 ## License
 

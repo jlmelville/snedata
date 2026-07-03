@@ -57,7 +57,7 @@
 <div class="section level2">
 <h2 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a>
 </h2>
-<p>The package includes simulation datasets, the datasets from <a href="http://distill.pub/2016/misread-tsne/" class="external-link">How to use t-SNE Effectively</a>, optional Frey and Olivetti face helpers, MNIST-like datasets, CIFAR-10, Small NORB, mammoth point clouds, 20 Newsgroups, and a few other examples used in dimensionality reduction papers.</p>
+<p>The package includes simulation datasets, the datasets from <a href="http://distill.pub/2016/misread-tsne/" class="external-link">How to use t-SNE Effectively</a>, optional Frey and Olivetti face helpers, MNIST-like datasets, CIFAR-10, Small NORB, mammoth point clouds, 20 Newsgroups, historical Isomap datasets, and a few other examples used in dimensionality reduction papers.</p>
 <p>The pkgdown site has a fuller <a href="https://jlmelville.github.io/snedata/articles/datasets.html">datasets article</a> with a table, notes, and longer examples.</p>
 </div>
 <div class="section level2">
@@ -133,7 +133,16 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">mnist</span>, file <span class="op">=</span> <span class="st">"mnist.Rda"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To avoid a very wide data frame for larger image datasets:</span></span>
-<span><span class="va">mnist_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/download_mnist.html">download_mnist</a></span><span class="op">(</span>as <span class="op">=</span> <span class="st">"matrix"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">mnist_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/download_mnist.html">download_mnist</a></span><span class="op">(</span>as <span class="op">=</span> <span class="st">"matrix"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># download the original Isomap Swiss Roll dataset from the Internet Archive</span></span>
+<span><span class="co"># requires the optional R.matlab package</span></span>
+<span><span class="va">isomap_swiss</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/download_isomap_swiss_roll.html">download_isomap_swiss_roll</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># download the original Isomap faces dataset from the Internet Archive</span></span>
+<span><span class="co"># requires R.matlab and an external gzip or uncompress command</span></span>
+<span><span class="va">isomap_faces</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/download_isomap_faces.html">download_isomap_faces</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/show_isomap_face.html">show_isomap_face</a></span><span class="op">(</span><span class="va">isomap_faces</span>, <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a>
@@ -142,8 +151,6 @@
 <li>The <a href="https://cran.r-project.org/package=mlbench" class="external-link">mlbench</a> package.</li>
 <li>I maintain a similar <a href="https://github.com/jlmelville/coil20" class="external-link">R package</a> (under a different license) for downloading the <a href="http://www.cs.columbia.edu/CAVE/software/softlib/coil-20.php" class="external-link">COIL-20</a> and <a href="http://www.cs.columbia.edu/CAVE/software/softlib/coil-100.php" class="external-link">COIL-100</a> datasets.</li>
 <li>For downloading the MNIST digits database, there is a <a href="https://github.com/xrobin/mnist" class="external-link">similar project</a> by <a href="https://github.com/xrobin" class="external-link">Xavier Robin</a>.</li>
-<li>A gist for <a href="https://gist.github.com/jlmelville/339dfeb80c3e836e887d70a37679b244" class="external-link">downloading the Isomap Swiss Roll and Faces as R dataframes</a>
-</li>
 </ul>
 </div>
 <div class="section level2">

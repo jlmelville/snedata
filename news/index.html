@@ -35,8 +35,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.0.9002" id="snedata-0009002">snedata 0.0.0.9002<a class="anchor" aria-label="anchor" href="#snedata-0009002"></a></h2>
-<p><em>July 1 2026</em> Version 0.0.9002 adds no new datasets, but did a lot of tidying up, especially around cleaning up temp files and network connections. Also, instead of a dataframe, you can now return a list containing the matrix of the numeric data and any labels separately. Supply <code>as = "matrix"</code>.</p>
-</div>
+<p><em>July 2 2026</em>: Version 0.0.9002 is released, featuring:</p>
+<ul><li>a lot of tidying up, especially around cleaning up temp files and network connections.</li>
+<li>instead of a dataframe, for some larger datasets, you can now return a list containing the matrix of the numeric data and any labels separately. Supply <code>as = "matrix"</code>.</li>
+<li>“new” datasets: The swiss roll and faces dataset from the <a href="https://www.science.org/doi/10.1126/science.290.5500.2319" class="external-link">Isomap paper</a>, via <code>download_isomap_swiss_roll</code> and <code>download_isomap_faces</code>, respectively. Also, a function to view items in the faces dataset via <code>show_isomap_face</code>. Probably of historical interest only, but I think we should preserve this history. Now vanished from the MIT webpage, one must rummage through the Internet Archive, and have the optional <a href="https://cran.r-project.org/package=R.matlab" class="external-link">R.matlab</a> package installed. The faces dataset is stored as a Unix <code>compress</code> file, so you also need an external <code>gzip</code> or <code>uncompress</code> command (I tried and failed to get this to work with the <code>archive</code> package). Based on a <a href="https://gist.github.com/jlmelville/339dfeb80c3e836e887d70a37679b244" class="external-link">gist</a> I wrote a few years ago.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.0.9001" id="snedata-0009001-and-earlier">snedata 0.0.0.9001 and earlier<a class="anchor" aria-label="anchor" href="#snedata-0009001-and-earlier"></a></h2>
 <p><em>March 2 2025</em> New link to download the MNIST digits. The original pages on Yann LeCun’s website seem to have gone kaput. Fortunately <a href="https://github.com/fgnt/mnist" class="external-link uri">https://github.com/fgnt/mnist</a> maintained a mirror.</p>

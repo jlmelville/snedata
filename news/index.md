@@ -2,11 +2,26 @@
 
 ## snedata 0.0.0.9002
 
-*July 1 2026* Version 0.0.9002 adds no new datasets, but did a lot of
-tidying up, especially around cleaning up temp files and network
-connections. Also, instead of a dataframe, you can now return a list
-containing the matrix of the numeric data and any labels separately.
-Supply `as = "matrix"`.
+*July 2 2026*: Version 0.0.9002 is released, featuring:
+
+- a lot of tidying up, especially around cleaning up temp files and
+  network connections.
+- instead of a dataframe, for some larger datasets, you can now return a
+  list containing the matrix of the numeric data and any labels
+  separately. Supply `as = "matrix"`.
+- “new” datasets: The swiss roll and faces dataset from the [Isomap
+  paper](https://www.science.org/doi/10.1126/science.290.5500.2319), via
+  `download_isomap_swiss_roll` and `download_isomap_faces`,
+  respectively. Also, a function to view items in the faces dataset via
+  `show_isomap_face`. Probably of historical interest only, but I think
+  we should preserve this history. Now vanished from the MIT webpage,
+  one must rummage through the Internet Archive, and have the optional
+  [R.matlab](https://cran.r-project.org/package=R.matlab) package
+  installed. The faces dataset is stored as a Unix `compress` file, so
+  you also need an external `gzip` or `uncompress` command (I tried and
+  failed to get this to work with the `archive` package). Based on a
+  [gist](https://gist.github.com/jlmelville/339dfeb80c3e836e887d70a37679b244)
+  I wrote a few years ago.
 
 ## snedata 0.0.0.9001 and earlier
 

@@ -7,15 +7,16 @@ notes and examples.
 
 | Dataset family | Main functions | Rows | Notes |
 |----|----|---:|----|
-| Synthetic data | [`sphere()`](https://jlmelville.github.io/snedata/reference/sphere.md), [`ball()`](https://jlmelville.github.io/snedata/reference/ball.md), [`helix()`](https://jlmelville.github.io/snedata/reference/helix.md), [`swiss_roll()`](https://jlmelville.github.io/snedata/reference/swiss_roll.md), [`s_curve()`](https://jlmelville.github.io/snedata/reference/s_curve.md) | User-chosen | Local generation, no download. |
-| Distill t-SNE simulations | [`gaussian_data()`](https://jlmelville.github.io/snedata/reference/gaussian_data.md), [`two_clusters_data()`](https://jlmelville.github.io/snedata/reference/two_clusters_data.md), [`random_walk()`](https://jlmelville.github.io/snedata/reference/random_walk.md), [`trefoil_data()`](https://jlmelville.github.io/snedata/reference/trefoil_data.md) | User-chosen | R translations of the Distill demo data generators. |
-| PaCMAP and topological examples | [`s_curve_hole()`](https://jlmelville.github.io/snedata/reference/s_curve_hole.md), [`curve2d()`](https://jlmelville.github.io/snedata/reference/curve2d.md), [`taspheres()`](https://jlmelville.github.io/snedata/reference/taspheres.md) | User-chosen | Local generation, no download. |
+| Synthetic data | [`sphere()`](https://jlmelville.github.io/snedata/reference/sphere.md), [`ball()`](https://jlmelville.github.io/snedata/reference/ball.md), [`helix()`](https://jlmelville.github.io/snedata/reference/helix.md), [`swiss_roll()`](https://jlmelville.github.io/snedata/reference/swiss_roll.md), [`s_curve()`](https://jlmelville.github.io/snedata/reference/s_curve.md) | User-chosen | Classic synthetic manifold and simple curve datasets. |
+| Distill t-SNE simulations | [`gaussian_data()`](https://jlmelville.github.io/snedata/reference/gaussian_data.md), [`two_clusters_data()`](https://jlmelville.github.io/snedata/reference/two_clusters_data.md), [`random_walk()`](https://jlmelville.github.io/snedata/reference/random_walk.md), [`trefoil_data()`](https://jlmelville.github.io/snedata/reference/trefoil_data.md) | User-chosen | R translations of the data used in ‘How to Use t-SNE Effectively’. |
+| PaCMAP and topological examples | [`s_curve_hole()`](https://jlmelville.github.io/snedata/reference/s_curve_hole.md), [`curve2d()`](https://jlmelville.github.io/snedata/reference/curve2d.md), [`taspheres()`](https://jlmelville.github.io/snedata/reference/taspheres.md) | User-chosen | More synthetic data used in the PaCMAP and Topological Autoencoders papers. |
 | Mammoth point clouds | [`download_mammoth10k()`](https://jlmelville.github.io/snedata/reference/download_mammoth10k.md), [`download_mammoth50k()`](https://jlmelville.github.io/snedata/reference/download_mammoth50k.md) | 10,000 or 50,000 | Downloads JSON point-cloud data. |
-| MNIST and relatives | [`download_mnist()`](https://jlmelville.github.io/snedata/reference/download_mnist.md), [`download_fashion_mnist()`](https://jlmelville.github.io/snedata/reference/download_fashion_mnist.md), [`download_kuzushiji_mnist()`](https://jlmelville.github.io/snedata/reference/download_kuzushiji_mnist.md), [`download_qmnist()`](https://jlmelville.github.io/snedata/reference/download_qmnist.md) | 70,000 or 120,000 | Data frame by default; optional matrix/list return for MNIST and QMNIST. |
-| CIFAR-10 | [`download_cifar10()`](https://jlmelville.github.io/snedata/reference/download_cifar10.md), [`show_cifar()`](https://jlmelville.github.io/snedata/reference/show_cifar.md) | 60,000 | Data frame by default; optional matrix/list return. |
-| Small NORB | [`download_norb_small()`](https://jlmelville.github.io/snedata/reference/download_norb_small.md), [`show_norb_object()`](https://jlmelville.github.io/snedata/reference/show_norb_object.md) | 48,600 | Split downloads and optional matrix/list return are available. |
+| MNIST and relatives | [`download_mnist()`](https://jlmelville.github.io/snedata/reference/download_mnist.md), [`download_fashion_mnist()`](https://jlmelville.github.io/snedata/reference/download_fashion_mnist.md), [`download_kuzushiji_mnist()`](https://jlmelville.github.io/snedata/reference/download_kuzushiji_mnist.md), [`download_qmnist()`](https://jlmelville.github.io/snedata/reference/download_qmnist.md) | 70,000 or 120,000 | Images often in ten equally-sized classes. |
+| CIFAR-10 | [`download_cifar10()`](https://jlmelville.github.io/snedata/reference/download_cifar10.md), [`show_cifar()`](https://jlmelville.github.io/snedata/reference/show_cifar.md) | 60,000 | The well-known image dataset for machine learning. |
+| Small NORB | [`download_norb_small()`](https://jlmelville.github.io/snedata/reference/download_norb_small.md), [`show_norb_object()`](https://jlmelville.github.io/snedata/reference/show_norb_object.md) | 48,600 | Stereo images of 50 toys under different angles and lighting conditions. |
 | 20 Newsgroups | [`download_twenty_newsgroups()`](https://jlmelville.github.io/snedata/reference/download_twenty_newsgroups.md) | 18,846 | Text data; use packages such as `tm` or `tidytext` for preprocessing. |
-| Frey and Olivetti faces | [`frey_faces()`](https://jlmelville.github.io/snedata/reference/frey_faces.md), [`olivetti_faces()`](https://jlmelville.github.io/snedata/reference/olivetti_faces.md) | 1,965 and 400 | Requires the suggested `RnavGraphImageData` package. |
+| Frey and Olivetti faces | [`frey_faces()`](https://jlmelville.github.io/snedata/reference/frey_faces.md), [`olivetti_faces()`](https://jlmelville.github.io/snedata/reference/olivetti_faces.md) | 1,965 and 400 | Images of faces. Requires the suggested `RnavGraphImageData` package. |
+| Isomap datasets | [`download_isomap_swiss_roll()`](https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.md), [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md) | 20,000 and 698 | Downloads archived Matlab data; requires the suggested `R.matlab` package, and `gzip` or `uncompress` for faces. |
 
 For MNIST, QMNIST, CIFAR-10, and Small NORB, you can return a list
 containing the matrix of the numeric data and any labels separately.
@@ -27,18 +28,24 @@ Supply `as = "matrix"`.
   [JSE](http://dx.doi.org/10.1016/j.neucom.2012.12.036) and
   [multi-JSE](http://dx.doi.org/10.1016/j.neucom.2014.12.095) papers.
 
-- Also, Martin Wattenberg, Fernanda Viégas and Ian Johnson published an
+- Martin Wattenberg, Fernanda Viégas and Ian Johnson published an
   interactive article [How to use t-SNE
   Effectively](http://distill.pub/2016/misread-tsne/). The JavaScript
   functions used to create the simulation datasets (which can also be
   found at <https://github.com/distillpub/post--misread-tsne>), have
-  been translated into R and are also hosted in this package.
+  been translated into R.
 
-- Additionally, if you have the
+- If you have the
   [RnavGraphImageData](https://cran.r-project.org/package=RnavGraphImageData)
   package installed, there are also functions to convert the Olivetti
   and Frey faces datasets into a row-based data frame and functions to
   visualize them.
+
+- The original Isomap Swiss Roll and face-pose datasets are available
+  via the Internet Archive. These functions require the
+  [R.matlab](https://cran.r-project.org/package=R.matlab) package to
+  read Matlab files, and the face-pose dataset also requires an external
+  `gzip` or `uncompress` command to read the Unix `compress` file.
 
 - Code to download and visualize the [MNIST
   database](http://yann.lecun.com/exdb/mnist/), based on [a gist by
@@ -46,10 +53,10 @@ Supply `as = "matrix"`.
   graciously allowed it to be MIT-licensed.
 
 - [QMNIST](https://github.com/facebookresearch/qmnist) extends the MNIST
-  test dataset to 60,000 digits.
+  test dataset to 60,000 digits (so 120,000 digits in total).
 
 - The [Fashion-MNIST](https://github.com/zalandoresearch/fashion-mnist)
-  dataset is intended as drop-in replacement for the MNIST digits
+  dataset is intended as a drop-in replacement for the MNIST digits
   database, but using images of fashion items, and to be harder to
   perform well with machine learning benchmarks. Items can be visualized
   with the same function intended for the MNIST digits.
@@ -76,8 +83,8 @@ Supply `as = "matrix"`.
 - A 3D S-curve with a hole data set, used to validate the [PaCMAP
   method](https://arxiv.org/abs/2012.04456) (see also the [github
   repo](https://github.com/YingfanWang/PaCMAP)). Bonus: a translation
-  from Python of the [sklearn.datasets.make_s_curve
-  function](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html).
+  from Python of the
+  [sklearn.datasets.make_s_curvefunction](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html).
   Also: a simple 2D curve dataset, useful for testing initialization
   strategies.
 

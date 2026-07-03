@@ -116,6 +116,24 @@ datasets into a row-based format, and functions to visualize the images.
 - [`show_olivetti_face`](https://jlmelville.github.io/snedata/reference/show_olivetti_face.md).
   Display one of the poses from the Olivetti faces.
 
+## Historical Isomap dataset functions
+
+The original Isomap Swiss Roll and face-pose datasets can be downloaded
+from the Internet Archive. The download functions require optional
+packages: `R.matlab` for Matlab files. The compressed face data also
+requires an external `gzip` or `uncompress` command.
+
+- [`download_isomap_swiss_roll`](https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.md).
+  Downloads the original Isomap Swiss-roll data as a row-based data
+  frame.
+
+- [`download_isomap_faces`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md).
+  Downloads the original Isomap face-pose data as a row-based data
+  frame.
+
+- [`show_isomap_face`](https://jlmelville.github.io/snedata/reference/show_isomap_face.md).
+  Display one of the Isomap faces.
+
 ## MNIST dataset functions
 
 Another (much larger) image dataset is the MNIST digits dataset. The
@@ -159,7 +177,11 @@ preprint* *arXiv:1708.07747*.
 
 Useful links:
 
+- <https://jlmelville.github.io/snedata/>
+
 - <https://github.com/jlmelville/snedata>
+
+- <http://jlmelville.github.io/snedata/>
 
 - Report bugs at <https://github.com/jlmelville/snedata/issues>
 

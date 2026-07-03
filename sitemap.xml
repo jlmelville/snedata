@@ -12,6 +12,8 @@
 <url><loc>https://jlmelville.github.io/snedata/reference/curve2d.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/download_cifar10.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/download_fashion_mnist.html</loc></url>
+<url><loc>https://jlmelville.github.io/snedata/reference/download_isomap_faces.html</loc></url>
+<url><loc>https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/download_kuzushiji_mnist.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/download_mammoth10k.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/download_mammoth50k.html</loc></url>
@@ -37,6 +39,7 @@
 <url><loc>https://jlmelville.github.io/snedata/reference/s_curve_hole.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/show_cifar.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/show_frey_face.html</loc></url>
+<url><loc>https://jlmelville.github.io/snedata/reference/show_isomap_face.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/show_mnist_digit.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/show_norb_object.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/show_olivetti_face.html</loc></url>

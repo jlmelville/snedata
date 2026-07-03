@@ -86,7 +86,7 @@ notes and examples.</p>
 <code><a href="../reference/swiss_roll.html">swiss_roll()</a></code>, <code><a href="../reference/s_curve.html">s_curve()</a></code>
 </td>
 <td align="right">User-chosen</td>
-<td>Local generation, no download.</td>
+<td>Classic synthetic manifold and simple curve datasets.</td>
 </tr>
 <tr class="even">
 <td>Distill t-SNE simulations</td>
@@ -95,7 +95,8 @@ notes and examples.</p>
 <code><a href="../reference/random_walk.html">random_walk()</a></code>, <code><a href="../reference/trefoil_data.html">trefoil_data()</a></code>
 </td>
 <td align="right">User-chosen</td>
-<td>R translations of the Distill demo data generators.</td>
+<td>R translations of the data used in ‘How to Use t-SNE
+Effectively’.</td>
 </tr>
 <tr class="odd">
 <td>PaCMAP and topological examples</td>
@@ -104,7 +105,8 @@ notes and examples.</p>
 <code><a href="../reference/taspheres.html">taspheres()</a></code>
 </td>
 <td align="right">User-chosen</td>
-<td>Local generation, no download.</td>
+<td>More synthetic data used in the PaCMAP and Topological Autoencoders
+papers.</td>
 </tr>
 <tr class="even">
 <td>Mammoth point clouds</td>
@@ -124,8 +126,7 @@ notes and examples.</p>
 <code><a href="../reference/download_qmnist.html">download_qmnist()</a></code>
 </td>
 <td align="right">70,000 or 120,000</td>
-<td>Data frame by default; optional matrix/list return for MNIST and
-QMNIST.</td>
+<td>Images often in ten equally-sized classes.</td>
 </tr>
 <tr class="even">
 <td>CIFAR-10</td>
@@ -133,7 +134,7 @@ QMNIST.</td>
 <code><a href="../reference/download_cifar10.html">download_cifar10()</a></code>, <code><a href="../reference/show_cifar.html">show_cifar()</a></code>
 </td>
 <td align="right">60,000</td>
-<td>Data frame by default; optional matrix/list return.</td>
+<td>The well-known image dataset for machine learning.</td>
 </tr>
 <tr class="odd">
 <td>Small NORB</td>
@@ -142,7 +143,8 @@ QMNIST.</td>
 <code><a href="../reference/show_norb_object.html">show_norb_object()</a></code>
 </td>
 <td align="right">48,600</td>
-<td>Split downloads and optional matrix/list return are available.</td>
+<td>Stereo images of 50 toys under different angles and lighting
+conditions.</td>
 </tr>
 <tr class="even">
 <td>20 Newsgroups</td>
@@ -157,7 +159,19 @@ QMNIST.</td>
 <code><a href="../reference/frey_faces.html">frey_faces()</a></code>, <code><a href="../reference/olivetti_faces.html">olivetti_faces()</a></code>
 </td>
 <td align="right">1,965 and 400</td>
-<td>Requires the suggested <code>RnavGraphImageData</code> package.</td>
+<td>Images of faces. Requires the suggested
+<code>RnavGraphImageData</code> package.</td>
+</tr>
+<tr class="even">
+<td>Isomap datasets</td>
+<td>
+<code><a href="../reference/download_isomap_swiss_roll.html">download_isomap_swiss_roll()</a></code>,
+<code><a href="../reference/download_isomap_faces.html">download_isomap_faces()</a></code>
+</td>
+<td align="right">20,000 and 698</td>
+<td>Downloads archived Matlab data; requires the suggested
+<code>R.matlab</code> package, and <code>gzip</code> or
+<code>uncompress</code> for faces.</td>
 </tr>
 </tbody>
 </table>
@@ -173,21 +187,27 @@ Supply <code>as = "matrix"</code>.</p>
 their <a href="http://dx.doi.org/10.1016/j.neucom.2012.12.036" class="external-link">JSE</a>
 and <a href="http://dx.doi.org/10.1016/j.neucom.2014.12.095" class="external-link">multi-JSE</a>
 papers.</p></li>
-<li><p>Also, Martin Wattenberg, Fernanda Viégas and Ian Johnson
-published an interactive article <a href="http://distill.pub/2016/misread-tsne/" class="external-link">How to use t-SNE
-Effectively</a>. The JavaScript functions used to create the simulation
-datasets (which can also be found at <a href="https://github.com/distillpub/post--misread-tsne" class="external-link uri">https://github.com/distillpub/post--misread-tsne</a>), have
-been translated into R and are also hosted in this package.</p></li>
-<li><p>Additionally, if you have the <a href="https://cran.r-project.org/package=RnavGraphImageData" class="external-link">RnavGraphImageData</a>
+<li><p>Martin Wattenberg, Fernanda Viégas and Ian Johnson published an
+interactive article <a href="http://distill.pub/2016/misread-tsne/" class="external-link">How
+to use t-SNE Effectively</a>. The JavaScript functions used to create
+the simulation datasets (which can also be found at <a href="https://github.com/distillpub/post--misread-tsne" class="external-link uri">https://github.com/distillpub/post--misread-tsne</a>), have
+been translated into R.</p></li>
+<li><p>If you have the <a href="https://cran.r-project.org/package=RnavGraphImageData" class="external-link">RnavGraphImageData</a>
 package installed, there are also functions to convert the Olivetti and
 Frey faces datasets into a row-based data frame and functions to
 visualize them.</p></li>
+<li><p>The original Isomap Swiss Roll and face-pose datasets are
+available via the Internet Archive. These functions require the <a href="https://cran.r-project.org/package=R.matlab" class="external-link">R.matlab</a> package
+to read Matlab files, and the face-pose dataset also requires an
+external <code>gzip</code> or <code>uncompress</code> command to read
+the Unix <code>compress</code> file.</p></li>
 <li><p>Code to download and visualize the <a href="http://yann.lecun.com/exdb/mnist/" class="external-link">MNIST database</a>, based on <a href="https://gist.github.com/brendano/39760" class="external-link">a gist by Brendan
 O’Connor</a>, who graciously allowed it to be MIT-licensed.</p></li>
 <li><p><a href="https://github.com/facebookresearch/qmnist" class="external-link">QMNIST</a>
-extends the MNIST test dataset to 60,000 digits.</p></li>
+extends the MNIST test dataset to 60,000 digits (so 120,000 digits in
+total).</p></li>
 <li><p>The <a href="https://github.com/zalandoresearch/fashion-mnist" class="external-link">Fashion-MNIST</a>
-dataset is intended as drop-in replacement for the MNIST digits
+dataset is intended as a drop-in replacement for the MNIST digits
 database, but using images of fashion items, and to be harder to perform
 well with machine learning benchmarks. Items can be visualized with the
 same function intended for the MNIST digits.</p></li>
@@ -206,9 +226,9 @@ UMAP</a>, based on work originally done by <a href="https://github.com/MNoichl/U
 Noichl</a>.</p></li>
 <li><p>A 3D S-curve with a hole data set, used to validate the <a href="https://arxiv.org/abs/2012.04456" class="external-link">PaCMAP method</a> (see also the
 <a href="https://github.com/YingfanWang/PaCMAP" class="external-link">github repo</a>). Bonus:
-a translation from Python of the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html" class="external-link">sklearn.datasets.make_s_curve
-function</a>. Also: a simple 2D curve dataset, useful for testing
-initialization strategies.</p></li>
+a translation from Python of the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html" class="external-link">sklearn.datasets.make_s_curvefunction</a>.
+Also: a simple 2D curve dataset, useful for testing initialization
+strategies.</p></li>
 </ul>
 </div>
 <div class="section level2">

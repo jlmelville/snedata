@@ -14,6 +14,10 @@
   : Download CIFAR-10
 - [`download_fashion_mnist()`](https://jlmelville.github.io/snedata/reference/download_fashion_mnist.md)
   : Download Fashion-MNIST
+- [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md)
+  : Download Isomap Faces
+- [`download_isomap_swiss_roll()`](https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.md)
+  : Download Isomap Swiss Roll
 - [`download_kuzushiji_mnist()`](https://jlmelville.github.io/snedata/reference/download_kuzushiji_mnist.md)
   : Download Kuzushiji-MNIST
 - [`download_mammoth10k()`](https://jlmelville.github.io/snedata/reference/download_mammoth10k.md)
@@ -62,6 +66,8 @@
   : Visualize CIFAR-10 image.
 - [`show_frey_face()`](https://jlmelville.github.io/snedata/reference/show_frey_face.md)
   : Visualize Frey face.
+- [`show_isomap_face()`](https://jlmelville.github.io/snedata/reference/show_isomap_face.md)
+  : Visualize Isomap face.
 - [`show_mnist_digit()`](https://jlmelville.github.io/snedata/reference/show_mnist_digit.md)
   : Visualize MNIST digit.
 - [`show_norb_object()`](https://jlmelville.github.io/snedata/reference/show_norb_object.md)
