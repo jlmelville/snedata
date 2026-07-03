@@ -9,7 +9,7 @@ notes and examples.
 |----|----|---:|----|
 | Synthetic data | [`sphere()`](https://jlmelville.github.io/snedata/reference/sphere.md), [`ball()`](https://jlmelville.github.io/snedata/reference/ball.md), [`helix()`](https://jlmelville.github.io/snedata/reference/helix.md), [`swiss_roll()`](https://jlmelville.github.io/snedata/reference/swiss_roll.md), [`s_curve()`](https://jlmelville.github.io/snedata/reference/s_curve.md) | User-chosen | Classic synthetic manifold and simple curve datasets. |
 | Distill t-SNE simulations | [`gaussian_data()`](https://jlmelville.github.io/snedata/reference/gaussian_data.md), [`two_clusters_data()`](https://jlmelville.github.io/snedata/reference/two_clusters_data.md), [`random_walk()`](https://jlmelville.github.io/snedata/reference/random_walk.md), [`trefoil_data()`](https://jlmelville.github.io/snedata/reference/trefoil_data.md) | User-chosen | R translations of the data used in ‘How to Use t-SNE Effectively’. |
-| PaCMAP and topological examples | [`s_curve_hole()`](https://jlmelville.github.io/snedata/reference/s_curve_hole.md), [`curve2d()`](https://jlmelville.github.io/snedata/reference/curve2d.md), [`taspheres()`](https://jlmelville.github.io/snedata/reference/taspheres.md) | User-chosen | More synthetic data used in the PaCMAP and Topological Autoencoders papers. |
+| PaCMAP and topological examples | [`s_curve_hole()`](https://jlmelville.github.io/snedata/reference/s_curve_hole.md), [`curve2d()`](https://jlmelville.github.io/snedata/reference/curve2d.md), [`synthetic_hierarchical_data()`](https://jlmelville.github.io/snedata/reference/synthetic_hierarchical_data.md), [`taspheres()`](https://jlmelville.github.io/snedata/reference/taspheres.md) | User-chosen | More synthetic data used in the PaCMAP and Topological Autoencoders papers. |
 | Mammoth point clouds | [`download_mammoth10k()`](https://jlmelville.github.io/snedata/reference/download_mammoth10k.md), [`download_mammoth50k()`](https://jlmelville.github.io/snedata/reference/download_mammoth50k.md) | 10,000 or 50,000 | Downloads JSON point-cloud data. |
 | MNIST and relatives | [`download_mnist()`](https://jlmelville.github.io/snedata/reference/download_mnist.md), [`download_fashion_mnist()`](https://jlmelville.github.io/snedata/reference/download_fashion_mnist.md), [`download_kuzushiji_mnist()`](https://jlmelville.github.io/snedata/reference/download_kuzushiji_mnist.md), [`download_qmnist()`](https://jlmelville.github.io/snedata/reference/download_qmnist.md) | 70,000 or 120,000 | Images often in ten equally-sized classes. |
 | CIFAR-10 | [`download_cifar10()`](https://jlmelville.github.io/snedata/reference/download_cifar10.md), [`show_cifar()`](https://jlmelville.github.io/snedata/reference/show_cifar.md) | 60,000 | The well-known image dataset for machine learning. |
@@ -86,7 +86,9 @@ Supply `as = "matrix"`.
   from Python of the
   [sklearn.datasets.make_s_curvefunction](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html).
   Also: a simple 2D curve dataset, useful for testing initialization
-  strategies.
+  strategies. The synthetic hierarchical data set from the same paper is
+  also available via
+  [`synthetic_hierarchical_data()`](https://jlmelville.github.io/snedata/reference/synthetic_hierarchical_data.md).
 
 ## Examples
 

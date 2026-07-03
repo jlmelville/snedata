@@ -22,6 +22,10 @@
   failed to get this to work with the `archive` package). Based on a
   [gist](https://gist.github.com/jlmelville/339dfeb80c3e836e887d70a37679b244)
   I wrote a few years ago.
+- new(er) dataset:
+  [`synthetic_hierarchical_data()`](https://jlmelville.github.io/snedata/reference/synthetic_hierarchical_data.md)
+  generates the 5 x 5 x 5 hierarchical Gaussian cluster data set used in
+  the PaCMAP paper.
 
 ## snedata 0.0.0.9001 and earlier
 

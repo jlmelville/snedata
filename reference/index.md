@@ -86,6 +86,8 @@
   : Subset Cluster Data
 - [`swiss_roll()`](https://jlmelville.github.io/snedata/reference/swiss_roll.md)
   : Swiss Roll Data Set
+- [`synthetic_hierarchical_data()`](https://jlmelville.github.io/snedata/reference/synthetic_hierarchical_data.md)
+  : Synthetic Hierarchical Data Set
 - [`taspheres()`](https://jlmelville.github.io/snedata/reference/taspheres.md)
   : High Dimensional Spheres Dataset
 - [`three_clusters_data()`](https://jlmelville.github.io/snedata/reference/three_clusters_data.md)
