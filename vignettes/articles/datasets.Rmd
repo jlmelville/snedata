@@ -10,7 +10,7 @@ This page has a compact table of the available data and some longer notes and ex
 | --- | --- | ---: | --- |
 | Synthetic data | `sphere()`, `ball()`, `helix()`, `swiss_roll()`, `s_curve()` | User-chosen | Classic synthetic manifold and simple curve datasets. |
 | Distill t-SNE simulations | `gaussian_data()`, `two_clusters_data()`, `random_walk()`, `trefoil_data()` | User-chosen | R translations of the data used in 'How to Use t-SNE Effectively'. |
-| PaCMAP and topological examples | `s_curve_hole()`, `curve2d()`, `taspheres()` | User-chosen | More synthetic data used in the PaCMAP and Topological Autoencoders papers. |
+| PaCMAP and topological examples | `s_curve_hole()`, `curve2d()`, `synthetic_hierarchical_data()`, `taspheres()` | User-chosen | More synthetic data used in the PaCMAP and Topological Autoencoders papers. |
 | Mammoth point clouds | `download_mammoth10k()`, `download_mammoth50k()` | 10,000 or 50,000 | Downloads JSON point-cloud data. |
 | MNIST and relatives | `download_mnist()`, `download_fashion_mnist()`, `download_kuzushiji_mnist()`, `download_qmnist()` | 70,000 or 120,000 | Images often in ten equally-sized classes. |
 | CIFAR-10 | `download_cifar10()`, `show_cifar()` | 60,000 | The well-known image dataset for machine learning. |
@@ -72,6 +72,8 @@ originally done by [Max Noichl](https://github.com/MNoichl/UMAP-examples-mammoth
 [github repo](https://github.com/YingfanWang/PaCMAP)). Bonus: a translation from Python of the 
 [sklearn.datasets.make_s_curvefunction](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html).
 Also: a simple 2D curve dataset, useful for testing initialization strategies.
+The synthetic hierarchical data set from the same paper is also available via
+`synthetic_hierarchical_data()`.
 
 ## Examples
 
