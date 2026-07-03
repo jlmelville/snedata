@@ -7,22 +7,20 @@ SNE Dataset Functions for R
 [![Codecov test coverage](https://codecov.io/gh/jlmelville/snedata/branch/master/graph/badge.svg)](https://app.codecov.io/gh/jlmelville/snedata?branch=master)
 <!-- badges: end -->
 
-This package provides functions for generating simple simulation datasets for
-use in Stochastic Neighbor Embedding and related dimensionality reduction
-methods, most obviously the very popular
+This package provides functions for generating simple simulation datasets for use in Stochastic
+Neighbor Embedding and related dimensionality reduction methods, most obviously the very popular
 [t-SNE](https://lvdmaaten.github.io/tsne/).
 
 ## Datasets
 
 The package includes simulation datasets, the datasets from
-[How to use t-SNE Effectively](http://distill.pub/2016/misread-tsne/), optional
-Frey and Olivetti face helpers, MNIST-like datasets, CIFAR-10, Small NORB,
-mammoth point clouds, 20 Newsgroups, and a few other examples used in
-dimensionality reduction papers.
+[How to use t-SNE Effectively](http://distill.pub/2016/misread-tsne/), optional Frey and Olivetti
+face helpers, MNIST-like datasets, CIFAR-10, Small NORB, mammoth point clouds, 20 Newsgroups,
+historical Isomap datasets, and a few other examples used in dimensionality reduction papers.
 
 The pkgdown site has a fuller
-[datasets article](https://jlmelville.github.io/snedata/articles/datasets.html)
-with a table, notes, and longer examples.
+[datasets article](https://jlmelville.github.io/snedata/articles/datasets.html) with a table,
+notes, and longer examples.
 
 ## Install
 
@@ -60,16 +58,16 @@ gauss1000 <- gaussian_data(n = 1000, dim = 5)
 
 # Generate datasets similar to those used in the main text of "How to Use t-SNE Effectively"
 misread_tsne <- list(
-	two_clusters = two_clusters_data(n = 50, dim = 2),
-	two_different_sized_clusters = two_different_clusters_data(n = 75, dim = 2),
-	three_clusters_50 = three_clusters_data(n = 50, dim = 2),
-	three_clusters_200 = three_clusters_data(n = 200, dim = 2),
-	gaussian_cloud = gaussian_data(n = 500, dim = 100),
-	ellipsoidal_gaussian_cloud = long_gaussian_data(n = 100, dim = 50),
-	two_long_linear_clusters = long_cluster_data(n = 75),
-	cluster_in_cluster = subset_clusters_data(n = 75, dim = 50),
-	linked_rings = link_data(n = 100),
-	trefoil_knot = trefoil_data(n = 150)
+    two_clusters = two_clusters_data(n = 50, dim = 2),
+    two_different_sized_clusters = two_different_clusters_data(n = 75, dim = 2),
+    three_clusters_50 = three_clusters_data(n = 50, dim = 2),
+    three_clusters_200 = three_clusters_data(n = 200, dim = 2),
+    gaussian_cloud = gaussian_data(n = 500, dim = 100),
+    ellipsoidal_gaussian_cloud = long_gaussian_data(n = 100, dim = 50),
+    two_long_linear_clusters = long_cluster_data(n = 75),
+    cluster_in_cluster = subset_clusters_data(n = 75, dim = 50),
+    linked_rings = link_data(n = 100),
+    trefoil_knot = trefoil_data(n = 150)
 )
 
 # fetch the MNIST data set from the MNIST website
@@ -97,22 +95,27 @@ save(mnist, file = "mnist.Rda")
 
 # To avoid a very wide data frame for larger image datasets:
 mnist_matrix <- download_mnist(as = "matrix")
+
+# download the original Isomap Swiss Roll dataset from the Internet Archive
+# requires the optional R.matlab package
+isomap_swiss <- download_isomap_swiss_roll()
+
+# download the original Isomap faces dataset from the Internet Archive
+# requires R.matlab and an external gzip or uncompress command
+isomap_faces <- download_isomap_faces()
+show_isomap_face(isomap_faces, 1)
 ```
 
 ## See also
 
 * The [mlbench](https://cran.r-project.org/package=mlbench) package.
-* I maintain a similar [R package](https://github.com/jlmelville/coil20) (under 
-a different license) for downloading the 
+* I maintain a similar [R package](https://github.com/jlmelville/coil20) (under a different
+license) for downloading the
 [COIL-20](http://www.cs.columbia.edu/CAVE/software/softlib/coil-20.php) and
-[COIL-100](http://www.cs.columbia.edu/CAVE/software/softlib/coil-100.php)
-datasets.
-* For downloading the MNIST digits database, there is a 
-[similar project](https://github.com/xrobin/mnist) by 
-[Xavier Robin](https://github.com/xrobin).
-* A gist for [downloading the Isomap Swiss Roll and Faces as R dataframes](https://gist.github.com/jlmelville/339dfeb80c3e836e887d70a37679b244)
+[COIL-100](http://www.cs.columbia.edu/CAVE/software/softlib/coil-100.php) datasets.
+* For downloading the MNIST digits database, there is a
+[similar project](https://github.com/xrobin/mnist) by [Xavier Robin](https://github.com/xrobin).
 
 ## License
 
-This package is licensed under 
-[the MIT License](http://opensource.org/licenses/MIT).
+This package is licensed under [the MIT License](http://opensource.org/licenses/MIT).

@@ -2,81 +2,75 @@
 title: "Datasets"
 ---
 
-This page has a compact table of the available data and some longer notes and
-examples.
+This page has a compact table of the available data and some longer notes and examples.
 
 ## Summary
 
 | Dataset family | Main functions | Rows | Notes |
 | --- | --- | ---: | --- |
-| Synthetic data | `sphere()`, `ball()`, `helix()`, `swiss_roll()`, `s_curve()` | User-chosen | Local generation, no download. |
-| Distill t-SNE simulations | `gaussian_data()`, `two_clusters_data()`, `random_walk()`, `trefoil_data()` | User-chosen | R translations of the Distill demo data generators. |
-| PaCMAP and topological examples | `s_curve_hole()`, `curve2d()`, `taspheres()` | User-chosen | Local generation, no download. |
+| Synthetic data | `sphere()`, `ball()`, `helix()`, `swiss_roll()`, `s_curve()` | User-chosen | Classic synthetic manifold and simple curve datasets. |
+| Distill t-SNE simulations | `gaussian_data()`, `two_clusters_data()`, `random_walk()`, `trefoil_data()` | User-chosen | R translations of the data used in 'How to Use t-SNE Effectively'. |
+| PaCMAP and topological examples | `s_curve_hole()`, `curve2d()`, `taspheres()` | User-chosen | More synthetic data used in the PaCMAP and Topological Autoencoders papers. |
 | Mammoth point clouds | `download_mammoth10k()`, `download_mammoth50k()` | 10,000 or 50,000 | Downloads JSON point-cloud data. |
-| MNIST and relatives | `download_mnist()`, `download_fashion_mnist()`, `download_kuzushiji_mnist()`, `download_qmnist()` | 70,000 or 120,000 | Data frame by default; optional matrix/list return for MNIST and QMNIST. |
-| CIFAR-10 | `download_cifar10()`, `show_cifar()` | 60,000 | Data frame by default; optional matrix/list return. |
-| Small NORB | `download_norb_small()`, `show_norb_object()` | 48,600 | Split downloads and optional matrix/list return are available. |
+| MNIST and relatives | `download_mnist()`, `download_fashion_mnist()`, `download_kuzushiji_mnist()`, `download_qmnist()` | 70,000 or 120,000 | Images often in ten equally-sized classes. |
+| CIFAR-10 | `download_cifar10()`, `show_cifar()` | 60,000 | The well-known image dataset for machine learning. |
+| Small NORB | `download_norb_small()`, `show_norb_object()` | 48,600 | Stereo images of 50 toys under different angles and lighting conditions. |
 | 20 Newsgroups | `download_twenty_newsgroups()` | 18,846 | Text data; use packages such as `tm` or `tidytext` for preprocessing. |
-| Frey and Olivetti faces | `frey_faces()`, `olivetti_faces()` | 1,965 and 400 | Requires the suggested `RnavGraphImageData` package. |
+| Frey and Olivetti faces | `frey_faces()`, `olivetti_faces()` | 1,965 and 400 | Images of faces. Requires the suggested `RnavGraphImageData` package. |
+| Isomap datasets | `download_isomap_swiss_roll()`, `download_isomap_faces()` | 20,000 and 698 | Downloads archived Matlab data; requires the suggested `R.matlab` package, and `gzip` or `uncompress` for faces. |
 
-For MNIST, QMNIST, CIFAR-10, and Small NORB, you can return a list containing
-the matrix of the numeric data and any labels separately. Supply
-`as = "matrix"`.
+For MNIST, QMNIST, CIFAR-10, and Small NORB, you can return a list containing the matrix of the 
+numeric data and any labels separately. Supply `as = "matrix"`.
 
 ## Notes
 
-* Synthetic data similar to those used by Lee and co-workers in their 
-[JSE](http://dx.doi.org/10.1016/j.neucom.2012.12.036) and 
+* Synthetic data similar to those used by Lee and co-workers in their
+[JSE](http://dx.doi.org/10.1016/j.neucom.2012.12.036) and
 [multi-JSE](http://dx.doi.org/10.1016/j.neucom.2014.12.095) papers.
 
-* Also, Martin Wattenberg, Fernanda Viégas and Ian Johnson published an 
-interactive article 
-[How to use t-SNE Effectively](http://distill.pub/2016/misread-tsne/).
-The JavaScript functions used to create the simulation datasets
-(which can also be found at https://github.com/distillpub/post--misread-tsne),
-have been translated into R and are also hosted in this package.
+* Martin Wattenberg, Fernanda Viégas and Ian Johnson published an interactive article 
+[How to use t-SNE Effectively](http://distill.pub/2016/misread-tsne/). The JavaScript functions
+used to create the simulation datasets (which can also be found at
+<https://github.com/distillpub/post--misread-tsne>), have been translated into R.
 
-* Additionally, if you have the 
-[RnavGraphImageData](https://cran.r-project.org/package=RnavGraphImageData)
-package installed, there are also functions to convert the Olivetti and Frey 
-faces datasets into a row-based data frame and functions to visualize them.
+* If you have the [RnavGraphImageData](https://cran.r-project.org/package=RnavGraphImageData)
+package installed, there are also functions to convert the Olivetti and Frey faces datasets into a 
+row-based data frame and functions to visualize them.
 
-* Code to download and visualize the 
-[MNIST database](http://yann.lecun.com/exdb/mnist/), based on 
-[a gist by Brendan O'Connor](https://gist.github.com/brendano/39760), who 
-graciously allowed it to be MIT-licensed.
+* The original Isomap Swiss Roll and face-pose datasets are available via the Internet Archive.
+These functions require the [R.matlab](https://cran.r-project.org/package=R.matlab) package to read
+Matlab files, and the face-pose dataset also requires an external `gzip` or `uncompress` command to
+read the Unix `compress` file.
 
-* [QMNIST](https://github.com/facebookresearch/qmnist) extends the MNIST test
-dataset to 60,000 digits.
+* Code to download and visualize the [MNIST database](http://yann.lecun.com/exdb/mnist/), based on 
+[a gist by Brendan O'Connor](https://gist.github.com/brendano/39760), who graciously allowed it to
+be MIT-licensed.
 
-* The [Fashion-MNIST](https://github.com/zalandoresearch/fashion-mnist) dataset 
-is intended as drop-in replacement for the MNIST digits database, but using 
-images of fashion items, and to be harder to perform well with machine learning
-benchmarks. Items can be visualized with the same function intended for the 
-MNIST digits.
+* [QMNIST](https://github.com/facebookresearch/qmnist) extends the MNIST test dataset to 60,000
+digits (so 120,000 digits in total).
 
-* The [Kuzushiji-MNIST](https://github.com/rois-codh/kmnist) dataset, another
-drop-in replacement for the MNIST digits, but this time of types of cursive
-Japanese characters.
+* The [Fashion-MNIST](https://github.com/zalandoresearch/fashion-mnist) dataset is intended as a
+drop-in replacement for the MNIST digits database, but using images of fashion items, and to be
+harder to perform well with machine learning benchmarks. Items can be visualized with the same
+function intended for the MNIST digits.
 
-* The [Small NORB](https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/) dataset,
-which consists of pairs of images of 50 toys from different angles and under
-different lighting conditions.
+* The [Kuzushiji-MNIST](https://github.com/rois-codh/kmnist) dataset, another drop-in replacement
+for the MNIST digits, but this time of types of cursive Japanese characters.
 
-* The [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset, which
-consists of 60,000 32 x 32 color images in ten different classes.
+* The [Small NORB](https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/) dataset, which consists of
+pairs of images of 50 toys from different angles and under different lighting conditions.
 
-* A 3D point cloud of a [mammoth at the
-Smithsonian](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12),
-from [Understanding UMAP](https://pair-code.github.io/understanding-umap/),
-based on work originally done by [Max
-Noichl](https://github.com/MNoichl/UMAP-examples-mammoth-).
+* The [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset, which consists of 60,000 
+32 x 32 color images in ten different classes.
 
-* A 3D S-curve with a hole data set, used to validate the [PaCMAP
-method](https://arxiv.org/abs/2012.04456) (see also the [github
-repo](https://github.com/YingfanWang/PaCMAP)). Bonus: a translation from Python
-of the [sklearn.datasets.make_s_curve
-function](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html).
+* A 3D point cloud of a [mammoth at the Smithsonian](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12),
+from [Understanding UMAP](https://pair-code.github.io/understanding-umap/), based on work
+originally done by [Max Noichl](https://github.com/MNoichl/UMAP-examples-mammoth-).
+
+* A 3D S-curve with a hole data set, used to validate the
+[PaCMAP method](https://arxiv.org/abs/2012.04456) (see also the
+[github repo](https://github.com/YingfanWang/PaCMAP)). Bonus: a translation from Python of the 
+[sklearn.datasets.make_s_curvefunction](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html).
 Also: a simple 2D curve dataset, useful for testing initialization strategies.
 
 ## Examples

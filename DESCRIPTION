@@ -11,6 +11,7 @@ License: MIT + file LICENSE
 URL: https://jlmelville.github.io/snedata/, https://github.com/jlmelville/snedata, http://jlmelville.github.io/snedata/
 BugReports: https://github.com/jlmelville/snedata/issues
 Suggests:
+    R.matlab,
     rjson,
     RnavGraphImageData,
     testthat

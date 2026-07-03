@@ -71,6 +71,20 @@
 #'    Olivetti faces.}
 #' }
 #'
+#' @section Historical Isomap dataset functions:
+#' The original Isomap Swiss Roll and face-pose datasets can be downloaded from
+#' the Internet Archive. The download functions require optional packages:
+#' \code{R.matlab} for Matlab files. The compressed face data also requires an
+#' external \command{gzip} or \command{uncompress} command.
+#'
+#' \itemize{
+#'  \item{\code{\link{download_isomap_swiss_roll}}. Downloads the original
+#'    Isomap Swiss-roll data as a row-based data frame.}
+#'  \item{\code{\link{download_isomap_faces}}. Downloads the original Isomap
+#'    face-pose data as a row-based data frame.}
+#'  \item{\code{\link{show_isomap_face}}. Display one of the Isomap faces.}
+#' }
+#'
 #' @section MNIST dataset functions:
 #' Another (much larger) image dataset is the MNIST digits dataset. The
 #' original data set is described at \url{http://yann.lecun.com/exdb/mnist/},
