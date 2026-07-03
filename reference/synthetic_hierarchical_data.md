@@ -52,7 +52,12 @@ Res*, *22*, 1-73.
 
 ## See also
 
-the [PaCMAP homepage](https://github.com/YingfanWang/PaCMAP).
+The [gitub repo](https://github.com/hyhuang00/scRNA-DR2020/) for the
+paper ["Towards a comprehensive evaluation of dimension reduction
+methods for transcriptomic data
+visualization"](https://doi.org/10.1038/s42003-022-03628-x), which
+contains a numpy-formatted version of data generated under a similar
+distribution, under the name `hierarchical_threelayer_dataset`.
 
 ## Examples
 
