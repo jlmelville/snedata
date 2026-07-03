@@ -23,7 +23,7 @@ radius \code{5 * r}.}
 \value{
 Data frame with \code{d + 1} numerical columns containing the
 coordinates of the d-spheres and a \code{"label"} factor column giving the
-identity of each d-sphere: levels \code{0 .. n_spheres - 2} are the smaller
+identity of each d-sphere: levels \verb{0 .. n_spheres - 2} are the smaller
 d-spheres. Level \code{n_spheres - 1} is the label for the big d-sphere.
 }
 \description{

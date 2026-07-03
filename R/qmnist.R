@@ -6,38 +6,36 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/master/"
 #' MNIST digits, but with an extended test dataset of 60,000 digits.
 #'
 #' Downloads the image and label files for the training and test datasets from
-#' \url{https://github.com/facebookresearch/qmnist} and converts them to a data
+#' <https://github.com/facebookresearch/qmnist> and converts them to a data
 #' frame or a matrix/list result.
 #'
 #' @format A data frame with 785 variables:
 #'
-#' \describe{
-#' \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
-#'   value, from 0 (white) to 255 (black).}
-#' \item{\code{Label}}{The digit represented by the image, in the range 0-9.}
-#' }
+#' * `px1`, `px2`, `px3` ... `px784`: Integer pixel
+#'   value, from 0 (white) to 255 (black).
+#' * `Label`: The digit represented by the image, in the range 0-9.
 #'
-#' Pixels are organized row-wise. The \code{Label} variable is stored as a
+#' Pixels are organized row-wise. The `Label` variable is stored as a
 #' factor.
 #'
 #' There are 120,000 digits in the data set. The first 60,000 are the training
-#' set, as found in the \code{qmnist-train-images-idx3-ubyte.gz} file. The
+#' set, as found in the `qmnist-train-images-idx3-ubyte.gz` file. The
 #' remaining 60,000 are the test set, from the
-#' \code{qmnist-test-images-idx3-ubyte.gz} file.
+#' `qmnist-test-images-idx3-ubyte.gz` file.
 #'
 #' Items in the dataset can be visualized with
-#' \code{\link{show_mnist_digit}}.
+#' [show_mnist_digit()].
 #'
-#' For more information see \url{https://github.com/facebookresearch/qmnist}.
+#' For more information see <https://github.com/facebookresearch/qmnist>.
 #'
 #' @param base_url Base URL that the QMNIST files are located at.
-#' @param verbose If \code{TRUE}, then download progress will be logged as a
+#' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
-#' @param as Return format. Use \code{"data.frame"} for the original data frame
-#'   shape, or \code{"matrix"} for a list with \code{data} and \code{labels}.
-#' @return If \code{as = "data.frame"}, a data frame containing the QMNIST
-#'   digits. If \code{as = "matrix"}, a list with \code{data}, an integer matrix
-#'   with one image per row, and \code{labels}, a factor of digit labels.
+#' @param as Return format. Use `"data.frame"` for the original data frame
+#'   shape, or `"matrix"` for a list with `data` and `labels`.
+#' @return If `as = "data.frame"`, a data frame containing the QMNIST
+#'   digits. If `as = "matrix"`, a list with `data`, an integer matrix
+#'   with one image per row, and `labels`, a factor of digit labels.
 #' @export
 #' @examples
 #' \dontrun{
@@ -52,8 +50,8 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/master/"
 #' @references
 #' Yadav, C., & Bottou, L. (2019, May).
 #' Cold Case: The Lost MNIST Digits
-#' \emph{arXiv preprint} \emph{arXiv:1905.10498}.
-#' \url{https://github.com/facebookresearch/qmnist}
+#' *arXiv preprint* *arXiv:1905.10498*.
+#' <https://github.com/facebookresearch/qmnist>
 #' @export
 download_qmnist <- function(
   base_url = qmnist_url,

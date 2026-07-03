@@ -5,41 +5,40 @@
 \title{Download CIFAR-10}
 \format{
 A data frame with 3074 variables:
-
-\describe{
-\item{\code{r1}, \code{r2}, \code{r3} ... \code{r1024}}{Integer pixel value
-of the red channel of the image, from 0 to 255.}
-\item{\code{g1}, \code{g2}, \code{g3} ... \code{g1024}}{Integer pixel value
-of the green channel of the image, from 0 to 255.}
-\item{\code{b1}, \code{b2}, \code{b3} ... \code{b1024}}{Integer pixel value
-of the blue channel of the image, from 0 to 255.}
-\item{\code{Label}}{The image category, represented by a factor in the
-range 0-9.}
-\item{\code{Description}}{The name of the image category associated with
-\code{Label}, represented by a factor.}
+\itemize{
+\item \code{r1}, \code{r2}, \code{r3} ... \code{r1024}: Integer pixel value
+of the red channel of the image, from 0 to 255.
+\item \code{g1}, \code{g2}, \code{g3} ... \code{g1024}: Integer pixel value
+of the green channel of the image, from 0 to 255.
+\item \code{b1}, \code{b2}, \code{b3} ... \code{b1024}: Integer pixel value
+of the blue channel of the image, from 0 to 255.
+\item \code{Label}: The image category, represented by a factor in the
+range 0-9.
+\item \code{Description}: The name of the image category associated with
+\code{Label}, represented by a factor.
 }
 
 The pixel features are organized row-wise from the top left of each image.
 The \code{Label} levels correspond to the following class names (stored in
 the \code{Description} column):
-\describe{
-\item{\code{0}}{Airplane}
-\item{\code{1}}{Automobile}
-\item{\code{2}}{Bird}
-\item{\code{3}}{Cat}
-\item{\code{4}}{Deer}
-\item{\code{5}}{Dog}
-\item{\code{6}}{Frog}
-\item{\code{7}}{Horse}
-\item{\code{8}}{Ship}
-\item{\code{9}}{Truck}
+\itemize{
+\item \code{0}: Airplane
+\item \code{1}: Automobile
+\item \code{2}: Bird
+\item \code{3}: Cat
+\item \code{4}: Deer
+\item \code{5}: Dog
+\item \code{6}: Frog
+\item \code{7}: Horse
+\item \code{8}: Ship
+\item \code{9}: Truck
 }
 
 There are 60,000 items in the data set. The first 50,000 are the training
 set, and the remaining 10,000 are the testing set.
 
 Items in the dataset can be visualized with the
-\code{\link{show_cifar}} function.
+\code{\link[=show_cifar]{show_cifar()}} function.
 
 For more information see
 \url{https://www.cs.toronto.edu/~kriz/cifar.html}.

@@ -29,7 +29,7 @@ hole in the middle of the curve, centered at Y = 0.
 
 Points are colored based on their distance along the curve.
 
-This data set is based on \code{\link{s_curve}} is used to assess the
+This data set is based on \code{\link[=s_curve]{s_curve()}} and is used to assess the
 behavior of the PaCMAP method of Wang and co-workers (2021).
 }
 \references{

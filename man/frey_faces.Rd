@@ -25,9 +25,9 @@ The variables are as follows:
 \item \code{px1}, \code{px2}, \code{px3} ... \code{px560} 8-bit grayscale
 pixel values (0-255). The pixel index starts at the top right of the image
 (\code{px1}) and are then stored row-wise.
-\item \code{color} A string representing a color in hex format. It can be
+\item \code{color}: A string representing a color in hex format. It can be
 used directly with e.g. the \code{col} parameter in the
-\code{\link[graphics]{plot}} function. The color goes from hsl(0, 50, 50)
+\code{\link[graphics:plot]{graphics::plot()}} function. The color goes from hsl(0, 50, 50)
 (red) at frame 1 to hsl(300, 50, 50) (purple) at frame 1965 and on a muted
 rainbow scale.
 }
@@ -47,7 +47,7 @@ plot(frey_pca$x, col = frey$color, pch = 16, cex = 0.75)
 }
 \seealso{
 \itemize{
-\item{Sam Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.}
-\item{Each row can be visualized as an image using \code{\link{show_frey_face}}.}
+\item Sam Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.
+\item Each row can be visualized as an image using \code{\link[=show_frey_face]{show_frey_face()}}.
 }
 }

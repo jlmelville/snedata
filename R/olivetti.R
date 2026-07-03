@@ -8,27 +8,23 @@
 #' person.
 #'
 #' The variables are as follows:
-#' \itemize{
-#' \item \code{px1}, \code{px2}, \code{px3} ... \code{px4096} 8-bit grayscale
-#' pixel values (0-255). The pixel index starts at the top right of the image
-#' (\code{px1}) and are then stored column-wise.
-#' \item \code{Label} An integer in the range (1-40) indicating the person.
-#' }
+#' * `px1`, `px2`, `px3` ... `px4096` 8-bit grayscale
+#'   pixel values (0-255). The pixel index starts at the top right of the image
+#'   (`px1`) and are then stored column-wise.
+#' * `Label`: An integer in the range (1-40) indicating the person.
 #'
-#' Each row has a name with the format "<face>_<pose>", where \code{<face>} is
-#' the index of the face, and \code{<pose>} is the index of the pose, e.g.
-#' the row with name \code{20_10} is the tenth pose of the twentieth face.
+#' Each row has a name with the format `face_pose`, where `face` is the index
+#' of the face, and `pose` is the index of the pose, e.g. the row with name
+#' `20_10` is the tenth pose of the twentieth face.
 #'
 #' @note Requires the
-#' \href{https://cran.r-project.org/package=RnavGraphImageData}{RnavGraphImageData}
+#' [RnavGraphImageData](https://cran.r-project.org/package=RnavGraphImageData)
 #' package to be installed and loaded.
 #' @return The Olivetti Faces dataset as a dataframe.
 #' @format A data frame with 400 rows and 4097 variables.
 #' @seealso
-#' \itemize{
-#' \item{Sam Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.}
-#' \item{Each row can be visualized as an image using \code{\link{show_olivetti_face}}.}
-#' }
+#' * Sam Roweis' dataset web page: <http://www.cs.nyu.edu/~roweis/data.html>.
+#' * Each row can be visualized as an image using [show_olivetti_face()].
 #' @export
 olivetti_faces <- function() {
   stop_if_not_installed("RnavGraphImageData")

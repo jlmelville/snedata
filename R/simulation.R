@@ -11,14 +11,14 @@
 #' segments of an orange.
 #'
 #' @param n The number of points to create.
-#' @return Data frame with \code{x}, \code{y}, \code{z} columns containing the
-#'  coordinates of the points and \code{color} the RGB color.
+#' @return Data frame with `x`, `y`, `z` columns containing the
+#'  coordinates of the points and `color` the RGB color.
 #' @references
 #' A dataset like this was used in:
 #' Lee, J. A., Peluffo-Ordo'nez, D. H., & Verleysen, M. (2015).
 #' Multi-scale similarities in stochastic neighbour embedding: Reducing
 #' dimensionality while preserving both local and global structure.
-#' \emph{Neurocomputing}, \emph{169}, 246-261.
+#' *Neurocomputing*, *169*, 246-261.
 #' @export
 sphere <- function(n = 1000) {
   # from http://stats.stackexchange.com/questions/7977/how-to-generate-uniformly-distributed-points-on-the-surface-of-the-3-d-unit-sphe
@@ -41,21 +41,21 @@ sphere <- function(n = 1000) {
 #' Simulation data randomly sampled from the entire volume of a ball of the
 #' specified dimension (by default, 3-dimensional).
 #'
-#' Creates a series of points sampled from an \code{ndim}-dimensional spherical
+#' Creates a series of points sampled from an `ndim`-dimensional spherical
 #' volume. Points are colored based on the square of their distance from the
 #' origin.
 #'
 #' @param n Number of points to create.
 #' @param rad Radius of the ball.
 #' @param ndim Dimension of the ball.
-#' @return Data frame with \code{x}, \code{y}, \code{z} columns containing the
-#'  coordinates of the points and \code{color} the RGB color.
+#' @return Data frame with `x`, `y`, `z` columns containing the
+#'  coordinates of the points and `color` the RGB color.
 #' @references
 #' A dataset like this was used in:
 #' Lee, J. A., Peluffo-Ordo'nez, D. H., & Verleysen, M. (2015).
 #' Multi-scale similarities in stochastic neighbour embedding: Reducing
 #' dimensionality while preserving both local and global structure.
-#' \emph{Neurocomputing}, \emph{169}, 246-261.
+#' *Neurocomputing*, *169*, 246-261.
 #' @export
 ball <- function(n = 1000, rad = 1, ndim = 3) {
   # from http://math.stackexchange.com/questions/87230/picking-random-points-in-the-volume-of-sphere-with-uniform-probability
@@ -83,7 +83,7 @@ ball <- function(n = 1000, rad = 1, ndim = 3) {
 #' Creates a series of points sampled from a 3D helix with the ends joined
 #' to each other.
 #'
-#' Unlike \code{\link{ball}} and \code{\link{sphere}}, this data set is not
+#' Unlike [ball()] and [sphere()], this data set is not
 #' randomly sampled.
 #'
 #' Points are colored based on their distances from the origin.
@@ -92,14 +92,14 @@ ball <- function(n = 1000, rad = 1, ndim = 3) {
 #' @param rmajor Major radius.
 #' @param rminor Minor radius.
 #' @param nwinds Number of winds the helix makes.
-#' @return Data frame with \code{x}, \code{y}, \code{z} columns containing the
-#'  coordinates of the points and \code{color} the RGB color.
+#' @return Data frame with `x`, `y`, `z` columns containing the
+#'  coordinates of the points and `color` the RGB color.
 #' @references
 #' A dataset like this was used in:
 #' Lee, J. A., Peluffo-Ordo'nez, D. H., & Verleysen, M. (2015).
 #' Multi-scale similarities in stochastic neighbour embedding: Reducing
 #' dimensionality while preserving both local and global structure.
-#' \emph{Neurocomputing}, \emph{169}, 246-261.
+#' *Neurocomputing*, *169*, 246-261.
 #' @examples
 #' \dontrun{
 #' helix1000 <- helix(n = 1000)
@@ -131,50 +131,52 @@ helix <- function(n = 1000, rmajor = 2, rminor = 1, nwinds = 8) {
 #' manifold: a two-dimensional plane which has been rolled up into a spiral
 #' shape. Or just look at a swiss roll.
 #'
-#' The formula for sampling the x, y and z coordinates used in this dataset is
+#' The formula for sampling the x, y, and z coordinates used in this dataset is
 #' from that given in the Stochastic Proximity Embedding paper by Agrafiotis
 #' and Xu (I don't know who originally came up with the data set, though):
-#' \deqn{x = \phi cos\phi, y = \phi sin \phi, z}{x = phi * cos(phi), y = phi * sin(phi), z}
 #'
-#' where \eqn{\phi}{phi} is sampled between
-#' \eqn{\frac{3\pi}{2}}{3/2 pi} and
-#' \eqn{\frac{5\pi}{2}}{5/2 pi}, and \code{z} is sampled between 0 and 10
-#' (the range of \eqn{\phi} and \code{z} can
-#' be modified, if desired).
+#' ```r
+#' x <- phi * cos(phi)
+#' y <- phi * sin(phi)
+#' ```
+#'
+#' where `phi` is sampled between `3 * pi / 2` and `5 * pi / 2`, and `z` is
+#' sampled between 0 and 10. The ranges of `phi` and `z` can be modified, if
+#' desired.
 #'
 #' Points are colored based on the value of phi. If you unrolled the manifold
 #' into a flat sheet, you would see the color change linearly in the direction
 #' you unrolled it. Or just plot the x-y cross section (see the examples).
 #'
 #' @param n Number of points to create.
-#' @param min_phi Minimum value of the range of \eqn{phi}{phi} to sample from
-#' @param max_phi Maximum value of the range of \eqn{phi}{phi} to sample from.
-#' @param max_z Maximum value of the \code{z} range to sample from (minimum
+#' @param min_phi Minimum value of the range of `phi` to sample from.
+#' @param max_phi Maximum value of the range of `phi` to sample from.
+#' @param max_z Maximum value of the `z` range to sample from (minimum
 #'  values is always 0).
-#' @return Data frame with \code{x}, \code{y}, \code{z} columns containing the
-#'  coordinates of the points and \code{color} the RGB color.
+#' @return Data frame with `x`, `y`, `z` columns containing the
+#'  coordinates of the points and `color` the RGB color.
 #' @references
 #' I first saw the equations in
 #'
 #' Agrafiotis, D. K., & Xu, H. (2002).
 #' A self-organizing principle for learning nonlinear manifolds.
-#' \emph{Proceedings of the National Academy of Sciences}, \emph{99}(25), 15869-15872.
+#' *Proceedings of the National Academy of Sciences*, *99*(25), 15869-15872.
 #'
 #' But the dataset turns up everywhere, most notably:
 #'
 #' Roweis, S. T., & Saul, L. K. (2000).
 #' Nonlinear dimensionality reduction by locally linear embedding.
-#' \emph{Science}, \emph{290}(5500), 2323-2326.
+#' *Science*, *290*(5500), 2323-2326.
 #'
 #' If the idea of flattening a Swiss Roll didn't originate in that publication,
 #' it was certainly popularized for its use in nonlinear dimensionality
 #' reduction. A Matlab-formatted version of that dataset is still available at:
 #'
-#' \url{http://web.mit.edu/cocosci/isomap/datasets.html}
+#' <http://web.mit.edu/cocosci/isomap/datasets.html>
 #'
 #' I'm not sure exactly what parameters were used to generate it, but you
 #' can get something similar by calling:
-#' \code{swiss_roll(n = 20000, min_phi = 1.5 * pi, max_phi = 4.5 * pi, max_z = 50)}
+#' `swiss_roll(n = 20000, min_phi = 1.5 * pi, max_phi = 4.5 * pi, max_z = 50)`
 #'
 #' @examples
 #' \dontrun{
@@ -201,8 +203,8 @@ swiss_roll <- function(
 #' S-curve data set.
 #'
 #' Simulation data randomly sampled from an S-shaped curve. Translated from the
-#' \href{https://scikit-learn.org/stable/index.html}{scikit-learn} Python
-#' function \code{sklearn.datasets.make_s_curve}.
+#' [scikit-learn](https://scikit-learn.org/stable/index.html) Python
+#' function `sklearn.datasets.make_s_curve`.
 #'
 #' Creates a series of points sampled from an S-shaped curve in 3D, with
 #' optional normally-distributed noise. The S shape is oriented such that you
@@ -212,15 +214,15 @@ swiss_roll <- function(
 #'
 #' @param n_samples The number of points to create.
 #' @param noise Add random noise normally-distributed with mean 0 and standard
-#'   deviation \code{noise}.
-#' @return Data frame with \code{x}, \code{y}, \code{z} columns containing the
-#'  coordinates of the points and \code{color} the RGB color.
+#'   deviation `noise`.
+#' @return Data frame with `x`, `y`, `z` columns containing the
+#'  coordinates of the points and `color` the RGB color.
 #' @references
 #' Buitinck, L., Louppe, G., Blondel, M., Pedregosa, F., Mueller, A.,
 #' Grisel, O., ... & Varoquaux, G. (2013).
 #' API design for machine learning software: experiences from the scikit-learn
 #' project.
-#' \emph{arXiv preprint} \emph{arXiv:1309.0238}.
+#' *arXiv preprint* *arXiv:1309.0238*.
 #' @export
 s_curve <- function(n_samples = 100, noise = 0.0) {
   tt <- 3 * pi * stats::runif(n = n_samples, min = -0.5, max = 0.5)
@@ -244,22 +246,22 @@ s_curve <- function(n_samples = 100, noise = 0.0) {
 #'
 #' Points are colored based on their distance along the curve.
 #'
-#' This data set is based on \code{\link{s_curve}} is used to assess the
+#' This data set is based on [s_curve()] and is used to assess the
 #' behavior of the PaCMAP method of Wang and co-workers (2021).
 #'
 #' @param n_samples The number of points to create making up the S-shaped curve.
-#'   Fewer than \code{n_samples} points will be returned because some are
+#'   Fewer than `n_samples` points will be returned because some are
 #'   removed to make the hole.
 #' @param noise Add random noise normally-distributed with mean 0 and standard
-#'   deviation \code{noise}.
-#' @return Data frame with \code{x}, \code{y}, \code{z} columns containing the
-#'   coordinates of the points and \code{color} the RGB color.
+#'   deviation `noise`.
+#' @return Data frame with `x`, `y`, `z` columns containing the
+#'   coordinates of the points and `color` the RGB color.
 #' @references
 #' Wang, Y., Huang, H., Rudin, C., & Shaposhnik, Y. (2021).
 #' Understanding how dimension reduction tools work: an empirical approach to
 #' deciphering t-SNE, UMAP, TriMAP, and PaCMAP for data visualization.
-#' \emph{J Mach. Learn. Res}, \emph{22}, 1-73.
-#' @seealso the \href{https://github.com/YingfanWang/PaCMAP}{PaCMAP homepage}.
+#' *J Mach. Learn. Res*, *22*, 1-73.
+#' @seealso the [PaCMAP homepage](https://github.com/YingfanWang/PaCMAP).
 #' @export
 s_curve_hole <- function(n_samples = 100, noise = 0.0) {
   scurve <- s_curve(n_samples = n_samples, noise = noise)
@@ -283,14 +285,14 @@ s_curve_hole <- function(n_samples = 100, noise = 0.0) {
 #'
 #' Points are colored based on their distance along the curve.
 #'
-#' @return Data frame with 1450 rows, and 3 columns: \code{x}, \code{y} columns
-#'   contain the coordinates of the points and \code{color} the RGB color.
+#' @return Data frame with 1450 rows, and 3 columns: `x`, `y` columns
+#'   contain the coordinates of the points and `color` the RGB color.
 #' @references
 #' Wang, Y., Huang, H., Rudin, C., & Shaposhnik, Y. (2021).
 #' Understanding how dimension reduction tools work: an empirical approach to
 #' deciphering t-SNE, UMAP, TriMAP, and PaCMAP for data visualization.
-#' \emph{J Mach. Learn. Res}, \emph{22}, 1-73.
-#' @seealso the \href{https://github.com/YingfanWang/PaCMAP}{PaCMAP homepage}.
+#' *J Mach. Learn. Res*, *22*, 1-73.
+#' @seealso the [PaCMAP homepage](https://github.com/YingfanWang/PaCMAP).
 #' @export
 curve2d <- function() {
   x <- seq(from = -5.5, to = 9, by = 0.01)
@@ -315,34 +317,34 @@ dsphere <- function(n = 100, d = 2, r = 1) {
 #' High Dimensional Spheres Dataset
 #'
 #' Creates a dataframe consisting of samples from the d-spheres of radius
-#' \code{r} enclosed within a larger d-sphere of radius \code{5 * r}.
+#' `r` enclosed within a larger d-sphere of radius `5 * r`.
 #'
 #' This dataset was used by Moor and co-workers in their "Topological
 #' Autoencoders" paper and this function is based on the Python code in the
 #' github repo for the paper.
 #'
-#' @param n_samples Number of points to sample from each of the \code{n_spheres}
-#'   d-spheres. The larger d-sphere has \code{10 * n_samples} points.
+#' @param n_samples Number of points to sample from each of the `n_spheres`
+#'   d-spheres. The larger d-sphere has `10 * n_samples` points.
 #' @param d The dimensionality of each sphere. The returned dataframe will have
-#'   the \code{d + 1} dimensions of the Euclidean space in which the sphere is
+#'   the `d + 1` dimensions of the Euclidean space in which the sphere is
 #'   embedded.
 #' @param n_spheres Number of spheres to return. There will be
-#'   \code{n_spheres - 1} small spheres and 1 larger sphere.
+#'   `n_spheres - 1` small spheres and 1 larger sphere.
 #' @param r The radius of each of the smaller spheres. The larger sphere has
-#'   radius \code{5 * r}.
-#' @return Data frame with \code{d + 1} numerical columns containing the
-#'   coordinates of the d-spheres and a \code{"label"} factor column giving the
-#'   identity of each d-sphere: levels \code{0 .. n_spheres - 2} are the smaller
-#'   d-spheres. Level \code{n_spheres - 1} is the label for the big d-sphere.
+#'   radius `5 * r`.
+#' @return Data frame with `d + 1` numerical columns containing the
+#'   coordinates of the d-spheres and a `"label"` factor column giving the
+#'   identity of each d-sphere: levels `0 .. n_spheres - 2` are the smaller
+#'   d-spheres. Level `n_spheres - 1` is the label for the big d-sphere.
 #' @references
 #' Moor, M., Horn, M., Rieck, B., & Borgwardt, K. (2020).
 #' Topological Autoencoders.
-#' In \emph{Proceedings of the 37th International Conference on Machine Learning (ICML)}
+#' In *Proceedings of the 37th International Conference on Machine Learning (ICML)*
 #' (pp. 7045–7054). PMLR.
 #'
-#' \url{https://michaelmoor.ml/blog/topoae/main/}
+#' <https://michaelmoor.ml/blog/topoae/main/>
 #'
-#' \url{https://github.com/BorgwardtLab/topological-autoencoders}
+#' <https://github.com/BorgwardtLab/topological-autoencoders>
 #'
 #' @export
 taspheres <- function(n_samples = 500, d = 100, n_spheres = 11, r = 5) {

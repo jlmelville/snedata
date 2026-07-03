@@ -5,44 +5,43 @@
 \title{Download 20 Newsgroups}
 \format{
 A data frame with 6 variables:
-
-\describe{
-\item{\code{Id}}{A unique identifier for the document, consisting of the
-subset concatenated with the position in the subset, e.g. \code{train_1}.}
-\item{\code{FileId}}{The integer identifier of the document, from the
-filename of the downloaded data. Be aware that these are \emph{not} unique.}
-\item{\code{Text}}{The full text of the message including any header, footer,
-and quotes. Newlines are preserved.}
-\item{\code{Subset}}{A factor with two levels: \code{train} and \code{test},
-indicating whether the document is from the training or test subset.}
-\item{\code{Label}}{The newsgroup represented by an integer id, in the range
-0-19.}
-\item{\code{Newsgroup}}{A factor with 20 levels, indicating the newsgroup
-that the document belongs to.}
+\itemize{
+\item \code{Id}: A unique identifier for the document, consisting of the
+subset concatenated with the position in the subset, e.g. \code{train_1}.
+\item \code{FileId}: The integer identifier of the document, from the
+filename of the downloaded data. Be aware that these are \emph{not} unique.
+\item \code{Text}: The full text of the message including any header, footer,
+and quotes. Newlines are preserved.
+\item \code{Subset}: A factor with two levels: \code{train} and \code{test},
+indicating whether the document is from the training or test subset.
+\item \code{Label}: The newsgroup represented by an integer id, in the range
+0-19.
+\item \code{Newsgroup}: A factor with 20 levels, indicating the newsgroup
+that the document belongs to.
 }
 
 The labels correspond to:
-\describe{
-\item{\code{0}}{alt.atheism}
-\item{\code{1}}{comp.graphics}
-\item{\code{2}}{comp.os.ms-windows.misc}
-\item{\code{3}}{comp.sys.ibm.pc.hardware}
-\item{\code{4}}{comp.sys.mac.hardware}
-\item{\code{5}}{comp.windows.x}
-\item{\code{6}}{misc.forsale}
-\item{\code{7}}{rec.autos}
-\item{\code{8}}{rec.motorcycles}
-\item{\code{9}}{rec.sport.baseball}
-\item{\code{10}}{rec.sport.hockey}
-\item{\code{11}}{sci.crypt}
-\item{\code{12}}{sci.electronics}
-\item{\code{13}}{sci.med}
-\item{\code{14}}{sci.space}
-\item{\code{15}}{soc.religion.christian}
-\item{\code{16}}{talk.politics.guns}
-\item{\code{17}}{talk.politics.mideast}
-\item{\code{18}}{talk.politics.misc}
-\item{\code{19}}{talk.religion.misc}
+\itemize{
+\item \code{0}: alt.atheism
+\item \code{1}: comp.graphics
+\item \code{2}: comp.os.ms-windows.misc
+\item \code{3}: comp.sys.ibm.pc.hardware
+\item \code{4}: comp.sys.mac.hardware
+\item \code{5}: comp.windows.x
+\item \code{6}: misc.forsale
+\item \code{7}: rec.autos
+\item \code{8}: rec.motorcycles
+\item \code{9}: rec.sport.baseball
+\item \code{10}: rec.sport.hockey
+\item \code{11}: sci.crypt
+\item \code{12}: sci.electronics
+\item \code{13}: sci.med
+\item \code{14}: sci.space
+\item \code{15}: soc.religion.christian
+\item \code{16}: talk.politics.guns
+\item \code{17}: talk.politics.mideast
+\item \code{18}: talk.politics.misc
+\item \code{19}: talk.religion.misc
 }
 
 and are also present as the \code{Newsgroup} factor.

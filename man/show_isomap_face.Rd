@@ -8,13 +8,13 @@ show_isomap_face(df, n, col = grDevices::gray(1:255/255), ...)
 }
 \arguments{
 \item{df}{Data frame containing Isomap faces, as returned by
-\code{\link{download_isomap_faces}}.}
+\code{\link[=download_isomap_faces]{download_isomap_faces()}}.}
 
 \item{n}{Row index of the image to display.}
 
 \item{col}{List of colors to use in the display.}
 
-\item{...}{Other arguments passed onto the \code{\link[graphics]{image}}
+\item{...}{Other arguments passed onto the \code{\link[graphics:image]{graphics::image()}}
 function.}
 }
 \description{

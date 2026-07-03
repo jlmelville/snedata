@@ -13,7 +13,7 @@ show_mnist_digit(df, n, col = grDevices::gray(1:255/255), ...)
 
 \item{col}{List of colors to use in the display.}
 
-\item{...}{Other arguments passed onto the \code{\link[graphics]{image}}
+\item{...}{Other arguments passed onto the \code{\link[graphics:image]{graphics::image()}}
 function.}
 }
 \description{

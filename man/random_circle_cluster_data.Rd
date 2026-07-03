@@ -20,7 +20,7 @@ Clusters arranged in a circle from "How to Use t-SNE Effectively".
 }
 \details{
 Creates a dataset where the points are located on the circumference of a
-circle of unit radius via \code{\link{circle_data}}, where the
+circle of unit radius via \code{\link[=circle_data]{circle_data()}}, where the
 angle subtended by the point at the center of the circle has been uniformly
 sampled.
 

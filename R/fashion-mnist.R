@@ -13,45 +13,41 @@ fashion_mnist_url <-
 #'
 #' @format A data frame with 786 variables:
 #'
-#' \describe{
-#' \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
-#'   value, from 0 (white) to 255 (black).}
-#' \item{\code{Label}}{The fashion item represented by the image, in the range
-#'  0-9.}
-#' \item{\code{Description}}{The name of the fashion item associated with the
-#'  \code{Label}}
-#' }
+#' * `px1`, `px2`, `px3` ... `px784`: Integer pixel
+#'   value, from 0 (white) to 255 (black).
+#' * `Label`: The fashion item represented by the image, in the range
+#'   0-9.
+#' * `Description`: The name of the fashion item associated with the
+#'   `Label`
 #'
-#' Pixels are organized row-wise. The \code{Label} variable is stored as a
+#' Pixels are organized row-wise. The `Label` variable is stored as a
 #' factor. The labels correspond to:
 #'
-#' \describe{
-#'   \item{\code{0}}{T-shirt/top}
-#'   \item{\code{1}}{Trouser}
-#'   \item{\code{2}}{Pullover}
-#'   \item{\code{3}}{Dress}
-#'   \item{\code{4}}{Coat}
-#'   \item{\code{5}}{Sandal}
-#'   \item{\code{6}}{Shirt}
-#'   \item{\code{7}}{Sneaker}
-#'   \item{\code{8}}{Bag}
-#'   \item{\code{9}}{Ankle boot}
-#' }
+#' * `0`: T-shirt/top
+#' * `1`: Trouser
+#' * `2`: Pullover
+#' * `3`: Dress
+#' * `4`: Coat
+#' * `5`: Sandal
+#' * `6`: Shirt
+#' * `7`: Sneaker
+#' * `8`: Bag
+#' * `9`: Ankle boot
 #'
-#' and are also present as the \code{Description} factor.
+#' and are also present as the `Description` factor.
 #'
 #' There are 70,000 items in the data set. The first 60,000 are the training
-#' set, as found in the \code{train-images-idx3-ubyte.gz} file. The remaining
-#' 10,000 are the test set, from the \code{t10k-images-idx3-ubyte.gz} file.
+#' set, as found in the `train-images-idx3-ubyte.gz` file. The remaining
+#' 10,000 are the test set, from the `t10k-images-idx3-ubyte.gz` file.
 #'
 #' Items in the dataset can be visualized with the
-#' \code{\link{show_mnist_digit}} function.
+#' [show_mnist_digit()] function.
 #'
 #' For more information see
-#' \url{https://github.com/zalandoresearch/fashion-mnist}.
+#' <https://github.com/zalandoresearch/fashion-mnist>.
 #'
 #' @param base_url Base URL that the files are located at.
-#' @param verbose If \code{TRUE}, then download progress will be logged as a
+#' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
 #' @return Data frame containing Fashion-MNIST.
 #' @note Originally based on a function by Brendan O'Connor.
@@ -78,8 +74,8 @@ fashion_mnist_url <-
 #' @references
 #' Xiao, H., Kashif, R., & Vollgraf, R. (2017).
 #' Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms.
-#' \emph{arXiv preprint} \emph{arXiv:1708.07747}.
-#' \url{https://github.com/zalandoresearch/fashion-mnist/}
+#' *arXiv preprint* *arXiv:1708.07747*.
+#' <https://github.com/zalandoresearch/fashion-mnist/>
 #' @export
 download_fashion_mnist <- function(
   base_url = fashion_mnist_url,

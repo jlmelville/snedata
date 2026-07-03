@@ -23,7 +23,7 @@ circles of unit radius, separated by 1 unit, and hence are overlapping.
 The two circles are not co-planar. Points are colored depending from which
 circle they are sampled from.
 
-For the unlinked version, see \code{\link{unlink_data}}.
+For the unlinked version, see \code{\link[=unlink_data]{unlink_data()}}.
 }
 \examples{
 df <- link_data(n = 50)

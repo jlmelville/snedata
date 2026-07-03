@@ -9,7 +9,7 @@ A data frame with 10,000 rows and 3 variables, \code{X}, \code{Z},
 labeling of axes preserves the ordering of the data, and makes the
 Z-coordinate the "height", i.e. the height of the mammoth varies with Z.
 Note that the ordering of the axes differs from that of
-\code{\link{download_mammoth50k}}. Use the X, Y, and Z labels rather than
+\code{\link[=download_mammoth50k]{download_mammoth50k()}}. Use the X, Y, and Z labels rather than
 numerical indices for consistency between the two datasets.
 
 For more information see \url{https://pair-code.github.io/understanding-umap/}.
@@ -48,9 +48,9 @@ plot(mammoth$X, mammoth$Z)
 }
 \seealso{
 \itemize{
-\item{Max Noichl's page: \url{https://github.com/MNoichl/UMAP-examples-mammoth-}.}
-\item{Understanding UMAP: \url{https://pair-code.github.io/understanding-umap/}.}
-\item{The Smithsonian page: \url{https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12}.}
-\item{\code{\link{download_mammoth50k}} to download the original 50,000 points, from which this dataset was randomly sampled.}
+\item Max Noichl's page: \url{https://github.com/MNoichl/UMAP-examples-mammoth-}.
+\item Understanding UMAP: \url{https://pair-code.github.io/understanding-umap/}.
+\item The Smithsonian page: \url{https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12}.
+\item \code{\link[=download_mammoth50k]{download_mammoth50k()}} to download the original 50,000 points, from which this dataset was randomly sampled.
 }
 }

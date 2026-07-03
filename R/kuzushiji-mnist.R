@@ -12,28 +12,26 @@ kuzushiji_mnist_url <-
 #'
 #' @format A data frame with 786 variables:
 #'
-#' \describe{
-#' \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
-#'   value, from 0 (white) to 255 (black).}
-#' \item{\code{Label}}{The character, represented by an integer in the
-#' range 0-9.}
-#' }
+#' * `px1`, `px2`, `px3` ... `px784`: Integer pixel
+#'   value, from 0 (white) to 255 (black).
+#' * `Label`: The character, represented by an integer in the
+#'   range 0-9.
 #'
-#' Pixels are organized row-wise. The \code{Label} variable is stored as a
+#' Pixels are organized row-wise. The `Label` variable is stored as a
 #' factor.
 #'
 #' There are 70,000 items in the data set. The first 60,000 are the training
-#' set, as found in the \code{train-images-idx3-ubyte.gz} file. The remaining
-#' 10,000 are the test set, from the \code{t10k-images-idx3-ubyte.gz} file.
+#' set, as found in the `train-images-idx3-ubyte.gz` file. The remaining
+#' 10,000 are the test set, from the `t10k-images-idx3-ubyte.gz` file.
 #'
 #' Items in the dataset can be visualized with the
-#' \code{\link{show_mnist_digit}} function.
+#' [show_mnist_digit()] function.
 #'
 #' For more information see
-#' \url{https://github.com/rois-codh/kmnist}.
+#' <https://github.com/rois-codh/kmnist>.
 #'
 #' @param base_url Base URL that the files are located at.
-#' @param verbose If \code{TRUE}, then download progress will be logged as a
+#' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
 #' @return Data frame containing Kuzushiji-MNIST.
 #' @note Originally based on a function by Brendan O'Connor.
@@ -61,11 +59,11 @@ kuzushiji_mnist_url <-
 #' @references
 #' "KMNIST Dataset" (created by CODH), adapted from "Kuzushiji Dataset" (created by NIJL and others),
 #' doi:10.20676/00000341
-#' \url{https://github.com/rois-codh/kmnist}
+#' <https://github.com/rois-codh/kmnist>
 #'
 #' Clanuwat, T., Bober-Irizar, M., Kitamoto, A., Lamb, A., Yamamoto, K., & Ha, D. (2018).
 #' Deep Learning for Classical Japanese Literature.
-#' \emph{arXiv preprint} \emph{arXiv:1812.01718}.
+#' *arXiv preprint* *arXiv:1812.01718*.
 #'
 #' @export
 download_kuzushiji_mnist <- function(

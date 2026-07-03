@@ -5,34 +5,32 @@
 #'
 #' Downloads a dataframe containing the 10,000 3D coordinates of a mammoth
 #' skeleton, digitized by
-#' \href{https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12}{The Smithsonian Institute}.
+#' [The Smithsonian Institute](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12).
 #'
 #' This dataset is from
-#' \href{https://pair-code.github.io/understanding-umap/}{Understanding UMAP},
+#' [Understanding UMAP](https://pair-code.github.io/understanding-umap/),
 #' based on work originally done by
-#' \href{https://github.com/MNoichl/UMAP-examples-mammoth-}{Max Noichl}. It
+#' [Max Noichl](https://github.com/MNoichl/UMAP-examples-mammoth-). It
 #' consists of 10,000 points randomly sampled from the 50,000 point data set.
 #'
-#' @format A data frame with 10,000 rows and 3 variables, \code{X}, \code{Z},
-#'   \code{Y}, containing the X, Z, and Y coordinates respectively. This
+#' @format A data frame with 10,000 rows and 3 variables, `X`, `Z`,
+#'   `Y`, containing the X, Z, and Y coordinates respectively. This
 #'   labeling of axes preserves the ordering of the data, and makes the
 #'   Z-coordinate the "height", i.e. the height of the mammoth varies with Z.
 #'   Note that the ordering of the axes differs from that of
-#'   \code{\link{download_mammoth50k}}. Use the X, Y, and Z labels rather than
+#'   [download_mammoth50k()]. Use the X, Y, and Z labels rather than
 #'   numerical indices for consistency between the two datasets.
 #'
-#' For more information see \url{https://pair-code.github.io/understanding-umap/}.
+#' For more information see <https://pair-code.github.io/understanding-umap/>.
 #'
 #' @return Data frame containing the Mammoth coordinates.
-#' @note Requires the \href{https://cran.r-project.org/package=rjson}{rjson}
+#' @note Requires the [rjson](https://cran.r-project.org/package=rjson)
 #' package to be installed and loaded.
 #' @seealso
-#' \itemize{
-#' \item{Max Noichl's page: \url{https://github.com/MNoichl/UMAP-examples-mammoth-}.}
-#' \item{Understanding UMAP: \url{https://pair-code.github.io/understanding-umap/}.}
-#' \item{The Smithsonian page: \url{https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12}.}
-#' \item{\code{\link{download_mammoth50k}} to download the original 50,000 points, from which this dataset was randomly sampled.}
-#' }
+#' * Max Noichl's page: <https://github.com/MNoichl/UMAP-examples-mammoth->.
+#' * Understanding UMAP: <https://pair-code.github.io/understanding-umap/>.
+#' * The Smithsonian page: <https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12>.
+#' * [download_mammoth50k()] to download the original 50,000 points, from which this dataset was randomly sampled.
 #' @examples
 #' \dontrun{
 #' mammoth <- download_mammoth10k()
@@ -62,34 +60,32 @@ download_mammoth10k <- function() {
 #'
 #' Downloads a dataframe containing the 50,000 3D coordinates of a mammoth
 #' skeleton, digitized by
-#' \href{https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12}{The Smithsonian Institute}.
+#' [The Smithsonian Institute](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12).
 #'
 #' This dataset is from
-#' \href{https://pair-code.github.io/understanding-umap/}{Understanding UMAP},
+#' [Understanding UMAP](https://pair-code.github.io/understanding-umap/),
 #' based on work originally done by
-#' \href{https://github.com/MNoichl/UMAP-examples-mammoth-}{Max Noichl}. 50,000
+#' [Max Noichl](https://github.com/MNoichl/UMAP-examples-mammoth-). 50,000
 #' points were down-sampled from the raw data used by Max Noichl.
 #'
-#' @format A data frame with 50,000 rows and 3 variables, \code{Y}, \code{X},
-#'   \code{Z}, containing the Y, X, and Z coordinates respectively. This
+#' @format A data frame with 50,000 rows and 3 variables, `Y`, `X`,
+#'   `Z`, containing the Y, X, and Z coordinates respectively. This
 #'   labeling of axes preserves the ordering of the raw data, and makes the
 #'   Z-coordinate the "height", i.e. the height of the mammoth varies with Z.
 #'   Note that the ordering of the axes differs from that of
-#'   \code{\link{download_mammoth10k}}. Use the X, Y, and Z labels rather than
+#'   [download_mammoth10k()]. Use the X, Y, and Z labels rather than
 #'   numerical indices for consistency between the two datasets.
 #'
-#' For more information see \url{https://pair-code.github.io/understanding-umap/}.
+#' For more information see <https://pair-code.github.io/understanding-umap/>.
 #'
 #' @return Data frame containing the Mammoth coordinates.
-#' @note Requires the \href{https://cran.r-project.org/package=rjson}{rjson}
+#' @note Requires the [rjson](https://cran.r-project.org/package=rjson)
 #' package to be installed and loaded.
 #' @seealso
-#' \itemize{
-#' \item{Max Noichl's page: \url{https://github.com/MNoichl/UMAP-examples-mammoth-}.}
-#' \item{Understanding UMAP: \url{https://pair-code.github.io/understanding-umap/}.}
-#' \item{The Smithsonian page: \url{https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12}.}
-#' \item{\code{\link{download_mammoth10k}} to download a 10,000 point random sub-sample of this data.}
-#' }
+#' * Max Noichl's page: <https://github.com/MNoichl/UMAP-examples-mammoth->.
+#' * Understanding UMAP: <https://pair-code.github.io/understanding-umap/>.
+#' * The Smithsonian page: <https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12>.
+#' * [download_mammoth10k()] to download a 10,000 point random sub-sample of this data.
 #' @examples
 #' \dontrun{
 #' mammoth <- download_mammoth50k()

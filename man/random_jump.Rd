@@ -20,7 +20,7 @@ Simulation data from a random jump process, from "How to Use t-SNE
 Effectively".
 }
 \details{
-Creates a dataset similar to \code{\link{random_walk}} but with
+Creates a dataset similar to \code{\link[=random_walk]{random_walk()}} but with
 additional gaussian noise added at each step. Points are linearly mapped from
 their position in the walk to a rainbow color scheme.
 }

@@ -22,13 +22,12 @@ originates from a gist by Brendan O'Connor:
 
 Very simple datasets for characterizing the behavior of various embedding
 algorithms some, from Lee et al (2016) and Agrafiotis and Xu (2002).
-
 \itemize{
-\item{\code{\link{swiss_roll}}. A 2D plane curled into 3D. }
-\item{\code{\link{sphere}}. Points sampled from the surface of a 3D sphere.}
-\item{\code{\link{ball}}. Points sampled from the interior of a 3D sphere.}
-\item{\code{\link{helix}}. Points sampled from a 3D toroidal helix with
-the ends jointed together.}
+\item \code{\link[=swiss_roll]{swiss_roll()}}. A 2D plane curled into 3D.
+\item \code{\link[=sphere]{sphere()}}. Points sampled from the surface of a 3D sphere.
+\item \code{\link[=ball]{ball()}}. Points sampled from the interior of a 3D sphere.
+\item \code{\link[=helix]{helix()}}. Points sampled from a 3D toroidal helix with
+the ends jointed together.
 }
 }
 
@@ -39,34 +38,34 @@ browser. Much of the data pertains to investigating the behavior of clusters
 of gaussians of varying dimensionality, heterogeneity and relative separation.
 There's quite a lot of functions:
 \itemize{
-\item{\code{\link{circle_data}}. A 2D circle.}
-\item{\code{\link{cube_data}}. A cube.}
-\item{\code{\link{gaussian_data}}. A Gaussian.}
-\item{\code{\link{grid_data}}. A 2D grid.}
-\item{\code{\link{link_data}}. Two linked circles.}
-\item{\code{\link{long_cluster_data}}. Two long parallel clusters.}
-\item{\code{\link{long_gaussian_data}}. A gaussian with unequal standard
-deviation in its dimensions.}
-\item{\code{\link{ortho_curve}}. Points related by mutually orthogonal
-steps.}
-\item{\code{\link{random_circle_cluster_data}}. Points sampled from a
-circle and jittered.}
-\item{\code{\link{random_circle_data}}. Points randomly sampled
-from the circumference of a circle.}
-\item{\code{\link{random_jump}}. Points generated from a
-random walk with an extra gaussian perturbation.}
-\item{\code{\link{random_walk}}. Points generated from a random walk.}
-\item{\code{\link{simplex_data}}. Points arranged as a rough simplex.}
-\item{\code{\link{subset_clusters_data}}. A small cluster inside a larger
-one.}
-\item{\code{\link{three_clusters_data}}. Points sampled from three gaussian
-clusters with unequal relative distances.}
-\item{\code{\link{trefoil_data}}. Points sampled in the shape of 3D trefoil
-knot.}
-\item{\code{\link{two_clusters_data}}. Two gaussian clusters.}
-\item{\code{\link{two_different_clusters_data}}. Two gaussian clusters,
-with differing standard deviations.}
-\item{\code{\link{unlink_data}}. Two unlinked circles.}
+\item \code{\link[=circle_data]{circle_data()}}. A 2D circle.
+\item \code{\link[=cube_data]{cube_data()}}. A cube.
+\item \code{\link[=gaussian_data]{gaussian_data()}}. A Gaussian.
+\item \code{\link[=grid_data]{grid_data()}}. A 2D grid.
+\item \code{\link[=link_data]{link_data()}}. Two linked circles.
+\item \code{\link[=long_cluster_data]{long_cluster_data()}}. Two long parallel clusters.
+\item \code{\link[=long_gaussian_data]{long_gaussian_data()}}. A gaussian with unequal standard
+deviation in its dimensions.
+\item \code{\link[=ortho_curve]{ortho_curve()}}. Points related by mutually orthogonal
+steps.
+\item \code{\link[=random_circle_cluster_data]{random_circle_cluster_data()}}. Points sampled from a
+circle and jittered.
+\item \code{\link[=random_circle_data]{random_circle_data()}}. Points randomly sampled
+from the circumference of a circle.
+\item \code{\link[=random_jump]{random_jump()}}. Points generated from a
+random walk with an extra gaussian perturbation.
+\item \code{\link[=random_walk]{random_walk()}}. Points generated from a random walk.
+\item \code{\link[=simplex_data]{simplex_data()}}. Points arranged as a rough simplex.
+\item \code{\link[=subset_clusters_data]{subset_clusters_data()}}. A small cluster inside a larger
+one.
+\item \code{\link[=three_clusters_data]{three_clusters_data()}}. Points sampled from three gaussian
+clusters with unequal relative distances.
+\item \code{\link[=trefoil_data]{trefoil_data()}}. Points sampled in the shape of 3D trefoil
+knot.
+\item \code{\link[=two_clusters_data]{two_clusters_data()}}. Two gaussian clusters.
+\item \code{\link[=two_different_clusters_data]{two_different_clusters_data()}}. Two gaussian clusters,
+with differing standard deviations.
+\item \code{\link[=unlink_data]{unlink_data()}}. Two unlinked circles.
 }
 }
 
@@ -77,16 +76,15 @@ If you have the \code{RnavGraphImageData} package
 installed and loaded, then there are functions to convert the Olivetti
 and Frey faces datasets into a row-based format, and functions to visualize
 the images.
-
 \itemize{
-\item{\code{\link{frey_faces}}. Loads the Frey faces as a row-based data
-frame.}
-\item{\code{\link{show_frey_face}}. Display one of the poses from the Frey
-faces.}
-\item{\code{\link{olivetti_faces}}. Loads the Olivetti faces as a row-based
-data frame.}
-\item{\code{\link{show_olivetti_face}}. Display one of the poses from the
-Olivetti faces.}
+\item \code{\link[=frey_faces]{frey_faces()}}. Loads the Frey faces as a row-based data
+frame.
+\item \code{\link[=show_frey_face]{show_frey_face()}}. Display one of the poses from the Frey
+faces.
+\item \code{\link[=olivetti_faces]{olivetti_faces()}}. Loads the Olivetti faces as a row-based
+data frame.
+\item \code{\link[=show_olivetti_face]{show_olivetti_face()}}. Display one of the poses from the
+Olivetti faces.
 }
 }
 
@@ -95,14 +93,13 @@ Olivetti faces.}
 The original Isomap Swiss Roll and face-pose datasets can be downloaded from
 the Internet Archive. The download functions require optional packages:
 \code{R.matlab} for Matlab files. The compressed face data also requires an
-external \command{gzip} or \command{uncompress} command.
-
+external \code{gzip} or \code{uncompress} command.
 \itemize{
-\item{\code{\link{download_isomap_swiss_roll}}. Downloads the original
-Isomap Swiss-roll data as a row-based data frame.}
-\item{\code{\link{download_isomap_faces}}. Downloads the original Isomap
-face-pose data as a row-based data frame.}
-\item{\code{\link{show_isomap_face}}. Display one of the Isomap faces.}
+\item \code{\link[=download_isomap_swiss_roll]{download_isomap_swiss_roll()}}. Downloads the original
+Isomap Swiss-roll data as a row-based data frame.
+\item \code{\link[=download_isomap_faces]{download_isomap_faces()}}. Downloads the original Isomap
+face-pose data as a row-based data frame.
+\item \code{\link[=show_isomap_face]{show_isomap_face()}}. Display one of the Isomap faces.
 }
 }
 
@@ -113,12 +110,11 @@ original data set is described at \url{http://yann.lecun.com/exdb/mnist/},
 and this package downloads from the \url{https://github.com/fgnt/mnist}
 mirror. Functions are available to download the dataset as a data frame or
 matrix/list result and visualize individual digits:
-
 \itemize{
-\item{\code{\link{download_mnist}}. Downloads the MNIST dataset files as
+\item \code{\link[=download_mnist]{download_mnist()}}. Downloads the MNIST dataset files as
 a row-based data frame by default, or as a matrix/list result with
-\code{as = "matrix"}.}
-\item{\code{\link{show_mnist_digit}}. Display one of the MNIST digits.}
+\code{as = "matrix"}.
+\item \code{\link[=show_mnist_digit]{show_mnist_digit()}}. Display one of the MNIST digits.
 }
 }
 

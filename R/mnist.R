@@ -4,11 +4,11 @@
 #' nth row in a data frame.
 #'
 #' @note Originally based on a function by Brendan O'Connor, which can be found
-#' at \url{https://gist.github.com/brendano/39760}.
+#' at <https://gist.github.com/brendano/39760>.
 #' @param df Data frame containing MNIST digits.
 #' @param n Row index of the digit to display.
 #' @param col List of colors to use in the display.
-#' @param ... Other arguments passed onto the \code{\link[graphics]{image}}
+#' @param ... Other arguments passed onto the [graphics::image()]
 #' function.
 #' @examples
 #' \dontrun{
@@ -33,38 +33,36 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 #' Download MNIST database of handwritten digits.
 #'
 #' Downloads the image and label files for the training and test datasets from
-#' the \url{https://github.com/fgnt/mnist} mirror of the original MNIST files
+#' the <https://github.com/fgnt/mnist> mirror of the original MNIST files
 #' and converts them to a data frame or a matrix/list result.
 #'
 #' @format A data frame with 785 variables:
 #'
-#' \describe{
-#' \item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
-#'   value, from 0 (white) to 255 (black).}
-#' \item{\code{Label}}{The digit represented by the image, in the range 0-9.}
-#' }
+#' * `px1`, `px2`, `px3` ... `px784`: Integer pixel
+#'   value, from 0 (white) to 255 (black).
+#' * `Label`: The digit represented by the image, in the range 0-9.
 #'
-#' Pixels are organized row-wise. The \code{Label} variable is stored as a
+#' Pixels are organized row-wise. The `Label` variable is stored as a
 #' factor.
 #'
 #' There are 70,000 digits in the data set. The first 60,000 are the training
-#' set, as found in the \code{train-images-idx3-ubyte.gz} file. The remaining
-#' 10,000 are the test set, from the \code{t10k-images-idx3-ubyte.gz} file.
+#' set, as found in the `train-images-idx3-ubyte.gz` file. The remaining
+#' 10,000 are the test set, from the `t10k-images-idx3-ubyte.gz` file.
 #'
 #' Items in the dataset can be visualized with
-#' \code{\link{show_mnist_digit}}.
+#' [show_mnist_digit()].
 #'
 #' For more information about the original dataset see
-#' \url{http://yann.lecun.com/exdb/mnist}.
+#' <http://yann.lecun.com/exdb/mnist>.
 #'
 #' @param base_url Base URL that the MNIST files are located at.
-#' @param verbose If \code{TRUE}, then download progress will be logged as a
+#' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
-#' @param as Return format. Use \code{"data.frame"} for the original data frame
-#'   shape, or \code{"matrix"} for a list with \code{data} and \code{labels}.
-#' @return If \code{as = "data.frame"}, a data frame containing the MNIST
-#'   digits. If \code{as = "matrix"}, a list with \code{data}, an integer matrix
-#'   with one image per row, and \code{labels}, a factor of digit labels.
+#' @param as Return format. Use `"data.frame"` for the original data frame
+#'   shape, or `"matrix"` for a list with `data` and `labels`.
+#' @return If `as = "data.frame"`, a data frame containing the MNIST
+#'   digits. If `as = "matrix"`, a list with `data`, an integer matrix
+#'   with one image per row, and `labels`, a factor of digit labels.
 #' @note Originally based on a function by Brendan O'Connor.
 #' @export
 #' @examples

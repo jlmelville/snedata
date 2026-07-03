@@ -5,14 +5,13 @@
 \title{Download Isomap Swiss Roll}
 \format{
 A data frame with 20,000 rows and 6 variables:
-
-\describe{
-\item{\code{x}, \code{y}, \code{z}}{Coordinates of the points in the rolled
-three-dimensional space.}
-\item{\code{u}, \code{v}}{Coordinates of the points in the unrolled
-two-dimensional space.}
-\item{\code{color}}{A string representing a color in hex format, generated
-from \code{u}.}
+\itemize{
+\item \code{x}, \code{y}, \code{z}: Coordinates of the points in the rolled
+three-dimensional space.
+\item \code{u}, \code{v}: Coordinates of the points in the unrolled
+two-dimensional space.
+\item \code{color}: A string representing a color in hex format, generated
+from \code{u}.
 }
 }
 \usage{

@@ -23,7 +23,7 @@ circles of unit radius, separated by 3 units. The two circles are not
 co-planar. Points are colored depending from which circle they are sampled
 from.
 
-For the linked version, see \code{\link{link_data}}.
+For the linked version, see \code{\link[=link_data]{link_data()}}.
 }
 \examples{
 df <- unlink_data(n = 50)

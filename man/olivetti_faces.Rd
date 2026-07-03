@@ -26,12 +26,12 @@ The variables are as follows:
 \item \code{px1}, \code{px2}, \code{px3} ... \code{px4096} 8-bit grayscale
 pixel values (0-255). The pixel index starts at the top right of the image
 (\code{px1}) and are then stored column-wise.
-\item \code{Label} An integer in the range (1-40) indicating the person.
+\item \code{Label}: An integer in the range (1-40) indicating the person.
 }
 
-Each row has a name with the format "\if{html}{\out{<face>}}_\if{html}{\out{<pose>}}", where \code{<face>} is
-the index of the face, and \code{<pose>} is the index of the pose, e.g.
-the row with name \code{20_10} is the tenth pose of the twentieth face.
+Each row has a name with the format \code{face_pose}, where \code{face} is the index
+of the face, and \code{pose} is the index of the pose, e.g. the row with name
+\verb{20_10} is the tenth pose of the twentieth face.
 }
 \note{
 Requires the
@@ -40,7 +40,7 @@ package to be installed and loaded.
 }
 \seealso{
 \itemize{
-\item{Sam Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.}
-\item{Each row can be visualized as an image using \code{\link{show_olivetti_face}}.}
+\item Sam Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.
+\item Each row can be visualized as an image using \code{\link[=show_olivetti_face]{show_olivetti_face()}}.
 }
 }

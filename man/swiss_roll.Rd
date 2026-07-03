@@ -9,9 +9,9 @@ swiss_roll(n = 1000, min_phi = 1.5 * pi, max_phi = 4.5 * pi, max_z = 10)
 \arguments{
 \item{n}{Number of points to create.}
 
-\item{min_phi}{Minimum value of the range of \eqn{phi}{phi} to sample from}
+\item{min_phi}{Minimum value of the range of \code{phi} to sample from.}
 
-\item{max_phi}{Maximum value of the range of \eqn{phi}{phi} to sample from.}
+\item{max_phi}{Maximum value of the range of \code{phi} to sample from.}
 
 \item{max_z}{Maximum value of the \code{z} range to sample from (minimum
 values is always 0).}
@@ -28,16 +28,17 @@ Creates a series of points randomly sampled from a swiss roll-shaped
 manifold: a two-dimensional plane which has been rolled up into a spiral
 shape. Or just look at a swiss roll.
 
-The formula for sampling the x, y and z coordinates used in this dataset is
+The formula for sampling the x, y, and z coordinates used in this dataset is
 from that given in the Stochastic Proximity Embedding paper by Agrafiotis
 and Xu (I don't know who originally came up with the data set, though):
-\deqn{x = \phi cos\phi, y = \phi sin \phi, z}{x = phi * cos(phi), y = phi * sin(phi), z}
 
-where \eqn{\phi}{phi} is sampled between
-\eqn{\frac{3\pi}{2}}{3/2 pi} and
-\eqn{\frac{5\pi}{2}}{5/2 pi}, and \code{z} is sampled between 0 and 10
-(the range of \eqn{\phi} and \code{z} can
-be modified, if desired).
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- phi * cos(phi)
+y <- phi * sin(phi)
+}\if{html}{\out{</div>}}
+
+where \code{phi} is sampled between \code{3 * pi / 2} and \code{5 * pi / 2}, and \code{z} is
+sampled between 0 and 10. The ranges of \code{phi} and \code{z} can be modified, if
+desired.
 
 Points are colored based on the value of phi. If you unrolled the manifold
 into a flat sheet, you would see the color change linearly in the direction

@@ -8,96 +8,86 @@
 #' Very simple datasets for characterizing the behavior of various embedding
 #' algorithms some, from Lee et al (2016) and Agrafiotis and Xu (2002).
 #'
-#' \itemize{
-#'  \item{\code{\link{swiss_roll}}. A 2D plane curled into 3D. }
-#'  \item{\code{\link{sphere}}. Points sampled from the surface of a 3D sphere.}
-#'  \item{\code{\link{ball}}. Points sampled from the interior of a 3D sphere.}
-#'  \item{\code{\link{helix}}. Points sampled from a 3D toroidal helix with
-#'    the ends jointed together.}
-#' }
+#' * [swiss_roll()]. A 2D plane curled into 3D.
+#' * [sphere()]. Points sampled from the surface of a 3D sphere.
+#' * [ball()]. Points sampled from the interior of a 3D sphere.
+#' * [helix()]. Points sampled from a 3D toroidal helix with
+#'   the ends jointed together.
 #'
 #' @section Simulation functions from "How to use t-SNE Effectively":
 #' An online article from Wattenberg et al (2016), this runs t-SNE live in your
 #' browser. Much of the data pertains to investigating the behavior of clusters
 #' of gaussians of varying dimensionality, heterogeneity and relative separation.
 #' There's quite a lot of functions:
-#' \itemize{
-#'  \item{\code{\link{circle_data}}. A 2D circle.}
-#'  \item{\code{\link{cube_data}}. A cube.}
-#'  \item{\code{\link{gaussian_data}}. A Gaussian.}
-#'  \item{\code{\link{grid_data}}. A 2D grid.}
-#'  \item{\code{\link{link_data}}. Two linked circles.}
-#'  \item{\code{\link{long_cluster_data}}. Two long parallel clusters.}
-#'  \item{\code{\link{long_gaussian_data}}. A gaussian with unequal standard
-#'    deviation in its dimensions.}
-#'  \item{\code{\link{ortho_curve}}. Points related by mutually orthogonal
-#'    steps.}
-#'  \item{\code{\link{random_circle_cluster_data}}. Points sampled from a
-#'    circle and jittered.}
-#'  \item{\code{\link{random_circle_data}}. Points randomly sampled
-#'    from the circumference of a circle.}
-#'  \item{\code{\link{random_jump}}. Points generated from a
-#'    random walk with an extra gaussian perturbation.}
-#'  \item{\code{\link{random_walk}}. Points generated from a random walk.}
-#'  \item{\code{\link{simplex_data}}. Points arranged as a rough simplex.}
-#'  \item{\code{\link{subset_clusters_data}}. A small cluster inside a larger
-#'    one.}
-#'  \item{\code{\link{three_clusters_data}}. Points sampled from three gaussian
-#'    clusters with unequal relative distances.}
-#'  \item{\code{\link{trefoil_data}}. Points sampled in the shape of 3D trefoil
-#'    knot.}
-#'  \item{\code{\link{two_clusters_data}}. Two gaussian clusters.}
-#'  \item{\code{\link{two_different_clusters_data}}. Two gaussian clusters,
-#'    with differing standard deviations.}
-#'  \item{\code{\link{unlink_data}}. Two unlinked circles.}
-#' }
+#' * [circle_data()]. A 2D circle.
+#' * [cube_data()]. A cube.
+#' * [gaussian_data()]. A Gaussian.
+#' * [grid_data()]. A 2D grid.
+#' * [link_data()]. Two linked circles.
+#' * [long_cluster_data()]. Two long parallel clusters.
+#' * [long_gaussian_data()]. A gaussian with unequal standard
+#'   deviation in its dimensions.
+#' * [ortho_curve()]. Points related by mutually orthogonal
+#'   steps.
+#' * [random_circle_cluster_data()]. Points sampled from a
+#'   circle and jittered.
+#' * [random_circle_data()]. Points randomly sampled
+#'   from the circumference of a circle.
+#' * [random_jump()]. Points generated from a
+#'   random walk with an extra gaussian perturbation.
+#' * [random_walk()]. Points generated from a random walk.
+#' * [simplex_data()]. Points arranged as a rough simplex.
+#' * [subset_clusters_data()]. A small cluster inside a larger
+#'   one.
+#' * [three_clusters_data()]. Points sampled from three gaussian
+#'   clusters with unequal relative distances.
+#' * [trefoil_data()]. Points sampled in the shape of 3D trefoil
+#'   knot.
+#' * [two_clusters_data()]. Two gaussian clusters.
+#' * [two_different_clusters_data()]. Two gaussian clusters,
+#'   with differing standard deviations.
+#' * [unlink_data()]. Two unlinked circles.
 #'
 #'
 #' @section Faces dataset functions:
-#' If you have the \code{RnavGraphImageData} package
-#' \url{https://cran.r-project.org/package=RnavGraphImageData}
+#' If you have the `RnavGraphImageData` package
+#' <https://cran.r-project.org/package=RnavGraphImageData>
 #' installed and loaded, then there are functions to convert the Olivetti
 #' and Frey faces datasets into a row-based format, and functions to visualize
 #' the images.
 #'
-#' \itemize{
-#'  \item{\code{\link{frey_faces}}. Loads the Frey faces as a row-based data
-#'    frame.}
-#'  \item{\code{\link{show_frey_face}}. Display one of the poses from the Frey
-#'    faces.}
-#'  \item{\code{\link{olivetti_faces}}. Loads the Olivetti faces as a row-based
-#'    data frame.}
-#'  \item{\code{\link{show_olivetti_face}}. Display one of the poses from the
-#'    Olivetti faces.}
-#' }
+#' * [frey_faces()]. Loads the Frey faces as a row-based data
+#'   frame.
+#' * [show_frey_face()]. Display one of the poses from the Frey
+#'   faces.
+#' * [olivetti_faces()]. Loads the Olivetti faces as a row-based
+#'   data frame.
+#' * [show_olivetti_face()]. Display one of the poses from the
+#'   Olivetti faces.
 #'
 #' @section Historical Isomap dataset functions:
 #' The original Isomap Swiss Roll and face-pose datasets can be downloaded from
 #' the Internet Archive. The download functions require optional packages:
-#' \code{R.matlab} for Matlab files. The compressed face data also requires an
-#' external \command{gzip} or \command{uncompress} command.
+#' `R.matlab` for Matlab files. The compressed face data also requires an
+#' external `gzip` or `uncompress` command.
 #'
-#' \itemize{
-#'  \item{\code{\link{download_isomap_swiss_roll}}. Downloads the original
-#'    Isomap Swiss-roll data as a row-based data frame.}
-#'  \item{\code{\link{download_isomap_faces}}. Downloads the original Isomap
-#'    face-pose data as a row-based data frame.}
-#'  \item{\code{\link{show_isomap_face}}. Display one of the Isomap faces.}
-#' }
+#' * [download_isomap_swiss_roll()]. Downloads the original
+#'   Isomap Swiss-roll data as a row-based data frame.
+#' * [download_isomap_faces()]. Downloads the original Isomap
+#'   face-pose data as a row-based data frame.
+#' * [show_isomap_face()]. Display one of the Isomap faces.
 #'
 #' @section MNIST dataset functions:
 #' Another (much larger) image dataset is the MNIST digits dataset. The
-#' original data set is described at \url{http://yann.lecun.com/exdb/mnist/},
-#' and this package downloads from the \url{https://github.com/fgnt/mnist}
+#' original data set is described at <http://yann.lecun.com/exdb/mnist/>,
+#' and this package downloads from the <https://github.com/fgnt/mnist>
 #' mirror. Functions are available to download the dataset as a data frame or
 #' matrix/list result and visualize individual digits:
 #'
-#' \itemize{
-#'   \item{\code{\link{download_mnist}}. Downloads the MNIST dataset files as
+#' * [download_mnist()]. Downloads the MNIST dataset files as
 #'   a row-based data frame by default, or as a matrix/list result with
-#'   \code{as = "matrix"}.}
-#'   \item{\code{\link{show_mnist_digit}}. Display one of the MNIST digits.}
-#' }
+#'   `as = "matrix"`.
+#' * [show_mnist_digit()]. Display one of the MNIST digits.
 #'
 #' @section Fashion-MNIST functions:
 #' The Fashion-MNIST dataset (Xiao et al. 2017) is designed as a drop-in
@@ -105,11 +95,11 @@
 #'
 #' @note
 #' The faces datasets originate from Sam Roweis' dataset web page:
-#' \url{http://www.cs.nyu.edu/~roweis/data.html}.
+#' <http://www.cs.nyu.edu/~roweis/data.html>.
 #'
 #' Code to download and visualize the MNIST digits and fashion datasets
 #' originates from a gist by Brendan O'Connor:
-#' \url{https://gist.github.com/brendano/39760}.
+#' <https://gist.github.com/brendano/39760>.
 #'
 #' @examples
 #' # 300 points sampled from the surface of a sphere
@@ -182,22 +172,22 @@
 #'
 #' Agrafiotis, D. K., & Xu, H. (2002).
 #' A self-organizing principle for learning nonlinear manifolds.
-#' \emph{Proceedings of the National Academy of Sciences}, \emph{99}(25), 15869-15872.
+#' *Proceedings of the National Academy of Sciences*, *99*(25), 15869-15872.
 #'
 #' Lee, J. A., Peluffo-Ordo'nez, D. H., & Verleysen, M. (2015).
 #' Multi-scale similarities in stochastic neighbour embedding: Reducing
 #' dimensionality while preserving both local and global structure.
-#' \emph{Neurocomputing}, \emph{169}, 246-261.
+#' *Neurocomputing*, *169*, 246-261.
 #'
 #' Wattenberg, M., Vie'gas, F., & Johnson, I. (2016)
 #' How to Use t-SNE Effectively.
-#' \emph{Distill}
-#' \url{http://doi.org/10.23915/distill.00002}
+#' *Distill*
+#' <http://doi.org/10.23915/distill.00002>
 #'
 #' Xiao, H., Kashif, R., & Vollgraf, R. (2017).
 #' Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms.
-#' \emph{arXiv preprint} \emph{arXiv:1708.07747}.
-#' \url{https://github.com/zalandoresearch/fashion-mnist/}
+#' *arXiv preprint* *arXiv:1708.07747*.
+#' <https://github.com/zalandoresearch/fashion-mnist/>
 #'
 #' @name snedata
 "_PACKAGE"

@@ -5,40 +5,39 @@
 \title{Download Small NORB}
 \format{
 A data frame with 18,439 variables:
-
-\describe{
-\item{\code{c0px1}, \code{c0px2}, \code{c0px3} ... \code{c0px9216}}{Integer
+\itemize{
+\item \code{c0px1}, \code{c0px2}, \code{c0px3} ... \code{c0px9216}: Integer
 pixel value, from 0 (white) to 255 (black) for the first image in the
-pair}
-\item{\code{c1px1}, \code{c1px2}, \code{c1px3} ... \code{c1px9216}}{Integer
+pair
+\item \code{c1px1}, \code{c1px2}, \code{c1px3} ... \code{c1px9216}: Integer
 pixel value, from 0 (white) to 255 (black) for the second image in the
-pair}
-\item{\code{Instance}}{The index of the toy in a particular category,
+pair
+\item \code{Instance}: The index of the toy in a particular category,
 represented by a factor in the range 0-9. The training set consists of
-instances 0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.}
-\item{\code{Elevation}}{The elevation of the camera represented by a
+instances 0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.
+\item \code{Elevation}: The elevation of the camera represented by a
 factor in the range 0-8. These represent elevations of 30 to 70 degrees
-from the horizontal, in increments of 5 degrees.}
-\item{\code{Azimuth}}{The azimuth, represented by a factor in the range
-0, 2, 4 .. 34. Multiply by ten to get the value in degrees.}
-\item{\code{Lighting}}{The lighting condition, represened by a factor in
-the range 0-5.}
-\item{\code{Label}}{The toy category, represented by a factor in the
-range 0-4.}
-\item{\code{Split}}{Whether the toy in is in the \code{training} or
-\code{testing} set, represented by a factor}
-\item{\code{Description}}{The name of the toy category associated with
-\code{Label}, represented by a factor.}
+from the horizontal, in increments of 5 degrees.
+\item \code{Azimuth}: The azimuth, represented by a factor in the range
+0, 2, 4 .. 34. Multiply by ten to get the value in degrees.
+\item \code{Lighting}: The lighting condition, represened by a factor in
+the range 0-5.
+\item \code{Label}: The toy category, represented by a factor in the
+range 0-4.
+\item \code{Split}: Whether the toy in is in the \code{training} or
+\code{testing} set, represented by a factor
+\item \code{Description}: The name of the toy category associated with
+\code{Label}, represented by a factor.
 }
 
 The pixel features are organized row-wise from the top left of each image.
 The \code{Label} levels correspond to:
-\describe{
-\item{\code{0}}{Four-legged animal}
-\item{\code{1}}{Human figure}
-\item{\code{2}}{Airplane}
-\item{\code{3}}{Truck}
-\item{\code{4}}{Car}
+\itemize{
+\item \code{0}: Four-legged animal
+\item \code{1}: Human figure
+\item \code{2}: Airplane
+\item \code{3}: Truck
+\item \code{4}: Car
 }
 
 There are 48,600 items in the data set. The first 24,300 are the training
@@ -46,7 +45,7 @@ set, and the remaining 24,300 are the testing set, but you can also use
 the \code{Split} column to determine which split a given row is in.
 
 Items in the dataset can be visualized with the
-\code{\link{show_norb_object}} function.
+\code{\link[=show_norb_object]{show_norb_object()}} function.
 
 For more information see
 \url{https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/}.

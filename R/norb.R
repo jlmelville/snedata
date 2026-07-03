@@ -13,67 +13,63 @@
 #' 1,944 images per toy. This dataset stores each pair of images for a
 #' given toy, lighting, elevation and azimuth as a single row. Each image is
 #' 96 by 96 pixels, so the first 9,216 columns contain the pixels of the first
-#' image, and the second 9,216 (\code{9217:18432}) columns contain the pixels of
+#' image, and the second 9,216 (`9217:18432`) columns contain the pixels of
 #' the second image. The other information (lighting and so on) are also stored
 #' as factors.
 #'
 #' @format A data frame with 18,439 variables:
 #'
-#' \describe{
-#' \item{\code{c0px1}, \code{c0px2}, \code{c0px3} ... \code{c0px9216}}{Integer
+#' * `c0px1`, `c0px2`, `c0px3` ... `c0px9216`: Integer
 #'   pixel value, from 0 (white) to 255 (black) for the first image in the
-#'   pair}
-#' \item{\code{c1px1}, \code{c1px2}, \code{c1px3} ... \code{c1px9216}}{Integer
+#'   pair
+#' * `c1px1`, `c1px2`, `c1px3` ... `c1px9216`: Integer
 #'   pixel value, from 0 (white) to 255 (black) for the second image in the
-#'   pair}
-#' \item{\code{Instance}}{The index of the toy in a particular category,
+#'   pair
+#' * `Instance`: The index of the toy in a particular category,
 #'   represented by a factor in the range 0-9. The training set consists of
-#'   instances 0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.}
-#' \item{\code{Elevation}}{The elevation of the camera represented by a
+#'   instances 0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.
+#' * `Elevation`: The elevation of the camera represented by a
 #'   factor in the range 0-8. These represent elevations of 30 to 70 degrees
-#'   from the horizontal, in increments of 5 degrees.}
-#' \item{\code{Azimuth}}{The azimuth, represented by a factor in the range
-#'   0, 2, 4 .. 34. Multiply by ten to get the value in degrees.}
-#' \item{\code{Lighting}}{The lighting condition, represened by a factor in
-#'   the range 0-5.}
-#' \item{\code{Label}}{The toy category, represented by a factor in the
-#'   range 0-4.}
-#' \item{\code{Split}}{Whether the toy in is in the \code{training} or
-#'   \code{testing} set, represented by a factor}
-#' \item{\code{Description}}{The name of the toy category associated with
-#'   \code{Label}, represented by a factor.}
-#' }
+#'   from the horizontal, in increments of 5 degrees.
+#' * `Azimuth`: The azimuth, represented by a factor in the range
+#'   0, 2, 4 .. 34. Multiply by ten to get the value in degrees.
+#' * `Lighting`: The lighting condition, represened by a factor in
+#'   the range 0-5.
+#' * `Label`: The toy category, represented by a factor in the
+#'   range 0-4.
+#' * `Split`: Whether the toy in is in the `training` or
+#'   `testing` set, represented by a factor
+#' * `Description`: The name of the toy category associated with
+#'   `Label`, represented by a factor.
 #'
 #' The pixel features are organized row-wise from the top left of each image.
-#' The \code{Label} levels correspond to:
-#' \describe{
-#'   \item{\code{0}}{Four-legged animal}
-#'   \item{\code{1}}{Human figure}
-#'   \item{\code{2}}{Airplane}
-#'   \item{\code{3}}{Truck}
-#'   \item{\code{4}}{Car}
-#' }
+#' The `Label` levels correspond to:
+#' * `0`: Four-legged animal
+#' * `1`: Human figure
+#' * `2`: Airplane
+#' * `3`: Truck
+#' * `4`: Car
 #'
 #' There are 48,600 items in the data set. The first 24,300 are the training
 #' set, and the remaining 24,300 are the testing set, but you can also use
-#' the \code{Split} column to determine which split a given row is in.
+#' the `Split` column to determine which split a given row is in.
 #'
 #' Items in the dataset can be visualized with the
-#' \code{\link{show_norb_object}} function.
+#' [show_norb_object()] function.
 #'
 #' For more information see
-#' \url{https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/}.
+#' <https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/>.
 #'
 #' @param base_url Base URL that the files are located at.
-#' @param verbose If \code{TRUE}, then download progress will be logged as a
+#' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
-#' @param split Which split to download. Use \code{"all"} for both the training
-#'   and testing sets, or \code{"training"} or \code{"testing"} for one split.
-#' @param as Return format. Use \code{"data.frame"} for the original data frame
-#'   shape, or \code{"matrix"} for a list with \code{data} and \code{meta}.
-#' @return If \code{as = "data.frame"}, a data frame containing the Small NORB
-#'   dataset. If \code{as = "matrix"}, a list with \code{data}, an integer
-#'   matrix with one image pair per row, and \code{meta}, a data frame with the
+#' @param split Which split to download. Use `"all"` for both the training
+#'   and testing sets, or `"training"` or `"testing"` for one split.
+#' @param as Return format. Use `"data.frame"` for the original data frame
+#'   shape, or `"matrix"` for a list with `data` and `meta`.
+#' @return If `as = "data.frame"`, a data frame containing the Small NORB
+#'   dataset. If `as = "matrix"`, a list with `data`, an integer
+#'   matrix with one image pair per row, and `meta`, a data frame with the
 #'   non-pixel metadata columns.
 #' @export
 #' @examples
@@ -105,14 +101,14 @@
 #' }
 #' @references
 #' The Small NORB Dataset, v1.0
-#' \url{https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/}
+#' <https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/>
 #'
 #' LeCun, Y., Huang, F. J., & Bottou, L. (2004, June).
 #' Learning methods for generic object recognition with invariance to pose and lighting.
-#' In \emph{IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR) 2004}
+#' In *IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR) 2004*
 #' (pp. 97-104).
 #' IEEE.
-#' \url{http://doi.ieeecomputersociety.org/10.1109/CVPR.2004.144}
+#' <http://doi.ieeecomputersociety.org/10.1109/CVPR.2004.144>
 #' @export
 download_norb_small <- function(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",

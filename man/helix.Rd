@@ -26,7 +26,7 @@ Simulation data in the shape of a 3D toroidal helix.
 Creates a series of points sampled from a 3D helix with the ends joined
 to each other.
 
-Unlike \code{\link{ball}} and \code{\link{sphere}}, this data set is not
+Unlike \code{\link[=ball]{ball()}} and \code{\link[=sphere]{sphere()}}, this data set is not
 randomly sampled.
 
 Points are colored based on their distances from the origin.

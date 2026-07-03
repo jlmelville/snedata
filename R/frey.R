@@ -7,27 +7,23 @@
 #' face taken from sequential frames of a video.
 #'
 #' The variables are as follows:
-#' \itemize{
-#' \item \code{px1}, \code{px2}, \code{px3} ... \code{px560} 8-bit grayscale
-#' pixel values (0-255). The pixel index starts at the top right of the image
-#' (\code{px1}) and are then stored row-wise.
-#' \item \code{color} A string representing a color in hex format. It can be
-#' used directly with e.g. the \code{col} parameter in the
-#' \code{\link[graphics]{plot}} function. The color goes from hsl(0, 50, 50)
-#' (red) at frame 1 to hsl(300, 50, 50) (purple) at frame 1965 and on a muted
-#' rainbow scale.
-#' }
+#' * `px1`, `px2`, `px3` ... `px560` 8-bit grayscale
+#'   pixel values (0-255). The pixel index starts at the top right of the image
+#'   (`px1`) and are then stored row-wise.
+#' * `color`: A string representing a color in hex format. It can be
+#'   used directly with e.g. the `col` parameter in the
+#'   [graphics::plot()] function. The color goes from hsl(0, 50, 50)
+#'   (red) at frame 1 to hsl(300, 50, 50) (purple) at frame 1965 and on a muted
+#'   rainbow scale.
 #'
 #' @note Requires the
-#' \href{https://cran.r-project.org/package=RnavGraphImageData}{RnavGraphImageData}
+#' [RnavGraphImageData](https://cran.r-project.org/package=RnavGraphImageData)
 #' package to be installed and loaded.
 #' @return The Frey Faces dataset as a dataframe.
 #' @format A data frame with 1965 rows and 561 variables.
 #' @seealso
-#' \itemize{
-#' \item{Sam Roweis' dataset web page: \url{http://www.cs.nyu.edu/~roweis/data.html}.}
-#' \item{Each row can be visualized as an image using \code{\link{show_frey_face}}.}
-#' }
+#' * Sam Roweis' dataset web page: <http://www.cs.nyu.edu/~roweis/data.html>.
+#' * Each row can be visualized as an image using [show_frey_face()].
 #' @export
 #' @examples
 #' \dontrun{

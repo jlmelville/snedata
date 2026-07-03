@@ -5,11 +5,10 @@
 \title{Download MNIST}
 \format{
 A data frame with 785 variables:
-
-\describe{
-\item{\code{px1}, \code{px2}, \code{px3} ... \code{px784}}{Integer pixel
-value, from 0 (white) to 255 (black).}
-\item{\code{Label}}{The digit represented by the image, in the range 0-9.}
+\itemize{
+\item \code{px1}, \code{px2}, \code{px3} ... \code{px784}: Integer pixel
+value, from 0 (white) to 255 (black).
+\item \code{Label}: The digit represented by the image, in the range 0-9.
 }
 
 Pixels are organized row-wise. The \code{Label} variable is stored as a
@@ -20,7 +19,7 @@ set, as found in the \code{train-images-idx3-ubyte.gz} file. The remaining
 10,000 are the test set, from the \code{t10k-images-idx3-ubyte.gz} file.
 
 Items in the dataset can be visualized with
-\code{\link{show_mnist_digit}}.
+\code{\link[=show_mnist_digit]{show_mnist_digit()}}.
 
 For more information about the original dataset see
 \url{http://yann.lecun.com/exdb/mnist}.

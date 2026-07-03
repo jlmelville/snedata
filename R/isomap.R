@@ -17,22 +17,20 @@ isomap_faces_url <- paste0(
 #'
 #' @format A data frame with 20,000 rows and 6 variables:
 #'
-#' \describe{
-#' \item{\code{x}, \code{y}, \code{z}}{Coordinates of the points in the rolled
-#'   three-dimensional space.}
-#' \item{\code{u}, \code{v}}{Coordinates of the points in the unrolled
-#'   two-dimensional space.}
-#' \item{\code{color}}{A string representing a color in hex format, generated
-#'   from \code{u}.}
-#' }
+#' * `x`, `y`, `z`: Coordinates of the points in the rolled
+#'   three-dimensional space.
+#' * `u`, `v`: Coordinates of the points in the unrolled
+#'   two-dimensional space.
+#' * `color`: A string representing a color in hex format, generated
+#'   from `u`.
 #'
 #' @param url URL of the Matlab data file.
-#' @param verbose If \code{TRUE}, then download progress will be logged as a
+#' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
 #' @return Data frame containing the Isomap Swiss-roll dataset.
 #' @note Requires the
-#' \href{https://cran.r-project.org/package=R.matlab}{R.matlab}
-#' package to be installed and an external gzip or uncompress command to be 
+#' [R.matlab](https://cran.r-project.org/package=R.matlab)
+#' package to be installed and an external gzip or uncompress command to be
 #' available on the system path.
 #' @export
 #' @examples
@@ -43,7 +41,7 @@ isomap_faces_url <- paste0(
 #' @references
 #' Tenenbaum, J. B., de Silva, V., & Langford, J. C. (2000).
 #' A global geometric framework for nonlinear dimensionality reduction.
-#' \emph{Science}, \emph{290}(5500), 2319-2323.
+#' *Science*, *290*(5500), 2319-2323.
 download_isomap_swiss_roll <- function(
   url = isomap_swiss_roll_url,
   verbose = FALSE
@@ -63,28 +61,26 @@ download_isomap_swiss_roll <- function(
 #'
 #' The original Stanford URL for this dataset is no longer available, so the
 #' default URL uses an archived copy from the Internet Archive. The archived
-#' data is stored as a Unix \code{compress} file, and this function uses an
-#' external \command{gzip} or \command{uncompress} command for decompression.
+#' data is stored as a Unix `compress` file, and this function uses an
+#' external `gzip` or `uncompress` command for decompression.
 #'
 #' @format A data frame with 698 rows and 4,098 variables:
 #'
-#' \describe{
-#' \item{\code{px1}, \code{px2}, \code{px3} ... \code{px4096}}{Grayscale pixel
-#'   values for a 64 x 64 image.}
-#' \item{\code{pose1}, \code{pose2}}{Pose values supplied with the original
-#'   dataset.}
-#' }
+#' * `px1`, `px2`, `px3` ... `px4096`: Grayscale pixel
+#'   values for a 64 x 64 image.
+#' * `pose1`, `pose2`: Pose values supplied with the original
+#'   dataset.
 #'
 #' @param url URL of the compressed Matlab data file.
-#' @param verbose If \code{TRUE}, then download progress will be logged as a
+#' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
 #' @return Data frame containing the Isomap face-pose dataset.
 #' @note Requires the
-#' \href{https://cran.r-project.org/package=R.matlab}{R.matlab}
+#' [R.matlab](https://cran.r-project.org/package=R.matlab)
 #' package to be installed. The face data also requires an external
-#' \command{gzip} or \command{uncompress} command that can decompress Unix
-#' \code{compress} files.
-#' @seealso Each row can be visualized using \code{\link{show_isomap_face}}.
+#' `gzip` or `uncompress` command that can decompress Unix
+#' `compress` files.
+#' @seealso Each row can be visualized using [show_isomap_face()].
 #' @export
 #' @examples
 #' \dontrun{
@@ -94,7 +90,7 @@ download_isomap_swiss_roll <- function(
 #' @references
 #' Tenenbaum, J. B., de Silva, V., & Langford, J. C. (2000).
 #' A global geometric framework for nonlinear dimensionality reduction.
-#' \emph{Science}, \emph{290}(5500), 2319-2323.
+#' *Science*, *290*(5500), 2319-2323.
 download_isomap_faces <- function(
   url = isomap_faces_url,
   verbose = FALSE
@@ -113,10 +109,10 @@ download_isomap_faces <- function(
 #' Display an image from the Isomap face-pose dataset.
 #'
 #' @param df Data frame containing Isomap faces, as returned by
-#'   \code{\link{download_isomap_faces}}.
+#'   [download_isomap_faces()].
 #' @param n Row index of the image to display.
 #' @param col List of colors to use in the display.
-#' @param ... Other arguments passed onto the \code{\link[graphics]{image}}
+#' @param ... Other arguments passed onto the [graphics::image()]
 #'   function.
 #' @export
 show_isomap_face <- function(
