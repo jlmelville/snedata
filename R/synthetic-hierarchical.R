@@ -16,7 +16,7 @@
 #'
 #' This is based on a Python notebook which can be found at
 #' <https://github.com/jlmelville/drnb/blob/d542c97b26d6f0f481d7551b130c41fcc0206c6b/notebooks/data-pipeline/synthetic-hierarchical.ipynb>
-#' 
+#'
 #' @param n Number of observations to sample from each micro cluster.
 #' @param dim Dimension of the Gaussian observations and cluster centers.
 #' @return Data frame with coordinates in the `X1`, `X2` ... `Xdim` columns,
