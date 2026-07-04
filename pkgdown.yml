@@ -3,7 +3,7 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   articles/datasets: datasets.html
-last_built: 2026-07-03T07:24Z
+last_built: 2026-07-04T18:04Z
 urls:
   reference: https://jlmelville.github.io/snedata/reference
   article: https://jlmelville.github.io/snedata/articles
