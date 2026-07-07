@@ -96,7 +96,7 @@ download_fashion_mnist <- function(
     "Ankle boot"
   )
   res$Description <- factor(
-    description_levels[as.numeric(res$Label)],
+    description_levels[as.integer(as.character(res$Label)) + 1L],
     levels = description_levels
   )
   res
