@@ -58,13 +58,13 @@ write_gz_norb_images <- function(path) {
   writeBin(as.integer(1:8), f, size = 1)
 }
 
-write_gz_norb_categories <- function(path) {
+write_gz_norb_categories <- function(path, labels = c(0, 2, 4)) {
   f <- gzfile(path, "wb")
   on.exit(close(f), add = TRUE)
 
   write_norb_matrix_header(f, "integer", ndim = 1)
-  writeBin(as.integer(c(3, 0, 0)), f, size = 4, endian = "little")
-  writeBin(as.integer(c(0, 2, 4)), f, size = 4, endian = "little")
+  writeBin(as.integer(c(length(labels), 0, 0)), f, size = 4, endian = "little")
+  writeBin(as.integer(labels), f, size = 4, endian = "little")
 }
 
 write_gz_norb_info <- function(path) {
@@ -128,6 +128,37 @@ test_that("MNIST downloader can return the original data frame or a matrix list"
   expect_equal(unname(mat$data[1, ]), 1:4)
   expect_equal(unname(mat$data[4, ]), 13:16)
   expect_equal(as.character(mat$labels), as.character(1:4))
+})
+
+test_that("Fashion-MNIST descriptions are mapped by digit label value", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+
+  write_gz_mnist_images(
+    file.path(tmpdir, "train-images-idx3-ubyte.gz"),
+    pixels = 1:8
+  )
+  write_gz_mnist_labels(
+    file.path(tmpdir, "train-labels-idx1-ubyte.gz"),
+    labels = c(0, 9)
+  )
+  write_gz_mnist_images(
+    file.path(tmpdir, "t10k-images-idx3-ubyte.gz"),
+    pixels = 9:16
+  )
+  write_gz_mnist_labels(
+    file.path(tmpdir, "t10k-labels-idx1-ubyte.gz"),
+    labels = c(1, 8)
+  )
+
+  fashion <- download_fashion_mnist(base_url = file_base_url(tmpdir))
+
+  expect_equal(names(fashion), c(paste0("px", 1:4), "Label", "Description"))
+  expect_equal(as.character(fashion$Label), c("0", "9", "1", "8"))
+  expect_equal(
+    as.character(fashion$Description),
+    c("T-shirt/top", "Ankle boot", "Trouser", "Bag")
+  )
 })
 
 test_that("QMNIST extended label parser reads labels and reports magic 3074", {
@@ -293,6 +324,53 @@ test_that("NORB formatter can return a data frame or a matrix list", {
   expect_named(mat, c("data", "meta"))
   expect_equal(names(mat$meta), names(df)[5:11])
   expect_equal(as.character(mat$meta$Description), c("Animal", "Car"))
+})
+
+test_that("NORB downloader assembles requested splits from local fixtures", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+
+  training_base <- "smallnorb-5x46789x9x18x6x2x96x96-training"
+  testing_base <- "smallnorb-5x01235x9x18x6x2x96x96-testing"
+
+  write_gz_norb_images(file.path(tmpdir, paste0(training_base, "-dat.mat.gz")))
+  write_gz_norb_categories(
+    file.path(tmpdir, paste0(training_base, "-cat.mat.gz")),
+    labels = c(0, 4)
+  )
+  write_gz_norb_info(file.path(tmpdir, paste0(training_base, "-info.mat.gz")))
+
+  write_gz_norb_images(file.path(tmpdir, paste0(testing_base, "-dat.mat.gz")))
+  write_gz_norb_categories(
+    file.path(tmpdir, paste0(testing_base, "-cat.mat.gz")),
+    labels = c(2, 3)
+  )
+  write_gz_norb_info(file.path(tmpdir, paste0(testing_base, "-info.mat.gz")))
+
+  training <- download_norb_small(
+    base_url = file_base_url(tmpdir),
+    split = "training",
+    as = "matrix"
+  )
+  all <- download_norb_small(
+    base_url = file_base_url(tmpdir),
+    split = "all",
+    as = "matrix"
+  )
+
+  expect_equal(dim(training$data), c(2L, 4L))
+  expect_equal(as.character(training$meta$Split), c("training", "training"))
+  expect_equal(as.character(training$meta$Description), c("Animal", "Car"))
+
+  expect_equal(dim(all$data), c(4L, 4L))
+  expect_equal(
+    as.character(all$meta$Split),
+    c("training", "training", "testing", "testing")
+  )
+  expect_equal(
+    as.character(all$meta$Description),
+    c("Animal", "Car", "Airplane", "Truck")
+  )
 })
 
 test_that("20 Newsgroups downloader extracts a local tarball and removes it", {

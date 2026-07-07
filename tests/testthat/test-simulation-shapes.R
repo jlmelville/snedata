@@ -1,3 +1,7 @@
+expect_hex_colors <- function(x) {
+  expect_true(all(grepl("^#[0-9A-Fa-f]{6}$", x)))
+}
+
 test_that("random_walk returns the requested shape", {
   set.seed(42)
   df <- random_walk(n = 5, dim = 3)
@@ -77,4 +81,131 @@ test_that("synthetic_hierarchical_data validates dimensions", {
     synthetic_hierarchical_data(dim = 0),
     "dim must be a positive integer"
   )
+})
+
+test_that("sphere and ball respect radius invariants", {
+  set.seed(42)
+  sphere_df <- sphere(n = 25)
+  sphere_radius <- sqrt(rowSums(as.matrix(sphere_df[c("x", "y", "z")])^2))
+
+  expect_equal(names(sphere_df), c("x", "y", "z", "color"))
+  expect_equal(nrow(sphere_df), 25)
+  expect_equal(sphere_radius, rep(1, 25), tolerance = 1e-12)
+  expect_hex_colors(sphere_df$color)
+
+  set.seed(42)
+  ball_df <- ball(n = 25, rad = 2, ndim = 3)
+  ball_radius <- sqrt(rowSums(as.matrix(ball_df[c("x", "y", "z")])^2))
+
+  expect_equal(names(ball_df), c("x", "y", "z", "color"))
+  expect_true(all(ball_radius <= 2 + 1e-12))
+  expect_hex_colors(ball_df$color)
+
+  set.seed(42)
+  ball4_df <- ball(n = 5, rad = 1, ndim = 4)
+
+  expect_equal(dim(ball4_df), c(5L, 5L))
+  expect_equal(names(ball4_df), c(paste0("X", 1:4), "color"))
+})
+
+test_that("helix points lie on the configured torus", {
+  df <- helix(n = 20, rmajor = 2, rminor = 1, nwinds = 3)
+  radial <- sqrt(df$x^2 + df$y^2)
+
+  expect_equal(names(df), c("x", "y", "z", "color"))
+  expect_equal((radial - 2)^2 + df$z^2, rep(1, 20), tolerance = 1e-12)
+  expect_hex_colors(df$color)
+})
+
+test_that("Swiss roll and S-curve variants preserve geometric constraints", {
+  set.seed(42)
+  swiss <- swiss_roll(n = 30, min_phi = pi, max_phi = 2 * pi, max_z = 3)
+  swiss_radius <- sqrt(swiss$x^2 + swiss$y^2)
+
+  expect_equal(names(swiss), c("x", "y", "z", "color"))
+  expect_true(all(swiss_radius >= pi))
+  expect_true(all(swiss_radius <= 2 * pi))
+  expect_true(all(swiss$z >= 0 & swiss$z <= 3))
+  expect_hex_colors(swiss$color)
+
+  set.seed(42)
+  hole <- s_curve_hole(n_samples = 100, noise = 0)
+  squared_distance_from_hole <- rowSums(
+    sweep(as.matrix(hole[c("x", "y", "z")]), 2, c(0, 1, 0), `-`)^2
+  )
+
+  expect_equal(names(hole), c("x", "y", "z", "color"))
+  expect_true(nrow(hole) <= 100)
+  expect_true(all(squared_distance_from_hole > 0.3))
+  expect_hex_colors(hole$color)
+})
+
+test_that("curve2d returns the documented sampled x range", {
+  set.seed(42)
+  df <- curve2d()
+
+  expect_equal(names(df), c("x", "y", "color"))
+  expect_equal(nrow(df), 1450)
+  expect_equal(df$x[[1]], -5.5)
+  expect_equal(df$x[[nrow(df)]], 8.99)
+  expect_hex_colors(df$color)
+})
+
+test_that("taspheres labels small spheres and the enclosing sphere", {
+  set.seed(42)
+  df <- taspheres(n_samples = 2, d = 3, n_spheres = 4, r = 2)
+  big_sphere_radius <- sqrt(rowSums(as.matrix(df[7:26, 1:4])^2))
+
+  expect_equal(dim(df), c(26L, 5L))
+  expect_equal(names(df), c(paste0("X", 1:4), "labels"))
+  expect_equal(as.integer(table(df$labels)), c(2L, 2L, 2L, 20L))
+  expect_equal(unname(big_sphere_radius), rep(10, 20), tolerance = 1e-10)
+})
+
+test_that("deterministic Distill-style generators return expected structures", {
+  grid <- grid_data(n = 3)
+  circle <- circle_data(n = 4)
+  ortho <- ortho_curve(n = 4)
+  simplex <- simplex_data(n = 3, noise = 0, color = "#112233")
+
+  expect_equal(names(grid), c("x", "y", "color"))
+  expect_equal(nrow(grid), 9)
+  expect_equal(grid$x, c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L))
+  expect_equal(grid$y, c(1L, 1L, 1L, 2L, 2L, 2L, 3L, 3L, 3L))
+  expect_hex_colors(grid$color)
+
+  expect_equal(circle$x, c(1, 0, -1, 0), tolerance = 1e-12)
+  expect_equal(circle$y, c(0, 1, 0, -1), tolerance = 1e-12)
+  expect_hex_colors(circle$color)
+
+  # fmt: skip
+  expect_equal(
+    unname(as.matrix(ortho[1:4])),
+    matrix(
+      c(
+        0, 0, 0, 0,
+        1, 0, 0, 0,
+        1, 1, 0, 0,
+        1, 1, 1, 0
+      ),
+      nrow = 4,
+      byrow = TRUE
+    )
+  )
+  expect_hex_colors(ortho$color)
+
+  expect_equal(unname(as.matrix(simplex[1:3])), diag(3))
+  expect_equal(simplex$color, rep("#112233", 3))
+})
+
+test_that("linked and unlinked rings differ by their x-offset", {
+  linked <- link_data(n = 4)
+  unlinked <- unlink_data(n = 4)
+
+  expect_equal(dim(linked), c(8L, 4L))
+  expect_equal(dim(unlinked), c(8L, 4L))
+  expect_equal(mean(linked$x[5:8]) - mean(linked$x[1:4]), 1)
+  expect_equal(mean(unlinked$x[5:8]) - mean(unlinked$x[1:4]), 3)
+  expect_equal(as.integer(table(linked$color)), c(4L, 4L))
+  expect_equal(as.integer(table(unlinked$color)), c(4L, 4L))
 })
