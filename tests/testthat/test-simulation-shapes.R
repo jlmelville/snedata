@@ -21,6 +21,8 @@ test_that("random_jump returns the requested shape", {
 })
 
 test_that("synthetic_hierarchical_data returns the requested shape", {
+  skip_if_not_installed("colorspace")
+
   set.seed(42)
   df <- synthetic_hierarchical_data(n = 2, dim = 3)
 
@@ -44,6 +46,8 @@ test_that("synthetic_hierarchical_data returns the requested shape", {
 })
 
 test_that("synthetic_hierarchical_data labels and colors the hierarchy", {
+  skip_if_not_installed("colorspace")
+
   set.seed(42)
   df <- synthetic_hierarchical_data(n = 2, dim = 3)
 
@@ -58,12 +62,85 @@ test_that("synthetic_hierarchical_data labels and colors the hierarchy", {
   expect_false(anyNA(df$macro_color))
   expect_false(anyNA(df$meso_color))
   expect_false(anyNA(df$micro_color))
-  expect_equal(unique(df$macro_color[df$macro_label == "0"]), "#d53244")
-  expect_equal(unique(df$meso_color[df$meso_label == "0_0"]), "#6c0016")
-  expect_equal(unique(df$micro_color[df$micro_label == "4_4_4"]), "#ebd7a1")
+
+  color_maps <- synthetic_hierarchical_color_maps(
+    n_macro = 5,
+    n_meso = 5,
+    n_micro = 5,
+    anchors = c("#377EB8", "#E41A1C", "#4DAF4A", "#A65628", "#999999")
+  )
+  expect_equal(
+    unname(color_maps$macro),
+    c(
+      "#377EB8",
+      "#E41A1C",
+      "#4DAF4A",
+      "#A65628",
+      "#999999"
+    )
+  )
+  expect_equal(
+    unique(df$macro_color[df$macro_label == "0"]),
+    unname(color_maps$macro["0"])
+  )
+  expect_equal(
+    unique(df$meso_color[df$meso_label == "0_0"]),
+    unname(color_maps$meso["0_0"])
+  )
+  expect_equal(
+    unique(df$micro_color[df$micro_label == "4_4_4"]),
+    unname(color_maps$micro["4_4_4"])
+  )
+})
+
+test_that("synthetic_hierarchical_color_maps builds hierarchy maps", {
+  skip_if_not_installed("colorspace")
+
+  maps <- synthetic_hierarchical_color_maps(
+    n_macro = 2,
+    n_meso = 3,
+    n_micro = 4,
+    anchors = c("#E41A1C", "#377EB8")
+  )
+
+  expect_equal(names(maps$macro), c("0", "1"))
+  expect_equal(
+    names(maps$meso),
+    c("0_0", "0_1", "0_2", "1_0", "1_1", "1_2")
+  )
+  expect_equal(length(maps$micro), 24)
+  expect_hex_colors(maps$macro)
+  expect_hex_colors(maps$meso)
+  expect_hex_colors(maps$micro)
+  expect_equal(unname(maps$macro), c("#E41A1C", "#377EB8"))
+  expect_equal(unname(maps$meso["1_2"]), unname(maps$micro["1_2_2"]))
+})
+
+test_that("grouped_palette creates grouped blocks from supplied anchors", {
+  skip_if_not_installed("colorspace")
+
+  # Internal helper used to experiment with replacing the hard-coded hierarchy.
+  pal <- grouped_palette(
+    c(5, 5, 5),
+    anchors = c("#E41A1C", "#377EB8", "#999999")
+  )
+  swapped <- grouped_palette(
+    c(5, 5, 5),
+    anchors = c("#377EB8", "#E41A1C", "#999999")
+  )
+  gray_rgb <- grDevices::col2rgb(pal[11:15])
+
+  expect_equal(length(pal), 15)
+  expect_hex_colors(pal)
+  expect_equal(length(unique(pal)), 15)
+  expect_false(identical(pal, swapped))
+  expect_true(all(gray_rgb["red", ] == gray_rgb["green", ]))
+  expect_true(all(gray_rgb["green", ] == gray_rgb["blue", ]))
 })
 
 test_that("synthetic_hierarchical_data is reproducible with set.seed", {
+  skip_if_not_installed("colorspace")
+
   set.seed(42)
   df1 <- synthetic_hierarchical_data(n = 1, dim = 2)
   set.seed(42)
