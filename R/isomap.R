@@ -30,8 +30,7 @@ isomap_faces_url <- paste0(
 #' @return Data frame containing the Isomap Swiss-roll dataset.
 #' @note Requires the
 #' [R.matlab](https://cran.r-project.org/package=R.matlab)
-#' package to be installed and an external gzip or uncompress command to be
-#' available on the system path.
+#' package to be installed.
 #' @export
 #' @examples
 #' \dontrun{
@@ -156,20 +155,27 @@ read_isomap_mat_url <- function(
   compression <- match.arg(compression)
   stop_if_not_installed("R.matlab")
 
-  path <- tempfile(fileext = fileext)
-  on.exit(unlink(path), add = TRUE)
+  downloaded_path <- tempfile(fileext = fileext)
+  on.exit(cleanup_owned_paths(downloaded_path, verbose = verbose), add = TRUE)
+  download_asset(url, downloaded_path, verbose = verbose)
 
-  if (verbose) {
-    message("Downloading ", url)
-    utils::flush.console()
-  }
-  utils::download.file(url, path, mode = "wb", quiet = !verbose)
-
+  read_path <- downloaded_path
   if (compression == "compress") {
-    path <- decompress_isomap_compress(path, verbose = verbose)
-    on.exit(unlink(path), add = TRUE)
+    decompressed_path <- decompress_isomap_compress(
+      downloaded_path,
+      verbose = verbose
+    )
+    on.exit(
+      cleanup_owned_paths(decompressed_path, verbose = verbose),
+      add = TRUE
+    )
+    read_path <- decompressed_path
   }
 
+  read_isomap_mat(read_path)
+}
+
+read_isomap_mat <- function(path) {
   R.matlab::readMat(path)
 }
 

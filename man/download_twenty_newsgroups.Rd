@@ -66,14 +66,15 @@ Default is \code{"all"}.}
 \item{verbose}{If \code{TRUE}, log progress of download, extraction and
 processing.}
 
-\item{tmpdir}{A string specifying the directory where the dataset will be
-downloaded and extracted. If \code{NULL} (default), a temporary directory
-is used. If a path is provided and does not exist, it will be created.}
+\item{tmpdir}{A string specifying the parent directory for a dedicated
+download and extraction work directory. If \code{NULL} (default), a temporary
+parent directory is used. If a path is provided and does not exist, it will
+be created.}
 
 \item{cleanup}{A logical flag indicating whether to delete the downloaded and
 extracted files after processing. If \code{TRUE} \emph{and} \code{tmpdir}
 was created by this function, \code{tmpdir} will be deleted after
-processing. Default is \code{FALSE}.}
+processing. Default is \code{TRUE}.}
 }
 \value{
 Data frame containing 20 Newsgroups Data.
@@ -115,7 +116,7 @@ In \emph{Proceedings of the Twelfth International Conference on Machine Learning
 Morgan Kaufmann.
 }
 \seealso{
-\url{http://qwone.com/~jason/20Newsgroups/}
+\url{https://qwone.com/~jason/20Newsgroups/}
 
 Chapter 9 of \href{https://www.tidytextmining.com/usenet}{Tidy Text Mining with R}
 for a case study using the same dataset.

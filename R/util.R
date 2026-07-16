@@ -164,6 +164,157 @@ stop_if_not_installed <- function(pkg) {
   }
 }
 
+cleanup_owned_paths <- function(paths, verbose = FALSE) {
+  for (path in unique(paths)) {
+    if (file.exists(path) || dir.exists(path)) {
+      if (verbose) {
+        message("Deleting ", path)
+      }
+      unlink(path, recursive = TRUE)
+    }
+  }
+}
+
+download_asset <- function(url, destfile, verbose = FALSE) {
+  if (verbose) {
+    message("Downloading ", url, " to ", destfile)
+    utils::flush.console()
+  }
+
+  status <- utils::download.file(url, destfile, quiet = !verbose, mode = "wb")
+  if (status != 0 || !file.exists(destfile) || file.info(destfile)$size == 0) {
+    stop("Failed to download ", url, " to ", destfile, call. = FALSE)
+  }
+
+  invisible(destfile)
+}
+
+normalize_tar_entry <- function(entry) {
+  entry <- gsub("\\\\", "/", entry)
+  entry <- sub("^\\./+", "", entry)
+  entry <- sub("/+$", "", entry)
+
+  if (entry == "" || grepl("^/", entry) || grepl("^[A-Za-z]:", entry)) {
+    return(NA_character_)
+  }
+
+  parts <- strsplit(entry, "/+", perl = TRUE)[[1]]
+  if (any(parts %in% c("", ".", ".."))) {
+    return(NA_character_)
+  }
+  paste(parts, collapse = "/")
+}
+
+validate_tar_entries <- function(entries, asset) {
+  normalized <- vapply(entries, normalize_tar_entry, character(1))
+  unsafe <- is.na(normalized)
+  if (any(unsafe)) {
+    stop(
+      asset,
+      " contains unsafe archive paths: ",
+      paste(entries[unsafe], collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  duplicates <- unique(normalized[duplicated(normalized)])
+  if (length(duplicates) > 0L) {
+    stop(
+      asset,
+      " contains duplicate archive paths: ",
+      paste(duplicates, collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  normalized
+}
+
+tar_header_string <- function(bytes) {
+  terminator <- match(as.raw(0), bytes)
+  if (!is.na(terminator)) {
+    bytes <- bytes[seq_len(terminator - 1L)]
+  }
+  if (length(bytes) == 0L) {
+    return("")
+  }
+  rawToChar(bytes)
+}
+
+tar_header_size <- function(bytes, asset) {
+  digits <- as.integer(bytes)
+  digits <- digits[digits >= 48L & digits <= 55L]
+  if (length(digits) == 0L) {
+    return(0)
+  }
+
+  size <- 0
+  for (digit in digits) {
+    size <- size * 8 + digit - 48L
+  }
+  if (!is.finite(size)) {
+    stop(asset, " contains a non-finite tar entry size", call. = FALSE)
+  }
+  size
+}
+
+validate_tar_entry_types <- function(tarfile, asset) {
+  con <- gzfile(tarfile, "rb")
+  on.exit(close(con), add = TRUE)
+
+  repeat {
+    header <- readBin(con, what = "raw", n = 512L)
+    if (length(header) == 0L || all(header == as.raw(0))) {
+      break
+    }
+    if (length(header) != 512L) {
+      stop(asset, " has a truncated tar header", call. = FALSE)
+    }
+
+    path <- tar_header_string(header[seq_len(100L)])
+    type <- rawToChar(header[[157L]])
+    if (type %in% c("1", "2")) {
+      stop(asset, " contains unsafe tar link entry: ", path, call. = FALSE)
+    }
+    if (!type %in% c("", "0", "5", "L", "K", "x", "g")) {
+      stop(
+        asset,
+        " contains unsupported tar entry type '",
+        type,
+        "': ",
+        path,
+        call. = FALSE
+      )
+    }
+
+    remaining_blocks <- ceiling(tar_header_size(header[125:136], asset) / 512)
+    while (remaining_blocks > 0) {
+      payload <- readBin(con, what = "raw", n = 512L)
+      if (length(payload) != 512L) {
+        stop(
+          asset,
+          " has a truncated tar payload for entry: ",
+          path,
+          call. = FALSE
+        )
+      }
+      remaining_blocks <- remaining_blocks - 1
+    }
+  }
+}
+
+extract_tar_safely <- function(tarfile, exdir, asset, validate_layout) {
+  validate_tar_entry_types(tarfile, asset)
+  entries <- utils::untar(tarfile, list = TRUE, tar = "internal")
+  if (length(entries) == 0L) {
+    stop(asset, " contains no archive entries", call. = FALSE)
+  }
+  normalized <- validate_tar_entries(entries, asset)
+  validate_layout(normalized, asset)
+  utils::untar(tarfile, exdir = exdir, tar = "internal")
+  invisible(normalized)
+}
+
 binary_header_context <- function(header = NULL) {
   if (is.null(header) || length(header) == 0L) {
     return("none")

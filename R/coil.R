@@ -186,16 +186,7 @@ download_coil <- function(
     )
   }
 
-  tsmessage("Downloading ", url, " to ", paths$destfile, force = verbose)
-  status <- utils::download.file(
-    url,
-    paths$destfile,
-    quiet = !verbose,
-    mode = "wb"
-  )
-  if (status != 0) {
-    stop("Failed to download ", url, " with status ", status, call. = FALSE)
-  }
+  download_asset(url, paths$destfile, verbose = verbose)
 
   read_coil_zip(
     paths$destfile,

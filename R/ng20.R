@@ -55,18 +55,19 @@
 #'   process. Acceptable values are `"train"` for the training set,
 #'   `"test"` for the test set, and `"all"` for both sets combined.
 #'   Default is `"all"`.
-#' @param tmpdir A string specifying the directory where the dataset will be
-#'   downloaded and extracted. If `NULL` (default), a temporary directory
-#'   is used. If a path is provided and does not exist, it will be created.
+#' @param tmpdir A string specifying the parent directory for a dedicated
+#'   download and extraction work directory. If `NULL` (default), a temporary
+#'   parent directory is used. If a path is provided and does not exist, it will
+#'   be created.
 #' @param cleanup A logical flag indicating whether to delete the downloaded and
 #'   extracted files after processing. If `TRUE` *and* `tmpdir`
 #'   was created by this function, `tmpdir` will be deleted after
-#'   processing. Default is `FALSE`.
+#'   processing. Default is `TRUE`.
 #' @param verbose If `TRUE`, log progress of download, extraction and
 #'   processing.
 #' @return Data frame containing 20 Newsgroups Data.
 #' @seealso
-#' <http://qwone.com/~jason/20Newsgroups/>
+#' <https://qwone.com/~jason/20Newsgroups/>
 #'
 #' Chapter 9 of [Tidy Text Mining with R](https://www.tidytextmining.com/usenet)
 #' for a case study using the same dataset.
@@ -93,47 +94,83 @@
 #' }
 #'
 #' @export
-download_twenty_newsgroups <-
-  function(subset = "all", verbose = FALSE, tmpdir = NULL, cleanup = TRUE) {
-    temp_info <- setup_temp_directory(tmpdir)
-    tmpdir <- temp_info$tmpdir
-    created_tmpdir <- temp_info$created_tmpdir
+download_twenty_newsgroups <- function(
+  subset = "all",
+  verbose = FALSE,
+  tmpdir = NULL,
+  cleanup = TRUE
+) {
+  subset <- match.arg(subset, choices = c("train", "test", "all"))
+  temp_info <- setup_temp_directory(tmpdir)
+  tmpdir <- temp_info$tmpdir
+  workdir <- tempfile("20news-", tmpdir = tmpdir)
+  dir.create(workdir)
 
-    download_twenty_newsgroups_data(tmpdir, verbose)
-
-    df <- read_newsgroups_data(tmpdir, subset, verbose)
-
-    # Cleanup if required
-    if (cleanup && created_tmpdir) {
-      tsmessage("Cleaning up temporary files in ", tmpdir)
-      unlink(tmpdir, recursive = TRUE)
+  if (cleanup) {
+    on.exit(cleanup_owned_paths(workdir, verbose = verbose), add = TRUE)
+    if (temp_info$created_tmpdir) {
+      on.exit(cleanup_owned_paths(tmpdir, verbose = verbose), add = TRUE)
     }
-
-    df
   }
 
+  download_twenty_newsgroups_data(workdir, verbose)
+  read_newsgroups_data(workdir, subset, verbose)
+}
 
-download_twenty_newsgroups_data <-
-  function(
-    tmpdir = NULL,
-    verbose = FALSE,
-    url = "http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
+newsgroups_url <- "https://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
+
+download_twenty_newsgroups_data <- function(
+  tmpdir = NULL,
+  verbose = FALSE,
+  url = newsgroups_url
+) {
+  if (is.null(tmpdir)) {
+    tmpdir <- tempdir()
+  }
+  if (!dir.exists(tmpdir)) {
+    dir.create(tmpdir, recursive = TRUE)
+  }
+
+  tarfile <- tempfile("20news-bydate-", fileext = ".tar.gz", tmpdir = tmpdir)
+  on.exit(cleanup_owned_paths(tarfile, verbose = verbose), add = TRUE)
+
+  download_asset(url, tarfile, verbose = verbose)
+  extract_tar_safely(
+    tarfile,
+    tmpdir,
+    asset = "20 Newsgroups archive",
+    validate_layout = validate_newsgroups_archive_layout
+  )
+}
+
+validate_newsgroups_archive_layout <- function(entries, asset) {
+  roots <- sub("/.*", "", entries)
+  expected_roots <- c("20news-bydate-train", "20news-bydate-test")
+  unexpected_roots <- setdiff(unique(roots), expected_roots)
+  missing_roots <- setdiff(expected_roots, unique(roots))
+  invalid_depth <- !grepl(
+    "^20news-bydate-(train|test)(/[^/]+){0,2}$",
+    entries
+  )
+
+  if (
+    length(missing_roots) > 0L ||
+      length(unexpected_roots) > 0L ||
+      any(invalid_depth)
   ) {
-    if (is.null(tmpdir)) {
-      tmpdir <- tempdir()
-    }
-    if (!dir.exists(tmpdir)) {
-      dir.create(tmpdir, recursive = TRUE)
-    }
-
-    tarfile <- tempfile("20news-bydate-", fileext = ".tar.gz", tmpdir = tmpdir)
-    on.exit(unlink(tarfile), add = TRUE)
-
-    tsmessage("Downloading ", url)
-    utils::download.file(url, tarfile, quiet = !verbose, mode = "wb")
-    tsmessage("Extracting to ", tmpdir)
-    utils::untar(tarfile, exdir = tmpdir)
+    stop(
+      asset,
+      " has an invalid layout: missing ",
+      length(missing_roots),
+      " expected roots, unexpected ",
+      length(unexpected_roots),
+      " roots, and ",
+      sum(invalid_depth),
+      " invalid paths",
+      call. = FALSE
+    )
   }
+}
 
 extract_text_from_file <- function(file_path) {
   if (!file.exists(file_path)) {

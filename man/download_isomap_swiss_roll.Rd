@@ -36,8 +36,7 @@ uses an archived copy from the Internet Archive.
 \note{
 Requires the
 \href{https://cran.r-project.org/package=R.matlab}{R.matlab}
-package to be installed and an external gzip or uncompress command to be
-available on the system path.
+package to be installed.
 }
 \examples{
 \dontrun{

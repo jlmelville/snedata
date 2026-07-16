@@ -6,7 +6,7 @@
 COIL-20 and COIL-100 image datasets. Downloading the data requires installing the optional `png`
 package. This functionality formerly lived in the [coil20](https://github.com/jlmelville/coil20)
 repo.
-- improved validation of downloaded data (especially binary data).
+- Improved validation and cleanup of downloaded binary data and archives.
 - Fixed QMNIST broken links due to project being archived.
 
 # snedata 0.0.0.9002

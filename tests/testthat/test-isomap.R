@@ -67,3 +67,38 @@ test_that("Isomap face display validates inputs and plots a face", {
   on.exit(grDevices::dev.off(), add = TRUE)
   expect_silent(show_isomap_face(df, 1))
 })
+
+test_that("Isomap URL reader cleans downloaded and decompressed paths on errors", {
+  paths <- new.env(parent = emptyenv())
+
+  with_mocked_bindings(
+    stop_if_not_installed = function(...) NULL,
+    download_asset = function(url, destfile, verbose) {
+      writeBin(as.raw(1), destfile)
+      paths$downloaded <- destfile
+    },
+    decompress_isomap_compress = function(path, verbose) {
+      out <- tempfile("isomap-decompressed-", fileext = ".mat")
+      writeBin(as.raw(2), out)
+      paths$decompressed <- out
+      out
+    },
+    read_isomap_mat = function(path) {
+      paths$read_path <- path
+      stop("reader failed")
+    },
+    expect_error(
+      snedata:::read_isomap_mat_url(
+        "https://example.invalid/data.Z",
+        ".Z",
+        compression = "compress"
+      ),
+      "reader failed"
+    ),
+    .package = "snedata"
+  )
+
+  expect_equal(paths$read_path, paths$decompressed)
+  expect_false(file.exists(paths$downloaded))
+  expect_false(file.exists(paths$decompressed))
+})

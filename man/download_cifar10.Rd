@@ -56,8 +56,8 @@ download_cifar10(
 \item{url}{URL of the CIFAR-10 data.}
 
 \item{destfile}{Filename for where to download the CIFAR-10 tarfile. If
-\code{NULL}, a file in a temporary work directory is used. It will be
-untarred and processed in the same directory.}
+\code{NULL}, a file in a temporary work directory is used. The archive is
+always extracted to a separate temporary work directory.}
 
 \item{cleanup}{If \code{TRUE}, then \code{destfile} and the untarred data
 will be deleted before the function returns. Only worth setting to

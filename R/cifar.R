@@ -46,8 +46,8 @@
 #'
 #' @param url URL of the CIFAR-10 data.
 #' @param destfile Filename for where to download the CIFAR-10 tarfile. If
-#'   `NULL`, a file in a temporary work directory is used. It will be
-#'   untarred and processed in the same directory.
+#'   `NULL`, a file in a temporary work directory is used. The archive is
+#'   always extracted to a separate temporary work directory.
 #' @param cleanup If `TRUE`, then `destfile` and the untarred data
 #'  will be deleted before the function returns. Only worth setting to
 #'  `FALSE` to debug problems.
@@ -98,8 +98,6 @@ download_cifar10 <- function(
   as = c("data.frame", "matrix")
 ) {
   as <- match.arg(as)
-  owned_paths <- character()
-
   if (is.null(destfile)) {
     workdir <- tempfile("cifar10-")
     dir.create(workdir)
@@ -109,36 +107,29 @@ download_cifar10 <- function(
     if (!endsWith(destfile, "tar.gz")) {
       destfile <- paste0(destfile, ".tar.gz")
     }
-    owned_paths <- destfile
+    parent <- dirname(destfile)
+    if (!dir.exists(parent)) {
+      stop("Directory does not exist: ", parent, call. = FALSE)
+    }
+    workdir <- tempfile("cifar10-", tmpdir = parent)
+    dir.create(workdir)
+    owned_paths <- c(destfile, workdir)
   }
-
-  if (!endsWith(destfile, "tar.gz")) {
-    destfile <- paste0(destfile, ".tar.gz")
-  }
-
-  exdir <- dirname(destfile)
-  extracted_dir <- base::file.path(exdir, "cifar-10-batches-bin")
-  extracted_dir_existed <- dir.exists(extracted_dir)
-
   if (cleanup) {
     on.exit(cleanup_owned_paths(owned_paths, verbose = verbose), add = TRUE)
   }
 
-  if (verbose) {
-    message("Downloading ", url, " to ", destfile)
-    utils::flush.console()
-  }
-  utils::download.file(url, destfile, quiet = !verbose, mode = "wb")
+  exdir <- file.path(workdir, "extracted")
+  dir.create(exdir)
 
-  utils::untar(tarfile = destfile, exdir = exdir)
-  if (!is.null(destfile) && !extracted_dir_existed) {
-    owned_paths <- c(owned_paths, extracted_dir)
-  }
-
-  # inside exdir is cifar-10-batches-bin
-  # inside cifar-10-batches-bin is data_batch_bin.1 .. 10
-  # and test_batch.bin
-  # and batches.meta.txt
+  download_asset(url, destfile, verbose = verbose)
+  extract_tar_safely(
+    destfile,
+    exdir,
+    asset = "CIFAR-10 archive",
+    validate_layout = validate_cifar_archive_layout
+  )
+  extracted_dir <- file.path(exdir, "cifar-10-batches-bin")
 
   res <- matrix(nrow = 3072, ncol = 60000)
   labels <- rep(0, 60000)
@@ -149,7 +140,7 @@ download_cifar10 <- function(
     } else {
       file <- paste0("test_batch.bin")
     }
-    path <- base::file.path(exdir, "cifar-10-batches-bin", file)
+    path <- file.path(extracted_dir, file)
 
     batch_res <- read_cifar_bin(path, verbose = verbose)
     batch_range <- ((i - 1) * 10000 + 1):(i * 10000)
@@ -159,6 +150,30 @@ download_cifar10 <- function(
 
   res <- t(res)
   format_cifar_result(res, labels, as = as)
+}
+
+validate_cifar_archive_layout <- function(entries, asset) {
+  root <- "cifar-10-batches-bin"
+  expected_files <- c(
+    paste0(root, "/data_batch_", 1:5, ".bin"),
+    paste0(root, "/test_batch.bin"),
+    paste0(root, "/batches.meta.txt"),
+    paste0(root, "/readme.html")
+  )
+  missing <- setdiff(expected_files, entries)
+  unexpected <- setdiff(entries, c(root, expected_files))
+
+  if (length(missing) > 0L || length(unexpected) > 0L) {
+    stop(
+      asset,
+      " has an invalid layout: missing ",
+      length(missing),
+      " and unexpected ",
+      length(unexpected),
+      " entries",
+      call. = FALSE
+    )
+  }
 }
 
 cifar_description_levels <- function() {
@@ -227,17 +242,6 @@ format_cifar_result <- function(
   }
 
   data.frame(images, Label = label_factor, Description = descriptions)
-}
-
-cleanup_owned_paths <- function(paths, verbose = FALSE) {
-  for (path in unique(paths)) {
-    if (file.exists(path) || dir.exists(path)) {
-      if (verbose) {
-        message("Deleting ", path)
-      }
-      unlink(path, recursive = TRUE)
-    }
-  }
 }
 
 #' Visualize CIFAR-10 image.

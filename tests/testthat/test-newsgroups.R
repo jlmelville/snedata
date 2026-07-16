@@ -82,3 +82,32 @@ test_that("setup_temp_directory reports whether it created the directory", {
   expect_identical(missing_info, list(tmpdir = missing, created_tmpdir = TRUE))
   expect_true(dir.exists(missing))
 })
+
+test_that("newsgroups validates subset before creating a work directory", {
+  tmpdir <- tempfile("newsgroups-parent-")
+
+  expect_error(
+    download_twenty_newsgroups(subset = "invalid", tmpdir = tmpdir),
+    "should be one of"
+  )
+  expect_false(dir.exists(tmpdir))
+})
+
+test_that("newsgroups cleanup preserves caller-owned directories after errors", {
+  tmpdir <- tempfile("newsgroups-parent-")
+  dir.create(tmpdir)
+  sentinel <- file.path(tmpdir, "caller-owned.txt")
+  writeLines("keep", sentinel)
+
+  with_mocked_bindings(
+    download_twenty_newsgroups_data = function(...) stop("download failed"),
+    expect_error(
+      download_twenty_newsgroups(tmpdir = tmpdir, cleanup = TRUE),
+      "download failed"
+    ),
+    .package = "snedata"
+  )
+
+  expect_true(file.exists(sentinel))
+  expect_equal(list.files(tmpdir), basename(sentinel))
+})

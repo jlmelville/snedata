@@ -534,6 +534,125 @@ test_that("CIFAR formatter can return a data frame or a matrix list", {
   expect_equal(as.character(mat$descriptions), c("airplane", "truck"))
 })
 
+test_that("tar entry validation rejects unsafe and duplicate paths", {
+  expect_silent(snedata:::validate_tar_entries("root/file", "fixture"))
+  expect_error(
+    snedata:::validate_tar_entries("../file", "fixture"),
+    "unsafe archive paths"
+  )
+  expect_error(
+    snedata:::validate_tar_entries("/tmp/file", "fixture"),
+    "unsafe archive paths"
+  )
+  expect_error(
+    snedata:::validate_tar_entries("C:/tmp/file", "fixture"),
+    "unsafe archive paths"
+  )
+  expect_error(
+    snedata:::validate_tar_entries(c("root/file", "root\\\\file"), "fixture"),
+    "duplicate archive paths"
+  )
+})
+
+test_that("tar extraction rejects symbolic links before extraction", {
+  source_root <- tempfile()
+  dir.create(source_root)
+  writeLines("fixture", file.path(source_root, "file"))
+  file.symlink("file", file.path(source_root, "link"))
+  tarball <- tempfile(fileext = ".tar.gz")
+  oldwd <- setwd(source_root)
+  on.exit(setwd(oldwd), add = TRUE)
+  utils::tar(tarball, c("file", "link"), compression = "gzip", tar = "internal")
+
+  expect_error(
+    snedata:::extract_tar_safely(
+      tarball,
+      tempfile(),
+      asset = "fixture",
+      validate_layout = function(entries, asset) NULL
+    ),
+    "unsafe tar link entry"
+  )
+})
+
+test_that("CIFAR archive layout requires the complete expected file set", {
+  entries <- c(
+    paste0("cifar-10-batches-bin/data_batch_", 1:5, ".bin"),
+    "cifar-10-batches-bin/test_batch.bin",
+    "cifar-10-batches-bin/batches.meta.txt",
+    "cifar-10-batches-bin/readme.html"
+  )
+
+  expect_silent(snedata:::validate_cifar_archive_layout(entries, "fixture"))
+  expect_error(
+    snedata:::validate_cifar_archive_layout(entries[-1], "fixture"),
+    "missing 1"
+  )
+  expect_error(
+    snedata:::validate_cifar_archive_layout(
+      c(entries, "cifar-10-batches-bin/extra.bin"),
+      "fixture"
+    ),
+    "unexpected 1"
+  )
+})
+
+test_that("CIFAR downloader cleans only its owned paths after archive errors", {
+  source_root <- tempfile()
+  dir.create(file.path(source_root, "wrong-root"), recursive = TRUE)
+  writeLines("fixture", file.path(source_root, "wrong-root", "file"))
+  tarball <- tempfile(fileext = ".tar.gz")
+  oldwd <- setwd(source_root)
+  on.exit(setwd(oldwd), add = TRUE)
+  utils::tar(tarball, "wrong-root", compression = "gzip", tar = "internal")
+
+  parent <- tempfile()
+  dir.create(parent)
+  sentinel <- file.path(parent, "caller-owned.txt")
+  writeLines("keep", sentinel)
+  destfile <- file.path(parent, "cifar")
+
+  expect_error(
+    download_cifar10(
+      url = paste0("file://", normalizePath(tarball, winslash = "/")),
+      destfile = destfile,
+      cleanup = TRUE,
+      as = "matrix"
+    ),
+    "CIFAR-10 archive has an invalid layout"
+  )
+  expect_true(file.exists(sentinel))
+  expect_false(file.exists(paste0(destfile, ".tar.gz")))
+  expect_false(any(grepl("^cifar10-", list.files(parent))))
+})
+
+test_that("CIFAR downloader retains owned paths when cleanup is disabled", {
+  source_root <- tempfile()
+  dir.create(file.path(source_root, "wrong-root"), recursive = TRUE)
+  writeLines("fixture", file.path(source_root, "wrong-root", "file"))
+  tarball <- tempfile(fileext = ".tar.gz")
+  oldwd <- setwd(source_root)
+  on.exit(setwd(oldwd), add = TRUE)
+  utils::tar(tarball, "wrong-root", compression = "gzip", tar = "internal")
+
+  parent <- tempfile()
+  dir.create(parent)
+  on.exit(unlink(parent, recursive = TRUE), add = TRUE)
+  destfile <- file.path(parent, "cifar")
+
+  expect_error(
+    download_cifar10(
+      url = paste0("file://", normalizePath(tarball, winslash = "/")),
+      destfile = destfile,
+      cleanup = FALSE,
+      as = "matrix"
+    ),
+    "CIFAR-10 archive has an invalid layout"
+  )
+  expect_true(file.exists(paste0(destfile, ".tar.gz")))
+  expect_true(any(grepl("^cifar10-", list.files(parent))))
+})
+
 test_that("NORB parsers read small local gzip fixtures through base_url", {
   tmpdir <- tempdir()
   write_gz_norb_images(file.path(tmpdir, "images.mat.gz"))
@@ -878,15 +997,18 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
 test_that("20 Newsgroups downloader extracts a local tarball and removes it", {
   source_root <- tempfile()
   train_dir <- file.path(source_root, "20news-bydate-train", "alt.atheism")
+  test_dir <- file.path(source_root, "20news-bydate-test", "alt.atheism")
   dir.create(train_dir, recursive = TRUE)
+  dir.create(test_dir, recursive = TRUE)
   writeLines(c("Header: value", "", "Body"), file.path(train_dir, "1"))
+  writeLines(c("Header: value", "", "Body"), file.path(test_dir, "2"))
 
   tarball <- tempfile(fileext = ".tar.gz")
   oldwd <- setwd(source_root)
   on.exit(setwd(oldwd), add = TRUE)
   utils::tar(
     tarball,
-    files = "20news-bydate-train",
+    files = c("20news-bydate-train", "20news-bydate-test"),
     compression = "gzip",
     tar = "internal"
   )
@@ -903,6 +1025,12 @@ test_that("20 Newsgroups downloader extracts a local tarball and removes it", {
     "20news-bydate-train",
     "alt.atheism",
     "1"
+  )))
+  expect_true(file.exists(file.path(
+    outdir,
+    "20news-bydate-test",
+    "alt.atheism",
+    "2"
   )))
   expect_length(list.files(outdir, pattern = "\\.tar\\.gz$"), 0)
 })
