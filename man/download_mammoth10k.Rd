@@ -4,13 +4,10 @@
 \alias{download_mammoth10k}
 \title{Mammoth 10K}
 \format{
-A data frame with 10,000 rows and 3 variables, \code{X}, \code{Z},
-\code{Y}, containing the X, Z, and Y coordinates respectively. This
-labeling of axes preserves the ordering of the data, and makes the
-Z-coordinate the "height", i.e. the height of the mammoth varies with Z.
-Note that the ordering of the axes differs from that of
-\code{\link[=download_mammoth50k]{download_mammoth50k()}}. Use the X, Y, and Z labels rather than
-numerical indices for consistency between the two datasets.
+A data frame with 10,000 rows and 3 variables, \code{X}, \code{Y}, and \code{Z}.
+The source coordinate vectors are ordered X, Z, Y; this function reorders
+them to the canonical X, Y, Z order. The Z-coordinate is the "height",
+i.e. the height of the mammoth varies with Z.
 
 For more information see \url{https://pair-code.github.io/understanding-umap/}.
 }
@@ -27,7 +24,7 @@ skeleton.
 \details{
 Downloads a dataframe containing the 10,000 3D coordinates of a mammoth
 skeleton, digitized by
-\href{https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12}{The Smithsonian Institute}.
+\href{https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12}{the Smithsonian Institution}.
 
 This dataset is from
 \href{https://pair-code.github.io/understanding-umap/}{Understanding UMAP},

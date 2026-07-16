@@ -5,7 +5,7 @@
 #'
 #' Downloads a dataframe containing the 10,000 3D coordinates of a mammoth
 #' skeleton, digitized by
-#' [The Smithsonian Institute](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12).
+#' [the Smithsonian Institution](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12).
 #'
 #' This dataset is from
 #' [Understanding UMAP](https://pair-code.github.io/understanding-umap/),
@@ -13,13 +13,10 @@
 #' [Max Noichl](https://github.com/MNoichl/UMAP-examples-mammoth-). It
 #' consists of 10,000 points randomly sampled from the 50,000 point data set.
 #'
-#' @format A data frame with 10,000 rows and 3 variables, `X`, `Z`,
-#'   `Y`, containing the X, Z, and Y coordinates respectively. This
-#'   labeling of axes preserves the ordering of the data, and makes the
-#'   Z-coordinate the "height", i.e. the height of the mammoth varies with Z.
-#'   Note that the ordering of the axes differs from that of
-#'   [download_mammoth50k()]. Use the X, Y, and Z labels rather than
-#'   numerical indices for consistency between the two datasets.
+#' @format A data frame with 10,000 rows and 3 variables, `X`, `Y`, and `Z`.
+#'   The source coordinate vectors are ordered X, Z, Y; this function reorders
+#'   them to the canonical X, Y, Z order. The Z-coordinate is the "height",
+#'   i.e. the height of the mammoth varies with Z.
 #'
 #' For more information see <https://pair-code.github.io/understanding-umap/>.
 #'
@@ -40,17 +37,15 @@
 #' @export
 download_mammoth10k <- function() {
   stop_if_not_installed("rjson")
-  df <- data.frame(do.call(
-    rbind,
+  format_mammoth_coordinates(
     rjson::fromJSON(
       file = gh_raw(
         repo = "PAIR-code/understanding-umap",
         filename = "raw_data/mammoth_3d.json"
       )
-    )
-  ))
-  colnames(df) <- c("X", "Z", "Y")
-  df
+    ),
+    source_order = c("X", "Z", "Y")
+  )
 }
 
 #' Mammoth 50K
@@ -60,7 +55,7 @@ download_mammoth10k <- function() {
 #'
 #' Downloads a dataframe containing the 50,000 3D coordinates of a mammoth
 #' skeleton, digitized by
-#' [The Smithsonian Institute](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12).
+#' [the Smithsonian Institution](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12).
 #'
 #' This dataset is from
 #' [Understanding UMAP](https://pair-code.github.io/understanding-umap/),
@@ -68,13 +63,10 @@ download_mammoth10k <- function() {
 #' [Max Noichl](https://github.com/MNoichl/UMAP-examples-mammoth-). 50,000
 #' points were down-sampled from the raw data used by Max Noichl.
 #'
-#' @format A data frame with 50,000 rows and 3 variables, `Y`, `X`,
-#'   `Z`, containing the Y, X, and Z coordinates respectively. This
-#'   labeling of axes preserves the ordering of the raw data, and makes the
-#'   Z-coordinate the "height", i.e. the height of the mammoth varies with Z.
-#'   Note that the ordering of the axes differs from that of
-#'   [download_mammoth10k()]. Use the X, Y, and Z labels rather than
-#'   numerical indices for consistency between the two datasets.
+#' @format A data frame with 50,000 rows and 3 variables, `X`, `Y`, and `Z`.
+#'   The source coordinate vectors are ordered Y, X, Z; this function reorders
+#'   them to the canonical X, Y, Z order. The Z-coordinate is the "height",
+#'   i.e. the height of the mammoth varies with Z.
 #'
 #' For more information see <https://pair-code.github.io/understanding-umap/>.
 #'
@@ -95,15 +87,22 @@ download_mammoth10k <- function() {
 #' @export
 download_mammoth50k <- function() {
   stop_if_not_installed("rjson")
-  df <- data.frame(do.call(
-    rbind,
+  format_mammoth_coordinates(
     rjson::fromJSON(
       file = gh_raw(
         repo = "PAIR-code/understanding-umap",
         filename = "raw_data/mammoth_3d_50k.json"
       )
-    )
-  ))
-  colnames(df) <- c("Y", "X", "Z")
+    ),
+    source_order = c("Y", "X", "Z")
+  )
+}
+
+# The source data uses different coordinate orders for the two Mammoth assets.
+# Keep the reordering local and testable without downloading either asset.
+format_mammoth_coordinates <- function(coordinates, source_order) {
+  df <- data.frame(do.call(rbind, coordinates))
+  df <- df[, match(c("X", "Y", "Z"), source_order), drop = FALSE]
+  names(df) <- c("X", "Y", "Z")
   df
 }
