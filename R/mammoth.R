@@ -20,6 +20,8 @@
 #'
 #' For more information see <https://pair-code.github.io/understanding-umap/>.
 #'
+#' @param timeout Minimum download timeout in seconds. The default is 30
+#'   minutes; a larger existing global R timeout is preserved.
 #' @return Data frame containing the Mammoth coordinates.
 #' @note Requires the [rjson](https://cran.r-project.org/package=rjson)
 #' package to be installed and loaded.
@@ -35,14 +37,17 @@
 #' plot(mammoth$X, mammoth$Z)
 #' }
 #' @export
-download_mammoth10k <- function() {
+download_mammoth10k <- function(timeout = 1800) {
   stop_if_not_installed("rjson")
   format_mammoth_coordinates(
-    rjson::fromJSON(
-      file = gh_raw(
-        repo = "PAIR-code/understanding-umap",
-        filename = "raw_data/mammoth_3d.json"
-      )
+    with_download_timeout(
+      rjson::fromJSON(
+        file = gh_raw(
+          repo = "PAIR-code/understanding-umap",
+          filename = "raw_data/mammoth_3d.json"
+        )
+      ),
+      timeout = timeout
     ),
     source_order = c("X", "Z", "Y")
   )
@@ -70,6 +75,8 @@ download_mammoth10k <- function() {
 #'
 #' For more information see <https://pair-code.github.io/understanding-umap/>.
 #'
+#' @param timeout Minimum download timeout in seconds. The default is 30
+#'   minutes; a larger existing global R timeout is preserved.
 #' @return Data frame containing the Mammoth coordinates.
 #' @note Requires the [rjson](https://cran.r-project.org/package=rjson)
 #' package to be installed and loaded.
@@ -85,14 +92,17 @@ download_mammoth10k <- function() {
 #' plot(mammoth$X, mammoth$Z)
 #' }
 #' @export
-download_mammoth50k <- function() {
+download_mammoth50k <- function(timeout = 1800) {
   stop_if_not_installed("rjson")
   format_mammoth_coordinates(
-    rjson::fromJSON(
-      file = gh_raw(
-        repo = "PAIR-code/understanding-umap",
-        filename = "raw_data/mammoth_3d_50k.json"
-      )
+    with_download_timeout(
+      rjson::fromJSON(
+        file = gh_raw(
+          repo = "PAIR-code/understanding-umap",
+          filename = "raw_data/mammoth_3d_50k.json"
+        )
+      ),
+      timeout = timeout
     ),
     source_order = c("Y", "X", "Z")
   )

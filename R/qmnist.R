@@ -33,6 +33,8 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/refs/heads/main/"
 #'   message.
 #' @param as Return format. Use `"data.frame"` for the original data frame
 #'   shape, or `"matrix"` for a list with `data` and `labels`.
+#' @param timeout Minimum download timeout in seconds. The default is 30
+#'   minutes; a larger existing global R timeout is preserved.
 #' @return If `as = "data.frame"`, a data frame containing the QMNIST
 #'   digits. If `as = "matrix"`, a list with `data`, an integer matrix
 #'   with one image per row, and `labels`, a factor of digit labels.
@@ -56,30 +58,36 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/refs/heads/main/"
 download_qmnist <- function(
   base_url = qmnist_url,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "matrix"),
+  timeout = 1800
 ) {
-  as <- match.arg(as)
-  train <- parse_files(
-    "qmnist-train-images-idx3-ubyte.gz",
-    "qmnist-train-labels-idx2-int.gz",
-    label_parser = parse_extended_label_file,
-    base_url = base_url,
-    verbose = verbose,
-    as = as
+  with_download_timeout(
+    {
+      as <- match.arg(as)
+      train <- parse_files(
+        "qmnist-train-images-idx3-ubyte.gz",
+        "qmnist-train-labels-idx2-int.gz",
+        label_parser = parse_extended_label_file,
+        base_url = base_url,
+        verbose = verbose,
+        as = as
+      )
+      test <- parse_files(
+        "qmnist-test-images-idx3-ubyte.gz",
+        "qmnist-test-labels-idx1-ubyte.gz",
+        base_url = base_url,
+        verbose = verbose,
+        as = as
+      )
+      if (verbose) {
+        n_train <- if (as == "matrix") nrow(train$data) else nrow(train)
+        n_test <- if (as == "matrix") nrow(test$data) else nrow(test)
+        message("Read ", n_train, " training and ", n_test, " images")
+      }
+      combine_image_label_results(train, test, as = as)
+    },
+    timeout = timeout
   )
-  test <- parse_files(
-    "qmnist-test-images-idx3-ubyte.gz",
-    "qmnist-test-labels-idx1-ubyte.gz",
-    base_url = base_url,
-    verbose = verbose,
-    as = as
-  )
-  if (verbose) {
-    n_train <- if (as == "matrix") nrow(train$data) else nrow(train)
-    n_test <- if (as == "matrix") nrow(test$data) else nrow(test)
-    message("Read ", n_train, " training and ", n_test, " images")
-  }
-  combine_image_label_results(train, test, as = as)
 }
 
 # Several labels are available for QMNIST

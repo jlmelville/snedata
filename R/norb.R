@@ -69,6 +69,8 @@
 #'   shape, or `"matrix"` for a list with `data` and `meta`. The pixel matrix
 #'   alone requires about 3.34 GiB; use `"matrix"` to avoid the wide data-frame
 #'   conversion.
+#' @param timeout Minimum download timeout in seconds. The default is 30
+#'   minutes; a larger existing global R timeout is preserved.
 #' @return If `as = "data.frame"`, a data frame containing the Small NORB
 #'   dataset. If `as = "matrix"`, a list with `data`, an integer
 #'   matrix with one image pair per row, and `meta`, a data frame with the
@@ -120,27 +122,33 @@ download_norb_small <- function(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
   verbose = FALSE,
   split = c("all", "training", "testing"),
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "matrix"),
+  timeout = 1800
 ) {
-  split <- match.arg(split)
-  as <- match.arg(as)
-  warn_wide_data_frame(
-    "Small NORB",
-    n_rows = norb_split_size(split),
-    n_cols = 96L * 96L * 2L,
-    storage = "integer",
-    as = as
+  with_download_timeout(
+    {
+      split <- match.arg(split)
+      as <- match.arg(as)
+      warn_wide_data_frame(
+        "Small NORB",
+        n_rows = norb_split_size(split),
+        n_cols = 96L * 96L * 2L,
+        storage = "integer",
+        as = as
+      )
+      if (split != "all") {
+        read_norb_data(
+          base_url = base_url,
+          split = split,
+          verbose = verbose,
+          as = as
+        )
+      } else {
+        read_norb_all_data(base_url = base_url, verbose = verbose, as = as)
+      }
+    },
+    timeout = timeout
   )
-  if (split != "all") {
-    return(read_norb_data(
-      base_url = base_url,
-      split = split,
-      verbose = verbose,
-      as = as
-    ))
-  }
-
-  read_norb_all_data(base_url = base_url, verbose = verbose, as = as)
 }
 
 #' Visualize NORB object.

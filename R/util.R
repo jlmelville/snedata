@@ -241,13 +241,32 @@ cleanup_owned_paths <- function(paths, verbose = FALSE) {
   }
 }
 
-download_asset <- function(url, destfile, verbose = FALSE) {
+with_download_timeout <- function(expr, timeout = 1800) {
+  if (
+    !is.numeric(timeout) ||
+      length(timeout) != 1L ||
+      !is.finite(timeout) ||
+      timeout <= 0
+  ) {
+    stop("timeout must be a positive finite number of seconds", call. = FALSE)
+  }
+
+  old_options <- options("timeout")
+  options(timeout = max(old_options$timeout, timeout))
+  on.exit(options(old_options), add = TRUE)
+  force(expr)
+}
+
+download_asset <- function(url, destfile, verbose = FALSE, timeout = 1800) {
   if (verbose) {
     message("Downloading ", url, " to ", destfile)
     utils::flush.console()
   }
 
-  status <- utils::download.file(url, destfile, quiet = !verbose, mode = "wb")
+  status <- with_download_timeout(
+    utils::download.file(url, destfile, quiet = !verbose, mode = "wb"),
+    timeout = timeout
+  )
   if (status != 0 || !file.exists(destfile) || file.info(destfile)$size == 0) {
     stop("Failed to download ", url, " to ", destfile, call. = FALSE)
   }

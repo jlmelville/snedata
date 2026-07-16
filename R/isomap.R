@@ -27,6 +27,8 @@ isomap_faces_url <- paste0(
 #' @param url URL of the Matlab data file.
 #' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
+#' @param timeout Minimum download timeout in seconds. The default is 30
+#'   minutes; a larger existing global R timeout is preserved.
 #' @return Data frame containing the Isomap Swiss-roll dataset.
 #' @note Requires the
 #' [R.matlab](https://cran.r-project.org/package=R.matlab)
@@ -43,13 +45,15 @@ isomap_faces_url <- paste0(
 #' *Science*, *290*(5500), 2319-2323.
 download_isomap_swiss_roll <- function(
   url = isomap_swiss_roll_url,
-  verbose = FALSE
+  verbose = FALSE,
+  timeout = 1800
 ) {
   mat <- read_isomap_mat_url(
     url = url,
     fileext = ".mat",
     compression = "none",
-    verbose = verbose
+    verbose = verbose,
+    timeout = timeout
   )
   format_isomap_swiss_roll(mat)
 }
@@ -73,6 +77,8 @@ download_isomap_swiss_roll <- function(
 #' @param url URL of the compressed Matlab data file.
 #' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
+#' @param timeout Minimum download timeout in seconds. The default is 30
+#'   minutes; a larger existing global R timeout is preserved.
 #' @return Data frame containing the Isomap face-pose dataset.
 #' @note Requires the
 #' [R.matlab](https://cran.r-project.org/package=R.matlab)
@@ -92,13 +98,15 @@ download_isomap_swiss_roll <- function(
 #' *Science*, *290*(5500), 2319-2323.
 download_isomap_faces <- function(
   url = isomap_faces_url,
-  verbose = FALSE
+  verbose = FALSE,
+  timeout = 1800
 ) {
   mat <- read_isomap_mat_url(
     url = url,
     fileext = ".mat.Z",
     compression = "compress",
-    verbose = verbose
+    verbose = verbose,
+    timeout = timeout
   )
   format_isomap_faces(mat)
 }
@@ -150,14 +158,15 @@ read_isomap_mat_url <- function(
   url,
   fileext,
   compression = c("none", "compress"),
-  verbose = FALSE
+  verbose = FALSE,
+  timeout = 1800
 ) {
   compression <- match.arg(compression)
   stop_if_not_installed("R.matlab")
 
   downloaded_path <- tempfile(fileext = fileext)
   on.exit(cleanup_owned_paths(downloaded_path, verbose = verbose), add = TRUE)
-  download_asset(url, downloaded_path, verbose = verbose)
+  download_asset(url, downloaded_path, verbose = verbose, timeout = timeout)
 
   read_path <- downloaded_path
   if (compression == "compress") {

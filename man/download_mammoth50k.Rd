@@ -12,7 +12,11 @@ i.e. the height of the mammoth varies with Z.
 For more information see \url{https://pair-code.github.io/understanding-umap/}.
 }
 \usage{
-download_mammoth50k()
+download_mammoth50k(timeout = 1800)
+}
+\arguments{
+\item{timeout}{Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 Data frame containing the Mammoth coordinates.

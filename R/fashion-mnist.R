@@ -49,6 +49,8 @@ fashion_mnist_url <-
 #' @param base_url Base URL that the files are located at.
 #' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
+#' @param timeout Minimum download timeout in seconds. The default is 30
+#'   minutes; a larger existing global R timeout is preserved.
 #' @return Data frame containing Fashion-MNIST.
 #' @note Originally based on a function by Brendan O'Connor.
 #' @examples
@@ -79,9 +81,14 @@ fashion_mnist_url <-
 #' @export
 download_fashion_mnist <- function(
   base_url = fashion_mnist_url,
-  verbose = FALSE
+  verbose = FALSE,
+  timeout = 1800
 ) {
-  res <- download_mnist(base_url = base_url, verbose = verbose)
+  res <- download_mnist(
+    base_url = base_url,
+    verbose = verbose,
+    timeout = timeout
+  )
 
   description_levels <- c(
     "T-shirt/top",

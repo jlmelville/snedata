@@ -41,15 +41,16 @@ Items in the dataset can be visualized with the
 \code{\link[=show_cifar]{show_cifar()}} function.
 
 For more information see
-\url{https://www.cs.toronto.edu/~kriz/cifar.html}.
+\url{https://cave.cs.toronto.edu/kriz/cifar.html}.
 }
 \usage{
 download_cifar10(
-  url = "https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz",
+  url = "https://cave.cs.toronto.edu/kriz/cifar-10-binary.tar.gz",
   destfile = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "matrix"),
+  timeout = 1800
 )
 }
 \arguments{
@@ -70,6 +71,10 @@ message.}
 shape, or \code{"matrix"} for a list with \code{data}, \code{labels}, and
 \code{descriptions}. The pixel matrix alone requires about 0.69 GiB; use
 \code{"matrix"} to avoid the wide data frame conversion.}
+
+\item{timeout}{Minimum download timeout in seconds. The default accommodates
+the large archive on slower connections; a larger existing global R timeout
+is preserved.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the CIFAR-10
@@ -110,7 +115,7 @@ text(pca$x[, 1:2],
 }
 \references{
 The CIFAR-10 dataset
-\url{https://www.cs.toronto.edu/~kriz/cifar.html}
+\url{https://cave.cs.toronto.edu/kriz/cifar.html}
 
 Krizhevsky, A., & Hinton, G. (2009).
 \emph{Learning multiple layers of features from tiny images}

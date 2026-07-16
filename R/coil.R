@@ -33,6 +33,8 @@ coil_base_url <- "https://cave.cs.columbia.edu/old/databases/SLAM_coil-20_coil-1
 #' @param verbose If `TRUE`, log download and extraction progress.
 #' @param as Return format. Use `"data.frame"` for the original wide data frame
 #'   shape, or `"matrix"` for a list with `data`, `labels`, `poses`, and `ids`.
+#' @param timeout Minimum download timeout in seconds. The default is 30
+#'   minutes; a larger existing global R timeout is preserved.
 #' @return If `as = "data.frame"`, a data frame containing the COIL-20 dataset.
 #'   If `as = "matrix"`, a list containing a numeric matrix with one image per
 #'   row, factor labels, integer poses, and row ids.
@@ -49,7 +51,8 @@ download_coil20 <- function(
   file = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "matrix"),
+  timeout = 1800
 ) {
   as <- match.arg(as)
   download_coil(
@@ -58,6 +61,7 @@ download_coil20 <- function(
     cleanup = cleanup,
     verbose = verbose,
     as = as,
+    timeout = timeout,
     spec = coil20_spec()
   )
 }
@@ -108,7 +112,8 @@ download_coil100 <- function(
   file = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "matrix"),
+  timeout = 1800
 ) {
   as <- match.arg(as)
   download_coil(
@@ -117,6 +122,7 @@ download_coil100 <- function(
     cleanup = cleanup,
     verbose = verbose,
     as = as,
+    timeout = timeout,
     spec = coil100_spec()
   )
 }
@@ -177,6 +183,7 @@ download_coil <- function(
   cleanup = TRUE,
   verbose = FALSE,
   as = c("data.frame", "matrix"),
+  timeout = 1800,
   spec
 ) {
   as <- match.arg(as)
@@ -195,7 +202,12 @@ download_coil <- function(
     )
   }
 
-  download_asset(url, paths$destfile, verbose = verbose)
+  download_asset(
+    url,
+    paths$destfile,
+    verbose = verbose,
+    timeout = timeout
+  )
 
   read_coil_zip(
     paths$destfile,

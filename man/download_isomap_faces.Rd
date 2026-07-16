@@ -13,13 +13,16 @@ dataset.
 }
 }
 \usage{
-download_isomap_faces(url = isomap_faces_url, verbose = FALSE)
+download_isomap_faces(url = isomap_faces_url, verbose = FALSE, timeout = 1800)
 }
 \arguments{
 \item{url}{URL of the compressed Matlab data file.}
 
 \item{verbose}{If \code{TRUE}, then download progress will be logged as a
 message.}
+
+\item{timeout}{Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 Data frame containing the Isomap face-pose dataset.

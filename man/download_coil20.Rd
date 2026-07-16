@@ -22,7 +22,8 @@ download_coil20(
   file = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "matrix"),
+  timeout = 1800
 )
 }
 \arguments{
@@ -37,6 +38,9 @@ dedicated extraction directory are removed.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original wide data frame
 shape, or \code{"matrix"} for a list with \code{data}, \code{labels}, \code{poses}, and \code{ids}.}
+
+\item{timeout}{Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the COIL-20 dataset.

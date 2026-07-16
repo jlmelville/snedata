@@ -65,6 +65,8 @@
 #'   processing. Default is `TRUE`.
 #' @param verbose If `TRUE`, log progress of download, extraction and
 #'   processing.
+#' @param timeout Minimum download timeout in seconds. The default is 30
+#'   minutes; a larger existing global R timeout is preserved.
 #' @return Data frame containing 20 Newsgroups Data.
 #' @seealso
 #' <https://qwone.com/~jason/20Newsgroups/>
@@ -98,7 +100,8 @@ download_twenty_newsgroups <- function(
   subset = "all",
   verbose = FALSE,
   tmpdir = NULL,
-  cleanup = TRUE
+  cleanup = TRUE,
+  timeout = 1800
 ) {
   subset <- match.arg(subset, choices = c("train", "test", "all"))
   temp_info <- setup_temp_directory(tmpdir)
@@ -113,7 +116,7 @@ download_twenty_newsgroups <- function(
     }
   }
 
-  download_twenty_newsgroups_data(workdir, verbose)
+  download_twenty_newsgroups_data(workdir, verbose, timeout = timeout)
   read_newsgroups_data(workdir, subset, verbose)
 }
 
@@ -122,7 +125,8 @@ newsgroups_url <- "https://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
 download_twenty_newsgroups_data <- function(
   tmpdir = NULL,
   verbose = FALSE,
-  url = newsgroups_url
+  url = newsgroups_url,
+  timeout = 1800
 ) {
   if (is.null(tmpdir)) {
     tmpdir <- tempdir()
@@ -134,7 +138,7 @@ download_twenty_newsgroups_data <- function(
   tarfile <- tempfile("20news-bydate-", fileext = ".tar.gz", tmpdir = tmpdir)
   on.exit(cleanup_owned_paths(tarfile, verbose = verbose), add = TRUE)
 
-  download_asset(url, tarfile, verbose = verbose)
+  download_asset(url, tarfile, verbose = verbose, timeout = timeout)
   extract_tar_safely(
     tarfile,
     tmpdir,

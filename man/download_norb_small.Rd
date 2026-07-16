@@ -55,7 +55,8 @@ download_norb_small(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
   verbose = FALSE,
   split = c("all", "training", "testing"),
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "matrix"),
+  timeout = 1800
 )
 }
 \arguments{
@@ -71,6 +72,9 @@ and testing sets, or \code{"training"} or \code{"testing"} for one split.}
 shape, or \code{"matrix"} for a list with \code{data} and \code{meta}. The pixel matrix
 alone requires about 3.34 GiB; use \code{"matrix"} to avoid the wide data-frame
 conversion.}
+
+\item{timeout}{Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the Small NORB

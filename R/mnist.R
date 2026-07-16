@@ -60,6 +60,8 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 #'   message.
 #' @param as Return format. Use `"data.frame"` for the original data frame
 #'   shape, or `"matrix"` for a list with `data` and `labels`.
+#' @param timeout Minimum download timeout in seconds. The default is 30
+#'   minutes; a larger existing global R timeout is preserved.
 #' @return If `as = "data.frame"`, a data frame containing the MNIST
 #'   digits. If `as = "matrix"`, a list with `data`, an integer matrix
 #'   with one image per row, and `labels`, a factor of digit labels.
@@ -89,24 +91,30 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 download_mnist <- function(
   base_url = mnist_url,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "matrix"),
+  timeout = 1800
 ) {
-  as <- match.arg(as)
-  train <- parse_files(
-    "train-images-idx3-ubyte.gz",
-    "train-labels-idx1-ubyte.gz",
-    base_url = base_url,
-    verbose = verbose,
-    as = as
+  with_download_timeout(
+    {
+      as <- match.arg(as)
+      train <- parse_files(
+        "train-images-idx3-ubyte.gz",
+        "train-labels-idx1-ubyte.gz",
+        base_url = base_url,
+        verbose = verbose,
+        as = as
+      )
+      test <- parse_files(
+        "t10k-images-idx3-ubyte.gz",
+        "t10k-labels-idx1-ubyte.gz",
+        base_url = base_url,
+        verbose = verbose,
+        as = as
+      )
+      combine_image_label_results(train, test, as = as)
+    },
+    timeout = timeout
   )
-  test <- parse_files(
-    "t10k-images-idx3-ubyte.gz",
-    "t10k-labels-idx1-ubyte.gz",
-    base_url = base_url,
-    verbose = verbose,
-    as = as
-  )
-  combine_image_label_results(train, test, as = as)
 }
 
 # Open Gzipped Binary File at URL

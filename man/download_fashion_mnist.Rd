@@ -42,13 +42,20 @@ For more information see
 \url{https://github.com/zalandoresearch/fashion-mnist}.
 }
 \usage{
-download_fashion_mnist(base_url = fashion_mnist_url, verbose = FALSE)
+download_fashion_mnist(
+  base_url = fashion_mnist_url,
+  verbose = FALSE,
+  timeout = 1800
+)
 }
 \arguments{
 \item{base_url}{Base URL that the files are located at.}
 
 \item{verbose}{If \code{TRUE}, then download progress will be logged as a
 message.}
+
+\item{timeout}{Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 Data frame containing Fashion-MNIST.

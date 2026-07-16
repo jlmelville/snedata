@@ -54,7 +54,8 @@ download_twenty_newsgroups(
   subset = "all",
   verbose = FALSE,
   tmpdir = NULL,
-  cleanup = TRUE
+  cleanup = TRUE,
+  timeout = 1800
 )
 }
 \arguments{
@@ -75,6 +76,9 @@ be created.}
 extracted files after processing. If \code{TRUE} \emph{and} \code{tmpdir}
 was created by this function, \code{tmpdir} will be deleted after
 processing. Default is \code{TRUE}.}
+
+\item{timeout}{Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 Data frame containing 20 Newsgroups Data.

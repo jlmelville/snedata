@@ -73,7 +73,7 @@ test_that("Isomap URL reader cleans downloaded and decompressed paths on errors"
 
   with_mocked_bindings(
     stop_if_not_installed = function(...) NULL,
-    download_asset = function(url, destfile, verbose) {
+    download_asset = function(url, destfile, verbose, timeout) {
       writeBin(as.raw(1), destfile)
       paths$downloaded <- destfile
     },

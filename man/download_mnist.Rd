@@ -28,7 +28,8 @@ For more information about the original dataset see
 download_mnist(
   base_url = mnist_url,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "matrix"),
+  timeout = 1800
 )
 }
 \arguments{
@@ -39,6 +40,9 @@ message.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original data frame
 shape, or \code{"matrix"} for a list with \code{data} and \code{labels}.}
+
+\item{timeout}{Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the MNIST

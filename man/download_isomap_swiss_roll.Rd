@@ -15,13 +15,20 @@ from \code{u}.
 }
 }
 \usage{
-download_isomap_swiss_roll(url = isomap_swiss_roll_url, verbose = FALSE)
+download_isomap_swiss_roll(
+  url = isomap_swiss_roll_url,
+  verbose = FALSE,
+  timeout = 1800
+)
 }
 \arguments{
 \item{url}{URL of the Matlab data file.}
 
 \item{verbose}{If \code{TRUE}, then download progress will be logged as a
 message.}
+
+\item{timeout}{Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 Data frame containing the Isomap Swiss-roll dataset.
