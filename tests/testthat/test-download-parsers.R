@@ -4,28 +4,45 @@ file_base_url <- function(path) {
 
 write_gz_mnist_images <- function(
   path,
+  magic = 2051,
   n_images = 2,
   n_rows = 2,
   n_cols = 2,
-  pixels = seq_len(n_images * n_rows * n_cols)
+  pixels = seq_len(n_images * n_rows * n_cols),
+  trailing = integer()
 ) {
   f <- gzfile(path, "wb")
   on.exit(close(f), add = TRUE)
 
-  writeBin(as.integer(2051), f, size = 4, endian = "big")
+  writeBin(as.integer(magic), f, size = 4, endian = "big")
   writeBin(as.integer(n_images), f, size = 4, endian = "big")
   writeBin(as.integer(n_rows), f, size = 4, endian = "big")
   writeBin(as.integer(n_cols), f, size = 4, endian = "big")
   writeBin(as.integer(pixels), f, size = 1)
+  writeBin(as.integer(trailing), f, size = 1)
 }
 
-write_gz_mnist_labels <- function(path, labels = c(0, 5, 9)) {
+write_gz_mnist_labels <- function(
+  path,
+  magic = 2049,
+  n_labels = length(labels),
+  labels = c(0, 5, 9),
+  trailing = integer()
+) {
   f <- gzfile(path, "wb")
   on.exit(close(f), add = TRUE)
 
-  writeBin(as.integer(2049), f, size = 4, endian = "big")
-  writeBin(as.integer(length(labels)), f, size = 4, endian = "big")
+  writeBin(as.integer(magic), f, size = 4, endian = "big")
+  writeBin(as.integer(n_labels), f, size = 4, endian = "big")
   writeBin(as.integer(labels), f, size = 1)
+  writeBin(as.integer(trailing), f, size = 1)
+}
+
+write_gz_mnist_header <- function(path, header) {
+  f <- gzfile(path, "wb")
+  on.exit(close(f), add = TRUE)
+
+  writeBin(as.integer(header), f, size = 4, endian = "big")
 }
 
 write_gz_qmnist_labels <- function(path, magic = 3074, labels = c(7, 4)) {
@@ -96,6 +113,147 @@ test_that("MNIST parsers read small local gzip fixtures", {
   expect_equal(labels, c(0L, 5L, 9L))
 })
 
+test_that("MNIST parsers reject truncated IDX headers and payloads", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  write_gz_mnist_header(file.path(tmpdir, "short-images.gz"), c(2051, 2, 2))
+  write_gz_mnist_header(file.path(tmpdir, "short-labels.gz"), 2049)
+  write_gz_mnist_images(
+    file.path(tmpdir, "short-image-payload.gz"),
+    pixels = 1:7
+  )
+  write_gz_mnist_labels(
+    file.path(tmpdir, "short-label-payload.gz"),
+    n_labels = 3,
+    labels = c(0, 5)
+  )
+
+  expect_error(
+    snedata:::parse_image_file(
+      "short-images.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "MNIST image asset 'short-images.gz'.*column count.*expected count 1 values \\(4 bytes\\); actual count 0"
+  )
+  expect_error(
+    snedata:::parse_label_file(
+      "short-labels.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "MNIST label asset 'short-labels.gz'.*label count.*expected count 1 values \\(4 bytes\\); actual count 0"
+  )
+  expect_error(
+    snedata:::parse_image_file(
+      "short-image-payload.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "image payload.*expected count 8 values \\(8 bytes\\); actual count 7.*n_images=2, n_rows=2, n_cols=2"
+  )
+  expect_error(
+    snedata:::parse_label_file(
+      "short-label-payload.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "label payload.*expected count 3 values \\(3 bytes\\); actual count 2.*n_labels=3"
+  )
+})
+
+test_that("MNIST parsers reject trailing IDX data and invalid magic numbers", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  write_gz_mnist_images(file.path(tmpdir, "trailing-images.gz"), trailing = 9)
+  write_gz_mnist_labels(file.path(tmpdir, "trailing-labels.gz"), trailing = 9)
+  write_gz_mnist_images(file.path(tmpdir, "bad-images.gz"), magic = 1)
+  write_gz_mnist_labels(file.path(tmpdir, "bad-labels.gz"), magic = 1)
+
+  expect_error(
+    snedata:::parse_image_file(
+      "trailing-images.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "trailing data.*expected count 0 values \\(0 bytes\\); actual count 1.*n_images=2, n_rows=2, n_cols=2"
+  )
+  expect_error(
+    snedata:::parse_label_file(
+      "trailing-labels.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "trailing data.*expected count 0 values \\(0 bytes\\); actual count 1.*n_labels=3"
+  )
+  expect_error(
+    snedata:::parse_image_file(
+      "bad-images.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "invalid magic number: expected 2051.*actual 1"
+  )
+  expect_error(
+    snedata:::parse_label_file(
+      "bad-labels.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "invalid magic number: expected 2049.*actual 1"
+  )
+})
+
+test_that("MNIST parsers reject invalid and overflow-sized IDX dimensions", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  write_gz_mnist_images(
+    file.path(tmpdir, "zero-images.gz"),
+    n_images = 0,
+    pixels = integer()
+  )
+  write_gz_mnist_images(
+    file.path(tmpdir, "negative-images.gz"),
+    n_images = -1,
+    pixels = integer()
+  )
+  write_gz_mnist_images(
+    file.path(tmpdir, "overflow-images.gz"),
+    n_images = .Machine$integer.max,
+    pixels = integer()
+  )
+  write_gz_mnist_labels(
+    file.path(tmpdir, "zero-labels.gz"),
+    n_labels = 0,
+    labels = integer()
+  )
+
+  expect_error(
+    snedata:::parse_image_file("zero-images.gz", file_base_url(tmpdir)),
+    "invalid dimensions.*n_images=0, n_rows=2, n_cols=2"
+  )
+  expect_error(
+    snedata:::parse_image_file("negative-images.gz", file_base_url(tmpdir)),
+    "invalid dimensions.*n_images=-1, n_rows=2, n_cols=2"
+  )
+  expect_error(
+    snedata:::parse_image_file("overflow-images.gz", file_base_url(tmpdir)),
+    "impossible payload size.*n_images=2147483647, n_rows=2, n_cols=2"
+  )
+  expect_error(
+    snedata:::parse_label_file("zero-labels.gz", file_base_url(tmpdir)),
+    "invalid dimensions.*n_labels=0"
+  )
+})
+
+test_that("MNIST reports image and label count mismatches from local fixtures", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  write_gz_mnist_images(file.path(tmpdir, "images.gz"))
+  write_gz_mnist_labels(file.path(tmpdir, "labels.gz"), labels = c(0, 5, 9))
+
+  expect_error(
+    snedata:::parse_files(
+      "images.gz",
+      "labels.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "image/label count mismatch.*image asset 'images.gz'.*expected count 2.*label asset 'labels.gz'.*actual count 3"
+  )
+})
+
 test_that("MNIST downloader can return the original data frame or a matrix list", {
   tmpdir <- tempfile()
   dir.create(tmpdir)
@@ -128,6 +286,7 @@ test_that("MNIST downloader can return the original data frame or a matrix list"
   expect_equal(unname(mat$data[1, ]), 1:4)
   expect_equal(unname(mat$data[4, ]), 13:16)
   expect_equal(as.character(mat$labels), as.character(1:4))
+  expect_equal(levels(mat$labels), as.character(1:4))
 })
 
 test_that("Fashion-MNIST descriptions are mapped by digit label value", {

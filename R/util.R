@@ -164,6 +164,186 @@ stop_if_not_installed <- function(pkg) {
   }
 }
 
+binary_header_context <- function(header = NULL) {
+  if (is.null(header) || length(header) == 0L) {
+    return("none")
+  }
+
+  if (is.null(names(header))) {
+    names(header) <- paste0("value", seq_along(header))
+  }
+
+  paste(paste0(names(header), "=", header), collapse = ", ")
+}
+
+binary_byte_count <- function(count, size, asset, header = NULL) {
+  if (
+    length(count) != 1L ||
+      !is.finite(count) ||
+      count < 0 ||
+      count != floor(count) ||
+      count > .Machine$integer.max
+  ) {
+    stop(
+      asset,
+      " has an invalid read count: expected a nonnegative integer no larger than ",
+      .Machine$integer.max,
+      "; actual count ",
+      count,
+      "; header dimensions: ",
+      binary_header_context(header),
+      call. = FALSE
+    )
+  }
+
+  count * size
+}
+
+read_binary_exact <- function(
+  con,
+  what,
+  n,
+  size,
+  asset,
+  component,
+  signed = TRUE,
+  endian = .Platform$endian,
+  header = NULL
+) {
+  expected_bytes <- binary_byte_count(n, size, asset, header)
+  values <- readBin(
+    con,
+    what = what,
+    n = n,
+    size = size,
+    signed = signed,
+    endian = endian
+  )
+  actual_count <- length(values)
+
+  if (actual_count != n) {
+    stop(
+      asset,
+      " has a truncated ",
+      component,
+      ": expected count ",
+      n,
+      " values (",
+      expected_bytes,
+      " bytes); actual count ",
+      actual_count,
+      " values; header dimensions: ",
+      binary_header_context(header),
+      call. = FALSE
+    )
+  }
+
+  values
+}
+
+read_binary_scalar <- function(
+  con,
+  what,
+  size,
+  asset,
+  component,
+  signed = TRUE,
+  endian = .Platform$endian,
+  header = NULL
+) {
+  read_binary_exact(
+    con = con,
+    what = what,
+    n = 1L,
+    size = size,
+    asset = asset,
+    component = component,
+    signed = signed,
+    endian = endian,
+    header = header
+  )[[1]]
+}
+
+validate_binary_magic <- function(actual, expected, asset, header = NULL) {
+  if (actual != expected) {
+    stop(
+      asset,
+      " has an invalid magic number: expected ",
+      expected,
+      " (1 value / 4 bytes); actual ",
+      actual,
+      " (1 value / 4 bytes); header dimensions: ",
+      binary_header_context(c(header, magic = actual)),
+      call. = FALSE
+    )
+  }
+}
+
+validate_binary_dimensions <- function(dimensions, asset, header = dimensions) {
+  invalid <-
+    !is.numeric(dimensions) ||
+    length(dimensions) == 0L ||
+    any(!is.finite(dimensions)) ||
+    any(dimensions <= 0) ||
+    any(dimensions != floor(dimensions)) ||
+    any(dimensions > .Machine$integer.max)
+
+  if (invalid) {
+    stop(
+      asset,
+      " has invalid dimensions: expected positive finite integer dimensions ",
+      "with a payload count no larger than ",
+      .Machine$integer.max,
+      "; actual dimensions ",
+      binary_header_context(header),
+      "; expected payload count/bytes unavailable; actual payload count unavailable",
+      call. = FALSE
+    )
+  }
+
+  structure(as.integer(dimensions), names = names(dimensions))
+}
+
+binary_safe_product <- function(dimensions, asset, header = dimensions) {
+  dimensions <- validate_binary_dimensions(dimensions, asset, header)
+  count <- 1
+
+  for (dimension in dimensions) {
+    if (count > .Machine$integer.max / dimension) {
+      stop(
+        asset,
+        " has an impossible payload size: expected count no larger than ",
+        .Machine$integer.max,
+        " values; actual declared count exceeds ",
+        .Machine$integer.max,
+        " values; header dimensions: ",
+        binary_header_context(header),
+        call. = FALSE
+      )
+    }
+    count <- count * dimension
+  }
+
+  as.integer(count)
+}
+
+assert_binary_eof <- function(con, asset, header = NULL) {
+  trailing <- readBin(con, what = "raw", n = 1L)
+
+  if (length(trailing) != 0L) {
+    stop(
+      asset,
+      " has trailing data: expected count 0 values (0 bytes); actual count ",
+      length(trailing),
+      " values (",
+      length(trailing),
+      " bytes); header dimensions: ",
+      binary_header_context(header),
+      call. = FALSE
+    )
+  }
+}
+
 stime <- function() {
   format(Sys.time(), "%T")
 }

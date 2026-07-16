@@ -139,18 +139,68 @@ open_binary_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
 parse_image_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
   f <- open_binary_file(filename, base_url = base_url, verbose = verbose)
   on.exit(close(f), add = TRUE)
-  magic <- readBin(f, "integer", n = 1, size = 4, endian = "big")
-  if (magic != 2051) {
-    stop(
-      "First four bytes of image file should be magic number 2051 but was ",
-      magic
-    )
-  }
-  n <- readBin(f, "integer", n = 1, size = 4, endian = "big")
-  nrow <- readBin(f, "integer", n = 1, size = 4, endian = "big")
-  ncol <- readBin(f, "integer", n = 1, size = 4, endian = "big")
-  x <- readBin(f, "integer", n = n * nrow * ncol, size = 1, signed = FALSE)
-  matrix(x, ncol = nrow * ncol, byrow = TRUE)
+  parse_mnist_image_connection(f, asset = filename)
+}
+
+parse_mnist_image_connection <- function(f, asset) {
+  asset <- paste0("MNIST image asset '", asset, "'")
+  magic <- read_binary_scalar(
+    f,
+    what = "integer",
+    size = 4L,
+    asset = asset,
+    component = "magic number",
+    endian = "big"
+  )
+  validate_binary_magic(magic, expected = 2051L, asset = asset)
+
+  n_images <- read_binary_scalar(
+    f,
+    what = "integer",
+    size = 4L,
+    asset = asset,
+    component = "image count",
+    endian = "big",
+    header = c(magic = magic)
+  )
+  n_rows <- read_binary_scalar(
+    f,
+    what = "integer",
+    size = 4L,
+    asset = asset,
+    component = "row count",
+    endian = "big",
+    header = c(magic = magic, n_images = n_images)
+  )
+  n_cols <- read_binary_scalar(
+    f,
+    what = "integer",
+    size = 4L,
+    asset = asset,
+    component = "column count",
+    endian = "big",
+    header = c(magic = magic, n_images = n_images, n_rows = n_rows)
+  )
+  dimensions <- c(n_images = n_images, n_rows = n_rows, n_cols = n_cols)
+  pixel_count <- binary_safe_product(dimensions, asset)
+  pixels_per_image <- binary_safe_product(
+    dimensions[c("n_rows", "n_cols")],
+    asset,
+    header = dimensions
+  )
+  pixels <- read_binary_exact(
+    f,
+    what = "integer",
+    n = pixel_count,
+    size = 1L,
+    signed = FALSE,
+    asset = asset,
+    component = "image payload",
+    header = dimensions
+  )
+  assert_binary_eof(f, asset, header = dimensions)
+
+  matrix(pixels, ncol = pixels_per_image, byrow = TRUE)
 }
 
 # Parse Label File
@@ -165,16 +215,45 @@ parse_image_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
 parse_label_file <- function(filename, base_url = mnist_url, verbose = FALSE) {
   f <- open_binary_file(filename, base_url = base_url, verbose = verbose)
   on.exit(close(f), add = TRUE)
-  magic <- readBin(f, "integer", n = 1, size = 4, endian = "big")
-  if (magic != 2049) {
-    stop(
-      "First four bytes of label file should be magic number 2049 but was ",
-      magic
-    )
-  }
-  n <- readBin(f, "integer", n = 1, size = 4, endian = "big")
-  y <- readBin(f, "integer", n = n, size = 1, signed = FALSE)
-  y
+  parse_mnist_label_connection(f, asset = filename)
+}
+
+parse_mnist_label_connection <- function(f, asset) {
+  asset <- paste0("MNIST label asset '", asset, "'")
+  magic <- read_binary_scalar(
+    f,
+    what = "integer",
+    size = 4L,
+    asset = asset,
+    component = "magic number",
+    endian = "big"
+  )
+  validate_binary_magic(magic, expected = 2049L, asset = asset)
+
+  n_labels <- read_binary_scalar(
+    f,
+    what = "integer",
+    size = 4L,
+    asset = asset,
+    component = "label count",
+    endian = "big",
+    header = c(magic = magic)
+  )
+  dimensions <- c(n_labels = n_labels)
+  label_count <- binary_safe_product(dimensions, asset)
+  labels <- read_binary_exact(
+    f,
+    what = "integer",
+    n = label_count,
+    size = 1L,
+    signed = FALSE,
+    asset = asset,
+    component = "label payload",
+    header = dimensions
+  )
+  assert_binary_eof(f, asset, header = dimensions)
+
+  labels
 }
 
 # Parse Image and Label File Pair
@@ -212,6 +291,25 @@ parse_files <- function(
     base_url = base_url,
     verbose = verbose
   )
+
+  if (nrow(images) != length(labels)) {
+    stop(
+      "MNIST image/label count mismatch: image asset '",
+      image_filename,
+      "' has expected count ",
+      nrow(images),
+      " labels from header dimensions n_images=",
+      nrow(images),
+      ", pixels_per_image=",
+      ncol(images),
+      "; label asset '",
+      label_filename,
+      "' has actual count ",
+      length(labels),
+      " labels; expected matching image and label counts",
+      call. = FALSE
+    )
+  }
 
   format_image_label_result(images, labels, as = as)
 }
