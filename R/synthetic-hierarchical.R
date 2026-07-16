@@ -220,7 +220,7 @@ grouped_palette <- function(
     maxColorValue = 255
   )
   anchor_hcl <- colorspace::coords(
-    as(colorspace::hex2RGB(anchors), "polarLUV")
+    methods::as(colorspace::hex2RGB(anchors), "polarLUV")
   )
 
   unlist(
