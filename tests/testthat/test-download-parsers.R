@@ -67,41 +67,86 @@ write_gz_qmnist_labels <- function(
   writeBin(as.integer(trailing), f, size = 4, endian = "big")
 }
 
-write_norb_matrix_header <- function(f, type, ndim) {
+write_norb_matrix_header <- function(
+  f,
+  type,
+  ndim,
+  padding = c(0, 0, 0)
+) {
   magic <- switch(
     type,
     byte = c(85L, 76L, 61L, 30L),
     integer = c(84L, 76L, 61L, 30L)
   )
   writeBin(as.integer(magic), f, size = 1)
-  writeBin(as.integer(c(ndim, 0, 0, 0)), f, size = 1)
+  writeBin(as.integer(c(ndim, padding)), f, size = 1)
 }
 
-write_gz_norb_images <- function(path) {
+write_gz_norb_images <- function(
+  path,
+  type = "byte",
+  ndim = 4,
+  header_padding = c(0, 0, 0),
+  dimensions = c(2, 2, 96, 96),
+  values = rep(seq_len(dimensions[[1]]), each = prod(dimensions[-1])),
+  trailing = integer()
+) {
   f <- gzfile(path, "wb")
   on.exit(close(f), add = TRUE)
 
-  write_norb_matrix_header(f, "byte", ndim = 4)
-  writeBin(as.integer(c(2, 1, 2, 2)), f, size = 4, endian = "little")
-  writeBin(as.integer(1:8), f, size = 1)
+  write_norb_matrix_header(f, type, ndim, padding = header_padding)
+  writeBin(as.integer(dimensions), f, size = 4, endian = "little")
+  writeBin(as.integer(values), f, size = 1)
+  writeBin(as.integer(trailing), f, size = 1)
 }
 
-write_gz_norb_categories <- function(path, labels = c(0, 2, 4)) {
+write_gz_norb_categories <- function(
+  path,
+  type = "integer",
+  ndim = 1,
+  header_padding = c(0, 0, 0),
+  n_images = length(labels),
+  dimension_padding = c(0, 0),
+  labels = c(0, 2),
+  trailing = integer()
+) {
   f <- gzfile(path, "wb")
   on.exit(close(f), add = TRUE)
 
-  write_norb_matrix_header(f, "integer", ndim = 1)
-  writeBin(as.integer(c(length(labels), 0, 0)), f, size = 4, endian = "little")
+  write_norb_matrix_header(f, type, ndim, padding = header_padding)
+  writeBin(
+    as.integer(c(n_images, dimension_padding)),
+    f,
+    size = 4,
+    endian = "little"
+  )
   writeBin(as.integer(labels), f, size = 4, endian = "little")
+  writeBin(as.integer(trailing), f, size = 4, endian = "little")
 }
 
-write_gz_norb_info <- function(path) {
+write_gz_norb_info <- function(
+  path,
+  type = "integer",
+  ndim = 2,
+  header_padding = c(0, 0, 0),
+  n_images = 2,
+  n_features = 4,
+  dimension_padding = 0,
+  values = seq_len(n_images * n_features),
+  trailing = integer()
+) {
   f <- gzfile(path, "wb")
   on.exit(close(f), add = TRUE)
 
-  write_norb_matrix_header(f, "integer", ndim = 2)
-  writeBin(as.integer(c(2, 4, 0)), f, size = 4, endian = "little")
-  writeBin(as.integer(1:8), f, size = 4, endian = "little")
+  write_norb_matrix_header(f, type, ndim, padding = header_padding)
+  writeBin(
+    as.integer(c(n_images, n_features, dimension_padding)),
+    f,
+    size = 4,
+    endian = "little"
+  )
+  writeBin(as.integer(values), f, size = 4, endian = "little")
+  writeBin(as.integer(trailing), f, size = 4, endian = "little")
 }
 
 test_that("MNIST parsers read small local gzip fixtures", {
@@ -492,7 +537,10 @@ test_that("CIFAR formatter can return a data frame or a matrix list", {
 test_that("NORB parsers read small local gzip fixtures through base_url", {
   tmpdir <- tempdir()
   write_gz_norb_images(file.path(tmpdir, "images.mat.gz"))
-  write_gz_norb_categories(file.path(tmpdir, "categories.mat.gz"))
+  write_gz_norb_categories(
+    file.path(tmpdir, "categories.mat.gz"),
+    labels = c(0, 2)
+  )
   write_gz_norb_info(file.path(tmpdir, "info.mat.gz"))
 
   images <- snedata:::read_norb_images(
@@ -511,13 +559,219 @@ test_that("NORB parsers read small local gzip fixtures through base_url", {
     verbose = FALSE
   )
 
-  expect_equal(dim(images), c(4L, 2L))
-  expect_equal(images[, 1], 1:4)
-  expect_equal(images[, 2], 5:8)
-  expect_equal(categories, c(0L, 2L, 4L))
+  expect_equal(dim(images), c(18432L, 2L))
+  expect_equal(images[1:4, 1], rep(1L, 4L))
+  expect_equal(images[1:4, 2], rep(2L, 4L))
+  expect_equal(categories, c(0L, 2L))
   expect_equal(dim(info), c(4L, 2L))
   expect_equal(info[, 1], 1:4)
   expect_equal(info[, 2], 5:8)
+})
+
+test_that("NORB parsers reject malformed headers, dimensions, and payloads", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  write_gz_norb_images(
+    file.path(tmpdir, "short-dimensions.mat.gz"),
+    dimensions = integer(),
+    values = integer()
+  )
+  write_gz_norb_images(
+    file.path(tmpdir, "bad-magic.mat.gz"),
+    type = "integer"
+  )
+  write_gz_norb_images(
+    file.path(tmpdir, "bad-header-padding.mat.gz"),
+    header_padding = c(1, 0, 0)
+  )
+  write_gz_norb_images(
+    file.path(tmpdir, "bad-shape.mat.gz"),
+    dimensions = c(2, 1, 96, 96),
+    values = integer()
+  )
+  write_gz_norb_images(
+    file.path(tmpdir, "overflow.mat.gz"),
+    dimensions = c(.Machine$integer.max, 2, 96, 96),
+    values = integer()
+  )
+  write_gz_norb_images(
+    file.path(tmpdir, "short-image-payload.mat.gz"),
+    values = seq_len(10)
+  )
+  write_gz_norb_images(
+    file.path(tmpdir, "trailing-images.mat.gz"),
+    trailing = 1
+  )
+  write_gz_norb_categories(
+    file.path(tmpdir, "bad-category-padding.mat.gz"),
+    dimension_padding = c(1, 0)
+  )
+  write_gz_norb_categories(
+    file.path(tmpdir, "short-categories.mat.gz"),
+    n_images = 2,
+    labels = 0
+  )
+  write_gz_norb_categories(
+    file.path(tmpdir, "trailing-categories.mat.gz"),
+    trailing = 1
+  )
+  write_gz_norb_info(file.path(tmpdir, "bad-info-ndim.mat.gz"), ndim = 1)
+  write_gz_norb_info(
+    file.path(tmpdir, "bad-info-features.mat.gz"),
+    n_features = 3,
+    values = 1:6
+  )
+  write_gz_norb_info(
+    file.path(tmpdir, "bad-info-padding.mat.gz"),
+    dimension_padding = 1
+  )
+  write_gz_norb_info(
+    file.path(tmpdir, "short-info-payload.mat.gz"),
+    values = 1:7
+  )
+  write_gz_norb_info(file.path(tmpdir, "trailing-info.mat.gz"), trailing = 1)
+
+  expect_error(
+    snedata:::read_norb_images(
+      file = "short-dimensions.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "dimension values.*expected count 4 values \\(16 bytes\\); actual count 0"
+  )
+  expect_error(
+    snedata:::read_norb_images(
+      file = "bad-magic.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "invalid matrix magic: expected byte matrix"
+  )
+  expect_error(
+    snedata:::read_norb_images(
+      file = "bad-header-padding.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "invalid padding.*actual count 1 nonzero values"
+  )
+  expect_error(
+    snedata:::read_norb_images(
+      file = "bad-shape.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "invalid image dimensions.*expected count 18432 pixels.*actual count 9216"
+  )
+  expect_error(
+    snedata:::read_norb_images(
+      file = "overflow.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "impossible payload size.*n_images=2147483647"
+  )
+  expect_error(
+    snedata:::read_norb_images(
+      file = "short-image-payload.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "image payload.*expected count 36864 values \\(36864 bytes\\); actual count 10"
+  )
+  expect_error(
+    snedata:::read_norb_images(
+      file = "trailing-images.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "trailing data.*n_images=2, n_cameras=2, n_rows=96, n_cols=96"
+  )
+  expect_error(
+    snedata:::read_norb_categories(
+      file = "bad-category-padding.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "invalid padding.*n_images=2, padding_2=1, padding_3=0"
+  )
+  expect_error(
+    snedata:::read_norb_categories(
+      file = "short-categories.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "category payload.*expected count 2 values \\(8 bytes\\); actual count 1"
+  )
+  expect_error(
+    snedata:::read_norb_categories(
+      file = "trailing-categories.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "trailing data.*n_images=2, padding_2=0, padding_3=0"
+  )
+  expect_error(
+    snedata:::read_norb_info(
+      file = "bad-info-ndim.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "invalid dimension count: expected count 2 dimensions.*actual count 1"
+  )
+  expect_error(
+    snedata:::read_norb_info(
+      file = "bad-info-features.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "invalid metadata feature count.*expected count 4 features.*actual count 3"
+  )
+  expect_error(
+    snedata:::read_norb_info(
+      file = "bad-info-padding.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "invalid padding.*n_images=2, n_features=4, padding_3=1"
+  )
+  expect_error(
+    snedata:::read_norb_info(
+      file = "short-info-payload.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "metadata payload.*expected count 8 values \\(32 bytes\\); actual count 7"
+  )
+  expect_error(
+    snedata:::read_norb_info(
+      file = "trailing-info.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "trailing data.*n_images=2, n_features=4, padding_3=0"
+  )
+})
+
+test_that("NORB validates image, category, and metadata counts before formatting", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  base <- "smallnorb-5x46789x9x18x6x2x96x96-training"
+  write_gz_norb_images(file.path(tmpdir, paste0(base, "-dat.mat.gz")))
+  write_gz_norb_categories(
+    file.path(tmpdir, paste0(base, "-cat.mat.gz")),
+    labels = c(0, 2, 4)
+  )
+  write_gz_norb_info(file.path(tmpdir, paste0(base, "-info.mat.gz")))
+
+  expect_error(
+    download_norb_small(
+      base_url = file_base_url(tmpdir),
+      split = "training",
+      as = "matrix"
+    ),
+    "NORB training asset count mismatch: image count 2, info count 2, category count 3"
+  )
 })
 
 test_that("NORB formatter can return a data frame or a matrix list", {
@@ -606,11 +860,11 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
     as = "matrix"
   )
 
-  expect_equal(dim(training$data), c(2L, 4L))
+  expect_equal(dim(training$data), c(2L, 18432L))
   expect_equal(as.character(training$meta$Split), c("training", "training"))
   expect_equal(as.character(training$meta$Description), c("Animal", "Car"))
 
-  expect_equal(dim(all$data), c(4L, 4L))
+  expect_equal(dim(all$data), c(4L, 18432L))
   expect_equal(
     as.character(all$meta$Split),
     c("training", "training", "testing", "testing")

@@ -242,7 +242,29 @@ read_norb_data <- function(
     verbose = verbose
   )
 
+  validate_norb_asset_counts(images, info, cats, split)
   format_norb_result(images, info, cats, split = split, as = as)
+}
+
+validate_norb_asset_counts <- function(images, info, cats, split) {
+  image_count <- ncol(images)
+  info_count <- ncol(info)
+  category_count <- length(cats)
+
+  if (image_count != info_count || image_count != category_count) {
+    stop(
+      "NORB ",
+      split,
+      " asset count mismatch: image count ",
+      image_count,
+      ", info count ",
+      info_count,
+      ", category count ",
+      category_count,
+      "; expected matching counts",
+      call. = FALSE
+    )
+  }
 }
 
 norb_pixel_names <- function(n_pixels = 96 * 96 * 2) {
@@ -329,183 +351,131 @@ combine_norb_results <- function(
   rbind(training, testing)
 }
 
-read_norb_images <-
-  function(
-    base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
-    file = "smallnorb-5x46789x9x18x6x2x96x96-training-dat.mat.gz",
-    verbose = TRUE
-  ) {
-    f <- open_binary_file(base_url = base_url, filename = file, verbose)
-    on.exit(close(f), add = TRUE)
-    check_header(f, "byte")
+read_norb_images <- function(
+  base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
+  file = "smallnorb-5x46789x9x18x6x2x96x96-training-dat.mat.gz",
+  verbose = TRUE
+) {
+  f <- open_binary_file(base_url = base_url, filename = file, verbose)
+  on.exit(close(f), add = TRUE)
+  asset <- paste0("NORB image asset '", file, "'")
+  read_norb_header(f, type = "byte", expected_ndim = 4L, asset = asset)
+  dimensions <- read_norb_dimensions(
+    f,
+    n = 4L,
+    asset = asset,
+    dimension_names = c("n_images", "n_cameras", "n_rows", "n_cols")
+  )
+  validate_norb_image_dimensions(dimensions, asset)
+  value_count <- binary_safe_product(dimensions, asset)
+  values <- read_binary_exact(
+    f,
+    what = "integer",
+    n = value_count,
+    size = 1L,
+    signed = FALSE,
+    endian = "little",
+    asset = asset,
+    component = "image payload",
+    header = dimensions
+  )
+  assert_binary_eof(f, asset, header = dimensions)
 
-    ndim <- readBin(
-      f,
-      what = "integer",
-      n = 4,
-      size = 1,
-      signed = FALSE,
-      endian = "little"
-    )[1]
-    if (ndim != 4) {
-      stop("Was expecting 4 dimensions, but found ", ndim)
-    }
+  matrix(
+    values,
+    nrow = dimensions[["n_cameras"]] *
+      dimensions[["n_rows"]] *
+      dimensions[["n_cols"]],
+    ncol = dimensions[["n_images"]]
+  )
+}
 
-    dims <- rep(0, ndim)
-    for (i in 1:ndim) {
-      dims[i] <- readBin(
-        f,
-        what = "integer",
-        n = 1,
-        size = 4,
-        signed = TRUE,
-        endian = "little"
-      )
-    }
+read_norb_categories <- function(
+  base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
+  file = "smallnorb-5x46789x9x18x6x2x96x96-training-cat.mat.gz",
+  verbose = TRUE
+) {
+  f <- open_binary_file(base_url = base_url, filename = file, verbose)
+  on.exit(close(f), add = TRUE)
+  asset <- paste0("NORB category asset '", file, "'")
+  read_norb_header(f, type = "integer", expected_ndim = 1L, asset = asset)
+  dimensions <- read_norb_dimensions(
+    f,
+    n = 3L,
+    asset = asset,
+    dimension_names = c("n_images", "padding_2", "padding_3")
+  )
+  validate_norb_padding(dimensions[2:3], asset, header = dimensions)
+  count <- binary_safe_product(dimensions[["n_images"]], asset, dimensions)
+  categories <- read_binary_exact(
+    f,
+    what = "integer",
+    n = count,
+    size = 4L,
+    signed = TRUE,
+    endian = "little",
+    asset = asset,
+    component = "category payload",
+    header = dimensions
+  )
+  assert_binary_eof(f, asset, header = dimensions)
 
-    n_imgs <- dims[1]
-    img_size <- dims[2] * dims[3] * dims[4]
-    res <- matrix(nrow = img_size, ncol = n_imgs)
+  categories
+}
 
-    for (i in 1:dims[1]) {
-      res[, i] <- readBin(
-        f,
-        what = "integer",
-        n = img_size,
-        size = 1,
-        signed = FALSE,
-        endian = "little"
-      )
-    }
+read_norb_info <- function(
+  base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
+  file = "smallnorb-5x46789x9x18x6x2x96x96-training-info.mat.gz",
+  verbose = TRUE
+) {
+  f <- open_binary_file(base_url = base_url, filename = file, verbose)
+  on.exit(close(f), add = TRUE)
+  asset <- paste0("NORB metadata asset '", file, "'")
+  read_norb_header(f, type = "integer", expected_ndim = 2L, asset = asset)
+  dimensions <- read_norb_dimensions(
+    f,
+    n = 3L,
+    asset = asset,
+    dimension_names = c("n_images", "n_features", "padding_3")
+  )
+  validate_norb_padding(dimensions[["padding_3"]], asset, header = dimensions)
 
-    res
+  if (dimensions[["n_features"]] != 4L) {
+    stop(
+      asset,
+      " has an invalid metadata feature count: expected count 4 features ",
+      "(16 bytes per image); actual count ",
+      dimensions[["n_features"]],
+      " features; header dimensions: ",
+      binary_header_context(dimensions),
+      call. = FALSE
+    )
   }
 
-read_norb_categories <-
-  function(
-    base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
-    file = "smallnorb-5x46789x9x18x6x2x96x96-training-cat.mat.gz",
-    verbose = TRUE
-  ) {
-    f <- open_binary_file(base_url = base_url, filename = file, verbose)
-    on.exit(close(f), add = TRUE)
-    check_header(f, "integer")
+  value_count <- binary_safe_product(
+    dimensions[c("n_images", "n_features")],
+    asset,
+    header = dimensions
+  )
+  values <- read_binary_exact(
+    f,
+    what = "integer",
+    n = value_count,
+    size = 4L,
+    signed = TRUE,
+    endian = "little",
+    asset = asset,
+    component = "metadata payload",
+    header = dimensions
+  )
+  assert_binary_eof(f, asset, header = dimensions)
 
-    ndim <- readBin(
-      f,
-      what = "integer",
-      n = 4,
-      size = 1,
-      signed = FALSE,
-      endian = "little"
-    )[1]
-    if (ndim != 1) {
-      stop("Was expecting 1 dimension, but found ", ndim)
-    }
-
-    n_imgs <- readBin(
-      f,
-      what = "integer",
-      n = 1,
-      size = 4,
-      signed = TRUE,
-      endian = "little"
-    )
-
-    # Ignore next two lines representing (non-existent in this case) 2nd
-    # and 3rd dimension sizes
-    readBin(
-      f,
-      what = "integer",
-      n = 1,
-      size = 4,
-      signed = TRUE,
-      endian = "little"
-    )
-    readBin(
-      f,
-      what = "integer",
-      n = 1,
-      size = 4,
-      signed = TRUE,
-      endian = "little"
-    )
-
-    res <- readBin(
-      f,
-      what = "integer",
-      n = n_imgs,
-      size = 4,
-      signed = TRUE,
-      endian = "little"
-    )
-
-    res
-  }
-
-read_norb_info <-
-  function(
-    base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
-    file = "smallnorb-5x46789x9x18x6x2x96x96-training-info.mat.gz",
-    verbose = TRUE
-  ) {
-    f <- open_binary_file(base_url = base_url, filename = file, verbose)
-    on.exit(close(f), add = TRUE)
-    check_header(f, "integer")
-
-    ndim <- readBin(
-      f,
-      what = "integer",
-      n = 4,
-      size = 1,
-      signed = FALSE,
-      endian = "little"
-    )[1]
-    if (ndim != 2) {
-      stop("Was expecting 1 dimension, but found ", ndim)
-    }
-
-    n_imgs <- readBin(
-      f,
-      what = "integer",
-      n = 1,
-      size = 4,
-      signed = TRUE,
-      endian = "little"
-    )
-    n_features <- readBin(
-      f,
-      what = "integer",
-      n = 1,
-      size = 4,
-      signed = TRUE,
-      endian = "little"
-    )
-
-    # Ignore next lines representing (non-existent in this case) 3rd dimension
-    readBin(
-      f,
-      what = "integer",
-      n = 1,
-      size = 4,
-      signed = TRUE,
-      endian = "little"
-    )
-
-    res <- matrix(nrow = n_features, ncol = n_imgs)
-    for (i in 1:n_imgs) {
-      res[, i] <- readBin(
-        f,
-        what = "integer",
-        n = n_features,
-        size = 4,
-        signed = TRUE,
-        endian = "little"
-      )
-    }
-
-    res
-  }
+  matrix(
+    values,
+    nrow = dimensions[["n_features"]],
+    ncol = dimensions[["n_images"]]
+  )
+}
 
 show_norb_vec <- function(x) {
   nc <- length(x) / 96
@@ -549,27 +519,131 @@ matrix_type_to_magic <- function(type) {
   )
 }
 
-# Ensure we are reading the binary matrix file we think we should be
-check_header <- function(f, type) {
-  magic <- paste0(
-    readBin(
-      f,
-      what = "integer",
-      n = 4,
-      size = 1,
-      signed = FALSE,
-      endian = "little"
-    ),
-    collapse = ""
+read_norb_header <- function(f, type, expected_ndim, asset) {
+  magic_bytes <- read_binary_exact(
+    f,
+    what = "integer",
+    n = 4L,
+    size = 1L,
+    signed = FALSE,
+    endian = "little",
+    asset = asset,
+    component = "matrix magic"
   )
-  if (magic != matrix_type_to_magic(type)) {
+  actual_magic <- paste0(magic_bytes, collapse = "")
+  expected_magic <- matrix_type_to_magic(type)
+
+  if (actual_magic != expected_magic) {
     stop(
-      "Was expecting a ",
+      asset,
+      " has an invalid matrix magic: expected ",
       type,
-      " matrix, but found: ",
-      magic_to_matrix_type(magic)
+      " matrix (4 bytes); actual ",
+      magic_to_matrix_type(actual_magic),
+      " (",
+      actual_magic,
+      "); header dimensions unavailable",
+      call. = FALSE
     )
   }
+
+  dimension_header <- read_binary_exact(
+    f,
+    what = "integer",
+    n = 4L,
+    size = 1L,
+    signed = FALSE,
+    endian = "little",
+    asset = asset,
+    component = "dimension header",
+    header = c(matrix_magic = actual_magic)
+  )
+  names(dimension_header) <- c(
+    "n_dimensions",
+    "padding_1",
+    "padding_2",
+    "padding_3"
+  )
+
+  if (dimension_header[["n_dimensions"]] != expected_ndim) {
+    stop(
+      asset,
+      " has an invalid dimension count: expected count ",
+      expected_ndim,
+      " dimensions (1 byte); actual count ",
+      dimension_header[["n_dimensions"]],
+      " dimensions (1 byte); header dimensions: ",
+      binary_header_context(dimension_header),
+      call. = FALSE
+    )
+  }
+
+  validate_norb_padding(
+    dimension_header[c("padding_1", "padding_2", "padding_3")],
+    asset,
+    header = dimension_header,
+    size = 1L
+  )
+}
+
+read_norb_dimensions <- function(f, n, asset, dimension_names) {
+  dimensions <- read_binary_exact(
+    f,
+    what = "integer",
+    n = n,
+    size = 4L,
+    signed = TRUE,
+    endian = "little",
+    asset = asset,
+    component = "dimension values"
+  )
+  names(dimensions) <- dimension_names
+  dimensions
+}
+
+validate_norb_padding <- function(padding, asset, header, size = 4L) {
+  actual_nonzero <- sum(padding != 0L)
+
+  if (actual_nonzero != 0L) {
+    stop(
+      asset,
+      " has invalid padding: expected count ",
+      length(padding),
+      " zero values (",
+      length(padding) * size,
+      " bytes); actual count ",
+      actual_nonzero,
+      " nonzero values; header dimensions: ",
+      binary_header_context(header),
+      call. = FALSE
+    )
+  }
+}
+
+validate_norb_image_dimensions <- function(dimensions, asset) {
+  pixels_per_image <- binary_safe_product(
+    dimensions[c("n_cameras", "n_rows", "n_cols")],
+    asset,
+    header = dimensions
+  )
+  expected_pixels_per_image <- 2L * 96L * 96L
+
+  if (pixels_per_image != expected_pixels_per_image) {
+    stop(
+      asset,
+      " has invalid image dimensions: expected count ",
+      expected_pixels_per_image,
+      " pixels (",
+      expected_pixels_per_image,
+      " bytes) per image; actual count ",
+      pixels_per_image,
+      " pixels per image; header dimensions: ",
+      binary_header_context(dimensions),
+      call. = FALSE
+    )
+  }
+
+  binary_safe_product(dimensions, asset)
 }
 
 # Converts the NORB Small website magic hex numbers to integers
