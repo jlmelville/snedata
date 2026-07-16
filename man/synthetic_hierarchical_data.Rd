@@ -4,18 +4,28 @@
 \alias{synthetic_hierarchical_data}
 \title{Synthetic Hierarchical Data Set}
 \usage{
-synthetic_hierarchical_data(n = 500, dim = 50)
+synthetic_hierarchical_data(
+  n = 500,
+  dim = 50,
+  colors = c("full", "macro", "none")
+)
 }
 \arguments{
 \item{n}{Number of observations to sample from each micro cluster.}
 
 \item{dim}{Dimension of the Gaussian observations and cluster centers.}
+
+\item{colors}{Color detail to include: \code{"full"} (the default) adds macro,
+meso, and micro plotting colors and requires the optional
+\href{https://cran.r-project.org/package=colorspace}{colorspace} package;
+\code{"macro"} adds a dependency-free anchor color for each macro cluster; and
+\code{"none"} returns coordinates and labels only.}
 }
 \value{
 Data frame with coordinates in the \code{X1}, \code{X2} ... \code{Xdim} columns,
-factor columns \code{macro_label}, \code{meso_label}, and \code{micro_label}, a \code{color}
-column containing the meso-level color, and \code{macro_color}, \code{meso_color},
-and \code{micro_color} columns for plotting at each hierarchy level.
+and factor columns \code{macro_label}, \code{meso_label}, and \code{micro_label}.
+\code{colors = "macro"} also includes \code{color} and \code{macro_color}; \code{colors = "full"} also includes \code{color}, \code{macro_color}, \code{meso_color}, and
+\code{micro_color} plotting columns.
 }
 \description{
 Simulation data from a hierarchy of Gaussian clusters.
@@ -35,8 +45,6 @@ Observations are sampled around their micro center with diagonal covariance
 
 This is based on a Python notebook which can be found at
 \url{https://github.com/jlmelville/drnb/blob/d542c97b26d6f0f481d7551b130c41fcc0206c6b/notebooks/data-pipeline/synthetic-hierarchical.ipynb}
-
-This function requires the optional dependency colorspace to make the colors.
 }
 \examples{
 \dontrun{

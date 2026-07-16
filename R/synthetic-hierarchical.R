@@ -17,14 +17,18 @@
 #' This is based on a Python notebook which can be found at
 #' <https://github.com/jlmelville/drnb/blob/d542c97b26d6f0f481d7551b130c41fcc0206c6b/notebooks/data-pipeline/synthetic-hierarchical.ipynb>
 #'
-#' This function requires the optional dependency colorspace to make the colors.
-#'
 #' @param n Number of observations to sample from each micro cluster.
 #' @param dim Dimension of the Gaussian observations and cluster centers.
+#' @param colors Color detail to include: `"full"` (the default) adds macro,
+#'   meso, and micro plotting colors and requires the optional
+#'   [colorspace](https://cran.r-project.org/package=colorspace) package;
+#'   `"macro"` adds a dependency-free anchor color for each macro cluster; and
+#'   `"none"` returns coordinates and labels only.
 #' @return Data frame with coordinates in the `X1`, `X2` ... `Xdim` columns,
-#'   factor columns `macro_label`, `meso_label`, and `micro_label`, a `color`
-#'   column containing the meso-level color, and `macro_color`, `meso_color`,
-#'   and `micro_color` columns for plotting at each hierarchy level.
+#'   and factor columns `macro_label`, `meso_label`, and `micro_label`.
+#'   `colors = "macro"` also includes `color` and `macro_color`; `colors =
+#'   "full"` also includes `color`, `macro_color`, `meso_color`, and
+#'   `micro_color` plotting columns.
 #' @references
 #' Wang, Y., Huang, H., Rudin, C., & Shaposhnik, Y. (2021).
 #' Understanding how dimension reduction tools work: an empirical approach to
@@ -41,9 +45,14 @@
 #' plot(df$X1, df$X2, col = df$color, pch = 20)
 #' }
 #' @export
-synthetic_hierarchical_data <- function(n = 500, dim = 50) {
+synthetic_hierarchical_data <- function(
+  n = 500,
+  dim = 50,
+  colors = c("full", "macro", "none")
+) {
   n <- positive_integer_scalar(n, "n")
   dim <- positive_integer_scalar(dim, "dim")
+  colors <- match.arg(colors)
 
   n_macro <- 5L
   n_meso <- 5L
@@ -115,24 +124,43 @@ synthetic_hierarchical_data <- function(n = 500, dim = 50) {
     }
   }
 
+  result <- data.frame(
+    x,
+    macro_label = factor(macro_labels, levels = macro_levels),
+    meso_label = factor(meso_labels, levels = meso_levels),
+    micro_label = factor(micro_labels, levels = micro_levels),
+    stringsAsFactors = FALSE
+  )
   # roughly the colors used in the PaCMAP paper, specific hex codes are from
   # Set1 in RColorBrewer (but pointless to require that as a dependency just
   # for this one).
+  anchors <- c("#377EB8", "#E41A1C", "#4DAF4A", "#A65628", "#999999")
+  macro_color <- unname(stats::setNames(anchors, macro_levels)[macro_labels])
+
+  if (colors == "none") return(result)
+  if (colors == "macro") {
+    return(
+      data.frame(
+        result,
+        color = macro_color,
+        macro_color = macro_color,
+        stringsAsFactors = FALSE
+      )
+    )
+  }
+
   color_maps <- synthetic_hierarchical_color_maps(
     n_macro = n_macro,
     n_meso = n_meso,
     n_micro = n_micro,
-    anchors = c("#377EB8", "#E41A1C", "#4DAF4A", "#A65628", "#999999")
+    anchors = anchors
   )
   macro_color <- unname(color_maps$macro[macro_labels])
   meso_color <- unname(color_maps$meso[meso_labels])
   micro_color <- unname(color_maps$micro[micro_labels])
 
   data.frame(
-    x,
-    macro_label = factor(macro_labels, levels = macro_levels),
-    meso_label = factor(meso_labels, levels = meso_levels),
-    micro_label = factor(micro_labels, levels = micro_levels),
+    result,
     color = meso_color,
     macro_color = macro_color,
     meso_color = meso_color,

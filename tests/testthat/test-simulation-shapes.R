@@ -158,6 +158,51 @@ test_that("synthetic_hierarchical_data validates dimensions", {
     synthetic_hierarchical_data(dim = 0),
     "dim must be a positive integer"
   )
+  expect_error(
+    synthetic_hierarchical_data(colors = "detail"),
+    "should be one of"
+  )
+})
+
+test_that("synthetic_hierarchical_data has dependency-free color options", {
+  with_mocked_bindings(
+    synthetic_hierarchical_color_maps = function(...) {
+      stop("colorspace should not be used")
+    },
+    {
+      set.seed(42)
+      none <- synthetic_hierarchical_data(n = 2, dim = 3, colors = "none")
+      expect_equal(dim(none), c(250L, 6L))
+      expect_equal(
+        names(none),
+        c("X1", "X2", "X3", "macro_label", "meso_label", "micro_label")
+      )
+      expect_equal(as.integer(table(none$micro_label)), rep(2L, 125L))
+
+      set.seed(42)
+      macro <- synthetic_hierarchical_data(n = 2, dim = 3, colors = "macro")
+      expect_equal(dim(macro), c(250L, 8L))
+      expect_equal(
+        names(macro),
+        c(
+          "X1",
+          "X2",
+          "X3",
+          "macro_label",
+          "meso_label",
+          "micro_label",
+          "color",
+          "macro_color"
+        )
+      )
+      expect_identical(macro$color, macro$macro_color)
+      expect_equal(
+        as.vector(tapply(macro$macro_color, macro$macro_label, unique)),
+        c("#377EB8", "#E41A1C", "#4DAF4A", "#A65628", "#999999")
+      )
+    },
+    .package = "snedata"
+  )
 })
 
 test_that("sphere and ball respect radius invariants", {
@@ -300,4 +345,90 @@ test_that("linked and unlinked rings differ by their x-offset", {
   expect_equal(mean(unlinked$x[5:8]) - mean(unlinked$x[1:4]), 3)
   expect_equal(as.integer(table(linked$color)), c(4L, 4L))
   expect_equal(as.integer(table(unlinked$color)), c(4L, 4L))
+})
+
+test_that("simulation generators reject pathological scalar inputs", {
+  cases <- list(
+    list(sphere, list(n = 0), "n must be a positive integer"),
+    list(ball, list(rad = Inf), "rad must be a positive finite numeric scalar"),
+    list(
+      helix,
+      list(nwinds = 0),
+      "nwinds must be a positive finite numeric scalar"
+    ),
+    list(
+      swiss_roll,
+      list(max_phi = pi),
+      "max_phi must be greater than min_phi"
+    ),
+    list(
+      s_curve,
+      list(noise = -1),
+      "noise must be a nonnegative finite numeric scalar"
+    ),
+    list(
+      s_curve_hole,
+      list(n_samples = 0),
+      "n_samples must be a positive integer"
+    ),
+    list(grid_data, list(n = 0), "n must be a positive integer"),
+    list(
+      gaussian_data,
+      list(n = 1, dim = Inf),
+      "dim must be a positive integer"
+    ),
+    list(
+      long_gaussian_data,
+      list(n = 1, dim = 0),
+      "dim must be a positive integer"
+    ),
+    list(circle_data, list(n = 0), "n must be a positive integer"),
+    list(random_circle_data, list(n = 0), "n must be a positive integer"),
+    list(
+      random_circle_cluster_data,
+      list(n = 0),
+      "n must be a positive integer"
+    ),
+    list(
+      two_clusters_data,
+      list(n = 1, dim = 1:3),
+      "dim must be a positive integer vector of length 1 or 2"
+    ),
+    list(
+      two_different_clusters_data,
+      list(n = 1, scale = 0),
+      "scale must be a positive finite numeric scalar"
+    ),
+    list(three_clusters_data, list(n = 0), "n must be a positive integer"),
+    list(
+      subset_clusters_data,
+      list(n = 1, big_sdev = Inf),
+      "big_sdev must be a positive finite numeric scalar"
+    ),
+    list(
+      simplex_data,
+      list(n = 1, noise = NaN),
+      "noise must be a nonnegative finite numeric scalar"
+    ),
+    list(cube_data, list(n = 1, dim = 0), "dim must be a positive integer"),
+    list(unlink_data, list(n = 0), "n must be a positive integer"),
+    list(link_data, list(n = 0), "n must be a positive integer"),
+    list(trefoil_data, list(n = 0), "n must be a positive integer"),
+    list(long_cluster_data, list(n = 0), "n must be a positive integer"),
+    list(ortho_curve, list(n = 0), "n must be a positive integer"),
+    list(random_walk, list(n = 0, dim = 1), "n must be a positive integer"),
+    list(random_jump, list(n = 1, dim = 0), "dim must be a positive integer")
+  )
+
+  for (case in cases) {
+    expect_error(do.call(case[[1]], case[[2]]), case[[3]])
+  }
+})
+
+test_that("two_clusters_data accepts one or two positive dimensions", {
+  df <- two_clusters_data(n = 2, dim = c(2, 3))
+
+  expect_equal(dim(df), c(4L, 4L))
+  expect_equal(names(df), c("X1", "X2", "X3", "color"))
+  expect_equal(df$X3[1:2], c(0, 0))
 })
