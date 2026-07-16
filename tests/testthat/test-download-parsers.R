@@ -45,15 +45,26 @@ write_gz_mnist_header <- function(path, header) {
   writeBin(as.integer(header), f, size = 4, endian = "big")
 }
 
-write_gz_qmnist_labels <- function(path, magic = 3074, labels = c(7, 4)) {
+write_gz_qmnist_labels <- function(
+  path,
+  magic = 3074,
+  metadata = rbind(
+    c(7, 0, 610, 12, 37, 1001, 0, 0),
+    c(4, 4, 2100, 13, 38, 1002, 0, 0)
+  ),
+  n_rows = nrow(metadata),
+  n_cols = ncol(metadata),
+  values = as.integer(t(metadata)),
+  trailing = integer()
+) {
   f <- gzfile(path, "wb")
   on.exit(close(f), add = TRUE)
 
   writeBin(as.integer(magic), f, size = 4, endian = "big")
-  writeBin(as.integer(length(labels)), f, size = 4, endian = "big")
-  writeBin(as.integer(3), f, size = 4, endian = "big")
-  label_rows <- unlist(lapply(labels, function(label) c(label, 0, 0)))
-  writeBin(as.integer(label_rows), f, size = 4, endian = "big")
+  writeBin(as.integer(n_rows), f, size = 4, endian = "big")
+  writeBin(as.integer(n_cols), f, size = 4, endian = "big")
+  writeBin(as.integer(values), f, size = 4, endian = "big")
+  writeBin(as.integer(trailing), f, size = 4, endian = "big")
 }
 
 write_norb_matrix_header <- function(f, type, ndim) {
@@ -320,23 +331,95 @@ test_that("Fashion-MNIST descriptions are mapped by digit label value", {
   )
 })
 
-test_that("QMNIST extended label parser reads labels and reports magic 3074", {
-  tmpdir <- tempdir()
+test_that("QMNIST extended label parser preserves named metadata", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
   write_gz_qmnist_labels(file.path(tmpdir, "labels.gz"))
-  write_gz_qmnist_labels(file.path(tmpdir, "bad-labels.gz"), magic = 2049)
 
   labels <- snedata:::parse_extended_label_file(
     "labels.gz",
     base_url = file_base_url(tmpdir)
   )
+  metadata <- attr(labels, "qmnist_metadata")
 
-  expect_equal(labels, c(7, 4))
+  expect_equal(as.integer(labels), c(7L, 4L))
+  expect_equal(
+    colnames(metadata),
+    c(
+      "character_class",
+      "nist_hsf_series",
+      "nist_writer_id",
+      "digit_index",
+      "nist_class_code",
+      "nist_global_digit_index",
+      "duplicate",
+      "unused"
+    )
+  )
+  expect_equal(metadata[, "nist_writer_id"], c(610L, 2100L))
+  expect_equal(metadata[, "nist_global_digit_index"], c(1001L, 1002L))
+})
+
+test_that("QMNIST extended label parser validates the exact IDX2 payload", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  write_gz_mnist_header(file.path(tmpdir, "short-header.gz"), c(3074, 2))
+  write_gz_qmnist_labels(file.path(tmpdir, "bad-magic.gz"), magic = 2049)
+  write_gz_qmnist_labels(
+    file.path(tmpdir, "wrong-columns.gz"),
+    metadata = matrix(1:6, nrow = 2, byrow = TRUE)
+  )
+  write_gz_qmnist_labels(
+    file.path(tmpdir, "short-row.gz"),
+    values = seq_len(7)
+  )
+  write_gz_qmnist_labels(
+    file.path(tmpdir, "short-payload.gz"),
+    values = seq_len(15)
+  )
+  write_gz_qmnist_labels(file.path(tmpdir, "trailing.gz"), trailing = 99)
+
   expect_error(
     snedata:::parse_extended_label_file(
-      "bad-labels.gz",
+      "short-header.gz",
       base_url = file_base_url(tmpdir)
     ),
-    "magic number 3074"
+    "QMNIST extended label asset 'short-header.gz'.*column count.*expected count 1 values \\(4 bytes\\); actual count 0"
+  )
+  expect_error(
+    snedata:::parse_extended_label_file(
+      "bad-magic.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "invalid magic number: expected 3074.*actual 2049"
+  )
+  expect_error(
+    snedata:::parse_extended_label_file(
+      "wrong-columns.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "invalid column count.*expected count 8 columns \\(32 bytes per row\\); actual count 3.*n_rows=2, n_cols=3"
+  )
+  expect_error(
+    snedata:::parse_extended_label_file(
+      "short-row.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "extended label payload.*expected count 16 values \\(64 bytes\\); actual count 7.*n_rows=2, n_cols=8"
+  )
+  expect_error(
+    snedata:::parse_extended_label_file(
+      "short-payload.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "extended label payload.*expected count 16 values \\(64 bytes\\); actual count 15.*n_rows=2, n_cols=8"
+  )
+  expect_error(
+    snedata:::parse_extended_label_file(
+      "trailing.gz",
+      base_url = file_base_url(tmpdir)
+    ),
+    "trailing data.*expected count 0 values \\(0 bytes\\); actual count 1.*n_rows=2, n_cols=8"
   )
 })
 
@@ -349,8 +432,7 @@ test_that("QMNIST downloader can return a matrix list", {
     pixels = 1:8
   )
   write_gz_qmnist_labels(
-    file.path(tmpdir, "qmnist-train-labels-idx2-int.gz"),
-    labels = c(7, 4)
+    file.path(tmpdir, "qmnist-train-labels-idx2-int.gz")
   )
   write_gz_mnist_images(
     file.path(tmpdir, "qmnist-test-images-idx3-ubyte.gz"),

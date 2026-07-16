@@ -82,8 +82,18 @@ download_qmnist <- function(
   combine_image_label_results(train, test, as = as)
 }
 
-# QMNIST test labels are stored as extended labels. We only extract the digit
-# class.
+# Several labels are available for QMNIST
+qmnist_extended_label_columns <- c(
+  "character_class",
+  "nist_hsf_series",
+  "nist_writer_id",
+  "digit_index",
+  "nist_class_code",
+  "nist_global_digit_index",
+  "duplicate",
+  "unused"
+)
+
 parse_extended_label_file <- function(
   filename,
   base_url = qmnist_url,
@@ -91,23 +101,75 @@ parse_extended_label_file <- function(
 ) {
   f <- open_binary_file(filename, base_url = base_url, verbose = verbose)
   on.exit(close(f), add = TRUE)
-  magic <- readBin(f, "integer", n = 1, size = 4, endian = "big")
-  if (magic != 3074) {
+  parse_qmnist_extended_label_connection(f, asset = filename)
+}
+
+parse_qmnist_extended_label_connection <- function(f, asset) {
+  asset <- paste0("QMNIST extended label asset '", asset, "'")
+  magic <- read_binary_scalar(
+    f,
+    what = "integer",
+    size = 4L,
+    asset = asset,
+    component = "magic number",
+    endian = "big"
+  )
+  validate_binary_magic(magic, expected = 3074L, asset = asset)
+
+  n_rows <- read_binary_scalar(
+    f,
+    what = "integer",
+    size = 4L,
+    asset = asset,
+    component = "row count",
+    endian = "big",
+    header = c(magic = magic)
+  )
+  n_cols <- read_binary_scalar(
+    f,
+    what = "integer",
+    size = 4L,
+    asset = asset,
+    component = "column count",
+    endian = "big",
+    header = c(magic = magic, n_rows = n_rows)
+  )
+  dimensions <- validate_binary_dimensions(
+    c(n_rows = n_rows, n_cols = n_cols),
+    asset
+  )
+
+  if (dimensions[["n_cols"]] != length(qmnist_extended_label_columns)) {
     stop(
-      "First four bytes of label file should be magic number 3074 but was ",
-      magic
+      asset,
+      " has an invalid column count: expected count ",
+      length(qmnist_extended_label_columns),
+      " columns (",
+      length(qmnist_extended_label_columns) * 4L,
+      " bytes per row); actual count ",
+      dimensions[["n_cols"]],
+      " columns; header dimensions: ",
+      binary_header_context(dimensions),
+      call. = FALSE
     )
   }
-  nrows <- readBin(f, "integer", n = 1, size = 4, endian = "big")
-  # should be 8 for qmnist extended label file
-  ncols <- readBin(f, "integer", n = 1, size = 4, endian = "big")
 
-  y <- rep(0, nrows)
+  value_count <- binary_safe_product(dimensions, asset)
+  values <- read_binary_exact(
+    f,
+    what = "integer",
+    n = value_count,
+    size = 4L,
+    asset = asset,
+    component = "extended label payload",
+    endian = "big",
+    header = dimensions
+  )
+  assert_binary_eof(f, asset, header = dimensions)
 
-  for (n in 1:nrows) {
-    row_data <- readBin(f, "integer", n = ncols, size = 4, endian = "big")
-    y[n] <- row_data[1]
-  }
-
-  y
+  metadata <- matrix(values, ncol = dimensions[["n_cols"]], byrow = TRUE)
+  colnames(metadata) <- qmnist_extended_label_columns
+  labels <- metadata[, "character_class"]
+  attr(labels, "qmnist_metadata") <- metadata
+  labels
 }
