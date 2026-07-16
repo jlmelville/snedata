@@ -18,8 +18,8 @@ repo.
   `channel_order`, and source provenance. Metadata uses lower-case names and records train/test
   identity explicitly. Fashion-MNIST and Kuzushiji-MNIST now support this result. Legacy data-frame
   results remain available.
-- `synthetic_hierarchical_data()` now no longer requires extra dependencies to generate colors. Set
-   supports `colors = "macro"` or `colors = "none"` to avoid having to install `colorspace`.
+- `synthetic_hierarchical_data()` adds `colors = "macro"`, and `colors = "none"` arguments, which
+   do not require the `colorspace` dependency to be installed.
 
 # snedata 0.0.0.9002
 
