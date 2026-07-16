@@ -22,7 +22,7 @@ download_coil20(
   file = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 )
 }
@@ -37,22 +37,23 @@ dedicated extraction directory are removed.}
 \item{verbose}{If \code{TRUE}, log download and extraction progress.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original wide data frame
-shape, or \code{"matrix"} for a list with \code{data}, \code{labels}, \code{poses}, and \code{ids}.}
+shape, or \code{"list"} for the canonical image result described in
+\code{\link[=download_mnist]{download_mnist()}}.}
 
 \item{timeout}{Minimum download timeout in seconds. The default is 30
 minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the COIL-20 dataset.
-If \code{as = "matrix"}, a list containing a numeric matrix with one image per
-row, factor labels, integer poses, and row ids.
+If \code{as = "list"}, a canonical image result with object ids, poses, and
+factor labels in \code{meta}.
 }
 \description{
 Download the processed Columbia Object Image Library COIL-20 dataset.
 }
 \details{
 Downloads and expands the processed COIL-20 ZIP archive and converts the PNG
-files to a data frame or matrix-list result. COIL-20 contains 20 objects,
+files to a data frame or canonical list result. COIL-20 contains 20 objects,
 each represented by 72 grayscale poses. Each image has resolution 128 x 128.
 
 The optional \href{https://cran.r-project.org/package=png}{png} package is

@@ -310,7 +310,7 @@ test_that("MNIST reports image and label count mismatches from local fixtures", 
   )
 })
 
-test_that("MNIST downloader can return the original data frame or a matrix list", {
+test_that("MNIST downloader can return the original data frame or a canonical list", {
   tmpdir <- tempfile()
   dir.create(tmpdir)
 
@@ -332,17 +332,21 @@ test_that("MNIST downloader can return the original data frame or a matrix list"
   )
 
   df <- download_mnist(base_url = file_base_url(tmpdir))
-  mat <- download_mnist(base_url = file_base_url(tmpdir), as = "matrix")
+  mat <- download_mnist(base_url = file_base_url(tmpdir), as = "list")
 
   expect_s3_class(df, "data.frame")
   expect_equal(names(df), c(paste0("px", 1:4), "Label"))
   expect_equal(dim(df), c(4L, 5L))
-  expect_named(mat, c("data", "labels"))
+  expect_named(mat, c("data", "meta", "image_dim", "channel_order", "source"))
   expect_equal(dim(mat$data), c(4L, 4L))
   expect_equal(unname(mat$data[1, ]), 1:4)
   expect_equal(unname(mat$data[4, ]), 13:16)
-  expect_equal(as.character(mat$labels), as.character(1:4))
-  expect_equal(levels(mat$labels), as.character(1:4))
+  expect_equal(as.character(mat$meta$label), as.character(1:4))
+  expect_equal(levels(mat$meta$label), as.character(1:4))
+  expect_equal(
+    as.character(mat$meta$split),
+    c("training", "training", "testing", "testing")
+  )
 })
 
 test_that("Fashion-MNIST descriptions are mapped by digit label value", {
@@ -475,7 +479,7 @@ test_that("QMNIST extended label parser validates the exact IDX2 payload", {
   )
 })
 
-test_that("QMNIST downloader can return a matrix list", {
+test_that("QMNIST downloader can return a canonical list", {
   tmpdir <- tempfile()
   dir.create(tmpdir)
 
@@ -495,12 +499,13 @@ test_that("QMNIST downloader can return a matrix list", {
     labels = c(1, 0)
   )
 
-  mat <- download_qmnist(base_url = file_base_url(tmpdir), as = "matrix")
+  mat <- download_qmnist(base_url = file_base_url(tmpdir), as = "list")
 
-  expect_named(mat, c("data", "labels"))
+  expect_named(mat, c("data", "meta", "image_dim", "channel_order", "source"))
   expect_equal(dim(mat$data), c(4L, 4L))
   expect_equal(unname(mat$data[3, ]), 9:12)
-  expect_equal(as.character(mat$labels), c("7", "4", "1", "0"))
+  expect_equal(as.character(mat$meta$label), c("7", "4", "1", "0"))
+  expect_equal(names(mat$meta)[4:11], snedata:::qmnist_extended_label_columns)
 })
 
 test_that("downloaders expose a configurable timeout", {
@@ -560,9 +565,19 @@ test_that("MNIST keeps its timeout while streaming files", {
   with_mocked_bindings(
     parse_files = function(...) {
       observed <<- c(observed, getOption("timeout"))
-      list(data = matrix(0L, nrow = 1L), labels = factor("0"))
+      snedata:::new_image_result(
+        matrix(0L, nrow = 1L),
+        meta = data.frame(
+          id = 1L,
+          split = factor("training", levels = c("training", "testing")),
+          label = factor("0")
+        ),
+        image_dim = c(height = 1L, width = 1L),
+        channel_order = "gray",
+        source = list(dataset = "MNIST", url = "unused")
+      )
     },
-    download_mnist(as = "matrix", timeout = 123),
+    download_mnist(as = "list", timeout = 123),
     .package = "snedata"
   )
 
@@ -578,7 +593,7 @@ test_that("CIFAR forwards its configurable download timeout", {
       stop("stop before download")
     },
     expect_error(
-      download_cifar10(as = "matrix", timeout = 123),
+      download_cifar10(as = "list", timeout = 123),
       "stop before download"
     ),
     .package = "snedata"
@@ -615,12 +630,12 @@ test_that("CIFAR parser returns rows in file record order", {
   expect_equal(batch$images, matrix(1:6, nrow = 2, byrow = TRUE))
 })
 
-test_that("CIFAR formatter can return a data frame or a matrix list", {
+test_that("CIFAR formatter can return a data frame or a canonical list", {
   images <- matrix(1:12, nrow = 2)
   labels <- c(0, 9)
 
   df <- snedata:::format_cifar_result(images, labels)
-  mat <- snedata:::format_cifar_result(images, labels, as = "matrix")
+  mat <- snedata:::format_cifar_result(images, labels, as = "list")
 
   expect_s3_class(df, "data.frame")
   expect_equal(
@@ -628,10 +643,10 @@ test_that("CIFAR formatter can return a data frame or a matrix list", {
     c("r1", "r2", "g1", "g2", "b1", "b2", "Label", "Description")
   )
   expect_equal(as.character(df$Description), c("airplane", "truck"))
-  expect_named(mat, c("data", "labels", "descriptions"))
+  expect_named(mat, c("data", "meta", "image_dim", "channel_order", "source"))
   expect_equal(dim(mat$data), c(2L, 6L))
-  expect_equal(as.character(mat$labels), c("0", "9"))
-  expect_equal(as.character(mat$descriptions), c("airplane", "truck"))
+  expect_equal(as.character(mat$meta$label), c("0", "9"))
+  expect_equal(as.character(mat$meta$description), c("airplane", "truck"))
 })
 
 test_that("tar entry validation rejects unsafe and duplicate paths", {
@@ -717,7 +732,7 @@ test_that("CIFAR downloader cleans only its owned paths after archive errors", {
       url = paste0("file://", normalizePath(tarball, winslash = "/")),
       destfile = destfile,
       cleanup = TRUE,
-      as = "matrix"
+      as = "list"
     ),
     "CIFAR-10 archive has an invalid layout"
   )
@@ -745,7 +760,7 @@ test_that("CIFAR downloader retains owned paths when cleanup is disabled", {
       url = paste0("file://", normalizePath(tarball, winslash = "/")),
       destfile = destfile,
       cleanup = FALSE,
-      as = "matrix"
+      as = "list"
     ),
     "CIFAR-10 archive has an invalid layout"
   )
@@ -992,13 +1007,13 @@ test_that("NORB validates image, category, and metadata counts before formatting
     download_norb_small(
       base_url = file_base_url(tmpdir),
       split = "training",
-      as = "matrix"
+      as = "list"
     ),
     "NORB training asset count mismatch: image count 2, info count 2, category count 3"
   )
 })
 
-test_that("NORB formatter can return a data frame or a matrix list", {
+test_that("NORB formatter can return a data frame or a canonical list", {
   images <- matrix(1:8, nrow = 2, byrow = TRUE)
   info <- matrix(
     c(
@@ -1026,7 +1041,7 @@ test_that("NORB formatter can return a data frame or a matrix list", {
     info,
     cats,
     split = "training",
-    as = "matrix"
+    as = "list"
   )
 
   expect_s3_class(df, "data.frame")
@@ -1047,9 +1062,21 @@ test_that("NORB formatter can return a data frame or a matrix list", {
     )
   )
   expect_equal(dim(mat$data), c(2L, 4L))
-  expect_named(mat, c("data", "meta"))
-  expect_equal(names(mat$meta), names(df)[5:11])
-  expect_equal(as.character(mat$meta$Description), c("Animal", "Car"))
+  expect_named(mat, c("data", "meta", "image_dim", "channel_order", "source"))
+  expect_equal(
+    names(mat$meta),
+    c(
+      "id",
+      "instance",
+      "elevation",
+      "azimuth",
+      "lighting",
+      "split",
+      "label",
+      "description"
+    )
+  )
+  expect_equal(as.character(mat$meta$description), c("Animal", "Car"))
 })
 
 test_that("NORB downloader assembles requested splits from local fixtures", {
@@ -1076,12 +1103,12 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
   training <- download_norb_small(
     base_url = file_base_url(tmpdir),
     split = "training",
-    as = "matrix"
+    as = "list"
   )
   all <- download_norb_small(
     base_url = file_base_url(tmpdir),
     split = "all",
-    as = "matrix"
+    as = "list"
   )
   all_df <- NULL
   expect_no_warning(
@@ -1093,16 +1120,16 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
   )
 
   expect_equal(dim(training$data), c(2L, 18432L))
-  expect_equal(as.character(training$meta$Split), c("training", "training"))
-  expect_equal(as.character(training$meta$Description), c("Animal", "Car"))
+  expect_equal(as.character(training$meta$split), c("training", "training"))
+  expect_equal(as.character(training$meta$description), c("Animal", "Car"))
 
   expect_equal(dim(all$data), c(4L, 18432L))
   expect_equal(
-    as.character(all$meta$Split),
+    as.character(all$meta$split),
     c("training", "training", "testing", "testing")
   )
   expect_equal(
-    as.character(all$meta$Description),
+    as.character(all$meta$description),
     c("Animal", "Car", "Airplane", "Truck")
   )
   expect_equal(dim(all_df), c(4L, 18439L))

@@ -13,6 +13,10 @@ repo.
   canonical order.
 - All network dataset downloaders now have a configurable `timeout` argument, defaulting to 30
   minutes. Their downloads preserve an already-larger global R timeout and restore it afterward.
+- Image downloaders now share `as = "list"` canonical results with `data`, `meta`, `image_dim`,
+  `channel_order`, and source provenance. Metadata uses lower-case names and records train/test
+  identity explicitly. Fashion-MNIST and Kuzushiji-MNIST now support this result. Legacy data-frame
+  results remain available.
 
 # snedata 0.0.0.9002
 

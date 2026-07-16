@@ -3,7 +3,7 @@
 #' Download CIFAR-10 database of images.
 #'
 #' Downloads the image and label files for the training and test datasets and
-#' converts them to a data frame or a matrix/list result.
+#' converts them to a data frame or canonical list result.
 #'
 #' The CIFAR-10 dataset contains 60000 32 x 32 color images, divided into ten
 #' different classes, with 6000 images per class.
@@ -36,7 +36,8 @@
 #' * `9`: Truck
 #'
 #' There are 60,000 items in the data set. The first 50,000 are the training
-#' set, and the remaining 10,000 are the testing set.
+#' set, and the remaining 10,000 are the testing set. Canonical list results
+#' carry this identity in `meta$split`.
 #'
 #' Items in the dataset can be visualized with the
 #' [show_cifar()] function.
@@ -54,17 +55,16 @@
 #' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
 #' @param as Return format. Use `"data.frame"` for the original data frame
-#'   shape, or `"matrix"` for a list with `data`, `labels`, and
-#'   `descriptions`. The integer pixel matrix uses about 0.69 GiB; the wide
-#'   data-frame result needs additional memory. Use `"matrix"` if that result
+#'   shape, or `"list"` for the canonical image result described in
+#'   [download_mnist()]. The integer pixel matrix uses about 0.69 GiB; the wide
+#'   data-frame result needs additional memory. Use `"list"` if that result
 #'   is sufficient.
 #' @param timeout Minimum download timeout in seconds. The default accommodates
 #'   the large archive on slower connections; a larger existing global R timeout
 #'   is preserved.
 #' @return If `as = "data.frame"`, a data frame containing the CIFAR-10
-#'   dataset. If `as = "matrix"`, a list with `data`, an integer
-#'   matrix with one image per row, `labels`, a factor of numeric class
-#'   labels, and `descriptions`, a factor of class names.
+#'   dataset. If `as = "list"`, a canonical image result with factor class
+#'   labels and descriptions in `meta`.
 #' @export
 #' @examples
 #' \dontrun{
@@ -100,10 +100,10 @@ download_cifar10 <- function(
   destfile = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 ) {
-  as <- match.arg(as)
+  as <- image_result_as(as)
   if (is.null(destfile)) {
     workdir <- tempfile("cifar10-")
     dir.create(workdir)
@@ -154,7 +154,13 @@ download_cifar10 <- function(
     labels[batch_range] <- batch_res$labels
   }
 
-  format_cifar_result(res, labels, as = as)
+  format_cifar_result(
+    res,
+    labels,
+    split = c(rep("training", 50000L), rep("testing", 10000L)),
+    source = list(dataset = "CIFAR-10", url = url),
+    as = as
+  )
 }
 
 validate_cifar_archive_layout <- function(entries, asset) {
@@ -211,9 +217,14 @@ cifar_pixel_names <- function(n_pixels = 32 * 32 * 3) {
 format_cifar_result <- function(
   images,
   labels,
-  as = c("data.frame", "matrix")
+  split = rep("training", nrow(images)),
+  source = list(
+    dataset = "CIFAR-10",
+    url = "https://cave.cs.toronto.edu/kriz/cifar.html"
+  ),
+  as = c("data.frame", "list")
 ) {
-  as <- match.arg(as)
+  as <- image_result_as(as)
   label_values <- if (is.factor(labels)) {
     as.integer(as.character(labels))
   } else {
@@ -238,14 +249,19 @@ format_cifar_result <- function(
 
   colnames(images) <- cifar_pixel_names(ncol(images))
 
-  if (as == "matrix") {
-    return(list(
-      data = images,
-      labels = label_factor,
-      descriptions = descriptions
-    ))
-  }
-
+  result <- new_image_result(
+    images,
+    meta = data.frame(
+      id = seq_len(nrow(images)),
+      split = factor(split, levels = c("training", "testing")),
+      label = label_factor,
+      description = descriptions
+    ),
+    image_dim = c(height = 32L, width = 32L, channels = 3L),
+    channel_order = c("red", "green", "blue"),
+    source = source
+  )
+  if (as == "list") return(result)
   data.frame(images, Label = label_factor, Description = descriptions)
 }
 
@@ -253,7 +269,7 @@ format_cifar_result <- function(
 #'
 #' Display a CIFAR-10 image.
 #'
-#' @param df Data frame containing the CIFAR-10 dataframe.
+#' @param df A legacy CIFAR-10 data frame or canonical image result.
 #' @param n Row index of the image to display.
 #' @param interpolate If `TRUE`, use linear interpolation to smooth the
 #'   image. This can help when trying to confirm that you really are looking at
@@ -267,7 +283,8 @@ format_cifar_result <- function(
 #' }
 #' @export
 show_cifar <- function(df, n, interpolate = FALSE) {
-  show_cifarv(as.numeric(df[n, 1:3072]), interpolate = interpolate)
+  data <- image_result_data(df)
+  show_cifarv(as.numeric(data[n, 1:3072]), interpolate = interpolate)
 }
 
 read_cifar_bin <- function(

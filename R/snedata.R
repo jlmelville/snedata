@@ -82,11 +82,11 @@
 #' original data set is described at <http://yann.lecun.com/exdb/mnist/>,
 #' and this package downloads from the <https://github.com/fgnt/mnist>
 #' mirror. Functions are available to download the dataset as a data frame or
-#' matrix/list result and visualize individual digits:
+#' canonical list result and visualize individual digits:
 #'
 #' * [download_mnist()]. Downloads the MNIST dataset files as
-#'   a row-based data frame by default, or as a matrix/list result with
-#'   `as = "matrix"`.
+#'   a row-based data frame by default, or as a canonical list result with
+#'   `as = "list"`.
 #' * [show_mnist_digit()]. Display one of the MNIST digits.
 #'
 #' @section Fashion-MNIST functions:

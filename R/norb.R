@@ -3,7 +3,7 @@
 #' Download Small NORB database of images of toys.
 #'
 #' Downloads the image and label files for the training and test datasets and
-#' converts them to a data frame or a matrix/list result.
+#' converts them to a data frame or canonical list result.
 #'
 #' The Small NORB dataset contains images of 50 toys. The toys are divided into
 #' five categories (animal, human, airplane, truck, car) with ten examples per
@@ -52,7 +52,8 @@
 #'
 #' There are 48,600 items in the data set. The first 24,300 are the training
 #' set, and the remaining 24,300 are the testing set, but you can also use
-#' the `Split` column to determine which split a given row is in.
+#' the `Split` column (or `meta$split` in a list result) to determine which
+#' split a given row is in.
 #'
 #' Items in the dataset can be visualized with the
 #' [show_norb_object()] function.
@@ -66,21 +67,21 @@
 #' @param split Which split to download. Use `"all"` for both the training
 #'   and testing sets, or `"training"` or `"testing"` for one split.
 #' @param as Return format. Use `"data.frame"` for the original data frame
-#'   shape, or `"matrix"` for a list with `data` and `meta`. For `split =
+#'   shape, or `"list"` for the canonical image result described in
+#'   [download_mnist()]. For `split =
 #'   "all"`, the integer pixel matrix uses about 3.34 GiB; the wide data-frame
-#'   result needs additional memory. Use `"matrix"` if that result is
+#'   result needs additional memory. Use `"list"` if that result is
 #'   sufficient.
 #' @param timeout Minimum download timeout in seconds. The default is 30
 #'   minutes; a larger existing global R timeout is preserved.
 #' @return If `as = "data.frame"`, a data frame containing the Small NORB
-#'   dataset. If `as = "matrix"`, a list with `data`, an integer
-#'   matrix with one image pair per row, and `meta`, a data frame with the
-#'   non-pixel metadata columns.
+#'   dataset. If `as = "list"`, a canonical image result with an integer
+#'   image-pair matrix and lower-case metadata names in `meta`.
 #' @export
 #' @examples
 #' \dontrun{
-#' # download the data set as a matrix list
-#' norb <- download_norb_small(verbose = TRUE, as = "matrix")
+#' # download the data set as a canonical list
+#' norb <- download_norb_small(verbose = TRUE, as = "list")
 #'
 #' # first 24,300 instances are the training set
 #' norb_train <- head(norb$data, 24300)
@@ -88,8 +89,8 @@
 #' norb_test <- tail(norb$data, 24300)
 #'
 #' # Or equivalently
-#' norb_train2 <- norb$data[norb$meta$Split == "training", ]
-#' norb_test2 <- norb$data[norb$meta$Split == "testing", ]
+#' norb_train2 <- norb$data[norb$meta$split == "training", ]
+#' norb_test2 <- norb$data[norb$meta$split == "testing", ]
 #'
 #' identical(norb_train, norb_train2) # TRUE
 #' identical(norb_test, norb_test2) # also TRUE
@@ -101,8 +102,8 @@
 #' # plot the scores of the first two components
 #' plot(pca$x[, 1:2], type = "n")
 #' text(pca$x[, 1:2],
-#'   labels = norb$meta$Label[sample_rows],
-#'   col = rainbow(length(levels(norb$meta$Label)))[norb$meta$Label[sample_rows]]
+#'   labels = norb$meta$label[sample_rows],
+#'   col = rainbow(length(levels(norb$meta$label)))[norb$meta$label[sample_rows]]
 #' )
 #'
 #' }
@@ -121,13 +122,13 @@ download_norb_small <- function(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
   verbose = FALSE,
   split = c("all", "training", "testing"),
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 ) {
   with_download_timeout(
     {
       split <- match.arg(split)
-      as <- match.arg(as)
+      as <- image_result_as(as)
       if (split != "all") {
         read_norb_data(
           base_url = base_url,
@@ -150,7 +151,7 @@ download_norb_small <- function(
 #' The NORB objects as stored as image pairs and displayed with the first image
 #' in the pair on top, and the second image in the pair below it.
 #'
-#' @param df Data frame containing NORB objects.
+#' @param df A legacy NORB data frame or canonical image result.
 #' @param category The category of the object, an integer from 0 to 4.
 #' @param instance The instance in the category, an integer from 0 to 9.
 #' @param elevation The elevation of the camera, an integer from 0 to 8,
@@ -177,17 +178,26 @@ show_norb_object <- function(
   azimuth = 0,
   lighting = 0
 ) {
-  x <- df[
-    df$Label == category &
-      df$Instance == instance &
-      df$Elevation == elevation &
-      df$Azimuth == azimuth &
-      df$Lighting == lighting,
-  ]
-  if (nrow(x) != 1) {
-    stop("Found ", nrow(x), " entries, but need 1")
+  meta <- image_result_meta(df)
+  if (is.null(meta)) {
+    meta <- data.frame(
+      instance = df$Instance,
+      elevation = df$Elevation,
+      azimuth = df$Azimuth,
+      lighting = df$Lighting,
+      label = df$Label
+    )
   }
-  show_norb_vec(as.numeric(x[, 1:(96 * 96 * 2)]))
+  idx <- meta$label == category &
+    meta$instance == instance &
+    meta$elevation == elevation &
+    meta$azimuth == azimuth &
+    meta$lighting == lighting
+  if (sum(idx) != 1L) {
+    stop("Found ", sum(idx), " entries, but need 1")
+  }
+  data <- image_result_data(df)
+  show_norb_vec(as.numeric(data[idx, 1:(96 * 96 * 2)]))
   title <- paste0(
     c(
       "Category:",
@@ -215,9 +225,9 @@ read_norb_data <- function(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
   split = "training",
   verbose = TRUE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "list")
 ) {
-  as <- match.arg(as)
+  as <- image_result_as(as)
   ids <- switch(
     split,
     training = "46789",
@@ -288,18 +298,40 @@ format_norb_result <- function(
   info,
   cats,
   split,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "list"),
+  source = list(
+    dataset = "Small NORB",
+    url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/"
+  )
 ) {
-  as <- match.arg(as)
+  as <- image_result_as(as)
   data <- images
   colnames(data) <- norb_pixel_names(ncol(images))
-  meta <- format_norb_meta(info, cats, split = split, n_images = nrow(images))
-
-  if (as == "matrix") {
-    return(list(data = data, meta = meta))
-  }
-
-  data.frame(data, meta)
+  legacy_meta <- format_norb_meta(
+    info,
+    cats,
+    split = split,
+    n_images = nrow(images)
+  )
+  meta <- data.frame(
+    id = seq_len(nrow(data)),
+    instance = legacy_meta$Instance,
+    elevation = legacy_meta$Elevation,
+    azimuth = legacy_meta$Azimuth,
+    lighting = legacy_meta$Lighting,
+    split = legacy_meta$Split,
+    label = legacy_meta$Label,
+    description = legacy_meta$Description
+  )
+  result <- new_image_result(
+    data,
+    meta = meta,
+    image_dim = c(height = 96L, width = 96L, cameras = 2L),
+    channel_order = c("camera_left", "camera_right"),
+    source = source
+  )
+  if (as == "list") return(result)
+  data.frame(data, legacy_meta)
 }
 
 format_norb_meta <- function(info, cats, split, n_images) {
@@ -341,7 +373,7 @@ read_norb_all_data <- function(base_url, verbose, as) {
     base_url = base_url,
     split = "training",
     verbose = verbose,
-    as = "matrix"
+    as = "list"
   )
   n_training <- nrow(training$data)
   n_features <- ncol(training$data)
@@ -349,6 +381,9 @@ read_norb_all_data <- function(base_url, verbose, as) {
   data[seq_len(n_training), ] <- training$data
   colnames(data) <- colnames(training$data)
   meta <- training$meta
+  image_dim <- training$image_dim
+  channel_order <- training$channel_order
+  source <- training$source
   training <- NULL
   gc(FALSE)
 
@@ -356,7 +391,7 @@ read_norb_all_data <- function(base_url, verbose, as) {
     base_url = base_url,
     split = "testing",
     verbose = verbose,
-    as = "matrix"
+    as = "list"
   )
   n_testing <- nrow(testing$data)
   if (n_testing != n_training || ncol(testing$data) != n_features) {
@@ -367,10 +402,25 @@ read_norb_all_data <- function(base_url, verbose, as) {
   testing <- NULL
   gc(FALSE)
 
-  if (as == "matrix") {
-    return(list(data = data, meta = meta))
-  }
-  data.frame(data, meta)
+  meta$id <- seq_len(nrow(meta))
+  result <- new_image_result(
+    data,
+    meta = meta,
+    image_dim = image_dim,
+    channel_order = channel_order,
+    source = source
+  )
+  if (as == "list") return(result)
+  legacy_meta <- data.frame(
+    Instance = meta$instance,
+    Elevation = meta$elevation,
+    Azimuth = meta$azimuth,
+    Lighting = meta$lighting,
+    Split = meta$split,
+    Label = meta$label,
+    Description = meta$description
+  )
+  data.frame(data, legacy_meta)
 }
 
 read_norb_images <- function(

@@ -7,7 +7,7 @@
 show_cifar(df, n, interpolate = FALSE)
 }
 \arguments{
-\item{df}{Data frame containing the CIFAR-10 dataframe.}
+\item{df}{A legacy CIFAR-10 data frame or canonical image result.}
 
 \item{n}{Row index of the image to display.}
 

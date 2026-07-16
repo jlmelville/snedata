@@ -42,7 +42,8 @@ The \code{Label} levels correspond to:
 
 There are 48,600 items in the data set. The first 24,300 are the training
 set, and the remaining 24,300 are the testing set, but you can also use
-the \code{Split} column to determine which split a given row is in.
+the \code{Split} column (or \code{meta$split} in a list result) to determine which
+split a given row is in.
 
 Items in the dataset can be visualized with the
 \code{\link[=show_norb_object]{show_norb_object()}} function.
@@ -55,7 +56,7 @@ download_norb_small(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
   verbose = FALSE,
   split = c("all", "training", "testing"),
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 )
 }
@@ -69,8 +70,9 @@ message.}
 and testing sets, or \code{"training"} or \code{"testing"} for one split.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original data frame
-shape, or \code{"matrix"} for a list with \code{data} and \code{meta}. For \code{split = "all"}, the integer pixel matrix uses about 3.34 GiB; the wide data-frame
-result needs additional memory. Use \code{"matrix"} if that result is
+shape, or \code{"list"} for the canonical image result described in
+\code{\link[=download_mnist]{download_mnist()}}. For \code{split = "all"}, the integer pixel matrix uses about 3.34 GiB; the wide data-frame
+result needs additional memory. Use \code{"list"} if that result is
 sufficient.}
 
 \item{timeout}{Minimum download timeout in seconds. The default is 30
@@ -78,16 +80,15 @@ minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the Small NORB
-dataset. If \code{as = "matrix"}, a list with \code{data}, an integer
-matrix with one image pair per row, and \code{meta}, a data frame with the
-non-pixel metadata columns.
+dataset. If \code{as = "list"}, a canonical image result with an integer
+image-pair matrix and lower-case metadata names in \code{meta}.
 }
 \description{
 Download Small NORB database of images of toys.
 }
 \details{
 Downloads the image and label files for the training and test datasets and
-converts them to a data frame or a matrix/list result.
+converts them to a data frame or canonical list result.
 
 The Small NORB dataset contains images of 50 toys. The toys are divided into
 five categories (animal, human, airplane, truck, car) with ten examples per
@@ -103,8 +104,8 @@ as factors.
 }
 \examples{
 \dontrun{
-# download the data set as a matrix list
-norb <- download_norb_small(verbose = TRUE, as = "matrix")
+# download the data set as a canonical list
+norb <- download_norb_small(verbose = TRUE, as = "list")
 
 # first 24,300 instances are the training set
 norb_train <- head(norb$data, 24300)
@@ -112,8 +113,8 @@ norb_train <- head(norb$data, 24300)
 norb_test <- tail(norb$data, 24300)
 
 # Or equivalently
-norb_train2 <- norb$data[norb$meta$Split == "training", ]
-norb_test2 <- norb$data[norb$meta$Split == "testing", ]
+norb_train2 <- norb$data[norb$meta$split == "training", ]
+norb_test2 <- norb$data[norb$meta$split == "testing", ]
 
 identical(norb_train, norb_train2) # TRUE
 identical(norb_test, norb_test2) # also TRUE
@@ -125,8 +126,8 @@ pca <- prcomp(norb_r1000, retx = TRUE, rank. = 2)
 # plot the scores of the first two components
 plot(pca$x[, 1:2], type = "n")
 text(pca$x[, 1:2],
-  labels = norb$meta$Label[sample_rows],
-  col = rainbow(length(levels(norb$meta$Label)))[norb$meta$Label[sample_rows]]
+  labels = norb$meta$label[sample_rows],
+  col = rainbow(length(levels(norb$meta$label)))[norb$meta$label[sample_rows]]
 )
 
 }

@@ -20,8 +20,11 @@ This page has a compact table of the available data and some longer notes and ex
 | Frey and Olivetti faces | `frey_faces()`, `olivetti_faces()` | 1,965 and 400 | Images of faces. Requires the suggested `RnavGraphImageData` package. |
 | Isomap datasets | `download_isomap_swiss_roll()`, `download_isomap_faces()` | 20,000 and 698 | Downloads archived Matlab data; requires the suggested `R.matlab` package, and `gzip` or `uncompress` for faces. |
 
-For MNIST, QMNIST, CIFAR-10, Small NORB, and COIL, you can return a list containing the matrix of
-the numeric data and any labels separately. Supply `as = "matrix"`.
+For MNIST, QMNIST, Fashion-MNIST, Kuzushiji-MNIST, CIFAR-10, Small NORB, and COIL, use
+`as = "list"` for the canonical image result. Its `data` matrix has one image per row and its
+`meta` data frame carries lower-case labels, descriptions, and explicit train/test split identity
+where applicable. For example, use `x$data[x$meta$split == "training", ]`. The legacy wide data
+frame remains available with `as = "data.frame"`.
 
 ## Notes
 

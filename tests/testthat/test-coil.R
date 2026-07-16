@@ -62,7 +62,7 @@ test_that("pixel name helpers match documented order", {
   )
 })
 
-test_that("read_coil_dir returns sorted data frames and matrix lists", {
+test_that("read_coil_dir returns sorted data frames and canonical lists", {
   skip_if_not_installed("png")
 
   tmpdir <- tempfile()
@@ -76,7 +76,7 @@ test_that("read_coil_dir returns sorted data frames and matrix lists", {
   )
   mat <- read_coil_dir(
     tmpdir,
-    as = "matrix",
+    as = "list",
     pixel_names = coil20_pixel_names(width = 2, height = 2)
   )
 
@@ -84,10 +84,10 @@ test_that("read_coil_dir returns sorted data frames and matrix lists", {
   expect_equal(rownames(df), c("1_0", "2_1"))
   expect_equal(names(df), c("x1_y1", "x1_y2", "x2_y1", "x2_y2", "Label"))
   expect_equal(as.character(df$Label), c("1", "2"))
-  expect_named(mat, c("data", "labels", "poses", "ids"))
+  expect_named(mat, c("data", "meta", "image_dim", "channel_order", "source"))
   expect_equal(dim(mat$data), c(2L, 4L))
-  expect_equal(mat$ids, c("1_0", "2_1"))
-  expect_equal(as.character(mat$labels), c("1", "2"))
+  expect_equal(mat$meta$id, c("1_0", "2_1"))
+  expect_equal(as.character(mat$meta$label), c("1", "2"))
 })
 
 test_that("RGB PNGs can be read into documented channel order", {
@@ -209,7 +209,7 @@ test_that("show_coil_object plots data frames and matrix-list results", {
     poses = 0L,
     pixel_names = coil20_pixel_names(),
     label_levels = 1:20,
-    as = "matrix"
+    as = "list"
   )
 
   path <- tempfile(fileext = ".pdf")

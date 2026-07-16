@@ -35,7 +35,8 @@ the \code{Description} column):
 }
 
 There are 60,000 items in the data set. The first 50,000 are the training
-set, and the remaining 10,000 are the testing set.
+set, and the remaining 10,000 are the testing set. Canonical list results
+carry this identity in \code{meta$split}.
 
 Items in the dataset can be visualized with the
 \code{\link[=show_cifar]{show_cifar()}} function.
@@ -49,7 +50,7 @@ download_cifar10(
   destfile = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 )
 }
@@ -68,9 +69,9 @@ will be deleted before the function returns. Only worth setting to
 message.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original data frame
-shape, or \code{"matrix"} for a list with \code{data}, \code{labels}, and
-\code{descriptions}. The integer pixel matrix uses about 0.69 GiB; the wide
-data-frame result needs additional memory. Use \code{"matrix"} if that result
+shape, or \code{"list"} for the canonical image result described in
+\code{\link[=download_mnist]{download_mnist()}}. The integer pixel matrix uses about 0.69 GiB; the wide
+data-frame result needs additional memory. Use \code{"list"} if that result
 is sufficient.}
 
 \item{timeout}{Minimum download timeout in seconds. The default accommodates
@@ -79,16 +80,15 @@ is preserved.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the CIFAR-10
-dataset. If \code{as = "matrix"}, a list with \code{data}, an integer
-matrix with one image per row, \code{labels}, a factor of numeric class
-labels, and \code{descriptions}, a factor of class names.
+dataset. If \code{as = "list"}, a canonical image result with factor class
+labels and descriptions in \code{meta}.
 }
 \description{
 Download CIFAR-10 database of images.
 }
 \details{
 Downloads the image and label files for the training and test datasets and
-converts them to a data frame or a matrix/list result.
+converts them to a data frame or canonical list result.
 
 The CIFAR-10 dataset contains 60000 32 x 32 color images, divided into ten
 different classes, with 6000 images per class.

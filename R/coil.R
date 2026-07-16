@@ -7,7 +7,7 @@ coil_base_url <- "https://cave.cs.columbia.edu/old/databases/SLAM_coil-20_coil-1
 #' Download the processed Columbia Object Image Library COIL-20 dataset.
 #'
 #' Downloads and expands the processed COIL-20 ZIP archive and converts the PNG
-#' files to a data frame or matrix-list result. COIL-20 contains 20 objects,
+#' files to a data frame or canonical list result. COIL-20 contains 20 objects,
 #' each represented by 72 grayscale poses. Each image has resolution 128 x 128.
 #'
 #' The optional [png](https://cran.r-project.org/package=png) package is
@@ -32,12 +32,13 @@ coil_base_url <- "https://cave.cs.columbia.edu/old/databases/SLAM_coil-20_coil-1
 #'   dedicated extraction directory are removed.
 #' @param verbose If `TRUE`, log download and extraction progress.
 #' @param as Return format. Use `"data.frame"` for the original wide data frame
-#'   shape, or `"matrix"` for a list with `data`, `labels`, `poses`, and `ids`.
+#'   shape, or `"list"` for the canonical image result described in
+#'   [download_mnist()].
 #' @param timeout Minimum download timeout in seconds. The default is 30
 #'   minutes; a larger existing global R timeout is preserved.
 #' @return If `as = "data.frame"`, a data frame containing the COIL-20 dataset.
-#'   If `as = "matrix"`, a list containing a numeric matrix with one image per
-#'   row, factor labels, integer poses, and row ids.
+#'   If `as = "list"`, a canonical image result with object ids, poses, and
+#'   factor labels in `meta`.
 #' @references
 #' The Columbia Object Image Library COIL-20
 #' <https://cave.cs.columbia.edu/repository/COIL-20>
@@ -51,10 +52,10 @@ download_coil20 <- function(
   file = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 ) {
-  as <- match.arg(as)
+  as <- image_result_as(as)
   download_coil(
     url = coil_url("coil-20", "coil-20-proc.zip"),
     file = file,
@@ -71,7 +72,7 @@ download_coil20 <- function(
 #' Download the Columbia Object Image Library COIL-100 dataset.
 #'
 #' Downloads and expands the COIL-100 ZIP archive and converts the PNG files to
-#' a data frame or matrix-list result. COIL-100 contains 100 objects, each
+#' a data frame or canonical list result. COIL-100 contains 100 objects, each
 #' represented by 72 RGB poses at five-degree viewing-angle increments. Each
 #' image has resolution 128 x 128.
 #'
@@ -89,7 +90,7 @@ download_coil20 <- function(
 #' Pixel values range from 0 to 1. Within each channel, the `x` index increases
 #' from left to right and the `y` index increases from top to bottom.
 #' The numeric pixel matrix uses about 2.64 GiB; the wide data-frame result
-#' needs additional memory. Use `as = "matrix"` if that result is sufficient.
+#' needs additional memory. Use `as = "list"` if that result is sufficient.
 #'
 #' Row names are `"<object>_<angle>"`, where `<object>` is the object id and
 #' `<angle>` is the viewing angle in degrees, from 0 to 355 in five-degree
@@ -97,25 +98,25 @@ download_coil20 <- function(
 #'
 #' @inheritParams download_coil20
 #' @return If `as = "data.frame"`, a data frame containing the COIL-100 dataset.
-#'   If `as = "matrix"`, a list containing a numeric matrix with one image per
-#'   row, factor labels, integer viewing angles, and row ids.
+#'   If `as = "list"`, a canonical image result with object ids, viewing
+#'   angles, and factor labels in `meta`.
 #' @references
 #' The Columbia Object Image Library COIL-100
 #' <https://cave.cs.columbia.edu/repository/COIL-100>
 #' @export
 #' @examples
 #' \dontrun{
-#' coil100 <- download_coil100(verbose = TRUE, as = "matrix")
+#' coil100 <- download_coil100(verbose = TRUE, as = "list")
 #' show_coil_object(coil100, object = 5, pose = 150)
 #' }
 download_coil100 <- function(
   file = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 ) {
-  as <- match.arg(as)
+  as <- image_result_as(as)
   download_coil(
     url = coil_url("coil-100", "coil-100.zip"),
     file = file,
@@ -132,7 +133,7 @@ download_coil100 <- function(
 #' Display a COIL-20 or COIL-100 object pose.
 #'
 #' @param df Data frame returned by [download_coil20()] or [download_coil100()].
-#'   Matrix-list results returned with `as = "matrix"` are also supported.
+#'   Canonical list results returned with `as = "list"` are also supported.
 #' @param object Object id to display. COIL-20 contains objects 1 to 20 and
 #'   COIL-100 contains objects 1 to 100.
 #' @param pose For COIL-20, the pose id to display, from 0 to 71. For COIL-100,
@@ -182,11 +183,11 @@ download_coil <- function(
   file = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800,
   spec
 ) {
-  as <- match.arg(as)
+  as <- image_result_as(as)
   paths <- setup_coil_download_paths(url = url, file = file)
   if (cleanup) {
     on.exit(
@@ -237,11 +238,11 @@ read_coil_zip <- function(
   exdir = NULL,
   cleanup = FALSE,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   spec = NULL,
   complete = FALSE
 ) {
-  as <- match.arg(as)
+  as <- image_result_as(as)
   owns_exdir <- is.null(exdir)
   if (owns_exdir) {
     exdir <- tempfile("coil-unzip-")
@@ -278,12 +279,12 @@ read_coil_dir <- function(
   dir,
   recursive = FALSE,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   pixel_names = NULL,
   spec = NULL,
   complete = FALSE
 ) {
-  as <- match.arg(as)
+  as <- image_result_as(as)
   if (!dir.exists(dir)) {
     stop("Directory does not exist: ", dir, call. = FALSE)
   }
@@ -308,12 +309,12 @@ read_coil_dir <- function(
 read_coil_files <- function(
   files,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   pixel_names = NULL,
   spec = NULL,
   complete = FALSE
 ) {
-  as <- match.arg(as)
+  as <- image_result_as(as)
   if (length(files) == 0) {
     stop("No PNG files found", call. = FALSE)
   }
@@ -348,6 +349,16 @@ read_coil_files <- function(
       pixel_names
     },
     label_levels = if (is.null(spec)) NULL else spec$object_range,
+    image_dim = if (is.null(spec)) NULL else spec$dim,
+    channel_order = if (is.null(spec) || length(spec$dim) == 2L) {
+      "gray"
+    } else {
+      c("red", "green", "blue")
+    },
+    source = list(
+      dataset = if (is.null(spec)) "COIL" else spec$name,
+      url = coil_base_url
+    ),
     as = as
   )
 }
@@ -377,9 +388,12 @@ format_coil_result <- function(
   poses,
   pixel_names = NULL,
   label_levels = NULL,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "list"),
+  image_dim = NULL,
+  channel_order = NULL,
+  source = list(dataset = "COIL", url = coil_base_url)
 ) {
-  as <- match.arg(as)
+  as <- image_result_as(as)
   if (nrow(images) != length(objects) || length(objects) != length(poses)) {
     stop("Image, object, and pose counts must match", call. = FALSE)
   }
@@ -400,14 +414,35 @@ format_coil_result <- function(
   colnames(images) <- pixel_names
   rownames(images) <- ids
 
-  if (as == "matrix") {
-    return(list(
-      data = images,
-      labels = labels,
-      poses = poses,
-      ids = ids
-    ))
+  if (is.null(image_dim)) {
+    image_dim <- if (ncol(images) == coil100_n_pixels()) {
+      c(height = 128L, width = 128L, channels = 3L)
+    } else if (ncol(images) == coil20_n_pixels()) {
+      c(height = 128L, width = 128L, channels = 1L)
+    } else {
+      c(height = 1L, width = ncol(images), channels = 1L)
+    }
   }
+  if (is.null(channel_order)) {
+    channel_order <- if (length(image_dim) >= 3L && image_dim[[3]] == 3L) {
+      c("red", "green", "blue")
+    } else {
+      "gray"
+    }
+  }
+  result <- new_image_result(
+    images,
+    meta = data.frame(
+      id = ids,
+      object = objects,
+      pose = poses,
+      label = labels
+    ),
+    image_dim = image_dim,
+    channel_order = channel_order,
+    source = source
+  )
+  if (as == "list") return(result)
 
   df <- as.data.frame(images)
   df$Label <- labels

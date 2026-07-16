@@ -8,7 +8,7 @@ show_coil_object(df, object, pose)
 }
 \arguments{
 \item{df}{Data frame returned by \code{\link[=download_coil20]{download_coil20()}} or \code{\link[=download_coil100]{download_coil100()}}.
-Matrix-list results returned with \code{as = "matrix"} are also supported.}
+Canonical list results returned with \code{as = "list"} are also supported.}
 
 \item{object}{Object id to display. COIL-20 contains objects 1 to 20 and
 COIL-100 contains objects 1 to 100.}

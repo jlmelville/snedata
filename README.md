@@ -94,8 +94,9 @@ text(pca$x[, 1:2], labels = mnist_r1000$Label, cex = 0.5,
 # save to disk
 save(mnist, file = "mnist.Rda")
 
-# To avoid a very wide data frame for larger image datasets:
-mnist_matrix <- download_mnist(as = "matrix")
+# To avoid a very wide data frame and retain explicit split metadata:
+mnist_list <- download_mnist(as = "list")
+mnist_train <- mnist_list$data[mnist_list$meta$split == "training", ]
 
 # download the original Isomap Swiss Roll dataset from the Internet Archive
 # requires the optional R.matlab package
@@ -108,7 +109,7 @@ show_isomap_face(isomap_faces, 1)
 
 # download COIL-20 object images
 # requires the optional png package
-coil20 <- download_coil20(as = "matrix")
+coil20 <- download_coil20(as = "list")
 show_coil_object(coil20, object = 5, pose = 4)
 ```
 

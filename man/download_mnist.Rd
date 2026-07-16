@@ -28,7 +28,7 @@ For more information about the original dataset see
 download_mnist(
   base_url = mnist_url,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 )
 }
@@ -39,15 +39,15 @@ download_mnist(
 message.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original data frame
-shape, or \code{"matrix"} for a list with \code{data} and \code{labels}.}
+shape, or \code{"list"} for the canonical image result.}
 
 \item{timeout}{Minimum download timeout in seconds. The default is 30
 minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the MNIST
-digits. If \code{as = "matrix"}, a list with \code{data}, an integer matrix
-with one image per row, and \code{labels}, a factor of digit labels.
+digits. If \code{as = "list"}, a canonical image result with an integer
+matrix in \code{data} and factor digit labels in \code{meta$label}.
 }
 \description{
 Download MNIST database of handwritten digits.
@@ -55,11 +55,21 @@ Download MNIST database of handwritten digits.
 \details{
 Downloads the image and label files for the training and test datasets from
 the \url{https://github.com/fgnt/mnist} mirror of the original MNIST files
-and converts them to a data frame or a matrix/list result.
+and converts them to a data frame or canonical list result.
 }
 \note{
 Originally based on a function by Brendan O'Connor.
 }
+\section{Canonical list results}{
+
+\code{as = "list"} returns a shallow list with \code{data} (one image per row),
+\code{meta} (one metadata row per image), \code{image_dim}, \code{channel_order}, and
+\code{source}. Metadata uses lower-case invariant names when applicable: \code{label},
+\code{description}, \code{split}, \code{id}, \code{object}, and \code{pose}; dataset-specific fields
+are retained in \code{meta}. \code{split} is explicit, so train/test identity does not
+depend on row position. \code{source} records the dataset and acquisition URL.
+}
+
 \examples{
 \dontrun{
 # download the MNIST data set

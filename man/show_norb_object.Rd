@@ -14,7 +14,7 @@ show_norb_object(
 )
 }
 \arguments{
-\item{df}{Data frame containing NORB objects.}
+\item{df}{A legacy NORB data frame or canonical image result.}
 
 \item{category}{The category of the object, an integer from 0 to 4.}
 

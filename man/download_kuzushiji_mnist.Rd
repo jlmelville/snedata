@@ -29,6 +29,7 @@ For more information see
 download_kuzushiji_mnist(
   base_url = kuzushiji_mnist_url,
   verbose = FALSE,
+  as = c("data.frame", "list"),
   timeout = 1800
 )
 }
@@ -38,18 +39,23 @@ download_kuzushiji_mnist(
 \item{verbose}{If \code{TRUE}, then download progress will be logged as a
 message.}
 
+\item{as}{Return format. Use \code{"data.frame"} for the original data frame
+shape, or \code{"list"} for the canonical image result described in
+\code{\link[=download_mnist]{download_mnist()}}.}
+
 \item{timeout}{Minimum download timeout in seconds. The default is 30
 minutes; a larger existing global R timeout is preserved.}
 }
 \value{
-Data frame containing Kuzushiji-MNIST.
+A data frame containing Kuzushiji-MNIST, or a canonical image result
+with factor labels and explicit split identity in \code{meta}.
 }
 \description{
 Download Kuzushiji-MNIST database of images of cursive Japanese writing.
 }
 \details{
 Downloads the image and label files for the training and test datasets and
-converts them to a data frame. The dataset is intended to be a drop-in
+converts them to a data frame or canonical image result. The dataset is intended to be a drop-in
 replacement for the MNIST digits dataset.
 }
 \note{

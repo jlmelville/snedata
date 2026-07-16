@@ -28,7 +28,7 @@ For more information see \url{https://github.com/facebookresearch/qmnist}.
 download_qmnist(
   base_url = qmnist_url,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 )
 }
@@ -39,15 +39,17 @@ download_qmnist(
 message.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original data frame
-shape, or \code{"matrix"} for a list with \code{data} and \code{labels}.}
+shape, or \code{"list"} for the canonical image result described in
+\code{\link[=download_mnist]{download_mnist()}}.}
 
 \item{timeout}{Minimum download timeout in seconds. The default is 30
 minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the QMNIST
-digits. If \code{as = "matrix"}, a list with \code{data}, an integer matrix
-with one image per row, and \code{labels}, a factor of digit labels.
+digits. If \code{as = "list"}, a canonical image result. Its \code{meta} includes
+all eight QMNIST extended-label fields in addition to \code{id}, \code{split}, and
+\code{label}.
 }
 \description{
 Download QMNIST database of handwritten digits. This is the same as the
@@ -56,7 +58,7 @@ MNIST digits, but with an extended test dataset of 60,000 digits.
 \details{
 Downloads the image and label files for the training and test datasets from
 \url{https://github.com/facebookresearch/qmnist} and converts them to a data
-frame or a matrix/list result.
+frame or canonical list result.
 }
 \examples{
 \dontrun{

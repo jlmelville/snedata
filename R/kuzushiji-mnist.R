@@ -7,7 +7,7 @@ kuzushiji_mnist_url <-
 #' Download Kuzushiji-MNIST database of images of cursive Japanese writing.
 #'
 #' Downloads the image and label files for the training and test datasets and
-#' converts them to a data frame. The dataset is intended to be a drop-in
+#' converts them to a data frame or canonical image result. The dataset is intended to be a drop-in
 #' replacement for the MNIST digits dataset.
 #'
 #' @format A data frame with 786 variables:
@@ -33,9 +33,13 @@ kuzushiji_mnist_url <-
 #' @param base_url Base URL that the files are located at.
 #' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
+#' @param as Return format. Use `"data.frame"` for the original data frame
+#'   shape, or `"list"` for the canonical image result described in
+#'   [download_mnist()].
 #' @param timeout Minimum download timeout in seconds. The default is 30
 #'   minutes; a larger existing global R timeout is preserved.
-#' @return Data frame containing Kuzushiji-MNIST.
+#' @return A data frame containing Kuzushiji-MNIST, or a canonical image result
+#'   with factor labels and explicit split identity in `meta`.
 #' @note Originally based on a function by Brendan O'Connor.
 #' @export
 #' @examples
@@ -71,13 +75,17 @@ kuzushiji_mnist_url <-
 download_kuzushiji_mnist <- function(
   base_url = kuzushiji_mnist_url,
   verbose = FALSE,
+  as = c("data.frame", "list"),
   timeout = 1800
 ) {
+  as <- image_result_as(as)
   res <- download_mnist(
     base_url = base_url,
     verbose = verbose,
+    as = "list",
     timeout = timeout
   )
-
-  res
+  res$source$dataset <- "Kuzushiji-MNIST"
+  if (as == "list") return(res)
+  data.frame(res$data, Label = res$meta$label)
 }

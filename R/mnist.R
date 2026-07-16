@@ -18,8 +18,9 @@
 #' }
 #' @export
 show_mnist_digit <- function(df, n, col = grDevices::gray(1:255 / 255), ...) {
+  data <- image_result_data(df)
   graphics::image(
-    matrix(as.numeric(df[n, 1:784]), nrow = 28)[, 28:1],
+    matrix(as.numeric(data[n, 1:784]), nrow = 28)[, 28:1],
     col = col,
     ...
   )
@@ -34,7 +35,7 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 #'
 #' Downloads the image and label files for the training and test datasets from
 #' the <https://github.com/fgnt/mnist> mirror of the original MNIST files
-#' and converts them to a data frame or a matrix/list result.
+#' and converts them to a data frame or canonical list result.
 #'
 #' @format A data frame with 785 variables:
 #'
@@ -59,12 +60,19 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 #' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
 #' @param as Return format. Use `"data.frame"` for the original data frame
-#'   shape, or `"matrix"` for a list with `data` and `labels`.
+#'   shape, or `"list"` for the canonical image result.
+#' @section Canonical list results:
+#' `as = "list"` returns a shallow list with `data` (one image per row),
+#' `meta` (one metadata row per image), `image_dim`, `channel_order`, and
+#' `source`. Metadata uses lower-case invariant names when applicable: `label`,
+#' `description`, `split`, `id`, `object`, and `pose`; dataset-specific fields
+#' are retained in `meta`. `split` is explicit, so train/test identity does not
+#' depend on row position. `source` records the dataset and acquisition URL.
 #' @param timeout Minimum download timeout in seconds. The default is 30
 #'   minutes; a larger existing global R timeout is preserved.
 #' @return If `as = "data.frame"`, a data frame containing the MNIST
-#'   digits. If `as = "matrix"`, a list with `data`, an integer matrix
-#'   with one image per row, and `labels`, a factor of digit labels.
+#'   digits. If `as = "list"`, a canonical image result with an integer
+#'   matrix in `data` and factor digit labels in `meta$label`.
 #' @note Originally based on a function by Brendan O'Connor.
 #' @export
 #' @examples
@@ -91,25 +99,27 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 download_mnist <- function(
   base_url = mnist_url,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 ) {
   with_download_timeout(
     {
-      as <- match.arg(as)
+      as <- image_result_as(as)
       train <- parse_files(
         "train-images-idx3-ubyte.gz",
         "train-labels-idx1-ubyte.gz",
         base_url = base_url,
         verbose = verbose,
-        as = as
+        split = "training",
+        dataset = "MNIST"
       )
       test <- parse_files(
         "t10k-images-idx3-ubyte.gz",
         "t10k-labels-idx1-ubyte.gz",
         base_url = base_url,
         verbose = verbose,
-        as = as
+        split = "testing",
+        dataset = "MNIST"
       )
       combine_image_label_results(train, test, as = as)
     },
@@ -208,7 +218,9 @@ parse_mnist_image_connection <- function(f, asset) {
   )
   assert_binary_eof(f, asset, header = dimensions)
 
-  matrix(pixels, ncol = pixels_per_image, byrow = TRUE)
+  images <- matrix(pixels, ncol = pixels_per_image, byrow = TRUE)
+  attr(images, "image_dim") <- c(height = n_rows, width = n_cols)
+  images
 }
 
 # Parse Label File
@@ -278,17 +290,18 @@ parse_mnist_label_connection <- function(f, asset) {
 #  MNIST-like projects.
 # @param verbose If \code{TRUE}, generate a diagnostic message as files are
 #   downloaded.
-# @param as Return format. See \code{\link{download_mnist}}.
-# @return Data frame or matrix/list result containing images and labels.
+# @param split Dataset split represented by the files.
+# @param dataset Dataset name recorded in the canonical result source.
+# @return Canonical image result containing images and labels.
 parse_files <- function(
   image_filename,
   label_filename,
   base_url = mnist_url,
   label_parser = parse_label_file,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  split = "training",
+  dataset = "MNIST"
 ) {
-  as <- match.arg(as)
   images <- parse_image_file(
     image_filename,
     base_url = base_url,
@@ -319,15 +332,21 @@ parse_files <- function(
     )
   }
 
-  format_image_label_result(images, labels, as = as)
+  format_image_label_result(
+    images,
+    labels,
+    split = split,
+    source = list(dataset = dataset, url = base_url)
+  )
 }
 
 format_image_label_result <- function(
   images,
   labels,
-  as = c("data.frame", "matrix")
+  split = "training",
+  source = list(dataset = "MNIST", url = mnist_url)
 ) {
-  as <- match.arg(as)
+  qmnist_metadata <- attr(labels, "qmnist_metadata")
   labels <- factor(labels)
 
   if (nrow(images) != length(labels)) {
@@ -341,28 +360,50 @@ format_image_label_result <- function(
   }
 
   colnames(images) <- paste0("px", seq_len(ncol(images)))
-
-  if (as == "matrix") {
-    return(list(data = images, labels = labels))
+  meta <- data.frame(
+    id = seq_len(nrow(images)),
+    split = factor(rep(split, nrow(images)), levels = c("training", "testing")),
+    label = labels
+  )
+  if (identical(source$dataset, "QMNIST")) {
+    if (is.null(qmnist_metadata)) {
+      qmnist_metadata <- matrix(
+        NA_integer_,
+        nrow = nrow(images),
+        ncol = length(qmnist_extended_label_columns),
+        dimnames = list(NULL, qmnist_extended_label_columns)
+      )
+    }
+    meta <- cbind(meta, as.data.frame(qmnist_metadata))
   }
-
-  df <- as.data.frame(images)
-  df$Label <- labels
-  df
+  image_dim <- attr(images, "image_dim")
+  if (is.null(image_dim)) {
+    side <- sqrt(ncol(images))
+    image_dim <- c(height = side, width = side)
+  }
+  new_image_result(
+    images,
+    meta = meta,
+    image_dim = image_dim,
+    channel_order = "gray",
+    source = source
+  )
 }
 
 combine_image_label_results <- function(
   train,
   test,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "list")
 ) {
-  as <- match.arg(as)
-  if (as == "matrix") {
-    return(list(
-      data = rbind(train$data, test$data),
-      labels = c(train$labels, test$labels)
-    ))
-  }
-
-  rbind(train, test)
+  as <- image_result_as(as)
+  result <- new_image_result(
+    data = rbind(train$data, test$data),
+    meta = rbind(train$meta, test$meta),
+    image_dim = train$image_dim,
+    channel_order = train$channel_order,
+    source = train$source
+  )
+  result$meta$id <- seq_len(nrow(result$data))
+  if (as == "list") return(result)
+  data.frame(result$data, Label = result$meta$label)
 }

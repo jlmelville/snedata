@@ -16,7 +16,7 @@ variables:
 Pixel values range from 0 to 1. Within each channel, the \code{x} index increases
 from left to right and the \code{y} index increases from top to bottom.
 The numeric pixel matrix uses about 2.64 GiB; the wide data-frame result
-needs additional memory. Use \code{as = "matrix"} if that result is sufficient.
+needs additional memory. Use \code{as = "list"} if that result is sufficient.
 
 Row names are \code{"<object>_<angle>"}, where \verb{<object>} is the object id and
 \verb{<angle>} is the viewing angle in degrees, from 0 to 355 in five-degree
@@ -27,7 +27,7 @@ download_coil100(
   file = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 )
 }
@@ -42,22 +42,23 @@ dedicated extraction directory are removed.}
 \item{verbose}{If \code{TRUE}, log download and extraction progress.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original wide data frame
-shape, or \code{"matrix"} for a list with \code{data}, \code{labels}, \code{poses}, and \code{ids}.}
+shape, or \code{"list"} for the canonical image result described in
+\code{\link[=download_mnist]{download_mnist()}}.}
 
 \item{timeout}{Minimum download timeout in seconds. The default is 30
 minutes; a larger existing global R timeout is preserved.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the COIL-100 dataset.
-If \code{as = "matrix"}, a list containing a numeric matrix with one image per
-row, factor labels, integer viewing angles, and row ids.
+If \code{as = "list"}, a canonical image result with object ids, viewing
+angles, and factor labels in \code{meta}.
 }
 \description{
 Download the Columbia Object Image Library COIL-100 dataset.
 }
 \details{
 Downloads and expands the COIL-100 ZIP archive and converts the PNG files to
-a data frame or matrix-list result. COIL-100 contains 100 objects, each
+a data frame or canonical list result. COIL-100 contains 100 objects, each
 represented by 72 RGB poses at five-degree viewing-angle increments. Each
 image has resolution 128 x 128.
 
@@ -66,7 +67,7 @@ required when reading the downloaded PNG files.
 }
 \examples{
 \dontrun{
-coil100 <- download_coil100(verbose = TRUE, as = "matrix")
+coil100 <- download_coil100(verbose = TRUE, as = "list")
 show_coil_object(coil100, object = 5, pose = 150)
 }
 }

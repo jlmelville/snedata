@@ -7,7 +7,7 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/refs/heads/main/"
 #'
 #' Downloads the image and label files for the training and test datasets from
 #' <https://github.com/facebookresearch/qmnist> and converts them to a data
-#' frame or a matrix/list result.
+#' frame or canonical list result.
 #'
 #' @format A data frame with 785 variables:
 #'
@@ -32,12 +32,14 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/refs/heads/main/"
 #' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
 #' @param as Return format. Use `"data.frame"` for the original data frame
-#'   shape, or `"matrix"` for a list with `data` and `labels`.
+#'   shape, or `"list"` for the canonical image result described in
+#'   [download_mnist()].
 #' @param timeout Minimum download timeout in seconds. The default is 30
 #'   minutes; a larger existing global R timeout is preserved.
 #' @return If `as = "data.frame"`, a data frame containing the QMNIST
-#'   digits. If `as = "matrix"`, a list with `data`, an integer matrix
-#'   with one image per row, and `labels`, a factor of digit labels.
+#'   digits. If `as = "list"`, a canonical image result. Its `meta` includes
+#'   all eight QMNIST extended-label fields in addition to `id`, `split`, and
+#'   `label`.
 #' @export
 #' @examples
 #' \dontrun{
@@ -58,30 +60,32 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/refs/heads/main/"
 download_qmnist <- function(
   base_url = qmnist_url,
   verbose = FALSE,
-  as = c("data.frame", "matrix"),
+  as = c("data.frame", "list"),
   timeout = 1800
 ) {
   with_download_timeout(
     {
-      as <- match.arg(as)
+      as <- image_result_as(as)
       train <- parse_files(
         "qmnist-train-images-idx3-ubyte.gz",
         "qmnist-train-labels-idx2-int.gz",
         label_parser = parse_extended_label_file,
         base_url = base_url,
         verbose = verbose,
-        as = as
+        split = "training",
+        dataset = "QMNIST"
       )
       test <- parse_files(
         "qmnist-test-images-idx3-ubyte.gz",
         "qmnist-test-labels-idx1-ubyte.gz",
         base_url = base_url,
         verbose = verbose,
-        as = as
+        split = "testing",
+        dataset = "QMNIST"
       )
       if (verbose) {
-        n_train <- if (as == "matrix") nrow(train$data) else nrow(train)
-        n_test <- if (as == "matrix") nrow(test$data) else nrow(test)
+        n_train <- nrow(train$data)
+        n_test <- nrow(test$data)
         message("Read ", n_train, " training and ", n_test, " images")
       }
       combine_image_label_results(train, test, as = as)

@@ -7,7 +7,7 @@ fashion_mnist_url <-
 #' Download Fashion-MNIST database of images of fashion products.
 #'
 #' Downloads the image and label files for the training and test datasets and
-#' converts them to a data frame. The dataset is intended to be a drop-in
+#' converts them to a data frame or canonical image result. The dataset is intended to be a drop-in
 #' replacement for the MNIST digits dataset but with more relevance for
 #' benchmarking machine learning algorithms (i.e. it's more difficult).
 #'
@@ -49,9 +49,13 @@ fashion_mnist_url <-
 #' @param base_url Base URL that the files are located at.
 #' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
+#' @param as Return format. Use `"data.frame"` for the original data frame
+#'   shape, or `"list"` for the canonical image result described in
+#'   [download_mnist()].
 #' @param timeout Minimum download timeout in seconds. The default is 30
 #'   minutes; a larger existing global R timeout is preserved.
-#' @return Data frame containing Fashion-MNIST.
+#' @return A data frame containing Fashion-MNIST, or a canonical image result
+#'   with `label` and `description` factors in `meta`.
 #' @note Originally based on a function by Brendan O'Connor.
 #' @examples
 #' \dontrun{
@@ -82,11 +86,14 @@ fashion_mnist_url <-
 download_fashion_mnist <- function(
   base_url = fashion_mnist_url,
   verbose = FALSE,
+  as = c("data.frame", "list"),
   timeout = 1800
 ) {
+  as <- image_result_as(as)
   res <- download_mnist(
     base_url = base_url,
     verbose = verbose,
+    as = "list",
     timeout = timeout
   )
 
@@ -102,9 +109,15 @@ download_fashion_mnist <- function(
     "Bag",
     "Ankle boot"
   )
-  res$Description <- factor(
-    description_levels[as.integer(as.character(res$Label)) + 1L],
+  res$meta$description <- factor(
+    description_levels[as.integer(as.character(res$meta$label)) + 1L],
     levels = description_levels
   )
-  res
+  res$source$dataset <- "Fashion-MNIST"
+  if (as == "list") return(res)
+  data.frame(
+    res$data,
+    Label = res$meta$label,
+    Description = res$meta$description
+  )
 }
