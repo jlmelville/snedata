@@ -1,3 +1,56 @@
+# Validate simulation-generator inputs shared across source files.
+positive_integer_scalar <- function(x, name) {
+  if (
+    !is.numeric(x) ||
+      length(x) != 1L ||
+      !is.finite(x) ||
+      x < 1 ||
+      x > .Machine$integer.max ||
+      x != floor(x)
+  ) {
+    stop(name, " must be a positive integer", call. = FALSE)
+  }
+  as.integer(x)
+}
+
+positive_integer_vector <- function(x, name, lengths = NULL) {
+  valid_lengths <- is.null(lengths) || length(x) %in% lengths
+  if (
+    !is.numeric(x) ||
+      length(x) == 0L ||
+      !valid_lengths ||
+      any(!is.finite(x)) ||
+      any(x < 1) ||
+      any(x > .Machine$integer.max) ||
+      any(x != floor(x))
+  ) {
+    if (is.null(lengths)) {
+      stop(name, " must be a positive integer vector", call. = FALSE)
+    }
+    stop(
+      name,
+      " must be a positive integer vector of length ",
+      paste(lengths, collapse = " or "),
+      call. = FALSE
+    )
+  }
+  as.integer(x)
+}
+
+nonnegative_finite_scalar <- function(x, name) {
+  if (!is.numeric(x) || length(x) != 1L || !is.finite(x) || x < 0) {
+    stop(name, " must be a nonnegative finite numeric scalar", call. = FALSE)
+  }
+  x
+}
+
+positive_finite_scalar <- function(x, name) {
+  if (!is.numeric(x) || length(x) != 1L || !is.finite(x) || x <= 0) {
+    stop(name, " must be a positive finite numeric scalar", call. = FALSE)
+  }
+  x
+}
+
 # Map a vector x to a new linear scale in the range (from, to)
 linear_map <- function(x, from = 0, to = 1) {
   if (!is.numeric(x)) {
@@ -88,7 +141,8 @@ hsl_to_rgb <- function(h, s, l) {
 
 # Return a vector of n equally spaced angles from (0, 2*pi] radians
 theta_unif <- function(n) {
-  (0:(n - 1)) * (2 * pi / n)
+  n <- positive_integer_scalar(n, "n")
+  (seq_len(n) - 1L) * (2 * pi / n)
 }
 
 # Replicate each row in df n times

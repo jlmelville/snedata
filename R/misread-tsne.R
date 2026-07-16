@@ -19,7 +19,8 @@
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 grid_data <- function(n = 10) {
-  df <- expand.grid(1:n, 1:n)
+  n <- positive_integer_scalar(n, "n")
+  df <- expand.grid(seq_len(n), seq_len(n))
   colnames(df) <- c("x", "y")
   g <- floor(linear_map(df$x, 0, 255))
   b <- floor(linear_map(df$y, 0, 255))
@@ -46,6 +47,9 @@ grid_data <- function(n = 10) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 gaussian_data <- function(n, dim, sd = 1, color = NULL) {
+  n <- positive_integer_scalar(n, "n")
+  dim <- positive_integer_scalar(dim, "dim")
+  sd <- nonnegative_finite_scalar(sd, "sd")
   df <- data.frame(matrix(stats::rnorm(n * dim, sd = sd), ncol = dim))
   if (!is.null(color)) {
     df$color <- color
@@ -73,7 +77,7 @@ gaussian_data <- function(n, dim, sd = 1, color = NULL) {
 #' @export
 long_gaussian_data <- function(n, dim, color = NULL) {
   df <- gaussian_data(n, dim, color = color)
-  for (j in 1:dim) {
+  for (j in seq_len(ncol(df))) {
     df[, j] <- df[, j] / j
   }
   df
@@ -111,6 +115,7 @@ theta_to_circle_df <- function(theta) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 circle_data <- function(n) {
+  n <- positive_integer_scalar(n, "n")
   theta_to_circle_df(theta_unif(n))
 }
 
@@ -132,6 +137,7 @@ circle_data <- function(n) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 random_circle_data <- function(n) {
+  n <- positive_integer_scalar(n, "n")
   theta_to_circle_df(stats::runif(n = n, max = 2 * pi))
 }
 
@@ -161,6 +167,7 @@ random_circle_data <- function(n) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 random_circle_cluster_data <- function(n) {
+  n <- positive_integer_scalar(n, "n")
   df <- replicate_rows(circle_data(n), n = 20)
   df$x <- df$x + stats::rnorm(n = nrow(df), sd = 0.1)
   df$y <- df$y + stats::rnorm(n = nrow(df), sd = 0.1)
@@ -192,8 +199,10 @@ random_circle_cluster_data <- function(n) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 two_clusters_data <- function(n, dim = 50) {
-  if (length(dim) != 2) {
-    dim <- rep(dim, 2)
+  n <- positive_integer_scalar(n, "n")
+  dim <- positive_integer_vector(dim, "dim", lengths = c(1L, 2L))
+  if (length(dim) == 1L) {
+    dim <- rep.int(dim, 2L)
   }
   cluster1 <- gaussian_data(n = n, dim = dim[1], color = "#003399")
 
@@ -227,6 +236,9 @@ two_clusters_data <- function(n, dim = 50) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 two_different_clusters_data <- function(n, dim = 50, scale = 10) {
+  n <- positive_integer_scalar(n, "n")
+  dim <- positive_integer_scalar(dim, "dim")
+  scale <- positive_finite_scalar(scale, "scale")
   cluster1 <- gaussian_data(n = n, dim = dim, color = "#003399")
 
   cluster2 <- gaussian_data(n = n, dim = dim, sd = 1 / scale, color = "#FF9900")
@@ -257,6 +269,8 @@ two_different_clusters_data <- function(n, dim = 50, scale = 10) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 three_clusters_data <- function(n, dim = 50) {
+  n <- positive_integer_scalar(n, "n")
+  dim <- positive_integer_scalar(dim, "dim")
   cluster1 <- gaussian_data(n = n, dim = dim, color = "#003399")
 
   cluster2 <- gaussian_data(n = n, dim = dim, color = "#FF9900")
@@ -295,9 +309,9 @@ three_clusters_data <- function(n, dim = 50) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 subset_clusters_data <- function(n, dim = 2, big_sdev = 50) {
-  if (!is.numeric(big_sdev) || length(big_sdev) != 1 || big_sdev <= 0) {
-    stop("big_sdev should be a scalar positive value")
-  }
+  n <- positive_integer_scalar(n, "n")
+  dim <- positive_integer_scalar(dim, "dim")
+  big_sdev <- positive_finite_scalar(big_sdev, "big_sdev")
   cluster1 <- gaussian_data(n = n, dim = dim, color = "#003399")
   cluster2 <- gaussian_data(n = n, dim = dim, sd = big_sdev, color = "#FF9900")
   rbind(cluster1, cluster2)
@@ -325,6 +339,8 @@ subset_clusters_data <- function(n, dim = 2, big_sdev = 50) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 simplex_data <- function(n, noise = 0.5, color = "#003399") {
+  n <- positive_integer_scalar(n, "n")
+  noise <- nonnegative_finite_scalar(noise, "noise")
   m <- diag(n)
   diag(m) <- 1 + noise * stats::rnorm(n)
   data.frame(m, color = color, stringsAsFactors = FALSE)
@@ -348,6 +364,8 @@ simplex_data <- function(n, noise = 0.5, color = "#003399") {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 cube_data <- function(n, dim, color = "#003399") {
+  n <- positive_integer_scalar(n, "n")
+  dim <- positive_integer_scalar(dim, "dim")
   data.frame(
     matrix(stats::runif(n * dim), nrow = n),
     color = color,
@@ -387,6 +405,7 @@ rotate <- function(df) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 unlink_data <- function(n) {
+  n <- positive_integer_scalar(n, "n")
   theta <- theta_unif(n)
   ring1 <- rotate(data.frame(
     x = cos(theta),
@@ -426,6 +445,7 @@ unlink_data <- function(n) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 link_data <- function(n) {
+  n <- positive_integer_scalar(n, "n")
   theta <- theta_unif(n)
   ring1 <- rotate(data.frame(
     x = cos(theta),
@@ -462,6 +482,7 @@ link_data <- function(n) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 trefoil_data <- function(n) {
+  n <- positive_integer_scalar(n, "n")
   theta <- theta_unif(n)
   data.frame(
     x = sin(theta) + 2 * sin(2 * theta),
@@ -489,18 +510,20 @@ trefoil_data <- function(n) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 long_cluster_data <- function(n) {
+  n <- positive_integer_scalar(n, "n")
   s <- .03 * n
+  indices <- seq_len(n) - 1L
 
   cluster1 <- data.frame(
-    x = 0:(n - 1) + s * stats::rnorm(n),
-    y = 0:(n - 1) + s * stats::rnorm(n),
+    x = indices + s * stats::rnorm(n),
+    y = indices + s * stats::rnorm(n),
     color = "#003399",
     stringsAsFactors = FALSE
   )
 
   cluster2 <- data.frame(
-    x = 0:(n - 1) + s * stats::rnorm(n) + n / 5,
-    y = 0:(n - 1) + s * stats::rnorm(n) - n / 5,
+    x = indices + s * stats::rnorm(n) + n / 5,
+    y = indices + s * stats::rnorm(n) - n / 5,
     color = "#ff9900",
     stringsAsFactors = FALSE
   )
@@ -527,11 +550,12 @@ long_cluster_data <- function(n) {
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export
 ortho_curve <- function(n) {
+  n <- positive_integer_scalar(n, "n")
   m <- matrix(0, nrow = n, ncol = n)
   m[lower.tri(m)] <- 1
 
   df <- data.frame(m)
-  df$color <- linear_color_map(1.5 * pi * 0:(n - 1) / n)
+  df$color <- linear_color_map(1.5 * pi * (seq_len(n) - 1L) / n)
   df
 }
 
@@ -565,21 +589,8 @@ random_walk <- function(n, dim) {
   }
 
   df <- data.frame(m)
-  df$color <- linear_color_map(1.5 * pi * 0:(n - 1) / n)
+  df$color <- linear_color_map(1.5 * pi * (seq_len(n) - 1L) / n)
   df
-}
-
-positive_integer_scalar <- function(x, name) {
-  if (
-    !is.numeric(x) ||
-      length(x) != 1 ||
-      !is.finite(x) ||
-      x < 1 ||
-      x != floor(x)
-  ) {
-    stop(name, " must be a positive integer", call. = FALSE)
-  }
-  as.integer(x)
 }
 
 #' Random Jump Data
@@ -612,6 +623,6 @@ random_jump <- function(n, dim) {
   }
 
   df <- data.frame(m)
-  df$color <- linear_color_map(1.5 * pi * 0:(n - 1) / n)
+  df$color <- linear_color_map(1.5 * pi * (seq_len(n) - 1L) / n)
   df
 }

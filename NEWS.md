@@ -7,6 +7,7 @@ COIL-20 and COIL-100 image datasets. Downloading the data requires installing th
 package. This functionality formerly lived in the [coil20](https://github.com/jlmelville/coil20)
 repo.
 - Improved validation and cleanup of downloaded binary data and archives.
+- Improved validation of synthetic data generators.
 - Fixed QMNIST broken links due to project being archived.
 - `download_mammoth10k()` and `download_mammoth50k()` now both return coordinates in `X`, `Y`, `Z`
   column order. Code that selected Mammoth coordinates by position should be updated to use the

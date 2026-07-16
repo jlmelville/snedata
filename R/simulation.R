@@ -21,6 +21,7 @@
 #' *Neurocomputing*, *169*, 246-261.
 #' @export
 sphere <- function(n = 1000) {
+  n <- positive_integer_scalar(n, "n")
   # from http://stats.stackexchange.com/questions/7977/how-to-generate-uniformly-distributed-points-on-the-surface-of-the-3-d-unit-sphe
   z <- stats::runif(n, min = -1, max = 1)
   theta <- stats::runif(n, min = -pi, max = pi)
@@ -58,6 +59,9 @@ sphere <- function(n = 1000) {
 #' *Neurocomputing*, *169*, 246-261.
 #' @export
 ball <- function(n = 1000, rad = 1, ndim = 3) {
+  n <- positive_integer_scalar(n, "n")
+  rad <- positive_finite_scalar(rad, "rad")
+  ndim <- positive_integer_scalar(ndim, "ndim")
   # from http://math.stackexchange.com/questions/87230/picking-random-points-in-the-volume-of-sphere-with-uniform-probability
   # and https://stats.stackexchange.com/a/481716
   u <- stats::runif(n)
@@ -108,6 +112,10 @@ ball <- function(n = 1000, rad = 1, ndim = 3) {
 #' }
 #' @export
 helix <- function(n = 1000, rmajor = 2, rminor = 1, nwinds = 8) {
+  n <- positive_integer_scalar(n, "n")
+  rmajor <- positive_finite_scalar(rmajor, "rmajor")
+  rminor <- positive_finite_scalar(rminor, "rminor")
+  nwinds <- positive_finite_scalar(nwinds, "nwinds")
   # http://math.stackexchange.com/questions/324527/do-these-equations-create-a-helix-wrapped-into-a-torus
   u <- seq(-pi, pi, length.out = n + 1)[-(n + 1)]
   w <- rmajor + (rminor * cos(nwinds * u))
@@ -191,6 +199,13 @@ swiss_roll <- function(
   max_phi = 4.5 * pi,
   max_z = 10
 ) {
+  n <- positive_integer_scalar(n, "n")
+  min_phi <- positive_finite_scalar(min_phi, "min_phi")
+  max_phi <- positive_finite_scalar(max_phi, "max_phi")
+  max_z <- nonnegative_finite_scalar(max_z, "max_z")
+  if (max_phi <= min_phi) {
+    stop("max_phi must be greater than min_phi", call. = FALSE)
+  }
   phi <- stats::runif(n, min = min_phi, max = max_phi)
   x <- phi * cos(phi)
   y <- phi * sin(phi)
@@ -225,6 +240,8 @@ swiss_roll <- function(
 #' *arXiv preprint* *arXiv:1309.0238*.
 #' @export
 s_curve <- function(n_samples = 100, noise = 0.0) {
+  n_samples <- positive_integer_scalar(n_samples, "n_samples")
+  noise <- nonnegative_finite_scalar(noise, "noise")
   tt <- 3 * pi * stats::runif(n = n_samples, min = -0.5, max = 0.5)
   x <- sin(tt)
   y <- 2.0 * stats::runif(n = n_samples)
@@ -309,6 +326,9 @@ curve2d <- function() {
 # Based on the `dsphere` Python function from
 # <https://github.com/BorgwardtLab/topological-autoencoders>
 dsphere <- function(n = 100, d = 2, r = 1) {
+  n <- positive_integer_scalar(n, "n")
+  d <- positive_integer_scalar(d, "d")
+  r <- positive_finite_scalar(r, "r")
   nc <- d + 1
   m <- matrix(stats::rnorm(n = n * nc), nrow = n, ncol = nc)
   r * m / sqrt(rowSums(m * m))
@@ -357,9 +377,7 @@ taspheres <- function(n_samples = 500, d = 100, n_spheres = 11, r = 5) {
       call. = FALSE
     )
   }
-  if (!is.numeric(r) || length(r) != 1L || !is.finite(r) || r <= 0) {
-    stop("r must be a positive finite numeric scalar", call. = FALSE)
-  }
+  r <- positive_finite_scalar(r, "r")
 
   norm_scale <- 10 / sqrt(d)
   d1 <- d + 1
