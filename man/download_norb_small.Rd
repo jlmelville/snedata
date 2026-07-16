@@ -68,7 +68,9 @@ message.}
 and testing sets, or \code{"training"} or \code{"testing"} for one split.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original data frame
-shape, or \code{"matrix"} for a list with \code{data} and \code{meta}.}
+shape, or \code{"matrix"} for a list with \code{data} and \code{meta}. The pixel matrix
+alone requires about 3.34 GiB; use \code{"matrix"} to avoid the wide data-frame
+conversion.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the Small NORB
@@ -97,30 +99,34 @@ as factors.
 }
 \examples{
 \dontrun{
-# download the data set
-norb <- download_norb_small(verbose = TRUE)
+# download the data set without making a wide data frame
+norb <- download_norb_small(verbose = TRUE, as = "matrix")
 
 # first 24,300 instances are the training set
-norb_train <- head(norb, 24300)
+norb_train <- head(norb$data, 24300)
 # the remaining 24,300 are the test set
-norb_test <- tail(norb, 24300)
+norb_test <- tail(norb$data, 24300)
 
 # Or equivalently
-norb_train2 <- norb[norb$Split == "training", ]
-norb_test2 <- norb[norb$Split == "testing", ]
+norb_train2 <- norb$data[norb$meta$Split == "training", ]
+norb_test2 <- norb$data[norb$meta$Split == "testing", ]
 
 identical(norb_train, norb_train2) # TRUE
 identical(norb_test, norb_test2) # also TRUE
 
 # PCA on 1000 examples
-norb_r1000 <- norb[sample(nrow(norb), 1000), ]
-pca <- prcomp(norb_r1000[, 1:(96 * 96 * 2)], retx = TRUE, rank. = 2)
+sample_rows <- sample(nrow(norb$data), 1000)
+norb_r1000 <- norb$data[sample_rows, ]
+pca <- prcomp(norb_r1000, retx = TRUE, rank. = 2)
 # plot the scores of the first two components
 plot(pca$x[, 1:2], type = "n")
 text(pca$x[, 1:2],
-  labels = norb_r1000$Label,
-  col = rainbow(length(levels(norb$Label)))[norb_r1000$Label]
+  labels = norb$meta$Label[sample_rows],
+  col = rainbow(length(levels(norb$meta$Label)))[norb$meta$Label[sample_rows]]
 )
+
+# The legacy wide data-frame result remains available explicitly:
+norb_df <- download_norb_small(verbose = TRUE, as = "data.frame")
 }
 }
 \references{

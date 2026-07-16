@@ -515,6 +515,18 @@ test_that("CIFAR parser rejects incomplete fixed-size batches", {
   )
 })
 
+test_that("CIFAR parser returns rows in file record order", {
+  path <- tempfile()
+  f <- file(path, "wb")
+  writeBin(as.integer(c(7, 1, 2, 3, 8, 4, 5, 6)), f, size = 1)
+  close(f)
+
+  batch <- snedata:::read_cifar_bin(path, n_images = 2, n_pixels = 3)
+
+  expect_equal(batch$labels, c(7L, 8L))
+  expect_equal(batch$images, matrix(1:6, nrow = 2, byrow = TRUE))
+})
+
 test_that("CIFAR formatter can return a data frame or a matrix list", {
   images <- matrix(1:12, nrow = 2)
   labels <- c(0, 9)
@@ -655,7 +667,11 @@ test_that("CIFAR downloader retains owned paths when cleanup is disabled", {
 
 test_that("NORB parsers read small local gzip fixtures through base_url", {
   tmpdir <- tempdir()
-  write_gz_norb_images(file.path(tmpdir, "images.mat.gz"))
+  image_values <- rep(1:255, length.out = 2 * 2 * 96 * 96)
+  write_gz_norb_images(
+    file.path(tmpdir, "images.mat.gz"),
+    values = image_values
+  )
   write_gz_norb_categories(
     file.path(tmpdir, "categories.mat.gz"),
     labels = c(0, 2)
@@ -678,9 +694,10 @@ test_that("NORB parsers read small local gzip fixtures through base_url", {
     verbose = FALSE
   )
 
-  expect_equal(dim(images), c(18432L, 2L))
-  expect_equal(images[1:4, 1], rep(1L, 4L))
-  expect_equal(images[1:4, 2], rep(2L, 4L))
+  expect_equal(dim(images), c(2L, 18432L))
+  expect_equal(images[1, 1:4], 1:4)
+  expect_equal(images[2, 1:4], 73:76)
+  expect_equal(images, t(matrix(image_values, nrow = 18432L, ncol = 2L)))
   expect_equal(categories, c(0L, 2L))
   expect_equal(dim(info), c(4L, 2L))
   expect_equal(info[, 1], 1:4)
@@ -894,7 +911,7 @@ test_that("NORB validates image, category, and metadata counts before formatting
 })
 
 test_that("NORB formatter can return a data frame or a matrix list", {
-  images <- matrix(1:8, nrow = 4)
+  images <- matrix(1:8, nrow = 2, byrow = TRUE)
   info <- matrix(
     c(
       1,
@@ -978,6 +995,15 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
     split = "all",
     as = "matrix"
   )
+  all_df <- NULL
+  expect_warning(
+    all_df <- download_norb_small(
+      base_url = file_base_url(tmpdir),
+      split = "all",
+      as = "data.frame"
+    ),
+    "Small NORB.*wide data frame"
+  )
 
   expect_equal(dim(training$data), c(2L, 18432L))
   expect_equal(as.character(training$meta$Split), c("training", "training"))
@@ -992,6 +1018,8 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
     as.character(all$meta$Description),
     c("Animal", "Car", "Airplane", "Truck")
   )
+  expect_equal(dim(all_df), c(4L, 18439L))
+  expect_equal(as.matrix(all_df[, 1:18432]), all$data)
 })
 
 test_that("20 Newsgroups downloader extracts a local tarball and removes it", {

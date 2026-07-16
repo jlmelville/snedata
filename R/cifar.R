@@ -42,7 +42,7 @@
 #' [show_cifar()] function.
 #'
 #' For more information see
-#' <https://www.cs.toronto.edu/~kriz/cifar.html>.
+#' <https://cave.cs.toronto.edu/kriz/cifar.html>.
 #'
 #' @param url URL of the CIFAR-10 data.
 #' @param destfile Filename for where to download the CIFAR-10 tarfile. If
@@ -55,7 +55,11 @@
 #'   message.
 #' @param as Return format. Use `"data.frame"` for the original data frame
 #'   shape, or `"matrix"` for a list with `data`, `labels`, and
-#'   `descriptions`.
+#'   `descriptions`. The pixel matrix alone requires about 0.69 GiB; use
+#'   `"matrix"` to avoid the wide data frame conversion.
+#' @param timeout Minimum download timeout in seconds. The default accommodates
+#'   the large archive on slower connections; a larger existing global R timeout
+#'   is preserved.
 #' @return If `as = "data.frame"`, a data frame containing the CIFAR-10
 #'   dataset. If `as = "matrix"`, a list with `data`, an integer
 #'   matrix with one image per row, `labels`, a factor of numeric class
@@ -73,7 +77,7 @@
 #'
 #' # PCA on 1000 examples
 #' cifar10_r1000 <- cifar10[sample(nrow(cifar10), 1000), ]
-#' pca <- prcomp(cifar10_r1000[, 1:(32 * 32)], retx = TRUE, rank. = 2)
+#' pca <- prcomp(cifar10_r1000[, 1:(32 * 32 * 3)], retx = TRUE, rank. = 2)
 #' # plot the scores of the first two components
 #' plot(pca$x[, 1:2], type = "n")
 #' text(pca$x[, 1:2],
@@ -83,7 +87,7 @@
 #' }
 #' @references
 #' The CIFAR-10 dataset
-#' <https://www.cs.toronto.edu/~kriz/cifar.html>
+#' <https://cave.cs.toronto.edu/kriz/cifar.html>
 #'
 #' Krizhevsky, A., & Hinton, G. (2009).
 #' *Learning multiple layers of features from tiny images*
@@ -91,13 +95,21 @@
 #' Technical report, University of Toronto.
 #' @export
 download_cifar10 <- function(
-  url = "https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz",
+  url = "https://cave.cs.toronto.edu/kriz/cifar-10-binary.tar.gz",
   destfile = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "matrix"),
+  timeout = 1800
 ) {
   as <- match.arg(as)
+  warn_wide_data_frame(
+    "CIFAR-10",
+    n_rows = 60000L,
+    n_cols = 32L * 32L * 3L,
+    storage = "integer",
+    as = as
+  )
   if (is.null(destfile)) {
     workdir <- tempfile("cifar10-")
     dir.create(workdir)
@@ -122,7 +134,7 @@ download_cifar10 <- function(
   exdir <- file.path(workdir, "extracted")
   dir.create(exdir)
 
-  download_asset(url, destfile, verbose = verbose)
+  download_asset(url, destfile, verbose = verbose, timeout = timeout)
   extract_tar_safely(
     destfile,
     exdir,
@@ -131,8 +143,8 @@ download_cifar10 <- function(
   )
   extracted_dir <- file.path(exdir, "cifar-10-batches-bin")
 
-  res <- matrix(nrow = 3072, ncol = 60000)
-  labels <- rep(0, 60000)
+  res <- matrix(0L, nrow = 60000L, ncol = 3072L)
+  labels <- integer(60000L)
 
   for (i in 1:6) {
     if (i != 6) {
@@ -144,11 +156,10 @@ download_cifar10 <- function(
 
     batch_res <- read_cifar_bin(path, verbose = verbose)
     batch_range <- ((i - 1) * 10000 + 1):(i * 10000)
-    res[, batch_range] <- batch_res$images
+    res[batch_range, ] <- batch_res$images
     labels[batch_range] <- batch_res$labels
   }
 
-  res <- t(res)
   format_cifar_result(res, labels, as = as)
 }
 
@@ -265,15 +276,18 @@ show_cifar <- function(df, n, interpolate = FALSE) {
   show_cifarv(as.numeric(df[n, 1:3072]), interpolate = interpolate)
 }
 
-read_cifar_bin <- function(file, verbose = FALSE) {
+read_cifar_bin <- function(
+  file,
+  verbose = FALSE,
+  n_images = 10000L,
+  n_pixels = 3072L
+) {
   if (verbose) {
     message("Reading ", file)
   }
   f <- base::file(file, "rb")
   on.exit(close(f), add = TRUE)
 
-  n_images <- 10000
-  n_pixels <- 3072
   record_size <- n_pixels + 1
   expected_bytes <- n_images * record_size
 
@@ -306,9 +320,9 @@ read_cifar_bin <- function(file, verbose = FALSE) {
     stop("CIFAR batch contains more than ", expected_bytes, " bytes")
   }
 
-  records <- matrix(batch, nrow = record_size)
-  labels <- records[1, ]
-  images <- records[-1, , drop = FALSE]
+  records <- matrix(batch, ncol = record_size, byrow = TRUE)
+  labels <- records[, 1]
+  images <- records[, -1, drop = FALSE]
 
   list(
     images = images,

@@ -66,7 +66,9 @@
 #' @param split Which split to download. Use `"all"` for both the training
 #'   and testing sets, or `"training"` or `"testing"` for one split.
 #' @param as Return format. Use `"data.frame"` for the original data frame
-#'   shape, or `"matrix"` for a list with `data` and `meta`.
+#'   shape, or `"matrix"` for a list with `data` and `meta`. The pixel matrix
+#'   alone requires about 3.34 GiB; use `"matrix"` to avoid the wide data-frame
+#'   conversion.
 #' @return If `as = "data.frame"`, a data frame containing the Small NORB
 #'   dataset. If `as = "matrix"`, a list with `data`, an integer
 #'   matrix with one image pair per row, and `meta`, a data frame with the
@@ -74,30 +76,34 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' # download the data set
-#' norb <- download_norb_small(verbose = TRUE)
+#' # download the data set without making a wide data frame
+#' norb <- download_norb_small(verbose = TRUE, as = "matrix")
 #'
 #' # first 24,300 instances are the training set
-#' norb_train <- head(norb, 24300)
+#' norb_train <- head(norb$data, 24300)
 #' # the remaining 24,300 are the test set
-#' norb_test <- tail(norb, 24300)
+#' norb_test <- tail(norb$data, 24300)
 #'
 #' # Or equivalently
-#' norb_train2 <- norb[norb$Split == "training", ]
-#' norb_test2 <- norb[norb$Split == "testing", ]
+#' norb_train2 <- norb$data[norb$meta$Split == "training", ]
+#' norb_test2 <- norb$data[norb$meta$Split == "testing", ]
 #'
 #' identical(norb_train, norb_train2) # TRUE
 #' identical(norb_test, norb_test2) # also TRUE
 #'
 #' # PCA on 1000 examples
-#' norb_r1000 <- norb[sample(nrow(norb), 1000), ]
-#' pca <- prcomp(norb_r1000[, 1:(96 * 96 * 2)], retx = TRUE, rank. = 2)
+#' sample_rows <- sample(nrow(norb$data), 1000)
+#' norb_r1000 <- norb$data[sample_rows, ]
+#' pca <- prcomp(norb_r1000, retx = TRUE, rank. = 2)
 #' # plot the scores of the first two components
 #' plot(pca$x[, 1:2], type = "n")
 #' text(pca$x[, 1:2],
-#'   labels = norb_r1000$Label,
-#'   col = rainbow(length(levels(norb$Label)))[norb_r1000$Label]
+#'   labels = norb$meta$Label[sample_rows],
+#'   col = rainbow(length(levels(norb$meta$Label)))[norb$meta$Label[sample_rows]]
 #' )
+#'
+#' # The legacy wide data-frame result remains available explicitly:
+#' norb_df <- download_norb_small(verbose = TRUE, as = "data.frame")
 #' }
 #' @references
 #' The Small NORB Dataset, v1.0
@@ -118,6 +124,13 @@ download_norb_small <- function(
 ) {
   split <- match.arg(split)
   as <- match.arg(as)
+  warn_wide_data_frame(
+    "Small NORB",
+    n_rows = norb_split_size(split),
+    n_cols = 96L * 96L * 2L,
+    storage = "integer",
+    as = as
+  )
   if (split != "all") {
     return(read_norb_data(
       base_url = base_url,
@@ -127,19 +140,7 @@ download_norb_small <- function(
     ))
   }
 
-  training <- read_norb_data(
-    base_url = base_url,
-    split = "training",
-    verbose = verbose,
-    as = as
-  )
-  testing <- read_norb_data(
-    base_url = base_url,
-    split = "testing",
-    verbose = verbose,
-    as = as
-  )
-  combine_norb_results(training, testing, as = as)
+  read_norb_all_data(base_url = base_url, verbose = verbose, as = as)
 }
 
 #' Visualize NORB object.
@@ -247,7 +248,7 @@ read_norb_data <- function(
 }
 
 validate_norb_asset_counts <- function(images, info, cats, split) {
-  image_count <- ncol(images)
+  image_count <- nrow(images)
   info_count <- ncol(info)
   category_count <- length(cats)
 
@@ -290,9 +291,9 @@ format_norb_result <- function(
   as = c("data.frame", "matrix")
 ) {
   as <- match.arg(as)
-  data <- t(images)
-  colnames(data) <- norb_pixel_names(nrow(images))
-  meta <- format_norb_meta(info, cats, split = split, n_images = ncol(images))
+  data <- images
+  colnames(data) <- norb_pixel_names(ncol(images))
+  meta <- format_norb_meta(info, cats, split = split, n_images = nrow(images))
 
   if (as == "matrix") {
     return(list(data = data, meta = meta))
@@ -335,20 +336,51 @@ format_norb_meta <- function(info, cats, split, n_images) {
   meta
 }
 
-combine_norb_results <- function(
-  training,
-  testing,
-  as = c("data.frame", "matrix")
-) {
-  as <- match.arg(as)
-  if (as == "matrix") {
-    return(list(
-      data = rbind(training$data, testing$data),
-      meta = rbind(training$meta, testing$meta)
-    ))
-  }
+read_norb_all_data <- function(base_url, verbose, as) {
+  training <- read_norb_data(
+    base_url = base_url,
+    split = "training",
+    verbose = verbose,
+    as = "matrix"
+  )
+  n_training <- nrow(training$data)
+  n_features <- ncol(training$data)
+  data <- matrix(0L, nrow = 2L * n_training, ncol = n_features)
+  data[seq_len(n_training), ] <- training$data
+  colnames(data) <- colnames(training$data)
+  meta <- training$meta
+  training <- NULL
+  gc(FALSE)
 
-  rbind(training, testing)
+  testing <- read_norb_data(
+    base_url = base_url,
+    split = "testing",
+    verbose = verbose,
+    as = "matrix"
+  )
+  n_testing <- nrow(testing$data)
+  if (n_testing != n_training || ncol(testing$data) != n_features) {
+    stop("NORB training and testing image dimensions must match", call. = FALSE)
+  }
+  data[n_training + seq_len(n_testing), ] <- testing$data
+  meta <- rbind(meta, testing$meta)
+  testing <- NULL
+  gc(FALSE)
+
+  if (as == "matrix") {
+    return(list(data = data, meta = meta))
+  }
+  data.frame(data, meta)
+}
+
+norb_split_size <- function(split) {
+  switch(
+    split,
+    training = 24300L,
+    testing = 24300L,
+    all = 48600L,
+    stop("Unknown split '", split, "'", call. = FALSE)
+  )
 }
 
 read_norb_images <- function(
@@ -383,10 +415,11 @@ read_norb_images <- function(
 
   matrix(
     values,
-    nrow = dimensions[["n_cameras"]] *
+    nrow = dimensions[["n_images"]],
+    ncol = dimensions[["n_cameras"]] *
       dimensions[["n_rows"]] *
       dimensions[["n_cols"]],
-    ncol = dimensions[["n_images"]]
+    byrow = TRUE
   )
 }
 

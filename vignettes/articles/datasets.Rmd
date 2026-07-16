@@ -66,7 +66,7 @@ pairs of images of 50 toys from different angles and under different lighting co
 [COIL-100](https://cave.cs.columbia.edu/repository/COIL-100), which contain object images under
 different poses. Reading these PNG datasets requires the suggested `png` package.
 
-* The [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset, which consists of 60,000 
+* The [CIFAR-10](https://cave.cs.toronto.edu/kriz/cifar.html) dataset, which consists of 60,000
 32 x 32 color images in ten different classes.
 
 * A 3D point cloud of a [mammoth at the Smithsonian](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12),

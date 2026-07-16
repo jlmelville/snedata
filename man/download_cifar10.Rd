@@ -68,7 +68,8 @@ message.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original data frame
 shape, or \code{"matrix"} for a list with \code{data}, \code{labels}, and
-\code{descriptions}.}
+\code{descriptions}. The pixel matrix alone requires about 0.69 GiB; use
+\code{"matrix"} to avoid the wide data frame conversion.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the CIFAR-10
@@ -98,7 +99,7 @@ cifar10_test <- tail(cifar10, 10000)
 
 # PCA on 1000 examples
 cifar10_r1000 <- cifar10[sample(nrow(cifar10), 1000), ]
-pca <- prcomp(cifar10_r1000[, 1:(32 * 32)], retx = TRUE, rank. = 2)
+pca <- prcomp(cifar10_r1000[, 1:(32 * 32 * 3)], retx = TRUE, rank. = 2)
 # plot the scores of the first two components
 plot(pca$x[, 1:2], type = "n")
 text(pca$x[, 1:2],
