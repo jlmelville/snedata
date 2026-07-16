@@ -35,6 +35,8 @@ Observations are sampled around their micro center with diagonal covariance
 
 This is based on a Python notebook which can be found at
 \url{https://github.com/jlmelville/drnb/blob/d542c97b26d6f0f481d7551b130c41fcc0206c6b/notebooks/data-pipeline/synthetic-hierarchical.ipynb}
+
+This function requires the optional dependency colorspace to make the colors.
 }
 \examples{
 \dontrun{
