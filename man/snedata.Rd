@@ -217,7 +217,6 @@ Useful links:
 \itemize{
   \item \url{https://jlmelville.github.io/snedata/}
   \item \url{https://github.com/jlmelville/snedata}
-  \item \url{http://jlmelville.github.io/snedata/}
   \item Report bugs at \url{https://github.com/jlmelville/snedata/issues}
 }
 

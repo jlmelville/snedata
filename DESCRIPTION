@@ -8,7 +8,7 @@ Description: Generate simulation datasets and download example datasets used
     for Stochastic Neighbor Embedding and related dimensionality reduction
     methods.
 License: MIT + file LICENSE
-URL: https://jlmelville.github.io/snedata/, https://github.com/jlmelville/snedata, http://jlmelville.github.io/snedata/
+URL: https://jlmelville.github.io/snedata/, https://github.com/jlmelville/snedata
 BugReports: https://github.com/jlmelville/snedata/issues
 Suggests:
     colorspace,
