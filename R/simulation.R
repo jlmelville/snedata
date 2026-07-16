@@ -109,7 +109,7 @@ ball <- function(n = 1000, rad = 1, ndim = 3) {
 #' @export
 helix <- function(n = 1000, rmajor = 2, rminor = 1, nwinds = 8) {
   # http://math.stackexchange.com/questions/324527/do-these-equations-create-a-helix-wrapped-into-a-torus
-  u <- seq(-pi, pi, length.out = n)
+  u <- seq(-pi, pi, length.out = n + 1)[-(n + 1)]
   w <- rmajor + (rminor * cos(nwinds * u))
   x <- w * cos(u)
   y <- w * sin(u)
@@ -140,7 +140,7 @@ helix <- function(n = 1000, rmajor = 2, rminor = 1, nwinds = 8) {
 #' y <- phi * sin(phi)
 #' ```
 #'
-#' where `phi` is sampled between `3 * pi / 2` and `5 * pi / 2`, and `z` is
+#' where `phi` is sampled between `3 * pi / 2` and `4.5 * pi`, and `z` is
 #' sampled between 0 and 10. The ranges of `phi` and `z` can be modified, if
 #' desired.
 #'
@@ -242,7 +242,7 @@ s_curve <- function(n_samples = 100, noise = 0.0) {
 #' Creates a series of points sampled from an S-shaped curve in 3D, with
 #' optional normally-distributed noise. The S shape is oriented such that you
 #' should be able to see it if you plot the X and Z columns. There is a circular
-#' hole in the middle of the curve, centered at Y = 0.
+#' hole in the middle of the curve, centered at Y = 1.
 #'
 #' Points are colored based on their distance along the curve.
 #'
@@ -321,7 +321,7 @@ dsphere <- function(n = 100, d = 2, r = 1) {
 #'
 #' This dataset was used by Moor and co-workers in their "Topological
 #' Autoencoders" paper and this function is based on the Python code in the
-#' github repo for the paper.
+#' GitHub repo for the paper.
 #'
 #' @param n_samples Number of points to sample from each of the `n_spheres`
 #'   d-spheres. The larger d-sphere has `10 * n_samples` points.
@@ -333,7 +333,7 @@ dsphere <- function(n = 100, d = 2, r = 1) {
 #' @param r The radius of each of the smaller spheres. The larger sphere has
 #'   radius `5 * r`.
 #' @return Data frame with `d + 1` numerical columns containing the
-#'   coordinates of the d-spheres and a `"label"` factor column giving the
+#'   coordinates of the d-spheres and a `labels` factor column giving the
 #'   identity of each d-sphere: levels `0 .. n_spheres - 2` are the smaller
 #'   d-spheres. Level `n_spheres - 1` is the label for the big d-sphere.
 #' @references
@@ -348,6 +348,19 @@ dsphere <- function(n = 100, d = 2, r = 1) {
 #'
 #' @export
 taspheres <- function(n_samples = 500, d = 100, n_spheres = 11, r = 5) {
+  n_samples <- positive_integer_scalar(n_samples, "n_samples")
+  d <- positive_integer_scalar(d, "d")
+  n_spheres <- positive_integer_scalar(n_spheres, "n_spheres")
+  if (n_spheres < 2L) {
+    stop(
+      "n_spheres must be an integer greater than or equal to 2",
+      call. = FALSE
+    )
+  }
+  if (!is.numeric(r) || length(r) != 1L || !is.finite(r) || r <= 0) {
+    stop("r must be a positive finite numeric scalar", call. = FALSE)
+  }
+
   norm_scale <- 10 / sqrt(d)
   d1 <- d + 1
 

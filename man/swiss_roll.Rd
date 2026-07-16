@@ -36,7 +36,7 @@ and Xu (I don't know who originally came up with the data set, though):
 y <- phi * sin(phi)
 }\if{html}{\out{</div>}}
 
-where \code{phi} is sampled between \code{3 * pi / 2} and \code{5 * pi / 2}, and \code{z} is
+where \code{phi} is sampled between \code{3 * pi / 2} and \code{4.5 * pi}, and \code{z} is
 sampled between 0 and 10. The ranges of \code{phi} and \code{z} can be modified, if
 desired.
 

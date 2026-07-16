@@ -185,12 +185,16 @@ test_that("sphere and ball respect radius invariants", {
   expect_equal(names(ball4_df), c(paste0("X", 1:4), "color"))
 })
 
-test_that("helix points lie on the configured torus", {
+test_that("helix points lie on the configured torus without duplicate endpoints", {
   df <- helix(n = 20, rmajor = 2, rminor = 1, nwinds = 3)
   radial <- sqrt(df$x^2 + df$y^2)
 
   expect_equal(names(df), c("x", "y", "z", "color"))
   expect_equal((radial - 2)^2 + df$z^2, rep(1, 20), tolerance = 1e-12)
+  expect_gt(
+    sqrt(sum((as.matrix(df[1, 1:3]) - as.matrix(df[20, 1:3]))^2)),
+    1e-10
+  )
   expect_hex_colors(df$color)
 })
 
@@ -237,6 +241,17 @@ test_that("taspheres labels small spheres and the enclosing sphere", {
   expect_equal(names(df), c(paste0("X", 1:4), "labels"))
   expect_equal(as.integer(table(df$labels)), c(2L, 2L, 2L, 20L))
   expect_equal(unname(big_sphere_radius), rep(10, 20), tolerance = 1e-10)
+})
+
+test_that("taspheres validates its scalar parameters", {
+  expect_error(taspheres(n_samples = 0), "n_samples must be a positive integer")
+  expect_error(taspheres(d = Inf), "d must be a positive integer")
+  expect_error(
+    taspheres(n_spheres = 1),
+    "n_spheres must be an integer greater than or equal to 2"
+  )
+  expect_error(taspheres(r = 0), "r must be a positive finite numeric scalar")
+  expect_error(taspheres(r = Inf), "r must be a positive finite numeric scalar")
 })
 
 test_that("deterministic Distill-style generators return expected structures", {
