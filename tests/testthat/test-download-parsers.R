@@ -360,6 +360,13 @@ test_that("QMNIST extended label parser preserves named metadata", {
   expect_equal(metadata[, "nist_global_digit_index"], c(1001L, 1002L))
 })
 
+test_that("QMNIST uses the archived repository's main branch", {
+  expect_identical(
+    snedata:::qmnist_url,
+    "https://github.com/facebookresearch/qmnist/raw/refs/heads/main/"
+  )
+})
+
 test_that("QMNIST extended label parser validates the exact IDX2 payload", {
   tmpdir <- tempfile()
   dir.create(tmpdir)

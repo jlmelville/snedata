@@ -1,4 +1,4 @@
-qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/master/"
+qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/refs/heads/main/"
 
 #' Download QMNIST
 #'
