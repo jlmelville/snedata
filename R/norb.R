@@ -66,9 +66,10 @@
 #' @param split Which split to download. Use `"all"` for both the training
 #'   and testing sets, or `"training"` or `"testing"` for one split.
 #' @param as Return format. Use `"data.frame"` for the original data frame
-#'   shape, or `"matrix"` for a list with `data` and `meta`. The pixel matrix
-#'   alone requires about 3.34 GiB; use `"matrix"` to avoid the wide data-frame
-#'   conversion.
+#'   shape, or `"matrix"` for a list with `data` and `meta`. For `split =
+#'   "all"`, the integer pixel matrix uses about 3.34 GiB; the wide data-frame
+#'   result needs additional memory. Use `"matrix"` if that result is
+#'   sufficient.
 #' @param timeout Minimum download timeout in seconds. The default is 30
 #'   minutes; a larger existing global R timeout is preserved.
 #' @return If `as = "data.frame"`, a data frame containing the Small NORB
@@ -78,7 +79,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' # download the data set without making a wide data frame
+#' # download the data set as a matrix list
 #' norb <- download_norb_small(verbose = TRUE, as = "matrix")
 #'
 #' # first 24,300 instances are the training set
@@ -104,8 +105,6 @@
 #'   col = rainbow(length(levels(norb$meta$Label)))[norb$meta$Label[sample_rows]]
 #' )
 #'
-#' # The legacy wide data-frame result remains available explicitly:
-#' norb_df <- download_norb_small(verbose = TRUE, as = "data.frame")
 #' }
 #' @references
 #' The Small NORB Dataset, v1.0
@@ -129,13 +128,6 @@ download_norb_small <- function(
     {
       split <- match.arg(split)
       as <- match.arg(as)
-      warn_wide_data_frame(
-        "Small NORB",
-        n_rows = norb_split_size(split),
-        n_cols = 96L * 96L * 2L,
-        storage = "integer",
-        as = as
-      )
       if (split != "all") {
         read_norb_data(
           base_url = base_url,
@@ -379,16 +371,6 @@ read_norb_all_data <- function(base_url, verbose, as) {
     return(list(data = data, meta = meta))
   }
   data.frame(data, meta)
-}
-
-norb_split_size <- function(split) {
-  switch(
-    split,
-    training = 24300L,
-    testing = 24300L,
-    all = 48600L,
-    stop("Unknown split '", split, "'", call. = FALSE)
-  )
 }
 
 read_norb_images <- function(

@@ -69,9 +69,9 @@ message.}
 and testing sets, or \code{"training"} or \code{"testing"} for one split.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original data frame
-shape, or \code{"matrix"} for a list with \code{data} and \code{meta}. The pixel matrix
-alone requires about 3.34 GiB; use \code{"matrix"} to avoid the wide data-frame
-conversion.}
+shape, or \code{"matrix"} for a list with \code{data} and \code{meta}. For \code{split = "all"}, the integer pixel matrix uses about 3.34 GiB; the wide data-frame
+result needs additional memory. Use \code{"matrix"} if that result is
+sufficient.}
 
 \item{timeout}{Minimum download timeout in seconds. The default is 30
 minutes; a larger existing global R timeout is preserved.}
@@ -103,7 +103,7 @@ as factors.
 }
 \examples{
 \dontrun{
-# download the data set without making a wide data frame
+# download the data set as a matrix list
 norb <- download_norb_small(verbose = TRUE, as = "matrix")
 
 # first 24,300 instances are the training set
@@ -129,8 +129,6 @@ text(pca$x[, 1:2],
   col = rainbow(length(levels(norb$meta$Label)))[norb$meta$Label[sample_rows]]
 )
 
-# The legacy wide data-frame result remains available explicitly:
-norb_df <- download_norb_small(verbose = TRUE, as = "data.frame")
 }
 }
 \references{

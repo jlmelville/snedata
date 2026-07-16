@@ -55,8 +55,9 @@
 #'   message.
 #' @param as Return format. Use `"data.frame"` for the original data frame
 #'   shape, or `"matrix"` for a list with `data`, `labels`, and
-#'   `descriptions`. The pixel matrix alone requires about 0.69 GiB; use
-#'   `"matrix"` to avoid the wide data frame conversion.
+#'   `descriptions`. The integer pixel matrix uses about 0.69 GiB; the wide
+#'   data-frame result needs additional memory. Use `"matrix"` if that result
+#'   is sufficient.
 #' @param timeout Minimum download timeout in seconds. The default accommodates
 #'   the large archive on slower connections; a larger existing global R timeout
 #'   is preserved.
@@ -103,13 +104,6 @@ download_cifar10 <- function(
   timeout = 1800
 ) {
   as <- match.arg(as)
-  warn_wide_data_frame(
-    "CIFAR-10",
-    n_rows = 60000L,
-    n_cols = 32L * 32L * 3L,
-    storage = "integer",
-    as = as
-  )
   if (is.null(destfile)) {
     workdir <- tempfile("cifar10-")
     dir.create(workdir)

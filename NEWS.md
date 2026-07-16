@@ -11,9 +11,6 @@ repo.
 - `download_mammoth10k()` and `download_mammoth50k()` now both return coordinates in `X`, `Y`, `Z`
   column order. Code that selected Mammoth coordinates by position should be updated to use the
   canonical order.
-- Large CIFAR-10, Small NORB, and COIL-100 wide data-frame requests now warn about their estimated
-  pixel-matrix memory use before acquisition. use `as = "matrix"` to avoid the wide data-frame
-  conversion.
 - All network dataset downloaders now have a configurable `timeout` argument, defaulting to 30
   minutes. Their downloads preserve an already-larger global R timeout and restore it afterward.
 

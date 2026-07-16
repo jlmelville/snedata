@@ -14,9 +14,9 @@ variables:
 }
 
 Pixel values range from 0 to 1. Within each channel, the \code{x} index increases
-from left to right and the \code{y} index increases from top to bottom. The pixel
-matrix alone requires about 2.64 GiB; use \code{as = "matrix"} to avoid the wide
-data frame conversion.
+from left to right and the \code{y} index increases from top to bottom.
+The numeric pixel matrix uses about 2.64 GiB; the wide data-frame result
+needs additional memory. Use \code{as = "matrix"} if that result is sufficient.
 
 Row names are \code{"<object>_<angle>"}, where \verb{<object>} is the object id and
 \verb{<angle>} is the viewing angle in degrees, from 0 to 355 in five-degree

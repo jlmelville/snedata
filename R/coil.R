@@ -87,9 +87,9 @@ download_coil20 <- function(
 #' * `Label`: The object id, stored as a factor with levels 1 to 100.
 #'
 #' Pixel values range from 0 to 1. Within each channel, the `x` index increases
-#' from left to right and the `y` index increases from top to bottom. The pixel
-#' matrix alone requires about 2.64 GiB; use `as = "matrix"` to avoid the wide
-#' data frame conversion.
+#' from left to right and the `y` index increases from top to bottom.
+#' The numeric pixel matrix uses about 2.64 GiB; the wide data-frame result
+#' needs additional memory. Use `as = "matrix"` if that result is sufficient.
 #'
 #' Row names are `"<object>_<angle>"`, where `<object>` is the object id and
 #' `<angle>` is the viewing angle in degrees, from 0 to 355 in five-degree
@@ -187,13 +187,6 @@ download_coil <- function(
   spec
 ) {
   as <- match.arg(as)
-  warn_wide_data_frame(
-    spec$name,
-    n_rows = length(spec$object_range) * length(spec$pose_range),
-    n_cols = prod(spec$dim),
-    storage = "double",
-    as = as
-  )
   paths <- setup_coil_download_paths(url = url, file = file)
   if (cleanup) {
     on.exit(

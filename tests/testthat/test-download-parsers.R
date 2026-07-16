@@ -503,6 +503,94 @@ test_that("QMNIST downloader can return a matrix list", {
   expect_equal(as.character(mat$labels), c("7", "4", "1", "0"))
 })
 
+test_that("downloaders expose a configurable timeout", {
+  expect_identical(
+    formals(download_cifar10)$url,
+    "https://cave.cs.toronto.edu/kriz/cifar-10-binary.tar.gz"
+  )
+  downloaders <- list(
+    cifar10 = download_cifar10,
+    coil20 = download_coil20,
+    coil100 = download_coil100,
+    fashion_mnist = download_fashion_mnist,
+    isomap_faces = download_isomap_faces,
+    isomap_swiss_roll = download_isomap_swiss_roll,
+    kuzushiji_mnist = download_kuzushiji_mnist,
+    mammoth10k = download_mammoth10k,
+    mammoth50k = download_mammoth50k,
+    mnist = download_mnist,
+    norb_small = download_norb_small,
+    qmnist = download_qmnist,
+    twenty_newsgroups = download_twenty_newsgroups
+  )
+  defaults <- vapply(
+    downloaders,
+    function(downloader) formals(downloader)$timeout,
+    numeric(1)
+  )
+
+  expect_identical(unname(defaults), rep(1800, length(downloaders)))
+})
+
+test_that("download timeout is raised and restored", {
+  original_timeout <- getOption("timeout")
+  on.exit(options(timeout = original_timeout), add = TRUE)
+
+  expect_identical(
+    snedata:::with_download_timeout(getOption("timeout"), timeout = 123),
+    123
+  )
+  expect_identical(getOption("timeout"), original_timeout)
+
+  options(timeout = 2400)
+  expect_identical(
+    snedata:::with_download_timeout(getOption("timeout"), timeout = 1800),
+    2400
+  )
+  expect_identical(getOption("timeout"), 2400)
+  expect_error(
+    snedata:::with_download_timeout(NULL, timeout = 0),
+    "positive finite number of seconds"
+  )
+})
+
+test_that("MNIST keeps its timeout while streaming files", {
+  observed <- numeric()
+
+  with_mocked_bindings(
+    parse_files = function(...) {
+      observed <<- c(observed, getOption("timeout"))
+      list(data = matrix(0L, nrow = 1L), labels = factor("0"))
+    },
+    download_mnist(as = "matrix", timeout = 123),
+    .package = "snedata"
+  )
+
+  expect_identical(observed, c(123, 123))
+})
+
+test_that("CIFAR forwards its configurable download timeout", {
+  observed <- new.env(parent = emptyenv())
+
+  with_mocked_bindings(
+    download_asset = function(url, destfile, verbose, timeout) {
+      observed$timeout <- timeout
+      stop("stop before download")
+    },
+    expect_error(
+      download_cifar10(as = "matrix", timeout = 123),
+      "stop before download"
+    ),
+    .package = "snedata"
+  )
+
+  expect_identical(observed$timeout, 123)
+  expect_error(
+    snedata:::download_asset("unused", tempfile(), timeout = 0),
+    "positive finite number of seconds"
+  )
+})
+
 test_that("CIFAR parser rejects incomplete fixed-size batches", {
   path <- tempfile()
   f <- file(path, "wb")
@@ -996,13 +1084,12 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
     as = "matrix"
   )
   all_df <- NULL
-  expect_warning(
+  expect_no_warning(
     all_df <- download_norb_small(
       base_url = file_base_url(tmpdir),
       split = "all",
       as = "data.frame"
-    ),
-    "Small NORB.*wide data frame"
+    )
   )
 
   expect_equal(dim(training$data), c(2L, 18432L))

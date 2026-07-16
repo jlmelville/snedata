@@ -69,8 +69,9 @@ message.}
 
 \item{as}{Return format. Use \code{"data.frame"} for the original data frame
 shape, or \code{"matrix"} for a list with \code{data}, \code{labels}, and
-\code{descriptions}. The pixel matrix alone requires about 0.69 GiB; use
-\code{"matrix"} to avoid the wide data frame conversion.}
+\code{descriptions}. The integer pixel matrix uses about 0.69 GiB; the wide
+data-frame result needs additional memory. Use \code{"matrix"} if that result
+is sufficient.}
 
 \item{timeout}{Minimum download timeout in seconds. The default accommodates
 the large archive on slower connections; a larger existing global R timeout
