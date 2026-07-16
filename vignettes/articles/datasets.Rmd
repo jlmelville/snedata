@@ -15,12 +15,13 @@ This page has a compact table of the available data and some longer notes and ex
 | MNIST and relatives | `download_mnist()`, `download_fashion_mnist()`, `download_kuzushiji_mnist()`, `download_qmnist()` | 70,000 or 120,000 | Images often in ten equally-sized classes. |
 | CIFAR-10 | `download_cifar10()`, `show_cifar()` | 60,000 | The well-known image dataset for machine learning. |
 | Small NORB | `download_norb_small()`, `show_norb_object()` | 48,600 | Stereo images of 50 toys under different angles and lighting conditions. |
+| COIL object images | `download_coil20()`, `download_coil100()`, `show_coil_object()` | 1,440 or 7,200 | Object-image datasets from Columbia; requires the suggested `png` package. |
 | 20 Newsgroups | `download_twenty_newsgroups()` | 18,846 | Text data; use packages such as `tm` or `tidytext` for preprocessing. |
 | Frey and Olivetti faces | `frey_faces()`, `olivetti_faces()` | 1,965 and 400 | Images of faces. Requires the suggested `RnavGraphImageData` package. |
 | Isomap datasets | `download_isomap_swiss_roll()`, `download_isomap_faces()` | 20,000 and 698 | Downloads archived Matlab data; requires the suggested `R.matlab` package, and `gzip` or `uncompress` for faces. |
 
-For MNIST, QMNIST, CIFAR-10, and Small NORB, you can return a list containing the matrix of the 
-numeric data and any labels separately. Supply `as = "matrix"`.
+For MNIST, QMNIST, CIFAR-10, Small NORB, and COIL, you can return a list containing the matrix of
+the numeric data and any labels separately. Supply `as = "matrix"`.
 
 ## Notes
 
@@ -59,6 +60,11 @@ for the MNIST digits, but this time of types of cursive Japanese characters.
 
 * The [Small NORB](https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/) dataset, which consists of
 pairs of images of 50 toys from different angles and under different lighting conditions.
+
+* The Columbia Object Image Library datasets
+[COIL-20](https://cave.cs.columbia.edu/repository/COIL-20) and
+[COIL-100](https://cave.cs.columbia.edu/repository/COIL-100), which contain object images under
+different poses. Reading these PNG datasets requires the suggested `png` package.
 
 * The [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset, which consists of 60,000 
 32 x 32 color images in ten different classes.

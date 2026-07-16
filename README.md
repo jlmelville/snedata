@@ -16,7 +16,8 @@ Neighbor Embedding and related dimensionality reduction methods, most obviously 
 The package includes simulation datasets, the datasets from
 [How to use t-SNE Effectively](http://distill.pub/2016/misread-tsne/), optional Frey and Olivetti
 face helpers, MNIST-like datasets, CIFAR-10, Small NORB, mammoth point clouds, 20 Newsgroups,
-historical Isomap datasets, and a few other examples used in dimensionality reduction papers.
+COIL object-image datasets, historical Isomap datasets, and a few other examples used in
+dimensionality reduction papers.
 
 The pkgdown site has a fuller
 [datasets article](https://jlmelville.github.io/snedata/articles/datasets.html) with a table,
@@ -104,15 +105,16 @@ isomap_swiss <- download_isomap_swiss_roll()
 # requires R.matlab and an external gzip or uncompress command
 isomap_faces <- download_isomap_faces()
 show_isomap_face(isomap_faces, 1)
+
+# download COIL-20 object images
+# requires the optional png package
+coil20 <- download_coil20(as = "matrix")
+show_coil_object(coil20, object = 5, pose = 4)
 ```
 
 ## See also
 
 * The [mlbench](https://cran.r-project.org/package=mlbench) package.
-* I maintain a similar [R package](https://github.com/jlmelville/coil20) (under a different
-license) for downloading the
-[COIL-20](http://www.cs.columbia.edu/CAVE/software/softlib/coil-20.php) and
-[COIL-100](http://www.cs.columbia.edu/CAVE/software/softlib/coil-100.php) datasets.
 * For downloading the MNIST digits database, there is a
 [similar project](https://github.com/xrobin/mnist) by [Xavier Robin](https://github.com/xrobin).
 

@@ -1,3 +1,12 @@
+# snedata 0.0.0.9003
+
+*July 16 2026*:
+
+- New functions: `download_coil20()`, `download_coil100()`, and `show_coil_object()` for the
+COIL-20 and COIL-100 image datasets. Downloading the data requires installing the optional `png`
+package. This functionality formerly lived in the [coil20](https://github.com/jlmelville/coil20)
+repo.
+
 # snedata 0.0.0.9002
 
 *July 2 2026*: Version 0.0.9002 is released, featuring:
