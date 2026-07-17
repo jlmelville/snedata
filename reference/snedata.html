@@ -55,7 +55,8 @@ originates from a gist by Brendan O'Connor:
 
 
 <p>Very simple datasets for characterizing the behavior of various embedding
-algorithms some, from Lee et al (2016) and Agrafiotis and Xu (2002).</p><ul><li><p><code><a href="swiss_roll.html">swiss_roll()</a></code>. A 2D plane curled into 3D.</p></li>
+algorithms, including some from Lee et al. (2016) and Agrafiotis and Xu
+(2002).</p><ul><li><p><code><a href="swiss_roll.html">swiss_roll()</a></code>. A 2D plane curled into 3D.</p></li>
 <li><p><code><a href="sphere.html">sphere()</a></code>. Points sampled from the surface of a 3D sphere.</p></li>
 <li><p><code><a href="ball.html">ball()</a></code>. Points sampled from the interior of a 3D sphere.</p></li>
 <li><p><code><a href="helix.html">helix()</a></code>. Points sampled from a 3D toroidal helix with
@@ -103,7 +104,7 @@ with differing standard deviations.</p></li>
 
 <p>If you have the <code>RnavGraphImageData</code> package
 <a href="https://cran.r-project.org/package=RnavGraphImageData" class="external-link">https://cran.r-project.org/package=RnavGraphImageData</a>
-installed and loaded, then there are functions to convert the Olivetti
+installed, then there are functions to convert the Olivetti
 and Frey faces datasets into a row-based format, and functions to visualize
 the images.</p><ul><li><p><code><a href="frey_faces.html">frey_faces()</a></code>. Loads the Frey faces as a row-based data
 frame.</p></li>
@@ -196,9 +197,6 @@ Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithm
 <span class="r-in"><span><span class="va">g2d</span> <span class="op">&lt;-</span> <span class="fu"><a href="gaussian_data.html">gaussian_data</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>, dim <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># Load RnavGraphImageData</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://waddella.github.io/loon/" class="external-link">RnavGraphImageData</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Load the Frey faces dataset with each image as a row</span></span></span>
 <span class="r-in"><span><span class="va">frey</span> <span class="op">&lt;-</span> <span class="fu"><a href="frey_faces.html">frey_faces</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Display the first pose</span></span></span>

@@ -131,8 +131,7 @@ for checking current upstream terms for their intended use.
 
 library(snedata)
 
-# Load RnavGraphImageData
-library(RnavGraphImageData)
+# Install RnavGraphImageData to use the optional face-data helpers
 
 # Load the Frey faces dataset with each image as a row
 frey <- frey_faces()

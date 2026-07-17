@@ -64,5 +64,5 @@ Other distill functions:
 ## Examples
 
 ``` r
-df <- random_circle_data(n = 50)
+df <- random_circle_cluster_data(n = 50)
 ```

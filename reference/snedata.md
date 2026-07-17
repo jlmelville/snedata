@@ -15,8 +15,8 @@ originates from a gist by Brendan O'Connor:
 ## Simulation functions
 
 Very simple datasets for characterizing the behavior of various
-embedding algorithms some, from Lee et al (2016) and Agrafiotis and Xu
-(2002).
+embedding algorithms, including some from Lee et al. (2016) and
+Agrafiotis and Xu (2002).
 
 - [`swiss_roll()`](https://jlmelville.github.io/snedata/reference/swiss_roll.md).
   A 2D plane curled into 3D.
@@ -100,9 +100,9 @@ relative separation. There's quite a lot of functions:
 ## Faces dataset functions
 
 If you have the `RnavGraphImageData` package
-<https://cran.r-project.org/package=RnavGraphImageData> installed and
-loaded, then there are functions to convert the Olivetti and Frey faces
-datasets into a row-based format, and functions to visualize the images.
+<https://cran.r-project.org/package=RnavGraphImageData> installed, then
+there are functions to convert the Olivetti and Frey faces datasets into
+a row-based format, and functions to visualize the images.
 
 - [`frey_faces()`](https://jlmelville.github.io/snedata/reference/frey_faces.md).
   Loads the Frey faces as a row-based data frame.
@@ -210,9 +210,6 @@ swiss100 <- swiss_roll(n = 100)
 g2d <- gaussian_data(n = 50, dim = 2)
 
 if (FALSE) { # \dontrun{
-# Load RnavGraphImageData
-library(RnavGraphImageData)
-
 # Load the Frey faces dataset with each image as a row
 frey <- frey_faces()
 # Display the first pose

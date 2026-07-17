@@ -32,7 +32,7 @@ Data frame containing the Mammoth coordinates.
 
 ## Details
 
-Downloads a dataframe containing the 10,000 3D coordinates of a mammoth
+Downloads a data frame containing the 10,000 3D coordinates of a mammoth
 skeleton, digitized by [the Smithsonian
 Institution](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12).
 
@@ -45,7 +45,7 @@ of 10,000 points randomly sampled from the 50,000 point data set.
 ## Note
 
 Requires the [rjson](https://cran.r-project.org/package=rjson) package
-to be installed and loaded.
+to be installed.
 
 ## See also
 

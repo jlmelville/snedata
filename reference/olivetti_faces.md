@@ -14,13 +14,13 @@ A data frame with 400 rows and 4097 variables.
 
 ## Value
 
-The Olivetti Faces dataset as a dataframe.
+The Olivetti Faces dataset as a data frame.
 
 ## Details
 
 Returns the Olivetti Faces dataset in a data frame reformatted to have
 one face per row, rather than column. This is a series of 400 images
-(with dimension 64 x 64) of 40 individual's faces, with ten different
+(with dimensions 64 x 64) of 40 individuals' faces, with ten different
 poses per person.
 
 The variables are as follows:
@@ -39,7 +39,7 @@ with name `20_10` is the tenth pose of the twentieth face.
 
 Requires the
 [RnavGraphImageData](https://cran.r-project.org/package=RnavGraphImageData)
-package to be installed and loaded.
+package to be installed.
 
 ## See also
 

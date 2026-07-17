@@ -14,7 +14,7 @@ A data frame with 1965 rows and 561 variables.
 
 ## Value
 
-The Frey Faces dataset as a dataframe.
+The Frey Faces dataset as a data frame.
 
 ## Details
 
@@ -38,7 +38,7 @@ The variables are as follows:
 
 Requires the
 [RnavGraphImageData](https://cran.r-project.org/package=RnavGraphImageData)
-package to be installed and loaded.
+package to be installed.
 
 ## See also
 

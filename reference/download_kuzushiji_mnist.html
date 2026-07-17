@@ -50,7 +50,7 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with 786 variables:</p><ul><li><p><code>px1</code>, <code>px2</code>, <code>px3</code> ... <code>px784</code>: Integer pixel
+    <p>A data frame with 785 variables:</p><ul><li><p><code>px1</code>, <code>px2</code>, <code>px3</code> ... <code>px784</code>: Integer pixel
 value, from 0 (white) to 255 (black).</p></li>
 <li><p><code>Label</code>: The character, represented by an integer in the
 range 0-9.</p></li>
@@ -96,8 +96,8 @@ with factor labels and explicit split identity in <code>meta</code>.</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Downloads the image and label files for the training and test datasets and
-converts them to a data frame or canonical image result. The dataset is intended to be a drop-in
-replacement for the MNIST digits dataset.</p>
+converts them to a data frame or canonical image result. The dataset is
+intended to be a drop-in replacement for the MNIST digits dataset.</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
@@ -131,7 +131,7 @@ Deep Learning for Classical Japanese Literature.
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pca</span><span class="op">$</span><span class="va">x</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">pca</span><span class="op">$</span><span class="va">x</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>  labels <span class="op">=</span> <span class="va">kuzushiji_r1000</span><span class="op">$</span><span class="va">Label</span>,</span></span>
-<span class="r-in"><span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">kuzushiji_r1000</span><span class="op">$</span><span class="va">Label</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="va">kuzushiji</span><span class="op">$</span><span class="va">Label</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">kuzushiji_r1000</span><span class="op">$</span><span class="va">Label</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="va">kuzushiji_r1000</span><span class="op">$</span><span class="va">Label</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>

@@ -15,7 +15,7 @@ download_kuzushiji_mnist(
 
 ## Format
 
-A data frame with 786 variables:
+A data frame with 785 variables:
 
 - `px1`, `px2`, `px3` ... `px784`: Integer pixel value, from 0 (white)
   to 255 (black).
@@ -101,7 +101,7 @@ pca <- prcomp(kuzushiji_r1000[, 1:784], retx = TRUE, rank. = 2)
 plot(pca$x[, 1:2], type = "n")
 text(pca$x[, 1:2],
   labels = kuzushiji_r1000$Label,
-  col = rainbow(length(levels(kuzushiji_r1000$Label)))[kuzushiji$Label]
+  col = rainbow(length(levels(kuzushiji_r1000$Label)))[kuzushiji_r1000$Label]
 )
 } # }
 ```
