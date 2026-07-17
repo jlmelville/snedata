@@ -137,7 +137,7 @@ of the Twelfth International Conference on Machine Learning* 1995 (pp.
 
 ## See also
 
-<https://qwone.com/~jason/20Newsgroups/>
+<http://qwone.com/~jason/20Newsgroups/>
 
 Chapter 9 of [Tidy Text Mining with
 R](https://www.tidytextmining.com/usenet) for a case study using the

@@ -24,7 +24,7 @@ helix(n = 1000, rmajor = 2, rminor = 1, nwinds = 8)
 
 - nwinds:
 
-  Number of winds the helix makes.
+  Positive integer number of winds the helix makes.
 
 ## Value
 

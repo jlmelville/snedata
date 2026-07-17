@@ -26,18 +26,20 @@
 - All network dataset downloaders now have a configurable `timeout`
   argument, defaulting to 30 minutes. Their downloads preserve an
   already-larger global R timeout and restore it afterward.
-- Image downloaders now share `as = "list"` canonical results with
-  `data`, `meta`, `image_dim`, `channel_order`, and source provenance.
-  Metadata uses lower-case names and records train/test identity
-  explicitly. Fashion-MNIST and Kuzushiji-MNIST now support this result.
-  Legacy data-frame results remain available.
+- `as = "matrix"` from 0.0.0.9002 has been changed to `as = "list"` and
+  used by all relevant dataset functions.
 - [`synthetic_hierarchical_data()`](https://jlmelville.github.io/snedata/reference/synthetic_hierarchical_data.md)
   adds `colors = "macro"`, and `colors = "none"` arguments, which do not
   require the `colorspace` dependency to be installed.
+- `synthetic_hierarchical_data(colors = "full")` and COIL downloaders
+  now fail fast if optional dependencies are not installed, before
+  generating data or starting a download.
 - Fixed non-unique document identifiers returned by
   [`download_twenty_newsgroups()`](https://jlmelville.github.io/snedata/reference/download_twenty_newsgroups.md).
   `Id` now has the form `subset/newsgroup/filename`, while `FileId`
   preserves the original character filename.
+- `helix(nwinds)` now requires a positive integer so it always forms a
+  closed curve as documented.
 
 ## snedata 0.0.0.9002
 
