@@ -24,7 +24,7 @@ jobs:
   source-url-health:
     name: Check source URL reachability
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
 
     env:
       FAIL_ON_UNREACHABLE: ${{ inputs.fail-on-unreachable || 'false' }}
