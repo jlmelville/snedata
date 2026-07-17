@@ -101,40 +101,75 @@ format_result <- function(row, result) {
   )
 }
 
+markdown_cell <- function(x) {
+  x <- gsub("\\\\", "\\\\\\\\", x)
+  gsub("\\|", "&#124;", x)
+}
+
+markdown_status <- function(result) {
+  if (isTRUE(result$ok)) "OK" else "**FAIL**"
+}
+
+markdown_result_row <- function(item) {
+  row <- item$row
+  result <- item$result
+  paste(
+    "|",
+    markdown_status(result),
+    "|",
+    markdown_cell(result$method),
+    "|",
+    markdown_cell(result$http_code),
+    "|",
+    markdown_cell(row[["dataset"]]),
+    "|",
+    markdown_cell(row[["asset"]]),
+    "|",
+    paste0("<", row[["url"]], ">"),
+    "|"
+  )
+}
+
 write_github_summary <- function(results) {
   summary_path <- Sys.getenv("GITHUB_STEP_SUMMARY")
   if (!nzchar(summary_path)) {
     return(invisible(NULL))
   }
 
+  failures <- vapply(results, function(item) !isTRUE(item$result$ok), logical(1))
+  n_failures <- sum(failures)
+  n_total <- length(results)
+  n_ok <- n_total - n_failures
+
   lines <- c(
     "## Source URL health",
+    "",
+    paste0("Checked **", n_total, "** source URLs."),
+    paste0("Reachable: **", n_ok, "**. Unreachable: **", n_failures, "**."),
+    ""
+  )
+
+  if (n_failures > 0L) {
+    lines <- c(
+      lines,
+      "### Unreachable URLs",
+      "",
+      "| Status | Method | HTTP | Dataset | Asset | URL |",
+      "| --- | --- | ---: | --- | --- | --- |",
+      vapply(results[failures], markdown_result_row, character(1)),
+      ""
+    )
+  }
+
+  lines <- c(
+    lines,
+    "### All URLs",
     "",
     "| Status | Method | HTTP | Dataset | Asset | URL |",
     "| --- | --- | ---: | --- | --- | --- |"
   )
   for (item in results) {
-    row <- item$row
-    result <- item$result
-    status <- if (isTRUE(result$ok)) "ok" else "fail"
-    lines <- c(
-      lines,
-      paste(
-        "|",
-        status,
-        "|",
-        result$method,
-        "|",
-        result$http_code,
-        "|",
-        row[["dataset"]],
-        "|",
-        row[["asset"]],
-        "|",
-        paste0("<", row[["url"]], ">"),
-        "|"
-      )
-    )
+    lines <- c(lines, markdown_result_row(item))
   }
   write(lines, file = summary_path, append = TRUE)
   invisible(NULL)
