@@ -95,7 +95,7 @@ ball <- function(n = 1000, rad = 1, ndim = 3) {
 #' @param n Number of points to create.
 #' @param rmajor Major radius.
 #' @param rminor Minor radius.
-#' @param nwinds Number of winds the helix makes.
+#' @param nwinds Positive integer number of winds the helix makes.
 #' @return Data frame with `x`, `y`, `z` columns containing the
 #'  coordinates of the points and `color` the RGB color.
 #' @references
@@ -115,7 +115,7 @@ helix <- function(n = 1000, rmajor = 2, rminor = 1, nwinds = 8) {
   n <- positive_integer_scalar(n, "n")
   rmajor <- positive_finite_scalar(rmajor, "rmajor")
   rminor <- positive_finite_scalar(rminor, "rminor")
-  nwinds <- positive_finite_scalar(nwinds, "nwinds")
+  nwinds <- positive_integer_scalar(nwinds, "nwinds")
   # http://math.stackexchange.com/questions/324527/do-these-equations-create-a-helix-wrapped-into-a-torus
   u <- seq(-pi, pi, length.out = n + 1)[-(n + 1)]
   w <- rmajor + (rminor * cos(nwinds * u))

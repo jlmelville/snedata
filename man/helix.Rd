@@ -13,7 +13,7 @@ helix(n = 1000, rmajor = 2, rminor = 1, nwinds = 8)
 
 \item{rminor}{Minor radius.}
 
-\item{nwinds}{Number of winds the helix makes.}
+\item{nwinds}{Positive integer number of winds the helix makes.}
 }
 \value{
 Data frame with \code{x}, \code{y}, \code{z} columns containing the

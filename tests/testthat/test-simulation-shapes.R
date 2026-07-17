@@ -262,6 +262,10 @@ test_that("helix points lie on the configured torus without duplicate endpoints"
   expect_hex_colors(df$color)
 })
 
+test_that("helix requires a positive integer number of winds", {
+  expect_error(helix(nwinds = 1.5), "nwinds must be a positive integer")
+})
+
 test_that("Swiss roll and S-curve variants preserve geometric constraints", {
   set.seed(42)
   swiss <- swiss_roll(n = 30, min_phi = pi, max_phi = 2 * pi, max_z = 3)
@@ -386,7 +390,7 @@ test_that("simulation generators reject pathological scalar inputs", {
     list(
       helix,
       list(nwinds = 0),
-      "nwinds must be a positive finite numeric scalar"
+      "nwinds must be a positive integer"
     ),
     list(
       swiss_roll,

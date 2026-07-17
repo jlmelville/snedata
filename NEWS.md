@@ -23,6 +23,7 @@ repo.
    do not require the `colorspace` dependency to be installed.
 - Fixed non-unique document identifiers returned by `download_twenty_newsgroups()`. `Id` now has
   the form `subset/newsgroup/filename`, while `FileId` preserves the original character filename.
+- `helix(nwinds)` now requires a positive integer so it always forms a closed curve as documented.
 
 # snedata 0.0.0.9002
 
