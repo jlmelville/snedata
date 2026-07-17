@@ -409,8 +409,10 @@ also available via <code><a href="../reference/synthetic_hierarchical_data.html"
 <span><span class="co"># View the tenth character</span></span>
 <span><span class="fu"><a href="../reference/show_mnist_digit.html">show_mnist_digit</a></span><span class="op">(</span><span class="va">kuzushiji</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Download the small NORB dataset</span></span>
-<span><span class="va">norb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_norb_small.html">download_norb_small</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co"># Use a canonical list for small NORB to avoid the wide data-frame result</span></span>
+<span><span class="va">norb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_norb_small.html">download_norb_small</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span>, as <span class="op">=</span> <span class="st">"list"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">norb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">norb</span><span class="op">$</span><span class="va">meta</span><span class="op">)</span></span>
 <span><span class="co"># View an image, compare with example at https://github.com/ndrplz/small_norb</span></span>
 <span><span class="fu"><a href="../reference/show_norb_object.html">show_norb_object</a></span><span class="op">(</span><span class="va">norb</span>, category <span class="op">=</span> <span class="fl">2</span>, instance <span class="op">=</span> <span class="fl">6</span>, elevation <span class="op">=</span> <span class="fl">6</span>, azimuth <span class="op">=</span> <span class="fl">24</span>, lighting <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 </div>
