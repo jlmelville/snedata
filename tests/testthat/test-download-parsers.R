@@ -45,6 +45,31 @@ write_gz_mnist_header <- function(path, header) {
   writeBin(as.integer(header), f, size = 4, endian = "big")
 }
 
+write_gz_tar_link_fixture <- function(path) {
+  header <- rep(as.raw(0), 512L)
+  header[1:4] <- charToRaw("link")
+  header[101:107] <- charToRaw("0000777")
+  header[109:115] <- charToRaw("0000000")
+  header[117:123] <- charToRaw("0000000")
+  header[125:135] <- charToRaw("00000000000")
+  header[137:147] <- charToRaw("00000000000")
+  header[149:156] <- as.raw(32)
+  header[157] <- charToRaw("2")
+  header[158:161] <- charToRaw("file")
+  header[258:263] <- c(charToRaw("ustar"), as.raw(0))
+  header[264:265] <- charToRaw("00")
+
+  checksum <- sum(as.integer(header))
+  header[149:154] <- charToRaw(sprintf("%06o", checksum))
+  header[155] <- as.raw(0)
+  header[156] <- as.raw(32)
+
+  f <- gzfile(path, "wb")
+  on.exit(close(f), add = TRUE)
+  writeBin(header, f)
+  writeBin(raw(1024L), f)
+}
+
 write_gz_qmnist_labels <- function(
   path,
   magic = 3074,
@@ -670,14 +695,8 @@ test_that("tar entry validation rejects unsafe and duplicate paths", {
 })
 
 test_that("tar extraction rejects symbolic links before extraction", {
-  source_root <- tempfile()
-  dir.create(source_root)
-  writeLines("fixture", file.path(source_root, "file"))
-  file.symlink("file", file.path(source_root, "link"))
   tarball <- tempfile(fileext = ".tar.gz")
-  oldwd <- setwd(source_root)
-  on.exit(setwd(oldwd), add = TRUE)
-  utils::tar(tarball, c("file", "link"), compression = "gzip", tar = "internal")
+  write_gz_tar_link_fixture(tarball)
 
   expect_error(
     snedata:::extract_tar_safely(
