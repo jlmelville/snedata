@@ -648,7 +648,17 @@ coil_feature_data <- function(df) {
   } else if (is.matrix(df)) {
     data <- df
   } else if (is.data.frame(df)) {
-    data <- df[, -ncol(df), drop = FALSE]
+    pixel_columns <- grepl(
+      "^(x[0-9]+_y[0-9]+|[rgb]_x[0-9]+_y[0-9]+)$",
+      names(df)
+    )
+    if (!any(pixel_columns)) {
+      stop(
+        "COIL data frames must contain named pixel columns",
+        call. = FALSE
+      )
+    }
+    data <- df[, pixel_columns, drop = FALSE]
   } else {
     stop(
       "`df` must be a data frame, matrix, or matrix-list result",

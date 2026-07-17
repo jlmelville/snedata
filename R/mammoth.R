@@ -49,7 +49,8 @@ download_mammoth10k <- function(timeout = 1800) {
       ),
       timeout = timeout
     ),
-    source_order = c("X", "Z", "Y")
+    source_order = c("X", "Z", "Y"),
+    expected_n = 10000L
   )
 }
 
@@ -104,13 +105,62 @@ download_mammoth50k <- function(timeout = 1800) {
       ),
       timeout = timeout
     ),
-    source_order = c("Y", "X", "Z")
+    source_order = c("Y", "X", "Z"),
+    expected_n = 50000L
   )
 }
 
 # The source data uses different coordinate orders for the two Mammoth assets.
 # Keep the reordering local and testable without downloading either asset.
-format_mammoth_coordinates <- function(coordinates, source_order) {
+format_mammoth_coordinates <- function(coordinates, source_order, expected_n) {
+  if (
+    !is.numeric(expected_n) ||
+      length(expected_n) != 1L ||
+      !is.finite(expected_n) ||
+      expected_n <= 0 ||
+      expected_n != floor(expected_n)
+  ) {
+    stop("expected_n must be a positive integer", call. = FALSE)
+  }
+  if (
+    !is.character(source_order) ||
+      length(source_order) != 3L ||
+      !setequal(source_order, c("X", "Y", "Z"))
+  ) {
+    stop("source_order must contain X, Y, and Z exactly once", call. = FALSE)
+  }
+  if (!is.list(coordinates)) {
+    stop("Mammoth coordinates must be a list of coordinate rows", call. = FALSE)
+  }
+  if (length(coordinates) != expected_n) {
+    stop(
+      "Mammoth coordinates must contain exactly ",
+      expected_n,
+      " observations; found ",
+      length(coordinates),
+      call. = FALSE
+    )
+  }
+
+  valid_coordinate <- vapply(
+    coordinates,
+    function(coordinate) {
+      is.numeric(coordinate) &&
+        length(coordinate) == 3L &&
+        all(is.finite(coordinate))
+    },
+    logical(1)
+  )
+  invalid_rows <- which(!valid_coordinate)
+  if (length(invalid_rows) > 0L) {
+    stop(
+      "Mammoth coordinate row ",
+      invalid_rows[1],
+      " must contain exactly three finite numeric values",
+      call. = FALSE
+    )
+  }
+
   df <- data.frame(do.call(rbind, coordinates))
   df <- df[, match(c("X", "Y", "Z"), source_order), drop = FALSE]
   names(df) <- c("X", "Y", "Z")

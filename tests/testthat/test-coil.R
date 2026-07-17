@@ -221,6 +221,30 @@ test_that("show_coil_object plots data frames and matrix-list results", {
   expect_error(show_coil_object(df, object = 1, pose = 1), "No row")
 })
 
+test_that("COIL data-frame viewers select named pixels without labels", {
+  images <- matrix(seq(0, 1, length.out = 128 * 128), nrow = 1)
+  df <- format_coil_result(
+    images,
+    objects = 1L,
+    poses = 0L,
+    pixel_names = coil20_pixel_names(),
+    label_levels = 1:20
+  )
+  df$Source <- "legacy metadata"
+  df <- df[c("Label", "Source", coil20_pixel_names())]
+  label_free <- df[, setdiff(names(df), "Label"), drop = FALSE]
+
+  expect_equal(unname(as.matrix(coil_feature_data(df))), images)
+  expect_equal(unname(as.matrix(coil_feature_data(label_free))), images)
+
+  path <- tempfile(fileext = ".pdf")
+  grDevices::pdf(path)
+  on.exit(grDevices::dev.off(), add = TRUE)
+
+  expect_silent(show_coil_object(df, object = 1, pose = 0))
+  expect_silent(show_coil_object(label_free, object = 1, pose = 0))
+})
+
 test_that("show_coil_object explains COIL-100 poses are angles", {
   images <- matrix(seq(0, 1, length.out = 128 * 128 * 3), nrow = 1)
   df <- format_coil_result(
