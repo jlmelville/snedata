@@ -39,6 +39,12 @@ jobs:
           r-version: "release"
           use-public-rspm: true
 
+      - name: Validate source URL manifest
+        run: |
+          Rscript .github/scripts/validate-source-url-manifest.R \
+            --manifest .github/source-urls.tsv \
+            --source-dir R
+
       - name: Check source URLs
         run: |
           if [ "${FAIL_ON_UNREACHABLE}" = "true" ]; then
