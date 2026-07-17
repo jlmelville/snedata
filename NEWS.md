@@ -3,9 +3,9 @@
 *July 16 2026*:
 
 - New functions: `download_coil20()`, `download_coil100()`, and `show_coil_object()` for the
-COIL-20 and COIL-100 image datasets. Downloading the data requires installing the optional `png`
-package. This functionality formerly lived in the [coil20](https://github.com/jlmelville/coil20)
-repo.
+  COIL-20 and COIL-100 image datasets. Downloading the data requires installing the optional `png`
+  package. This functionality formerly lived in the [coil20](https://github.com/jlmelville/coil20)
+  repo.
 - Improved validation and cleanup of downloaded binary data and archives.
 - Improved validation of synthetic data generators.
 - Fixed QMNIST broken links due to project being archived.
