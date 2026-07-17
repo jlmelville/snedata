@@ -1351,6 +1351,7 @@ test_that("NORB validation rejects wrong counts and out-of-range metadata", {
 test_that("NORB downloader assembles requested splits from local fixtures", {
   tmpdir <- tempfile()
   dir.create(tmpdir)
+  base_url <- file_base_url(tmpdir)
 
   training_base <- "smallnorb-5x46789x9x18x6x2x96x96-training"
   testing_base <- "smallnorb-5x01235x9x18x6x2x96x96-testing"
@@ -1377,7 +1378,7 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
 
   expect_error(
     download_norb_small(
-      base_url = file_base_url(tmpdir),
+      base_url = base_url,
       split = "training",
       as = "list"
     ),
@@ -1385,14 +1386,14 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
   )
 
   training <- snedata:::read_norb_data(
-    base_url = file_base_url(tmpdir),
+    base_url = base_url,
     split = "training",
     as = "list",
     verbose = FALSE,
     expected_count = 2L
   )
   all <- snedata:::read_norb_all_data(
-    base_url = file_base_url(tmpdir),
+    base_url = base_url,
     verbose = FALSE,
     as = "list",
     expected_count = 2L
@@ -1400,7 +1401,7 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
   all_df <- NULL
   expect_no_warning(
     all_df <- snedata:::read_norb_all_data(
-      base_url = file_base_url(tmpdir),
+      base_url = base_url,
       verbose = FALSE,
       as = "data.frame",
       expected_count = 2L
@@ -1408,10 +1409,12 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
   )
 
   expect_equal(dim(training$data), c(2L, 18432L))
+  expect_identical(training$source$url, base_url)
   expect_equal(as.character(training$meta$split), c("training", "training"))
   expect_equal(as.character(training$meta$description), c("Animal", "Car"))
 
   expect_equal(dim(all$data), c(4L, 18432L))
+  expect_identical(all$source$url, base_url)
   expect_equal(
     as.character(all$meta$split),
     c("training", "training", "testing", "testing")

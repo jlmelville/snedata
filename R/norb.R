@@ -260,6 +260,7 @@ read_norb_data <- function(
     cats,
     split = split,
     as = as,
+    source = list(dataset = "Small NORB", url = base_url),
     expected_count = expected_count
   )
 }
