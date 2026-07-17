@@ -354,6 +354,19 @@ test_that("deterministic Distill-style generators return expected structures", {
   expect_equal(simplex$color, rep("#112233", 3))
 })
 
+test_that("long_gaussian_data scales only coordinate columns", {
+  set.seed(42)
+  gaussian <- gaussian_data(n = 4, dim = 3)
+
+  set.seed(42)
+  colored <- long_gaussian_data(n = 4, dim = 3, color = "#112233")
+  numeric_color <- long_gaussian_data(n = 4, dim = 3, color = 1:4)
+
+  expect_equal(colored[1:3], sweep(gaussian, 2, 1:3, `/`))
+  expect_equal(colored$color, rep("#112233", 4))
+  expect_equal(numeric_color$color, 1:4)
+})
+
 test_that("linked and unlinked rings differ by their x-offset", {
   linked <- link_data(n = 4)
   unlinked <- unlink_data(n = 4)

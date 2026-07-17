@@ -522,21 +522,30 @@ test_that("QMNIST extended label parser validates the exact IDX2 payload", {
 test_that("QMNIST downloader can return a canonical list", {
   tmpdir <- tempfile()
   dir.create(tmpdir)
+  train_metadata <- rbind(
+    c(7, 0, 610, 12, 37, 1001, 0, 0),
+    c(4, 4, 2100, 13, 38, 1002, 0, 0)
+  )
+  test_metadata <- rbind(
+    c(1, 1, 711, 14, 39, 1003, 1, 0),
+    c(0, 2, 812, 15, 40, 1004, 0, 0)
+  )
 
   write_gz_mnist_images(
     file.path(tmpdir, "qmnist-train-images-idx3-ubyte.gz"),
     pixels = 1:8
   )
   write_gz_qmnist_labels(
-    file.path(tmpdir, "qmnist-train-labels-idx2-int.gz")
+    file.path(tmpdir, "qmnist-train-labels-idx2-int.gz"),
+    metadata = train_metadata
   )
   write_gz_mnist_images(
     file.path(tmpdir, "qmnist-test-images-idx3-ubyte.gz"),
     pixels = 9:16
   )
-  write_gz_mnist_labels(
-    file.path(tmpdir, "qmnist-test-labels-idx1-ubyte.gz"),
-    labels = c(1, 0)
+  write_gz_qmnist_labels(
+    file.path(tmpdir, "qmnist-test-labels-idx2-int.gz"),
+    metadata = test_metadata
   )
 
   mat <- download_qmnist(base_url = file_base_url(tmpdir), as = "list")
@@ -546,6 +555,11 @@ test_that("QMNIST downloader can return a canonical list", {
   expect_equal(unname(mat$data[3, ]), 9:12)
   expect_equal(as.character(mat$meta$label), c("7", "4", "1", "0"))
   expect_equal(names(mat$meta)[4:11], snedata:::qmnist_extended_label_columns)
+  expect_false(anyNA(mat$meta[snedata:::qmnist_extended_label_columns]))
+  expect_equal(
+    unname(as.matrix(mat$meta[snedata:::qmnist_extended_label_columns])),
+    rbind(train_metadata, test_metadata)
+  )
 })
 
 test_that("downloaders expose a configurable timeout", {
@@ -863,6 +877,11 @@ test_that("NORB parsers reject malformed headers, dimensions, and payloads", {
     values = integer()
   )
   write_gz_norb_images(
+    file.path(tmpdir, "same-product-bad-shape.mat.gz"),
+    dimensions = c(2, 1, 96, 192),
+    values = integer()
+  )
+  write_gz_norb_images(
     file.path(tmpdir, "overflow.mat.gz"),
     dimensions = c(.Machine$integer.max, 2, 96, 96),
     values = integer()
@@ -934,7 +953,15 @@ test_that("NORB parsers reject malformed headers, dimensions, and payloads", {
       base_url = file_base_url(tmpdir),
       verbose = FALSE
     ),
-    "invalid image dimensions.*expected count 18432 pixels.*actual count 9216"
+    "invalid image dimensions.*expected n_cameras=2, n_rows=96, n_cols=96 \\(18432 pixels per image\\); actual n_cameras=1, n_rows=96, n_cols=96 \\(9216 pixels per image\\)"
+  )
+  expect_error(
+    snedata:::read_norb_images(
+      file = "same-product-bad-shape.mat.gz",
+      base_url = file_base_url(tmpdir),
+      verbose = FALSE
+    ),
+    "invalid image dimensions.*expected n_cameras=2, n_rows=96, n_cols=96 \\(18432 pixels per image\\); actual n_cameras=1, n_rows=96, n_cols=192 \\(18432 pixels per image\\)"
   )
   expect_error(
     snedata:::read_norb_images(
