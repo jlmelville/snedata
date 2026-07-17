@@ -694,23 +694,31 @@ validate_norb_padding <- function(padding, asset, header, size = 4L) {
 }
 
 validate_norb_image_dimensions <- function(dimensions, asset) {
-  pixels_per_image <- binary_safe_product(
+  expected_dimensions <- c(n_cameras = 2L, n_rows = 96L, n_cols = 96L)
+  actual_dimensions <- validate_binary_dimensions(
     dimensions[c("n_cameras", "n_rows", "n_cols")],
     asset,
     header = dimensions
   )
-  expected_pixels_per_image <- 2L * 96L * 96L
+  pixels_per_image <- binary_safe_product(
+    actual_dimensions,
+    asset,
+    header = dimensions
+  )
+  expected_pixels_per_image <- prod(expected_dimensions)
 
-  if (pixels_per_image != expected_pixels_per_image) {
+  if (!identical(actual_dimensions, expected_dimensions)) {
     stop(
       asset,
-      " has invalid image dimensions: expected count ",
+      " has invalid image dimensions: expected ",
+      binary_header_context(expected_dimensions),
+      " (",
       expected_pixels_per_image,
-      " pixels (",
-      expected_pixels_per_image,
-      " bytes) per image; actual count ",
+      " pixels per image); actual ",
+      binary_header_context(actual_dimensions),
+      " (",
       pixels_per_image,
-      " pixels per image; header dimensions: ",
+      " pixels per image); header dimensions: ",
       binary_header_context(dimensions),
       call. = FALSE
     )
