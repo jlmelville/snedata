@@ -12,18 +12,18 @@
 #'
 #' @format A data frame with 6 variables:
 #'
-#' * `Id`: A unique identifier for the document, consisting of the
-#'   subset concatenated with the position in the subset, e.g. `train_1`.
-#' * `FileId`: The integer identifier of the document, from the
-#'   filename of the downloaded data. Be aware that these are *not* unique.
+#' * `Id`: A stable source-derived identifier containing the subset,
+#'   newsgroup, and original filename, e.g. `train/alt.atheism/49960`.
+#' * `FileId`: The original source filename as a character value. These are
+#'   *not* unique across subsets and newsgroups.
 #' * `Text`: The full text of the message including any header, footer,
 #'   and quotes. Newlines are preserved.
 #' * `Subset`: A factor with two levels: `train` and `test`,
 #'   indicating whether the document is from the training or test subset.
-#' * `Label`: The newsgroup represented by an integer id, in the range
-#'   0-19.
-#' * `Newsgroup`: A factor with 20 levels, indicating the newsgroup
-#'   that the document belongs to.
+#' * `Label`: A factor with levels `0` through `19`, identifying the
+#'   newsgroup using the canonical ordering below.
+#' * `Newsgroup`: A factor with the 20 newsgroups as levels in the canonical
+#'   ordering below.
 #'
 #' The labels correspond to:
 #' * `0`: alt.atheism
@@ -47,7 +47,7 @@
 #' * `18`: talk.politics.misc
 #' * `19`: talk.religion.misc
 #'
-#' and are also present as the `Newsgroup` factor.
+#' `Newsgroup` contains the corresponding names.
 #'
 #' There are 11,314 items in the `train` dataset and 7,532 items in the
 #' `test` for a total of 18,846 items if you choose `subset = "all"`.
@@ -122,6 +122,29 @@ download_twenty_newsgroups <- function(
 
 newsgroups_url <- "https://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
 
+newsgroup_levels <- c(
+  "alt.atheism",
+  "comp.graphics",
+  "comp.os.ms-windows.misc",
+  "comp.sys.ibm.pc.hardware",
+  "comp.sys.mac.hardware",
+  "comp.windows.x",
+  "misc.forsale",
+  "rec.autos",
+  "rec.motorcycles",
+  "rec.sport.baseball",
+  "rec.sport.hockey",
+  "sci.crypt",
+  "sci.electronics",
+  "sci.med",
+  "sci.space",
+  "soc.religion.christian",
+  "talk.politics.guns",
+  "talk.politics.mideast",
+  "talk.politics.misc",
+  "talk.religion.misc"
+)
+
 download_twenty_newsgroups_data <- function(
   tmpdir = NULL,
   verbose = FALSE,
@@ -189,8 +212,15 @@ read_newsgroup_directory <- function(directory_path) {
     stop("Directory does not exist: ", directory_path)
   }
 
-  file_names <- list.files(directory_path, full.names = TRUE)
   newsgroup_name <- basename(directory_path)
+  if (!newsgroup_name %in% newsgroup_levels) {
+    stop("Unknown 20 Newsgroups directory: ", newsgroup_name, call. = FALSE)
+  }
+
+  file_names <- sort(
+    list.files(directory_path, full.names = TRUE),
+    method = "radix"
+  )
 
   ids <- character(length(file_names))
   texts <- character(length(file_names))
@@ -202,7 +232,7 @@ read_newsgroup_directory <- function(directory_path) {
   data.frame(
     FileId = ids,
     Text = texts,
-    Newsgroup = factor(newsgroup_name, levels = unique(newsgroup_name))
+    Newsgroup = factor(newsgroup_name, levels = newsgroup_levels)
   )
 }
 
@@ -216,7 +246,10 @@ read_newsgroups_subset <-
     }
 
     df_list <- list()
-    newsgroup_dirs <- list.files(subset_dir, full.names = TRUE)
+    newsgroup_dirs <- sort(
+      list.files(subset_dir, full.names = TRUE),
+      method = "radix"
+    )
     for (ng_dir in newsgroup_dirs) {
       tsmessage("Processing ", basename(ng_dir))
       df_list[[basename(ng_dir)]] <- read_newsgroup_directory(ng_dir)
@@ -243,18 +276,18 @@ read_newsgroups_data <-
       combined_data <- read_newsgroups_subset(root_dir, subset, verbose)
       combined_data$Subset <- factor(subset, levels = subset_levels)
     }
-    combined_data$Label <-
-      factor((as.integer(combined_data$Newsgroup) - 1))
-    combined_data$Id <-
-      paste0(
-        combined_data$Subset,
-        "_",
-        stats::ave(
-          seq_along(combined_data$Subset),
-          combined_data$Subset,
-          FUN = seq_along
-        )
-      )
+    label_values <- match(
+      as.character(combined_data$Newsgroup),
+      newsgroup_levels
+    ) -
+      1L
+    combined_data$Label <- factor(label_values, levels = 0:19)
+    combined_data$Id <- paste(
+      combined_data$Subset,
+      combined_data$Newsgroup,
+      combined_data$FileId,
+      sep = "/"
+    )
 
     combined_data <-
       combined_data[, c("Id", "FileId", "Text", "Subset", "Label", "Newsgroup")]

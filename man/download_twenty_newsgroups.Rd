@@ -6,18 +6,18 @@
 \format{
 A data frame with 6 variables:
 \itemize{
-\item \code{Id}: A unique identifier for the document, consisting of the
-subset concatenated with the position in the subset, e.g. \code{train_1}.
-\item \code{FileId}: The integer identifier of the document, from the
-filename of the downloaded data. Be aware that these are \emph{not} unique.
+\item \code{Id}: A stable source-derived identifier containing the subset,
+newsgroup, and original filename, e.g. \code{train/alt.atheism/49960}.
+\item \code{FileId}: The original source filename as a character value. These are
+\emph{not} unique across subsets and newsgroups.
 \item \code{Text}: The full text of the message including any header, footer,
 and quotes. Newlines are preserved.
 \item \code{Subset}: A factor with two levels: \code{train} and \code{test},
 indicating whether the document is from the training or test subset.
-\item \code{Label}: The newsgroup represented by an integer id, in the range
-0-19.
-\item \code{Newsgroup}: A factor with 20 levels, indicating the newsgroup
-that the document belongs to.
+\item \code{Label}: A factor with levels \code{0} through \code{19}, identifying the
+newsgroup using the canonical ordering below.
+\item \code{Newsgroup}: A factor with the 20 newsgroups as levels in the canonical
+ordering below.
 }
 
 The labels correspond to:
@@ -44,7 +44,7 @@ The labels correspond to:
 \item \code{19}: talk.religion.misc
 }
 
-and are also present as the \code{Newsgroup} factor.
+\code{Newsgroup} contains the corresponding names.
 
 There are 11,314 items in the \code{train} dataset and 7,532 items in the
 \code{test} for a total of 18,846 items if you choose \code{subset = "all"}.

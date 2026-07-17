@@ -1,69 +1,155 @@
-write_newsgroup_fixture <- function(root) {
-  paths <- c(
-    file.path(root, "20news-bydate-train", "alt.atheism"),
-    file.path(root, "20news-bydate-train", "comp.graphics"),
-    file.path(root, "20news-bydate-test", "alt.atheism"),
-    file.path(root, "20news-bydate-test", "comp.graphics")
+newsgroup_fixture_records <- list(
+  list(
+    "train",
+    "alt.atheism",
+    "10",
+    c("Subject: train atheist 10", "", "Body one")
+  ),
+  list(
+    "train",
+    "alt.atheism",
+    "2",
+    c("Subject: train atheist 2", "", "Body two")
+  ),
+  list(
+    "train",
+    "comp.graphics",
+    "30",
+    c("Subject: train graphics", "", "Body three")
+  ),
+  list(
+    "test",
+    "alt.atheism",
+    "11",
+    c("Subject: test atheist", "", "Body four")
+  ),
+  list(
+    "test",
+    "comp.graphics",
+    "12",
+    c("Subject: test graphics 12", "", "Body five")
+  ),
+  list(
+    "test",
+    "comp.graphics",
+    "4",
+    c("Subject: test graphics 4", "", "Body six")
   )
-  for (path in paths) {
-    dir.create(path, recursive = TRUE)
-  }
+)
 
-  writeLines(
-    c("Subject: train atheist", "", "Body one"),
-    file.path(paths[1], "1")
-  )
-  writeLines(
-    c("Subject: train graphics", "", "Body two"),
-    file.path(paths[2], "2")
-  )
-  writeLines(
-    c("Subject: test atheist", "", "Body three"),
-    file.path(paths[3], "3")
-  )
-  writeLines(
-    c("Subject: test graphics", "", "Body four"),
-    file.path(paths[4], "4")
-  )
+write_newsgroup_fixture <- function(
+  root,
+  creation_order = seq_along(newsgroup_fixture_records)
+) {
+  for (i in creation_order) {
+    record <- newsgroup_fixture_records[[i]]
+    path <- file.path(
+      root,
+      paste0("20news-bydate-", record[[1]]),
+      record[[2]]
+    )
+    dir.create(path, recursive = TRUE, showWarnings = FALSE)
+    writeLines(record[[4]], file.path(path, record[[3]]))
+  }
 }
 
-test_that("20 Newsgroups reader builds metadata from local folders", {
+canonical_newsgroup_levels <- c(
+  "alt.atheism",
+  "comp.graphics",
+  "comp.os.ms-windows.misc",
+  "comp.sys.ibm.pc.hardware",
+  "comp.sys.mac.hardware",
+  "comp.windows.x",
+  "misc.forsale",
+  "rec.autos",
+  "rec.motorcycles",
+  "rec.sport.baseball",
+  "rec.sport.hockey",
+  "sci.crypt",
+  "sci.electronics",
+  "sci.med",
+  "sci.space",
+  "soc.religion.christian",
+  "talk.politics.guns",
+  "talk.politics.mideast",
+  "talk.politics.misc",
+  "talk.religion.misc"
+)
+
+test_that("20 Newsgroups reader uses stable source identity", {
   root <- tempfile()
+  reverse_root <- tempfile()
+  on.exit(unlink(c(root, reverse_root), recursive = TRUE), add = TRUE)
   write_newsgroup_fixture(root)
+  write_newsgroup_fixture(
+    reverse_root,
+    creation_order = rev(seq_along(newsgroup_fixture_records))
+  )
 
   df <- snedata:::read_newsgroups_data(root, subset = "all")
+  reverse_df <- snedata:::read_newsgroups_data(reverse_root, subset = "all")
 
+  expect_identical(df, reverse_df)
   expect_s3_class(df, "data.frame")
-  expect_equal(
+  expect_identical(
     names(df),
     c("Id", "FileId", "Text", "Subset", "Label", "Newsgroup")
   )
-  expect_equal(nrow(df), 4)
-  expect_equal(as.character(df$Id), c("train_1", "train_2", "test_1", "test_2"))
-  expect_equal(as.character(df$FileId), c("1", "2", "3", "4"))
-  expect_equal(
-    as.character(df$Subset),
-    c("train", "train", "test", "test")
+  expect_identical(
+    df$Id,
+    c(
+      "train/alt.atheism/10",
+      "train/alt.atheism/2",
+      "train/comp.graphics/30",
+      "test/alt.atheism/11",
+      "test/comp.graphics/12",
+      "test/comp.graphics/4"
+    )
   )
-  expect_equal(levels(df$Subset), c("train", "test"))
-  expect_equal(
-    as.character(df$Newsgroup),
-    c("alt.atheism", "comp.graphics", "alt.atheism", "comp.graphics")
+  expect_identical(df$FileId, c("10", "2", "30", "11", "12", "4"))
+  expect_type(df$FileId, "character")
+  expect_identical(levels(df$Subset), c("train", "test"))
+  expect_identical(levels(df$Newsgroup), canonical_newsgroup_levels)
+  expect_identical(levels(df$Label), as.character(0:19))
+  expect_identical(
+    as.character(df$Label),
+    c("0", "0", "1", "0", "1", "1")
   )
-  expect_equal(as.character(df$Label), c("0", "1", "0", "1"))
-  expect_equal(df$Text[[1]], "Subject: train atheist\n\nBody one")
+  expect_identical(
+    df$Text[[1]],
+    "Subject: train atheist 10\n\nBody one"
+  )
 })
 
-test_that("20 Newsgroups reader can read one subset", {
+test_that("20 Newsgroups identity is unchanged by subset selection", {
   root <- tempfile()
+  on.exit(unlink(root, recursive = TRUE), add = TRUE)
   write_newsgroup_fixture(root)
 
-  df <- snedata:::read_newsgroups_data(root, subset = "test")
+  all <- snedata:::read_newsgroups_data(root, subset = "all")
+  train <- snedata:::read_newsgroups_data(root, subset = "train")
+  test <- snedata:::read_newsgroups_data(root, subset = "test")
 
-  expect_equal(nrow(df), 2)
-  expect_equal(as.character(df$Id), c("test_1", "test_2"))
-  expect_equal(as.character(df$Subset), c("test", "test"))
-  expect_equal(as.character(df$Label), c("0", "1"))
+  expect_identical(train, all[all$Subset == "train", ])
+  expect_identical(test, all[all$Subset == "test", ])
+  expect_identical(levels(train$Newsgroup), canonical_newsgroup_levels)
+  expect_identical(levels(test$Newsgroup), canonical_newsgroup_levels)
+  expect_identical(levels(train$Label), as.character(0:19))
+  expect_identical(levels(test$Label), as.character(0:19))
+})
+
+test_that("20 Newsgroups reader rejects unknown group directories", {
+  root <- tempfile()
+  group_dir <- file.path(root, "not.a.newsgroup")
+  dir.create(group_dir, recursive = TRUE)
+  on.exit(unlink(root, recursive = TRUE), add = TRUE)
+  writeLines("Message text", file.path(group_dir, "1"))
+
+  expect_error(
+    snedata:::read_newsgroup_directory(group_dir),
+    "Unknown 20 Newsgroups directory: not.a.newsgroup",
+    fixed = TRUE
+  )
 })
 
 test_that("setup_temp_directory reports whether it created the directory", {

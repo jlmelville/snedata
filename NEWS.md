@@ -20,6 +20,8 @@ repo.
   results remain available.
 - `synthetic_hierarchical_data()` adds `colors = "macro"`, and `colors = "none"` arguments, which
    do not require the `colorspace` dependency to be installed.
+- Fixed non-unique document identifiers returned by `download_twenty_newsgroups()`. `Id` now has
+  the form `subset/newsgroup/filename`, while `FileId` preserves the original character filename.
 
 # snedata 0.0.0.9002
 
