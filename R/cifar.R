@@ -224,6 +224,7 @@ format_cifar_result <- function(
   as = c("data.frame", "list")
 ) {
   as <- image_result_as(as)
+  validate_cifar_dataset(images, labels, split)
   label_values <- if (is.factor(labels)) {
     as.integer(as.character(labels))
   } else {
@@ -235,16 +236,6 @@ format_cifar_result <- function(
     description_levels[label_values + 1L],
     levels = description_levels
   )
-
-  if (nrow(images) != length(label_factor)) {
-    stop(
-      "Image row count (",
-      nrow(images),
-      ") does not match label count (",
-      length(label_factor),
-      ")"
-    )
-  }
 
   colnames(images) <- cifar_pixel_names(ncol(images))
 
@@ -262,6 +253,55 @@ format_cifar_result <- function(
   )
   if (as == "list") return(result)
   data.frame(images, Label = label_factor, Description = descriptions)
+}
+
+validate_cifar_dataset <- function(images, labels, split) {
+  dataset <- "CIFAR-10"
+  if (!is.matrix(images) || ncol(images) != 3072L) {
+    observed <- if (is.matrix(images)) ncol(images) else class(images)[[1]]
+    stop_dataset_field(
+      dataset,
+      "all",
+      "pixel_count",
+      allowed = 3072L,
+      observed = observed
+    )
+  }
+  if (nrow(images) != length(labels)) {
+    stop_dataset_field(
+      dataset,
+      "all",
+      "label_count",
+      allowed = nrow(images),
+      observed = length(labels)
+    )
+  }
+  if (length(split) != nrow(images)) {
+    stop_dataset_field(
+      dataset,
+      "all",
+      "split_count",
+      allowed = nrow(images),
+      observed = length(split)
+    )
+  }
+  validate_dataset_values(
+    split,
+    c("training", "testing"),
+    dataset,
+    "all",
+    "split"
+  )
+  for (split_name in unique(as.character(split))) {
+    validate_dataset_values(
+      labels[as.character(split) == split_name],
+      0:9,
+      dataset,
+      split_name,
+      "label"
+    )
+  }
+  invisible(NULL)
 }
 
 #' Visualize CIFAR-10 image.

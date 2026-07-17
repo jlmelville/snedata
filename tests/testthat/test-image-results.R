@@ -27,14 +27,14 @@ test_that("canonical image results share metadata, dimensions, and row order", {
     source = list(dataset = "MNIST", url = "local")
   )
   cifar <- format_cifar_result(
-    matrix(1:12, nrow = 2),
+    matrix(rep(1:255, length.out = 2L * 3072L), nrow = 2),
     c(0L, 9L),
     split = c("training", "testing"),
     source = list(dataset = "CIFAR-10", url = "local"),
     as = "list"
   )
   norb <- format_norb_result(
-    matrix(1:8, nrow = 2, byrow = TRUE),
+    matrix(rep(1:255, length.out = 2L * 96L * 96L * 2L), nrow = 2),
     matrix(c(1, 2, 4, 5, 5, 6, 8, 0), nrow = 4),
     c(0L, 4L),
     split = "testing",
@@ -82,6 +82,129 @@ test_that("canonical image results share metadata, dimensions, and row order", {
   expect_equal(coil$meta$pose, 10L)
 })
 
+test_that("new_image_result rejects inconsistent canonical objects", {
+  make_result <- function(
+    data = matrix(1:4, nrow = 1),
+    meta = data.frame(id = 1L),
+    image_dim = c(height = 2L, width = 2L),
+    channel_order = "gray",
+    source = list(dataset = "fixture", url = "local")
+  ) {
+    new_image_result(data, meta, image_dim, channel_order, source)
+  }
+
+  expect_error(
+    make_result(data = matrix(letters[1:4], nrow = 1)),
+    "numeric matrix"
+  )
+  expect_error(
+    make_result(meta = data.frame(id = 1:2)),
+    "one row per image"
+  )
+  expect_error(
+    make_result(image_dim = c(height = 1.5, width = 2)),
+    "positive integer image dimensions"
+  )
+  expect_error(
+    make_result(image_dim = c(height = 2L, height = 2L)),
+    "unique, nonempty dimension names"
+  )
+  expect_error(
+    make_result(image_dim = stats::setNames(c(2L, 2L), c("", "width"))),
+    "unique, nonempty dimension names"
+  )
+  expect_error(
+    make_result(image_dim = c(height = 1L, width = 3L)),
+    "describes 3 pixels but `data` has 4 columns"
+  )
+  expect_error(
+    make_result(image_dim = c(height = .Machine$integer.max, width = 2L)),
+    "more than 2147483647 matrix columns"
+  )
+  expect_error(
+    make_result(
+      image_dim = c(height = 1L, width = 2L, channels = 2L),
+      channel_order = "gray"
+    ),
+    "has 1 names but `image_dim` declares 2"
+  )
+  expect_error(
+    make_result(channel_order = c("left", "right")),
+    "has 2 names but `image_dim` declares 1"
+  )
+  expect_error(
+    make_result(
+      image_dim = c(height = 1L, width = 2L, channels = 2L),
+      channel_order = c("red", "red")
+    ),
+    "unique, nonempty channel names"
+  )
+  expect_error(
+    make_result(
+      image_dim = c(height = 1L, width = 1L, channels = 2L, cameras = 2L),
+      channel_order = c("left", "right")
+    ),
+    "cannot declare both `channels` and `cameras`"
+  )
+  expect_error(
+    make_result(source = "local"),
+    "source.*must be a list"
+  )
+  expect_error(
+    make_result(source = list(dataset = "", url = "local")),
+    "source\\$dataset.*nonempty character scalar"
+  )
+  expect_error(
+    make_result(source = list(dataset = "fixture", url = c("one", "two"))),
+    "source\\$url.*nonempty character scalar"
+  )
+})
+
+test_that("image-result combination rejects incompatible splits", {
+  make_split <- function(split, dataset = "MNIST") {
+    format_image_label_result(
+      structure(
+        matrix(1:4, nrow = 1),
+        image_dim = c(height = 2L, width = 2L)
+      ),
+      1L,
+      split = split,
+      source = list(dataset = dataset, url = "local")
+    )
+  }
+  train <- make_split("training")
+  test <- make_split("testing")
+
+  expect_silent(combine_image_label_results(train, test, as = "list"))
+
+  bad_columns <- test
+  bad_columns$data <- matrix(1:2, nrow = 1)
+  expect_error(
+    combine_image_label_results(train, bad_columns),
+    "image column counts must match"
+  )
+
+  bad_dimensions <- test
+  bad_dimensions$image_dim <- c(height = 1L, width = 4L)
+  expect_error(
+    combine_image_label_results(train, bad_dimensions),
+    "`image_dim` values must match"
+  )
+
+  bad_channels <- test
+  bad_channels$channel_order <- "infrared"
+  expect_error(
+    combine_image_label_results(train, bad_channels),
+    "`channel_order` values must match"
+  )
+
+  bad_source <- make_split("testing", dataset = "Other")
+  expect_error(
+    combine_image_label_results(train, bad_source),
+    "source datasets must match"
+  )
+})
+
 test_that("MNIST-family wrappers expose canonical lists from local fixtures", {
   tmpdir <- tempfile()
   dir.create(tmpdir)
@@ -102,13 +225,19 @@ test_that("MNIST-family wrappers expose canonical lists from local fixtures", {
     c(1L, 8L)
   )
 
-  fashion <- download_fashion_mnist(
-    image_result_file_base_url(tmpdir),
-    as = "list"
-  )
-  kuzushiji <- download_kuzushiji_mnist(
-    image_result_file_base_url(tmpdir),
-    as = "list"
+  with_mocked_bindings(
+    validate_mnist_dataset = function(...) invisible(NULL),
+    {
+      fashion <- download_fashion_mnist(
+        image_result_file_base_url(tmpdir),
+        as = "list"
+      )
+      kuzushiji <- download_kuzushiji_mnist(
+        image_result_file_base_url(tmpdir),
+        as = "list"
+      )
+    },
+    .package = "snedata"
   )
 
   expect_equal(

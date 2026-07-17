@@ -117,7 +117,9 @@ download_twenty_newsgroups <- function(
   }
 
   download_twenty_newsgroups_data(workdir, verbose, timeout = timeout)
-  read_newsgroups_data(workdir, subset, verbose)
+  result <- read_newsgroups_data(workdir, subset, verbose)
+  validate_newsgroups_dataset(result, subset)
+  result
 }
 
 newsgroups_url <- "https://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
@@ -293,6 +295,53 @@ read_newsgroups_data <-
       combined_data[, c("Id", "FileId", "Text", "Subset", "Label", "Newsgroup")]
     combined_data
   }
+
+validate_newsgroups_dataset <- function(
+  data,
+  subset,
+  expected_counts = c(train = 11314L, test = 7532L),
+  expected_groups = newsgroup_levels
+) {
+  dataset <- "20 Newsgroups"
+  selected_subsets <- if (subset == "all") c("train", "test") else subset
+
+  for (split in selected_subsets) {
+    split_data <- data[as.character(data$Subset) == split, , drop = FALSE]
+    observed_groups <- sort(unique(as.character(split_data$Newsgroup)))
+    missing_groups <- setdiff(expected_groups, observed_groups)
+    unexpected_groups <- setdiff(observed_groups, expected_groups)
+    if (length(missing_groups) > 0L || length(unexpected_groups) > 0L) {
+      stop_dataset_field(
+        dataset,
+        split,
+        "newsgroup",
+        allowed = expected_groups,
+        observed = observed_groups
+      )
+    }
+    if (nrow(split_data) != expected_counts[[split]]) {
+      stop_dataset_field(
+        dataset,
+        split,
+        "row_count",
+        allowed = expected_counts[[split]],
+        observed = nrow(split_data)
+      )
+    }
+  }
+
+  if (anyDuplicated(data$Id)) {
+    duplicate_ids <- unique(data$Id[duplicated(data$Id)])
+    stop_dataset_field(
+      dataset,
+      subset,
+      "Id",
+      allowed = "unique values",
+      observed = duplicate_ids
+    )
+  }
+  invisible(NULL)
+}
 
 setup_temp_directory <- function(tmpdir) {
   created_tmpdir <- FALSE

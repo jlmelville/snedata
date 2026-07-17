@@ -88,6 +88,12 @@ download_qmnist <- function(
         n_test <- nrow(test$data)
         message("Read ", n_train, " training and ", n_test, " images")
       }
+      validate_mnist_dataset(
+        train,
+        test,
+        dataset = "QMNIST",
+        expected_counts = c(training = 60000L, testing = 60000L)
+      )
       combine_image_label_results(train, test, as = as)
     },
     timeout = timeout

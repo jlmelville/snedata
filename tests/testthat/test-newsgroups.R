@@ -121,6 +121,75 @@ test_that("20 Newsgroups reader uses stable source identity", {
   )
 })
 
+test_that("20 Newsgroups dataset validation enforces classes, counts, and IDs", {
+  root <- tempfile()
+  on.exit(unlink(root, recursive = TRUE), add = TRUE)
+  write_newsgroup_fixture(root)
+  data <- snedata:::read_newsgroups_data(root, subset = "all")
+  fixture_groups <- c("alt.atheism", "comp.graphics")
+  fixture_counts <- c(train = 3L, test = 3L)
+
+  expect_silent(snedata:::validate_newsgroups_dataset(
+    data,
+    subset = "all",
+    expected_counts = fixture_counts,
+    expected_groups = fixture_groups
+  ))
+  expect_error(
+    snedata:::validate_newsgroups_dataset(
+      data,
+      subset = "all",
+      expected_counts = c(train = 4L, test = 3L),
+      expected_groups = fixture_groups
+    ),
+    "20 Newsgroups train field 'row_count'.*allowed 4; observed 3"
+  )
+  expect_error(
+    snedata:::validate_newsgroups_dataset(
+      data,
+      subset = "all",
+      expected_counts = fixture_counts,
+      expected_groups = c(fixture_groups, "sci.space")
+    ),
+    "20 Newsgroups train field 'newsgroup'.*sci.space.*observed alt.atheism, comp.graphics"
+  )
+
+  duplicate_data <- data
+  duplicate_data$Id[[2]] <- duplicate_data$Id[[1]]
+  expect_error(
+    snedata:::validate_newsgroups_dataset(
+      duplicate_data,
+      subset = "all",
+      expected_counts = fixture_counts,
+      expected_groups = fixture_groups
+    ),
+    "20 Newsgroups all field 'Id'.*allowed unique values; observed train/alt.atheism/10"
+  )
+})
+
+test_that("20 Newsgroups public downloader applies the canonical validator", {
+  root <- tempfile()
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  on.exit(unlink(c(root, tmpdir), recursive = TRUE), add = TRUE)
+  write_newsgroup_fixture(root)
+  fixture_data <- snedata:::read_newsgroups_data(root, subset = "all")
+
+  with_mocked_bindings(
+    download_twenty_newsgroups_data = function(...) invisible(NULL),
+    read_newsgroups_data = function(...) fixture_data,
+    expect_error(
+      download_twenty_newsgroups(
+        subset = "all",
+        tmpdir = tmpdir,
+        cleanup = TRUE
+      ),
+      "20 Newsgroups train field 'newsgroup'.*talk.religion.misc.*observed alt.atheism, comp.graphics"
+    ),
+    .package = "snedata"
+  )
+})
+
 test_that("20 Newsgroups identity is unchanged by subset selection", {
   root <- tempfile()
   on.exit(unlink(root, recursive = TRUE), add = TRUE)

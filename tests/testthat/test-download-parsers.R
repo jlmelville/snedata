@@ -371,8 +371,14 @@ test_that("MNIST downloader can return the original data frame or a canonical li
     labels = c(3, 4)
   )
 
-  df <- download_mnist(base_url = file_base_url(tmpdir))
-  mat <- download_mnist(base_url = file_base_url(tmpdir), as = "list")
+  with_mocked_bindings(
+    validate_mnist_dataset = function(...) invisible(NULL),
+    {
+      df <- download_mnist(base_url = file_base_url(tmpdir))
+      mat <- download_mnist(base_url = file_base_url(tmpdir), as = "list")
+    },
+    .package = "snedata"
+  )
 
   expect_s3_class(df, "data.frame")
   expect_equal(names(df), c(paste0("px", 1:4), "Label"))
@@ -386,6 +392,122 @@ test_that("MNIST downloader can return the original data frame or a canonical li
   expect_equal(
     as.character(mat$meta$split),
     c("training", "training", "testing", "testing")
+  )
+})
+
+test_that("MNIST dataset validation enforces named split contracts", {
+  make_split <- function(split, labels = c(0L, 9L)) {
+    snedata:::format_image_label_result(
+      structure(
+        matrix(1:8, nrow = 2),
+        image_dim = c(height = 2L, width = 2L)
+      ),
+      labels,
+      split = split,
+      source = list(dataset = "Fixture-MNIST", url = "local")
+    )
+  }
+  train <- make_split("training")
+  test <- make_split("testing")
+  expected_counts <- c(training = 2L, testing = 2L)
+  expected_image_dim <- c(height = 2L, width = 2L)
+
+  expect_silent(snedata:::validate_mnist_dataset(
+    train,
+    test,
+    dataset = "Fixture-MNIST",
+    expected_counts = expected_counts,
+    expected_image_dim = expected_image_dim
+  ))
+
+  bad_dimensions <- train
+  bad_dimensions$image_dim <- c(height = 1L, width = 4L)
+  expect_error(
+    snedata:::validate_mnist_dataset(
+      bad_dimensions,
+      test,
+      dataset = "Fixture-MNIST",
+      expected_counts = expected_counts,
+      expected_image_dim = expected_image_dim
+    ),
+    "Fixture-MNIST training field 'image_dim'.*allowed height=2, width=2; observed height=1, width=4"
+  )
+
+  expect_error(
+    snedata:::validate_mnist_dataset(
+      train,
+      test,
+      dataset = "Fixture-MNIST",
+      expected_counts = c(training = 3L, testing = 2L),
+      expected_image_dim = expected_image_dim
+    ),
+    "Fixture-MNIST training field 'row_count'.*allowed 3; observed 2"
+  )
+
+  bad_labels <- make_split("training", labels = c(0L, 12L))
+  expect_error(
+    snedata:::validate_mnist_dataset(
+      bad_labels,
+      test,
+      dataset = "Fixture-MNIST",
+      expected_counts = expected_counts,
+      expected_image_dim = expected_image_dim
+    ),
+    "Fixture-MNIST training field 'label'.*allowed 0, 1, 2, 3, 4, 5, 6, 7, 8, 9; observed 12"
+  )
+})
+
+test_that("MNIST-family public downloaders request canonical specifications", {
+  observed_counts <- list()
+  parse_fixture <- function(..., split, dataset) {
+    snedata:::new_image_result(
+      matrix(0L, nrow = 1L),
+      meta = data.frame(
+        id = 1L,
+        split = factor(split, levels = c("training", "testing")),
+        label = factor("0")
+      ),
+      image_dim = c(height = 1L, width = 1L),
+      channel_order = "gray",
+      source = list(dataset = dataset, url = "local")
+    )
+  }
+
+  with_mocked_bindings(
+    parse_files = parse_fixture,
+    validate_mnist_dataset = function(
+      train,
+      test,
+      dataset,
+      expected_counts,
+      ...
+    ) {
+      observed_counts[[dataset]] <<- expected_counts
+      invisible(NULL)
+    },
+    {
+      download_mnist(as = "list")
+      download_fashion_mnist(as = "list")
+      download_kuzushiji_mnist(as = "list")
+      download_qmnist(as = "list")
+    },
+    .package = "snedata"
+  )
+
+  expect_equal(
+    names(observed_counts),
+    c("MNIST", "Fashion-MNIST", "Kuzushiji-MNIST", "QMNIST")
+  )
+  expect_equal(
+    observed_counts[c("MNIST", "Fashion-MNIST", "Kuzushiji-MNIST")],
+    stats::setNames(
+      rep(list(c(training = 60000L, testing = 10000L)), 3L),
+      c("MNIST", "Fashion-MNIST", "Kuzushiji-MNIST")
+    )
+  )
+  expect_equal(
+    observed_counts$QMNIST,
+    c(training = 60000L, testing = 60000L)
   )
 })
 
@@ -410,7 +532,11 @@ test_that("Fashion-MNIST descriptions are mapped by digit label value", {
     labels = c(1, 8)
   )
 
-  fashion <- download_fashion_mnist(base_url = file_base_url(tmpdir))
+  with_mocked_bindings(
+    validate_mnist_dataset = function(...) invisible(NULL),
+    fashion <- download_fashion_mnist(base_url = file_base_url(tmpdir)),
+    .package = "snedata"
+  )
 
   expect_equal(names(fashion), c(paste0("px", 1:4), "Label", "Description"))
   expect_equal(as.character(fashion$Label), c("0", "9", "1", "8"))
@@ -548,7 +674,11 @@ test_that("QMNIST downloader can return a canonical list", {
     metadata = test_metadata
   )
 
-  mat <- download_qmnist(base_url = file_base_url(tmpdir), as = "list")
+  with_mocked_bindings(
+    validate_mnist_dataset = function(...) invisible(NULL),
+    mat <- download_qmnist(base_url = file_base_url(tmpdir), as = "list"),
+    .package = "snedata"
+  )
 
   expect_named(mat, c("data", "meta", "image_dim", "channel_order", "source"))
   expect_equal(dim(mat$data), c(4L, 4L))
@@ -631,6 +761,7 @@ test_that("MNIST keeps its timeout while streaming files", {
         source = list(dataset = "MNIST", url = "unused")
       )
     },
+    validate_mnist_dataset = function(...) invisible(NULL),
     download_mnist(as = "list", timeout = 123),
     .package = "snedata"
   )
@@ -685,7 +816,7 @@ test_that("CIFAR parser returns rows in file record order", {
 })
 
 test_that("CIFAR formatter can return a data frame or a canonical list", {
-  images <- matrix(1:12, nrow = 2)
+  images <- matrix(rep(1:255, length.out = 2L * 3072L), nrow = 2)
   labels <- c(0, 9)
 
   df <- snedata:::format_cifar_result(images, labels)
@@ -693,14 +824,43 @@ test_that("CIFAR formatter can return a data frame or a canonical list", {
 
   expect_s3_class(df, "data.frame")
   expect_equal(
-    names(df),
-    c("r1", "r2", "g1", "g2", "b1", "b2", "Label", "Description")
+    names(df)[c(1, 1024, 1025, 2048, 2049, 3072, 3073, 3074)],
+    c("r1", "r1024", "g1", "g1024", "b1", "b1024", "Label", "Description")
   )
   expect_equal(as.character(df$Description), c("airplane", "truck"))
   expect_named(mat, c("data", "meta", "image_dim", "channel_order", "source"))
-  expect_equal(dim(mat$data), c(2L, 6L))
+  expect_equal(dim(mat$data), c(2L, 3072L))
   expect_equal(as.character(mat$meta$label), c("0", "9"))
   expect_equal(as.character(mat$meta$description), c("airplane", "truck"))
+})
+
+test_that("CIFAR validation rejects wrong pixel counts and label values", {
+  expect_error(
+    snedata:::format_cifar_result(matrix(1:12, nrow = 2), c(0L, 9L)),
+    "CIFAR-10 all field 'pixel_count'.*allowed 3072; observed 6"
+  )
+
+  images <- matrix(0L, nrow = 2L, ncol = 3072L)
+  expect_error(
+    snedata:::format_cifar_result(
+      images,
+      c(0L, 10L),
+      split = c("training", "testing")
+    ),
+    "CIFAR-10 testing field 'label'.*allowed 0, 1, 2, 3, 4, 5, 6, 7, 8, 9; observed 10"
+  )
+  expect_error(
+    snedata:::format_cifar_result(images, c(0L, 9L), split = "training"),
+    "CIFAR-10 all field 'split_count'.*allowed 2; observed 1"
+  )
+  expect_error(
+    snedata:::format_cifar_result(
+      images,
+      c(0L, 9L),
+      split = c("training", "validation")
+    ),
+    "CIFAR-10 all field 'split'.*allowed training, testing; observed validation"
+  )
 })
 
 test_that("tar entry validation rejects unsafe and duplicate paths", {
@@ -1075,7 +1235,11 @@ test_that("NORB validates image, category, and metadata counts before formatting
 })
 
 test_that("NORB formatter can return a data frame or a canonical list", {
-  images <- matrix(1:8, nrow = 2, byrow = TRUE)
+  images <- matrix(
+    rep(1:255, length.out = 2L * 96L * 96L * 2L),
+    nrow = 2,
+    byrow = TRUE
+  )
   info <- matrix(
     c(
       1,
@@ -1107,12 +1271,12 @@ test_that("NORB formatter can return a data frame or a canonical list", {
 
   expect_s3_class(df, "data.frame")
   expect_equal(
-    names(df),
+    names(df)[c(1, 2, 9216, 9217, 18432)],
+    c("c0px1", "c0px2", "c0px9216", "c1px1", "c1px9216")
+  )
+  expect_equal(
+    tail(names(df), 7),
     c(
-      "c0px1",
-      "c0px2",
-      "c1px1",
-      "c1px2",
       "Instance",
       "Elevation",
       "Azimuth",
@@ -1122,7 +1286,7 @@ test_that("NORB formatter can return a data frame or a canonical list", {
       "Description"
     )
   )
-  expect_equal(dim(mat$data), c(2L, 4L))
+  expect_equal(dim(mat$data), c(2L, 18432L))
   expect_named(mat, c("data", "meta", "image_dim", "channel_order", "source"))
   expect_equal(
     names(mat$meta),
@@ -1140,6 +1304,50 @@ test_that("NORB formatter can return a data frame or a canonical list", {
   expect_equal(as.character(mat$meta$description), c("Animal", "Car"))
 })
 
+test_that("NORB validation rejects wrong counts and out-of-range metadata", {
+  images <- matrix(0L, nrow = 1L, ncol = 96L * 96L * 2L)
+  info <- matrix(c(0L, 0L, 0L, 0L), nrow = 4L)
+
+  expect_error(
+    snedata:::format_norb_result(
+      images,
+      info,
+      0L,
+      split = "training",
+      expected_count = 2L
+    ),
+    "Small NORB training field 'row_count'.*allowed 2; observed 1"
+  )
+
+  invalid_metadata <- list(
+    list(row = 1L, field = "instance", value = 10L),
+    list(row = 2L, field = "elevation", value = 9L),
+    list(row = 3L, field = "azimuth", value = 3L),
+    list(row = 4L, field = "lighting", value = 6L)
+  )
+  for (case in invalid_metadata) {
+    bad_info <- info
+    bad_info[case$row, 1] <- case$value
+    expect_error(
+      snedata:::format_norb_result(images, bad_info, 0L, split = "training"),
+      paste0(
+        "Small NORB training field '",
+        case$field,
+        "'.*observed ",
+        case$value
+      )
+    )
+  }
+  expect_error(
+    snedata:::format_norb_result(images, info, 5L, split = "testing"),
+    "Small NORB testing field 'category'.*allowed 0, 1, 2, 3, 4; observed 5"
+  )
+  expect_error(
+    snedata:::format_norb_result(images, info, 0L, split = "validation"),
+    "Small NORB all field 'split'.*allowed training, testing; observed validation"
+  )
+})
+
 test_that("NORB downloader assembles requested splits from local fixtures", {
   tmpdir <- tempfile()
   dir.create(tmpdir)
@@ -1152,31 +1360,50 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
     file.path(tmpdir, paste0(training_base, "-cat.mat.gz")),
     labels = c(0, 4)
   )
-  write_gz_norb_info(file.path(tmpdir, paste0(training_base, "-info.mat.gz")))
+  write_gz_norb_info(
+    file.path(tmpdir, paste0(training_base, "-info.mat.gz")),
+    values = c(0, 0, 0, 0, 1, 1, 2, 1)
+  )
 
   write_gz_norb_images(file.path(tmpdir, paste0(testing_base, "-dat.mat.gz")))
   write_gz_norb_categories(
     file.path(tmpdir, paste0(testing_base, "-cat.mat.gz")),
     labels = c(2, 3)
   )
-  write_gz_norb_info(file.path(tmpdir, paste0(testing_base, "-info.mat.gz")))
+  write_gz_norb_info(
+    file.path(tmpdir, paste0(testing_base, "-info.mat.gz")),
+    values = c(4, 2, 4, 2, 6, 3, 6, 3)
+  )
 
-  training <- download_norb_small(
+  expect_error(
+    download_norb_small(
+      base_url = file_base_url(tmpdir),
+      split = "training",
+      as = "list"
+    ),
+    "Small NORB training field 'row_count'.*allowed 24300; observed 2"
+  )
+
+  training <- snedata:::read_norb_data(
     base_url = file_base_url(tmpdir),
     split = "training",
-    as = "list"
+    as = "list",
+    verbose = FALSE,
+    expected_count = 2L
   )
-  all <- download_norb_small(
+  all <- snedata:::read_norb_all_data(
     base_url = file_base_url(tmpdir),
-    split = "all",
-    as = "list"
+    verbose = FALSE,
+    as = "list",
+    expected_count = 2L
   )
   all_df <- NULL
   expect_no_warning(
-    all_df <- download_norb_small(
+    all_df <- snedata:::read_norb_all_data(
       base_url = file_base_url(tmpdir),
-      split = "all",
-      as = "data.frame"
+      verbose = FALSE,
+      as = "data.frame",
+      expected_count = 2L
     )
   )
 

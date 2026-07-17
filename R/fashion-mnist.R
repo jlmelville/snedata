@@ -91,11 +91,12 @@ download_fashion_mnist <- function(
   timeout = 1800
 ) {
   as <- image_result_as(as)
-  res <- download_mnist(
+  res <- download_mnist_dataset(
     base_url = base_url,
     verbose = verbose,
     as = "list",
-    timeout = timeout
+    timeout = timeout,
+    dataset = "Fashion-MNIST"
   )
 
   description_levels <- c(
@@ -114,7 +115,6 @@ download_fashion_mnist <- function(
     description_levels[as.integer(as.character(res$meta$label)) + 1L],
     levels = description_levels
   )
-  res$source$dataset <- "Fashion-MNIST"
   if (as == "list") return(res)
   data.frame(
     res$data,

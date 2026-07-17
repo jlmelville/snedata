@@ -78,13 +78,13 @@ download_kuzushiji_mnist <- function(
   timeout = 1800
 ) {
   as <- image_result_as(as)
-  res <- download_mnist(
+  res <- download_mnist_dataset(
     base_url = base_url,
     verbose = verbose,
     as = "list",
-    timeout = timeout
+    timeout = timeout,
+    dataset = "Kuzushiji-MNIST"
   )
-  res$source$dataset <- "Kuzushiji-MNIST"
   if (as == "list") return(res)
   data.frame(res$data, Label = res$meta$label)
 }

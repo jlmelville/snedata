@@ -102,6 +102,22 @@ download_mnist <- function(
   as = c("data.frame", "list"),
   timeout = 1800
 ) {
+  download_mnist_dataset(
+    base_url = base_url,
+    verbose = verbose,
+    as = as,
+    timeout = timeout,
+    dataset = "MNIST"
+  )
+}
+
+download_mnist_dataset <- function(
+  base_url,
+  verbose,
+  as,
+  timeout,
+  dataset
+) {
   with_download_timeout(
     {
       as <- image_result_as(as)
@@ -111,7 +127,7 @@ download_mnist <- function(
         base_url = base_url,
         verbose = verbose,
         split = "training",
-        dataset = "MNIST"
+        dataset = dataset
       )
       test <- parse_files(
         "t10k-images-idx3-ubyte.gz",
@@ -119,12 +135,65 @@ download_mnist <- function(
         base_url = base_url,
         verbose = verbose,
         split = "testing",
-        dataset = "MNIST"
+        dataset = dataset
+      )
+      validate_mnist_dataset(
+        train,
+        test,
+        dataset = dataset,
+        expected_counts = c(training = 60000L, testing = 10000L)
       )
       combine_image_label_results(train, test, as = as)
     },
     timeout = timeout
   )
+}
+
+validate_mnist_dataset <- function(
+  train,
+  test,
+  dataset,
+  expected_counts,
+  expected_image_dim = c(height = 28L, width = 28L),
+  valid_labels = 0:9
+) {
+  splits <- list(training = train, testing = test)
+  for (split in names(splits)) {
+    result <- splits[[split]]
+    if (!identical(result$image_dim, expected_image_dim)) {
+      stop_dataset_field(
+        dataset,
+        split,
+        "image_dim",
+        allowed = binary_header_context(expected_image_dim),
+        observed = binary_header_context(result$image_dim)
+      )
+    }
+    if (nrow(result$data) != expected_counts[[split]]) {
+      stop_dataset_field(
+        dataset,
+        split,
+        "row_count",
+        allowed = expected_counts[[split]],
+        observed = nrow(result$data)
+      )
+    }
+    validate_dataset_values(
+      result$meta$split,
+      split,
+      dataset,
+      split,
+      "split"
+    )
+    validate_dataset_values(
+      result$meta$label,
+      valid_labels,
+      dataset,
+      split,
+      "label"
+    )
+  }
+  invisible(NULL)
 }
 
 # Open Gzipped Binary File at URL
@@ -396,6 +465,7 @@ combine_image_label_results <- function(
   as = c("data.frame", "list")
 ) {
   as <- image_result_as(as)
+  validate_image_result_compatibility(train, test)
   result <- new_image_result(
     data = rbind(train$data, test$data),
     meta = rbind(train$meta, test$meta),

@@ -225,7 +225,8 @@ read_norb_data <- function(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
   split = "training",
   verbose = TRUE,
-  as = c("data.frame", "list")
+  as = c("data.frame", "list"),
+  expected_count = 24300L
 ) {
   as <- image_result_as(as)
   ids <- switch(
@@ -253,11 +254,58 @@ read_norb_data <- function(
     verbose = verbose
   )
 
-  validate_norb_asset_counts(images, info, cats, split)
-  format_norb_result(images, info, cats, split = split, as = as)
+  format_norb_result(
+    images,
+    info,
+    cats,
+    split = split,
+    as = as,
+    expected_count = expected_count
+  )
 }
 
-validate_norb_asset_counts <- function(images, info, cats, split) {
+validate_norb_dataset <- function(
+  images,
+  info,
+  cats,
+  split,
+  expected_count = NULL
+) {
+  dataset <- "Small NORB"
+  if (!is.character(split) || length(split) != 1L || is.na(split)) {
+    stop_dataset_field(
+      dataset,
+      "all",
+      "split",
+      allowed = c("training", "testing"),
+      observed = split
+    )
+  }
+  validate_dataset_values(
+    split,
+    c("training", "testing"),
+    dataset,
+    "all",
+    "split"
+  )
+  if (!is.matrix(images)) {
+    stop_dataset_field(
+      dataset,
+      split,
+      "pixel_count",
+      allowed = 96L * 96L * 2L,
+      observed = class(images)[[1]]
+    )
+  }
+  if (!is.matrix(info)) {
+    stop_dataset_field(
+      dataset,
+      split,
+      "metadata_field_count",
+      allowed = 4L,
+      observed = class(info)[[1]]
+    )
+  }
   image_count <- nrow(images)
   info_count <- ncol(info)
   category_count <- length(cats)
@@ -276,6 +324,50 @@ validate_norb_asset_counts <- function(images, info, cats, split) {
       call. = FALSE
     )
   }
+  if (!is.null(expected_count) && image_count != expected_count) {
+    stop_dataset_field(
+      dataset,
+      split,
+      "row_count",
+      allowed = expected_count,
+      observed = image_count
+    )
+  }
+  if (ncol(images) != 96L * 96L * 2L) {
+    stop_dataset_field(
+      dataset,
+      split,
+      "pixel_count",
+      allowed = 96L * 96L * 2L,
+      observed = ncol(images)
+    )
+  }
+  if (nrow(info) != 4L) {
+    stop_dataset_field(
+      dataset,
+      split,
+      "metadata_field_count",
+      allowed = 4L,
+      observed = nrow(info)
+    )
+  }
+  validate_dataset_values(cats, 0:4, dataset, split, "category")
+  metadata_fields <- list(
+    instance = 0:9,
+    elevation = 0:8,
+    azimuth = seq(0, 34, 2),
+    lighting = 0:5
+  )
+  for (i in seq_along(metadata_fields)) {
+    validate_dataset_values(
+      info[i, ],
+      metadata_fields[[i]],
+      dataset,
+      split,
+      names(metadata_fields)[[i]]
+    )
+  }
+  invisible(NULL)
 }
 
 norb_pixel_names <- function(n_pixels = 96 * 96 * 2) {
@@ -302,9 +394,17 @@ format_norb_result <- function(
   source = list(
     dataset = "Small NORB",
     url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/"
-  )
+  ),
+  expected_count = NULL
 ) {
   as <- image_result_as(as)
+  validate_norb_dataset(
+    images,
+    info,
+    cats,
+    split = split,
+    expected_count = expected_count
+  )
   data <- images
   colnames(data) <- norb_pixel_names(ncol(images))
   legacy_meta <- format_norb_meta(
@@ -368,12 +468,13 @@ format_norb_meta <- function(info, cats, split, n_images) {
   meta
 }
 
-read_norb_all_data <- function(base_url, verbose, as) {
+read_norb_all_data <- function(base_url, verbose, as, expected_count = 24300L) {
   training <- read_norb_data(
     base_url = base_url,
     split = "training",
     verbose = verbose,
-    as = "list"
+    as = "list",
+    expected_count = expected_count
   )
   n_training <- nrow(training$data)
   n_features <- ncol(training$data)
@@ -391,7 +492,8 @@ read_norb_all_data <- function(base_url, verbose, as) {
     base_url = base_url,
     split = "testing",
     verbose = verbose,
-    as = "list"
+    as = "list",
+    expected_count = expected_count
   )
   n_testing <- nrow(testing$data)
   if (n_testing != n_training || ncol(testing$data) != n_features) {
