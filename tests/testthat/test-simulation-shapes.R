@@ -20,6 +20,25 @@ test_that("random_jump returns the requested shape", {
   expect_equal(names(df), c("X1", "X2", "X3", "color"))
 })
 
+test_that("random_circle_cluster_data example uses its documented generator", {
+  rd_path <- test_path("..", "..", "man", "random_circle_cluster_data.Rd")
+  if (file.exists(rd_path)) {
+    rd <- tools::parse_Rd(rd_path)
+  } else {
+    rd <- utils:::.getHelpFile(
+      utils::help("random_circle_cluster_data", package = "snedata")
+    )
+  }
+  example_path <- tempfile(fileext = ".R")
+  tools::Rd2ex(rd, out = example_path)
+
+  expect_match(
+    paste(readLines(example_path), collapse = "\n"),
+    "df <- random_circle_cluster_data(n = 50)",
+    fixed = TRUE
+  )
+})
+
 test_that("synthetic_hierarchical_data returns the requested shape", {
   skip_if_not_installed("colorspace")
 

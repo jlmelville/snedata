@@ -4,7 +4,7 @@
 \alias{download_kuzushiji_mnist}
 \title{Download Kuzushiji-MNIST}
 \format{
-A data frame with 786 variables:
+A data frame with 785 variables:
 \itemize{
 \item \code{px1}, \code{px2}, \code{px3} ... \code{px784}: Integer pixel
 value, from 0 (white) to 255 (black).
@@ -55,8 +55,8 @@ Download Kuzushiji-MNIST database of images of cursive Japanese writing.
 }
 \details{
 Downloads the image and label files for the training and test datasets and
-converts them to a data frame or canonical image result. The dataset is intended to be a drop-in
-replacement for the MNIST digits dataset.
+converts them to a data frame or canonical image result. The dataset is
+intended to be a drop-in replacement for the MNIST digits dataset.
 }
 \note{
 Originally based on a function by Brendan O'Connor.
@@ -78,7 +78,7 @@ pca <- prcomp(kuzushiji_r1000[, 1:784], retx = TRUE, rank. = 2)
 plot(pca$x[, 1:2], type = "n")
 text(pca$x[, 1:2],
   labels = kuzushiji_r1000$Label,
-  col = rainbow(length(levels(kuzushiji_r1000$Label)))[kuzushiji$Label]
+  col = rainbow(length(levels(kuzushiji_r1000$Label)))[kuzushiji_r1000$Label]
 )
 }
 }

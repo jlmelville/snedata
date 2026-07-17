@@ -56,7 +56,6 @@ qmnist_url <- "https://github.com/facebookresearch/qmnist/raw/refs/heads/main/"
 #' Cold Case: The Lost MNIST Digits
 #' *arXiv preprint* *arXiv:1905.10498*.
 #' <https://github.com/facebookresearch/qmnist>
-#' @export
 download_qmnist <- function(
   base_url = qmnist_url,
   verbose = FALSE,

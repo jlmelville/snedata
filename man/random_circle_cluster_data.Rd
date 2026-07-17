@@ -31,7 +31,7 @@ point has a color linearly mapped from the angle of the original unjittered
 point to a rainbow color scheme.
 }
 \examples{
-df <- random_circle_data(n = 50)
+df <- random_circle_cluster_data(n = 50)
 }
 \references{
 \url{http://distill.pub/2016/misread-tsne/}

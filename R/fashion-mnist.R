@@ -1,14 +1,15 @@
 # Base URL of the Fashion MNIST dataset website
 fashion_mnist_url <-
-  "http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/"
+  "https://raw.githubusercontent.com/zalandoresearch/fashion-mnist/master/data/fashion/"
 
 #' Download Fashion-MNIST
 #'
 #' Download Fashion-MNIST database of images of fashion products.
 #'
 #' Downloads the image and label files for the training and test datasets and
-#' converts them to a data frame or canonical image result. The dataset is intended to be a drop-in
-#' replacement for the MNIST digits dataset but with more relevance for
+#' converts them to a data frame or canonical image result. The dataset is
+#' intended to be a drop-in replacement for the MNIST digits dataset but with
+#' more relevance for
 #' benchmarking machine learning algorithms (i.e. it's more difficult).
 #'
 #' @format A data frame with 786 variables:

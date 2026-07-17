@@ -10,7 +10,7 @@ A data frame with 1965 rows and 561 variables.
 frey_faces()
 }
 \value{
-The Frey Faces dataset as a dataframe.
+The Frey Faces dataset as a data frame.
 }
 \description{
 Converts Frey Faces Image dataset.
@@ -35,7 +35,7 @@ rainbow scale.
 \note{
 Requires the
 \href{https://cran.r-project.org/package=RnavGraphImageData}{RnavGraphImageData}
-package to be installed and loaded.
+package to be installed.
 }
 \examples{
 \dontrun{

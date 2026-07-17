@@ -238,7 +238,7 @@ read_newsgroup_directory <- function(directory_path) {
 
 read_newsgroups_subset <-
   function(root_dir, subset = "train", verbose = FALSE) {
-    tsmessage("Fetching subset: ", subset)
+    tsmessage("Fetching subset: ", subset, verbose = verbose)
     subset_dir <-
       file.path(root_dir, paste0("20news-bydate-", subset))
     if (!dir.exists(subset_dir)) {
@@ -251,7 +251,7 @@ read_newsgroups_subset <-
       method = "radix"
     )
     for (ng_dir in newsgroup_dirs) {
-      tsmessage("Processing ", basename(ng_dir))
+      tsmessage("Processing ", basename(ng_dir), verbose = verbose)
       df_list[[basename(ng_dir)]] <- read_newsgroup_directory(ng_dir)
     }
 

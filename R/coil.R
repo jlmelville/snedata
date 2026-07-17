@@ -261,7 +261,7 @@ read_coil_zip <- function(
     " to ",
     exdir,
     " (this can take a long time)",
-    force = verbose
+    verbose = verbose
   )
   utils::unzip(zipfile, files = entries, exdir = exdir)
 
@@ -333,7 +333,7 @@ read_coil_files <- function(
   if (length(files) > 1) {
     for (i in seq_along(files)[-1]) {
       if (i %% 100 == 0) {
-        tsmessage("Reading file ", i, " of ", length(files), force = verbose)
+        tsmessage("Reading file ", i, " of ", length(files), verbose = verbose)
       }
       images[i, ] <- as.vector(read_coil_png(files[i], spec = spec))
     }

@@ -1,16 +1,16 @@
 # Base URL of the Kuzushiji MNIST dataset website
 kuzushiji_mnist_url <-
-  "http://codh.rois.ac.jp/kmnist/dataset/kmnist/"
+  "https://codh.rois.ac.jp/kmnist/dataset/kmnist/"
 
 #' Download Kuzushiji-MNIST
 #'
 #' Download Kuzushiji-MNIST database of images of cursive Japanese writing.
 #'
 #' Downloads the image and label files for the training and test datasets and
-#' converts them to a data frame or canonical image result. The dataset is intended to be a drop-in
-#' replacement for the MNIST digits dataset.
+#' converts them to a data frame or canonical image result. The dataset is
+#' intended to be a drop-in replacement for the MNIST digits dataset.
 #'
-#' @format A data frame with 786 variables:
+#' @format A data frame with 785 variables:
 #'
 #' * `px1`, `px2`, `px3` ... `px784`: Integer pixel
 #'   value, from 0 (white) to 255 (black).
@@ -59,7 +59,7 @@ kuzushiji_mnist_url <-
 #' plot(pca$x[, 1:2], type = "n")
 #' text(pca$x[, 1:2],
 #'   labels = kuzushiji_r1000$Label,
-#'   col = rainbow(length(levels(kuzushiji_r1000$Label)))[kuzushiji$Label]
+#'   col = rainbow(length(levels(kuzushiji_r1000$Label)))[kuzushiji_r1000$Label]
 #' )
 #' }
 #' @references
@@ -71,7 +71,6 @@ kuzushiji_mnist_url <-
 #' Deep Learning for Classical Japanese Literature.
 #' *arXiv preprint* *arXiv:1812.01718*.
 #'
-#' @export
 download_kuzushiji_mnist <- function(
   base_url = kuzushiji_mnist_url,
   verbose = FALSE,

@@ -162,7 +162,7 @@ random_circle_data <- function(n) {
 #' @return Data frame with x and y coordinates in the columns `x` and
 #'  `y` respectively, and color in the `color` column.
 #' @examples
-#' df <- random_circle_data(n = 50)
+#' df <- random_circle_cluster_data(n = 50)
 #' @family distill functions
 #' @references <http://distill.pub/2016/misread-tsne/>
 #' @export

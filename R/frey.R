@@ -18,8 +18,8 @@
 #'
 #' @note Requires the
 #' [RnavGraphImageData](https://cran.r-project.org/package=RnavGraphImageData)
-#' package to be installed and loaded.
-#' @return The Frey Faces dataset as a dataframe.
+#' package to be installed.
+#' @return The Frey Faces dataset as a data frame.
 #' @format A data frame with 1965 rows and 561 variables.
 #' @seealso
 #' * Sam Roweis' dataset web page: <http://www.cs.nyu.edu/~roweis/data.html>.
@@ -35,7 +35,7 @@
 frey_faces <- function() {
   stop_if_not_installed("RnavGraphImageData")
   frey <- NULL
-  utils::data("frey", envir = environment())
+  utils::data("frey", package = "RnavGraphImageData", envir = environment())
 
   df <- data.frame(t(frey))
   colnames(df) <- sapply(seq(1, 20 * 28), function(x) {

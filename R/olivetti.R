@@ -4,7 +4,7 @@
 #'
 #' Returns the Olivetti Faces dataset in a data frame reformatted to have one
 #' face per row, rather than column. This is a series of 400 images (with
-#' dimension 64 x 64) of 40 individual's faces, with ten different poses per
+#' dimensions 64 x 64) of 40 individuals' faces, with ten different poses per
 #' person.
 #'
 #' The variables are as follows:
@@ -19,8 +19,8 @@
 #'
 #' @note Requires the
 #' [RnavGraphImageData](https://cran.r-project.org/package=RnavGraphImageData)
-#' package to be installed and loaded.
-#' @return The Olivetti Faces dataset as a dataframe.
+#' package to be installed.
+#' @return The Olivetti Faces dataset as a data frame.
 #' @format A data frame with 400 rows and 4097 variables.
 #' @seealso
 #' * Sam Roweis' dataset web page: <http://www.cs.nyu.edu/~roweis/data.html>.
@@ -29,7 +29,7 @@
 olivetti_faces <- function() {
   stop_if_not_installed("RnavGraphImageData")
   faces <- NULL
-  utils::data("faces", envir = environment())
+  utils::data("faces", package = "RnavGraphImageData", envir = environment())
 
   df <- as.data.frame(t(faces))
   npeople <- 40

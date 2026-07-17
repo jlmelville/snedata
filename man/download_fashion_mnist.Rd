@@ -71,8 +71,9 @@ Download Fashion-MNIST database of images of fashion products.
 }
 \details{
 Downloads the image and label files for the training and test datasets and
-converts them to a data frame or canonical image result. The dataset is intended to be a drop-in
-replacement for the MNIST digits dataset but with more relevance for
+converts them to a data frame or canonical image result. The dataset is
+intended to be a drop-in replacement for the MNIST digits dataset but with
+more relevance for
 benchmarking machine learning algorithms (i.e. it's more difficult).
 }
 \note{

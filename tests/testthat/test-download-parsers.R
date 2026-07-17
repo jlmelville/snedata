@@ -2,6 +2,21 @@ file_base_url <- function(path) {
   paste0("file://", normalizePath(path, winslash = "/", mustWork = TRUE), "/")
 }
 
+test_that("image downloader defaults use HTTPS sources", {
+  expect_identical(
+    snedata:::fashion_mnist_url,
+    "https://raw.githubusercontent.com/zalandoresearch/fashion-mnist/master/data/fashion/"
+  )
+  expect_identical(
+    snedata:::kuzushiji_mnist_url,
+    "https://codh.rois.ac.jp/kmnist/dataset/kmnist/"
+  )
+  expect_identical(
+    snedata:::newsgroups_url,
+    "https://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
+  )
+})
+
 write_gz_mnist_images <- function(
   path,
   magic = 2051,

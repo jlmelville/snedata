@@ -10,7 +10,7 @@ A data frame with 400 rows and 4097 variables.
 olivetti_faces()
 }
 \value{
-The Olivetti Faces dataset as a dataframe.
+The Olivetti Faces dataset as a data frame.
 }
 \description{
 SNE benchmarking data.
@@ -18,7 +18,7 @@ SNE benchmarking data.
 \details{
 Returns the Olivetti Faces dataset in a data frame reformatted to have one
 face per row, rather than column. This is a series of 400 images (with
-dimension 64 x 64) of 40 individual's faces, with ten different poses per
+dimensions 64 x 64) of 40 individuals' faces, with ten different poses per
 person.
 
 The variables are as follows:
@@ -36,7 +36,7 @@ of the face, and \code{pose} is the index of the pose, e.g. the row with name
 \note{
 Requires the
 \href{https://cran.r-project.org/package=RnavGraphImageData}{RnavGraphImageData}
-package to be installed and loaded.
+package to be installed.
 }
 \seealso{
 \itemize{

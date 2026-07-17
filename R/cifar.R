@@ -94,7 +94,6 @@
 #' *Learning multiple layers of features from tiny images*
 #' (Vol. 1, No. 4, p. 7).
 #' Technical report, University of Toronto.
-#' @export
 download_cifar10 <- function(
   url = "https://cave.cs.toronto.edu/kriz/cifar-10-binary.tar.gz",
   destfile = NULL,

@@ -3,7 +3,7 @@
 #' Downloads the 10,000 point 'Mammoth' dataset, a 3D point cloud of a mammoth
 #' skeleton.
 #'
-#' Downloads a dataframe containing the 10,000 3D coordinates of a mammoth
+#' Downloads a data frame containing the 10,000 3D coordinates of a mammoth
 #' skeleton, digitized by
 #' [the Smithsonian Institution](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12).
 #'
@@ -24,7 +24,7 @@
 #'   minutes; a larger existing global R timeout is preserved.
 #' @return Data frame containing the Mammoth coordinates.
 #' @note Requires the [rjson](https://cran.r-project.org/package=rjson)
-#' package to be installed and loaded.
+#' package to be installed.
 #' @seealso
 #' * Max Noichl's page: <https://github.com/MNoichl/UMAP-examples-mammoth->.
 #' * Understanding UMAP: <https://pair-code.github.io/understanding-umap/>.
@@ -58,7 +58,7 @@ download_mammoth10k <- function(timeout = 1800) {
 #' Downloads the 50,000 point 'Mammoth' dataset, a 3D point cloud of a mammoth
 #' skeleton.
 #'
-#' Downloads a dataframe containing the 50,000 3D coordinates of a mammoth
+#' Downloads a data frame containing the 50,000 3D coordinates of a mammoth
 #' skeleton, digitized by
 #' [the Smithsonian Institution](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12).
 #'
@@ -79,7 +79,7 @@ download_mammoth10k <- function(timeout = 1800) {
 #'   minutes; a larger existing global R timeout is preserved.
 #' @return Data frame containing the Mammoth coordinates.
 #' @note Requires the [rjson](https://cran.r-project.org/package=rjson)
-#' package to be installed and loaded.
+#' package to be installed.
 #' @seealso
 #' * Max Noichl's page: <https://github.com/MNoichl/UMAP-examples-mammoth->.
 #' * Understanding UMAP: <https://pair-code.github.io/understanding-umap/>.

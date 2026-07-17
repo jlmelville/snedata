@@ -21,7 +21,8 @@ originates from a gist by Brendan O'Connor:
 \section{Simulation functions}{
 
 Very simple datasets for characterizing the behavior of various embedding
-algorithms some, from Lee et al (2016) and Agrafiotis and Xu (2002).
+algorithms, including some from Lee et al. (2016) and Agrafiotis and Xu
+(2002).
 \itemize{
 \item \code{\link[=swiss_roll]{swiss_roll()}}. A 2D plane curled into 3D.
 \item \code{\link[=sphere]{sphere()}}. Points sampled from the surface of a 3D sphere.
@@ -73,7 +74,7 @@ with differing standard deviations.
 
 If you have the \code{RnavGraphImageData} package
 \url{https://cran.r-project.org/package=RnavGraphImageData}
-installed and loaded, then there are functions to convert the Olivetti
+installed, then there are functions to convert the Olivetti
 and Frey faces datasets into a row-based format, and functions to visualize
 the images.
 \itemize{
@@ -141,9 +142,6 @@ swiss100 <- swiss_roll(n = 100)
 g2d <- gaussian_data(n = 50, dim = 2)
 
 \dontrun{
-# Load RnavGraphImageData
-library(RnavGraphImageData)
-
 # Load the Frey faces dataset with each image as a row
 frey <- frey_faces()
 # Display the first pose
