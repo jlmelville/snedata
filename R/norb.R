@@ -27,7 +27,7 @@
 #'   pair
 #' * `Instance`: The index of the toy in a particular category,
 #'   represented by a factor in the range 0-9. The training set consists of
-#'   instances 0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.
+#'   instances 4, 6, 7, 8 and 9, and the test set consists of 0, 1, 2, 3 and 5.
 #' * `Elevation`: The elevation of the camera represented by a
 #'   factor in the range 0-8. These represent elevations of 30 to 70 degrees
 #'   from the horizontal, in increments of 5 degrees.
@@ -579,9 +579,9 @@ read_norb_categories <- function(
     f,
     n = 3L,
     asset = asset,
-    dimension_names = c("n_images", "padding_2", "padding_3")
+    dimension_names = c("n_images", "n_category_columns", "n_category_planes")
   )
-  validate_norb_padding(dimensions[2:3], asset, header = dimensions)
+  validate_norb_category_dimensions(dimensions, asset)
   count <- binary_safe_product(dimensions[["n_images"]], asset, dimensions)
   categories <- read_binary_exact(
     f,
@@ -599,6 +599,25 @@ read_norb_categories <- function(
   categories
 }
 
+validate_norb_category_dimensions <- function(dimensions, asset) {
+  expected <- c(n_category_columns = 1L, n_category_planes = 1L)
+  observed <- dimensions[names(expected)]
+  if (!all(as.integer(observed) == expected)) {
+    stop(
+      asset,
+      " has invalid category dimensions: expected ",
+      binary_header_context(expected),
+      "; actual ",
+      binary_header_context(observed),
+      "; header dimensions: ",
+      binary_header_context(dimensions),
+      call. = FALSE
+    )
+  }
+
+  invisible(dimensions)
+}
+
 read_norb_info <- function(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
   file = "smallnorb-5x46789x9x18x6x2x96x96-training-info.mat.gz",
@@ -612,9 +631,8 @@ read_norb_info <- function(
     f,
     n = 3L,
     asset = asset,
-    dimension_names = c("n_images", "n_features", "padding_3")
+    dimension_names = c("n_images", "n_features", "n_metadata_planes")
   )
-  validate_norb_padding(dimensions[["padding_3"]], asset, header = dimensions)
 
   if (dimensions[["n_features"]] != 4L) {
     stop(
@@ -627,6 +645,7 @@ read_norb_info <- function(
       call. = FALSE
     )
   }
+  validate_norb_metadata_dimensions(dimensions, asset)
 
   value_count <- binary_safe_product(
     dimensions[c("n_images", "n_features")],
@@ -651,6 +670,25 @@ read_norb_info <- function(
     nrow = dimensions[["n_features"]],
     ncol = dimensions[["n_images"]]
   )
+}
+
+validate_norb_metadata_dimensions <- function(dimensions, asset) {
+  expected <- c(n_metadata_planes = 1L)
+  observed <- dimensions[names(expected)]
+  if (!all(as.integer(observed) == expected)) {
+    stop(
+      asset,
+      " has invalid metadata dimensions: expected ",
+      binary_header_context(expected),
+      "; actual ",
+      binary_header_context(observed),
+      "; header dimensions: ",
+      binary_header_context(dimensions),
+      call. = FALSE
+    )
+  }
+
+  invisible(dimensions)
 }
 
 show_norb_vec <- function(x) {

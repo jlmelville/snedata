@@ -14,7 +14,7 @@ pixel value, from 0 (white) to 255 (black) for the second image in the
 pair
 \item \code{Instance}: The index of the toy in a particular category,
 represented by a factor in the range 0-9. The training set consists of
-instances 0, 1, 2, 3 and 5, and the test set consists of 4, 6, 7, 8 and 9.
+instances 4, 6, 7, 8 and 9, and the test set consists of 0, 1, 2, 3 and 5.
 \item \code{Elevation}: The elevation of the camera represented by a
 factor in the range 0-8. These represent elevations of 30 to 70 degrees
 from the horizontal, in increments of 5 degrees.

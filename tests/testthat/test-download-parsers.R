@@ -146,7 +146,7 @@ write_gz_norb_categories <- function(
   ndim = 1,
   header_padding = c(0, 0, 0),
   n_images = length(labels),
-  dimension_padding = c(0, 0),
+  dimension_padding = c(1, 1),
   labels = c(0, 2),
   trailing = integer()
 ) {
@@ -171,7 +171,7 @@ write_gz_norb_info <- function(
   header_padding = c(0, 0, 0),
   n_images = 2,
   n_features = 4,
-  dimension_padding = 0,
+  dimension_padding = 1,
   values = seq_len(n_images * n_features),
   trailing = integer()
 ) {
@@ -1056,7 +1056,7 @@ test_that("NORB parsers reject malformed headers, dimensions, and payloads", {
   )
   write_gz_norb_categories(
     file.path(tmpdir, "bad-category-padding.mat.gz"),
-    dimension_padding = c(1, 0)
+    dimension_padding = c(2, 1)
   )
   write_gz_norb_categories(
     file.path(tmpdir, "short-categories.mat.gz"),
@@ -1075,7 +1075,7 @@ test_that("NORB parsers reject malformed headers, dimensions, and payloads", {
   )
   write_gz_norb_info(
     file.path(tmpdir, "bad-info-padding.mat.gz"),
-    dimension_padding = 1
+    dimension_padding = 2
   )
   write_gz_norb_info(
     file.path(tmpdir, "short-info-payload.mat.gz"),
@@ -1153,7 +1153,7 @@ test_that("NORB parsers reject malformed headers, dimensions, and payloads", {
       base_url = file_base_url(tmpdir),
       verbose = FALSE
     ),
-    "invalid padding.*n_images=2, padding_2=1, padding_3=0"
+    "invalid category dimensions.*expected n_category_columns=1, n_category_planes=1; actual n_category_columns=2, n_category_planes=1"
   )
   expect_error(
     snedata:::read_norb_categories(
@@ -1169,7 +1169,7 @@ test_that("NORB parsers reject malformed headers, dimensions, and payloads", {
       base_url = file_base_url(tmpdir),
       verbose = FALSE
     ),
-    "trailing data.*n_images=2, padding_2=0, padding_3=0"
+    "trailing data.*n_images=2, n_category_columns=1, n_category_planes=1"
   )
   expect_error(
     snedata:::read_norb_info(
@@ -1193,7 +1193,7 @@ test_that("NORB parsers reject malformed headers, dimensions, and payloads", {
       base_url = file_base_url(tmpdir),
       verbose = FALSE
     ),
-    "invalid padding.*n_images=2, n_features=4, padding_3=1"
+    "invalid metadata dimensions.*expected n_metadata_planes=1; actual n_metadata_planes=2"
   )
   expect_error(
     snedata:::read_norb_info(
@@ -1209,7 +1209,7 @@ test_that("NORB parsers reject malformed headers, dimensions, and payloads", {
       base_url = file_base_url(tmpdir),
       verbose = FALSE
     ),
-    "trailing data.*n_images=2, n_features=4, padding_3=0"
+    "trailing data.*n_images=2, n_features=4, n_metadata_planes=1"
   )
 })
 
