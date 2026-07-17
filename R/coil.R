@@ -187,6 +187,7 @@ download_coil <- function(
   timeout = 1800,
   spec
 ) {
+  stop_if_not_installed("png")
   as <- image_result_as(as)
   paths <- setup_coil_download_paths(url = url, file = file)
   if (cleanup) {

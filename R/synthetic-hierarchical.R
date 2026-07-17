@@ -53,6 +53,7 @@ synthetic_hierarchical_data <- function(
   n <- positive_integer_scalar(n, "n")
   dim <- positive_integer_scalar(dim, "dim")
   colors <- match.arg(colors)
+  if (colors == "full") stop_if_not_installed("colorspace")
 
   n_macro <- 5L
   n_meso <- 5L

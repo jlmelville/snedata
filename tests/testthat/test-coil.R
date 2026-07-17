@@ -276,3 +276,21 @@ test_that("PNG dependency guard is at the low-level reader path", {
     .package = "snedata"
   )
 })
+
+test_that("COIL download checks for png before download work", {
+  download_called <- FALSE
+
+  with_mocked_bindings(
+    is_installed = function(pkgname) FALSE,
+    download_asset = function(...) {
+      download_called <<- TRUE
+    },
+    expect_error(
+      download_coil20(),
+      "Please install the 'png' package"
+    ),
+    .package = "snedata"
+  )
+
+  expect_false(download_called)
+})

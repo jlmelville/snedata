@@ -183,6 +183,22 @@ test_that("synthetic_hierarchical_data validates dimensions", {
   )
 })
 
+test_that("full hierarchical colors fail before random draws without colorspace", {
+  set.seed(42)
+  seed_before <- .Random.seed
+
+  with_mocked_bindings(
+    is_installed = function(pkgname) FALSE,
+    expect_error(
+      synthetic_hierarchical_data(colors = "full"),
+      "Please install the 'colorspace' package"
+    ),
+    .package = "snedata"
+  )
+
+  expect_identical(.Random.seed, seed_before)
+})
+
 test_that("synthetic_hierarchical_data has dependency-free color options", {
   with_mocked_bindings(
     synthetic_hierarchical_color_maps = function(...) {

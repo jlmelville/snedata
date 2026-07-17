@@ -21,6 +21,8 @@ repo.
   by `as = "list"`; numeric image data is now in `data` and labels and other metadata are in `meta`.
 - `synthetic_hierarchical_data()` adds `colors = "macro"`, and `colors = "none"` arguments, which
    do not require the `colorspace` dependency to be installed.
+- `synthetic_hierarchical_data(colors = "full")` and COIL downloaders now fail fast if optional
+  dependencies are not installed, before generating data or starting a download.
 - Fixed non-unique document identifiers returned by `download_twenty_newsgroups()`. `Id` now has
   the form `subset/newsgroup/filename`, while `FileId` preserves the original character filename.
 - `helix(nwinds)` now requires a positive integer so it always forms a closed curve as documented.
