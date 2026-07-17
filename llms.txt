@@ -12,8 +12,9 @@ dimensionality reduction methods, most obviously the very popular
 The package includes simulation datasets, the datasets from [How to use
 t-SNE Effectively](http://distill.pub/2016/misread-tsne/), optional Frey
 and Olivetti face helpers, MNIST-like datasets, CIFAR-10, Small NORB,
-mammoth point clouds, 20 Newsgroups, historical Isomap datasets, and a
-few other examples used in dimensionality reduction papers.
+mammoth point clouds, 20 Newsgroups, COIL object-image datasets,
+historical Isomap datasets, and a few other examples used in
+dimensionality reduction papers.
 
 The pkgdown site has a fuller [datasets
 article](https://jlmelville.github.io/snedata/articles/datasets.html)
@@ -93,8 +94,9 @@ text(pca$x[, 1:2], labels = mnist_r1000$Label, cex = 0.5,
 # save to disk
 save(mnist, file = "mnist.Rda")
 
-# To avoid a very wide data frame for larger image datasets:
-mnist_matrix <- download_mnist(as = "matrix")
+# To avoid a very wide data frame and retain explicit split metadata:
+mnist_list <- download_mnist(as = "list")
+mnist_train <- mnist_list$data[mnist_list$meta$split == "training", ]
 
 # download the original Isomap Swiss Roll dataset from the Internet Archive
 # requires the optional R.matlab package
@@ -104,17 +106,16 @@ isomap_swiss <- download_isomap_swiss_roll()
 # requires R.matlab and an external gzip or uncompress command
 isomap_faces <- download_isomap_faces()
 show_isomap_face(isomap_faces, 1)
+
+# download COIL-20 object images
+# requires the optional png package
+coil20 <- download_coil20(as = "list")
+show_coil_object(coil20, object = 5, pose = 4)
 ```
 
 ## See also
 
 - The [mlbench](https://cran.r-project.org/package=mlbench) package.
-- I maintain a similar [R package](https://github.com/jlmelville/coil20)
-  (under a different license) for downloading the
-  [COIL-20](http://www.cs.columbia.edu/CAVE/software/softlib/coil-20.php)
-  and
-  [COIL-100](http://www.cs.columbia.edu/CAVE/software/softlib/coil-100.php)
-  datasets.
 - For downloading the MNIST digits database, there is a [similar
   project](https://github.com/xrobin/mnist) by [Xavier
   Robin](https://github.com/xrobin).
@@ -138,6 +139,10 @@ License](http://opensource.org/licenses/MIT).
   : 2D Curve Dataset.
 - [`download_cifar10()`](https://jlmelville.github.io/snedata/reference/download_cifar10.md)
   : Download CIFAR-10
+- [`download_coil100()`](https://jlmelville.github.io/snedata/reference/download_coil100.md)
+  : Download COIL-100
+- [`download_coil20()`](https://jlmelville.github.io/snedata/reference/download_coil20.md)
+  : Download COIL-20
 - [`download_fashion_mnist()`](https://jlmelville.github.io/snedata/reference/download_fashion_mnist.md)
   : Download Fashion-MNIST
 - [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md)
@@ -166,6 +171,8 @@ License](http://opensource.org/licenses/MIT).
   : 2D Grid
 - [`helix()`](https://jlmelville.github.io/snedata/reference/helix.md) :
   Toroidal Helix Data Set
+- [`image-results`](https://jlmelville.github.io/snedata/reference/image-results.md)
+  : Canonical image-dataset results
 - [`link_data()`](https://jlmelville.github.io/snedata/reference/link_data.md)
   : Two Linked Rings
 - [`long_cluster_data()`](https://jlmelville.github.io/snedata/reference/long_cluster_data.md)
@@ -190,6 +197,8 @@ License](http://opensource.org/licenses/MIT).
   : S-curve with a hole data set.
 - [`show_cifar()`](https://jlmelville.github.io/snedata/reference/show_cifar.md)
   : Visualize CIFAR-10 image.
+- [`show_coil_object()`](https://jlmelville.github.io/snedata/reference/show_coil_object.md)
+  : Visualize a COIL object image
 - [`show_frey_face()`](https://jlmelville.github.io/snedata/reference/show_frey_face.md)
   : Visualize Frey face.
 - [`show_isomap_face()`](https://jlmelville.github.io/snedata/reference/show_isomap_face.md)

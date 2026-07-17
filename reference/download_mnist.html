@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">snedata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,8 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_mnist</span><span class="op">(</span></span>
 <span>  base_url <span class="op">=</span> <span class="va">mnist_url</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  as <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data.frame"</span>, <span class="st">"matrix"</span><span class="op">)</span></span>
+<span>  as <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data.frame"</span>, <span class="st">"list"</span><span class="op">)</span>,</span>
+<span>  timeout <span class="op">=</span> <span class="fl">1800</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -60,7 +61,7 @@ set, as found in the <code>train-images-idx3-ubyte.gz</code> file. The remaining
 <p>Items in the dataset can be visualized with
 <code><a href="show_mnist_digit.html">show_mnist_digit()</a></code>.</p>
 <p>For more information about the original dataset see
-<a href="http://yann.lecun.com/exdb/mnist" class="external-link">http://yann.lecun.com/exdb/mnist</a>.</p>
+<a href="https://yann.lecun.com/exdb/mnist/" class="external-link">https://yann.lecun.com/exdb/mnist/</a>.</p>
     </div>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
@@ -77,24 +78,40 @@ message.</p></dd>
 
 <dt id="arg-as">as<a class="anchor" aria-label="anchor" href="#arg-as"></a></dt>
 <dd><p>Return format. Use <code>"data.frame"</code> for the original data frame
-shape, or <code>"matrix"</code> for a list with <code>data</code> and <code>labels</code>.</p></dd>
+shape, or <code>"list"</code> for the canonical image result.</p></dd>
+
+
+<dt id="arg-timeout">timeout<a class="anchor" aria-label="anchor" href="#arg-timeout"></a></dt>
+<dd><p>Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>If <code>as = "data.frame"</code>, a data frame containing the MNIST
-digits. If <code>as = "matrix"</code>, a list with <code>data</code>, an integer matrix
-with one image per row, and <code>labels</code>, a factor of digit labels.</p>
+digits. If <code>as = "list"</code>, a canonical image result with an integer
+matrix in <code>data</code> and factor digit labels in <code>meta$label</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Downloads the image and label files for the training and test datasets from
 the <a href="https://github.com/fgnt/mnist" class="external-link">https://github.com/fgnt/mnist</a> mirror of the original MNIST files
-and converts them to a data frame or a matrix/list result.</p>
+and converts them to a data frame or canonical list result.</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     <p>Originally based on a function by Brendan O'Connor.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="canonical-list-results">Canonical list results<a class="anchor" aria-label="anchor" href="#canonical-list-results"></a></h2>
+
+
+<p><code>as = "list"</code> returns a shallow list with <code>data</code> (one image per row),
+<code>meta</code> (one metadata row per image), <code>image_dim</code>, <code>channel_order</code>, and
+<code>source</code>. Metadata uses lower-case invariant names when applicable: <code>label</code>,
+<code>description</code>, <code>split</code>, <code>id</code>, <code>object</code>, and <code>pose</code>; dataset-specific fields
+are retained in <code>meta</code>. <code>split</code> is explicit, so train/test identity does not
+depend on row position. <code>source</code> records the dataset and acquisition URL.</p>
     </div>
 
     <div class="section level2">

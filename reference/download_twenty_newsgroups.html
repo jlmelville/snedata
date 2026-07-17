@@ -11,7 +11,7 @@ approximately balanced."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">snedata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,24 +50,25 @@ approximately balanced.</p>
 <span>  subset <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  tmpdir <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  cleanup <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  cleanup <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  timeout <span class="op">=</span> <span class="fl">1800</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with 6 variables:</p><ul><li><p><code>Id</code>: A unique identifier for the document, consisting of the
-subset concatenated with the position in the subset, e.g. <code>train_1</code>.</p></li>
-<li><p><code>FileId</code>: The integer identifier of the document, from the
-filename of the downloaded data. Be aware that these are <em>not</em> unique.</p></li>
+    <p>A data frame with 6 variables:</p><ul><li><p><code>Id</code>: A stable source-derived identifier containing the subset,
+newsgroup, and original filename, e.g. <code>train/alt.atheism/49960</code>.</p></li>
+<li><p><code>FileId</code>: The original source filename as a character value. These are
+<em>not</em> unique across subsets and newsgroups.</p></li>
 <li><p><code>Text</code>: The full text of the message including any header, footer,
 and quotes. Newlines are preserved.</p></li>
 <li><p><code>Subset</code>: A factor with two levels: <code>train</code> and <code>test</code>,
 indicating whether the document is from the training or test subset.</p></li>
-<li><p><code>Label</code>: The newsgroup represented by an integer id, in the range
-0-19.</p></li>
-<li><p><code>Newsgroup</code>: A factor with 20 levels, indicating the newsgroup
-that the document belongs to.</p></li>
+<li><p><code>Label</code>: A factor with levels <code>0</code> through <code>19</code>, identifying the
+newsgroup using the canonical ordering below.</p></li>
+<li><p><code>Newsgroup</code>: A factor with the 20 newsgroups as levels in the canonical
+ordering below.</p></li>
 </ul><p>The labels correspond to:</p><ul><li><p><code>0</code>: alt.atheism</p></li>
 <li><p><code>1</code>: comp.graphics</p></li>
 <li><p><code>2</code>: comp.os.ms-windows.misc</p></li>
@@ -88,7 +89,7 @@ that the document belongs to.</p></li>
 <li><p><code>17</code>: talk.politics.mideast</p></li>
 <li><p><code>18</code>: talk.politics.misc</p></li>
 <li><p><code>19</code>: talk.religion.misc</p></li>
-</ul><p>and are also present as the <code>Newsgroup</code> factor.</p>
+</ul><p><code>Newsgroup</code> contains the corresponding names.</p>
 <p>There are 11,314 items in the <code>train</code> dataset and 7,532 items in the
 <code>test</code> for a total of 18,846 items if you choose <code>subset = "all"</code>.</p>
     </div>
@@ -109,16 +110,22 @@ processing.</p></dd>
 
 
 <dt id="arg-tmpdir">tmpdir<a class="anchor" aria-label="anchor" href="#arg-tmpdir"></a></dt>
-<dd><p>A string specifying the directory where the dataset will be
-downloaded and extracted. If <code>NULL</code> (default), a temporary directory
-is used. If a path is provided and does not exist, it will be created.</p></dd>
+<dd><p>A string specifying the parent directory for a dedicated
+download and extraction work directory. If <code>NULL</code> (default), a temporary
+parent directory is used. If a path is provided and does not exist, it will
+be created.</p></dd>
 
 
 <dt id="arg-cleanup">cleanup<a class="anchor" aria-label="anchor" href="#arg-cleanup"></a></dt>
 <dd><p>A logical flag indicating whether to delete the downloaded and
 extracted files after processing. If <code>TRUE</code> <em>and</em> <code>tmpdir</code>
 was created by this function, <code>tmpdir</code> will be deleted after
-processing. Default is <code>FALSE</code>.</p></dd>
+processing. Default is <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-timeout">timeout<a class="anchor" aria-label="anchor" href="#arg-timeout"></a></dt>
+<dd><p>Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -142,7 +149,7 @@ Morgan Kaufmann.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><a href="http://qwone.com/~jason/20Newsgroups/" class="external-link">http://qwone.com/~jason/20Newsgroups/</a></p>
+    <div class="dont-index"><p><a href="https://qwone.com/~jason/20Newsgroups/" class="external-link">https://qwone.com/~jason/20Newsgroups/</a></p>
 <p>Chapter 9 of <a href="https://www.tidytextmining.com/usenet" class="external-link">Tidy Text Mining with R</a>
 for a case study using the same dataset.</p></div>
     </div>

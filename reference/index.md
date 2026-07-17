@@ -12,6 +12,10 @@
   : 2D Curve Dataset.
 - [`download_cifar10()`](https://jlmelville.github.io/snedata/reference/download_cifar10.md)
   : Download CIFAR-10
+- [`download_coil100()`](https://jlmelville.github.io/snedata/reference/download_coil100.md)
+  : Download COIL-100
+- [`download_coil20()`](https://jlmelville.github.io/snedata/reference/download_coil20.md)
+  : Download COIL-20
 - [`download_fashion_mnist()`](https://jlmelville.github.io/snedata/reference/download_fashion_mnist.md)
   : Download Fashion-MNIST
 - [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md)
@@ -40,6 +44,8 @@
   : 2D Grid
 - [`helix()`](https://jlmelville.github.io/snedata/reference/helix.md) :
   Toroidal Helix Data Set
+- [`image-results`](https://jlmelville.github.io/snedata/reference/image-results.md)
+  : Canonical image-dataset results
 - [`link_data()`](https://jlmelville.github.io/snedata/reference/link_data.md)
   : Two Linked Rings
 - [`long_cluster_data()`](https://jlmelville.github.io/snedata/reference/long_cluster_data.md)
@@ -64,6 +70,8 @@
   : S-curve with a hole data set.
 - [`show_cifar()`](https://jlmelville.github.io/snedata/reference/show_cifar.md)
   : Visualize CIFAR-10 image.
+- [`show_coil_object()`](https://jlmelville.github.io/snedata/reference/show_coil_object.md)
+  : Visualize a COIL object image
 - [`show_frey_face()`](https://jlmelville.github.io/snedata/reference/show_frey_face.md)
   : Visualize Frey face.
 - [`show_isomap_face()`](https://jlmelville.github.io/snedata/reference/show_isomap_face.md)

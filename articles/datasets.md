@@ -14,13 +14,42 @@ notes and examples.
 | MNIST and relatives | [`download_mnist()`](https://jlmelville.github.io/snedata/reference/download_mnist.md), [`download_fashion_mnist()`](https://jlmelville.github.io/snedata/reference/download_fashion_mnist.md), [`download_kuzushiji_mnist()`](https://jlmelville.github.io/snedata/reference/download_kuzushiji_mnist.md), [`download_qmnist()`](https://jlmelville.github.io/snedata/reference/download_qmnist.md) | 70,000 or 120,000 | Images often in ten equally-sized classes. |
 | CIFAR-10 | [`download_cifar10()`](https://jlmelville.github.io/snedata/reference/download_cifar10.md), [`show_cifar()`](https://jlmelville.github.io/snedata/reference/show_cifar.md) | 60,000 | The well-known image dataset for machine learning. |
 | Small NORB | [`download_norb_small()`](https://jlmelville.github.io/snedata/reference/download_norb_small.md), [`show_norb_object()`](https://jlmelville.github.io/snedata/reference/show_norb_object.md) | 48,600 | Stereo images of 50 toys under different angles and lighting conditions. |
+| COIL object images | [`download_coil20()`](https://jlmelville.github.io/snedata/reference/download_coil20.md), [`download_coil100()`](https://jlmelville.github.io/snedata/reference/download_coil100.md), [`show_coil_object()`](https://jlmelville.github.io/snedata/reference/show_coil_object.md) | 1,440 or 7,200 | Object-image datasets from Columbia; requires the suggested `png` package. |
 | 20 Newsgroups | [`download_twenty_newsgroups()`](https://jlmelville.github.io/snedata/reference/download_twenty_newsgroups.md) | 18,846 | Text data; use packages such as `tm` or `tidytext` for preprocessing. |
 | Frey and Olivetti faces | [`frey_faces()`](https://jlmelville.github.io/snedata/reference/frey_faces.md), [`olivetti_faces()`](https://jlmelville.github.io/snedata/reference/olivetti_faces.md) | 1,965 and 400 | Images of faces. Requires the suggested `RnavGraphImageData` package. |
 | Isomap datasets | [`download_isomap_swiss_roll()`](https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.md), [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md) | 20,000 and 698 | Downloads archived Matlab data; requires the suggested `R.matlab` package, and `gzip` or `uncompress` for faces. |
 
-For MNIST, QMNIST, CIFAR-10, and Small NORB, you can return a list
-containing the matrix of the numeric data and any labels separately.
-Supply `as = "matrix"`.
+For MNIST, QMNIST, Fashion-MNIST, Kuzushiji-MNIST, CIFAR-10, Small NORB,
+and COIL, use `as = "list"` for the canonical image result. Its `data`
+matrix has one image per row and its `meta` data frame carries
+lower-case labels, descriptions, and explicit train/test split identity
+where applicable. For example, use
+`x$data[x$meta$split == "training", ]`. The legacy wide data frame
+remains available with `as = "data.frame"`.
+
+## Sources, citations, and data terms
+
+The MIT license for `snedata` covers the package code, not data obtained
+from external sources. The table below records the statements available
+from the cited source pages when they were checked on 2026-07-16. “No
+separate terms identified” means that the cited page provides access or
+citation information but does not state a dataset license; it should not
+be read as either permission or a restriction. Users remain responsible
+for checking current upstream terms for their intended use.
+
+| Dataset family | Source and citation | Terms status |
+|----|----|----|
+| MNIST | The package uses the [`fgnt/mnist` mirror](https://github.com/fgnt/mnist) of [Yann LeCun’s original files](https://yann.lecun.com/exdb/mnist/). Cite LeCun, Bottou, Bengio, and Haffner (1998), *Gradient-Based Learning Applied to Document Recognition*. | No separate dataset terms identified on the original page or mirror. |
+| QMNIST | [Yadav and Bottou’s QMNIST repository](https://github.com/facebookresearch/qmnist) and their 2019 paper, *Cold Case: The Lost MNIST Digits*. | The upstream README states that QMNIST uses the repository’s [BSD-style license](https://github.com/facebookresearch/qmnist/blob/main/LICENSE). |
+| Fashion-MNIST | The [Fashion-MNIST repository](https://github.com/zalandoresearch/fashion-mnist) and Xiao, Rasul, and Vollgraf (2017), *Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms*. | The official repository publishes an MIT license. |
+| Kuzushiji-MNIST | The [Kuzushiji-MNIST repository](https://github.com/rois-codh/kmnist) and Clanuwat et al. (2018), *Deep Learning for Classical Japanese Literature*. | The upstream README licenses the dataset and repository under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) and supplies the requested attribution. |
+| CIFAR-10 | The [CIFAR-10 source page](https://cave.cs.toronto.edu/kriz/cifar.html) and Krizhevsky (2009), *Learning Multiple Layers of Features from Tiny Images*. | The source page requests citation and supplies archive checksums; no separate dataset license is stated there. |
+| Small NORB | The [NORB source and terms page](https://cs.nyu.edu/~yann/data/norb-v1.0/) and LeCun, Huang, and Bottou (2004), *Learning Methods for Generic Object Recognition with Invariance to Pose and Lighting*. | The source permits research use, prohibits sale, and requests citation. |
+| COIL-20 and COIL-100 | Columbia’s [COIL-20](https://cave.cs.columbia.edu/repository/COIL-20) and [COIL-100](https://cave.cs.columbia.edu/repository/COIL-100) pages and the corresponding Nene, Nayar, and Murase (1996) technical reports. | The source pages provide download and citation information; no separate dataset license was identified on those pages. |
+| 20 Newsgroups | Jason Rennie’s [20 Newsgroups page](https://qwone.com/~jason/20Newsgroups/) provides the by-date archive used here; the collection is associated with Lang (1995), *Newsweeder: Learning to Filter Netnews*. | No separate terms were identified on the by-date source page. The [UCI record for the related original collection](https://kdd.ics.uci.edu/databases/20newsgroups/20newsgroups.data.html) permits free educational use with attribution. |
+| Mammoth point clouds | The JSON files come from [Understanding UMAP](https://github.com/PAIR-code/understanding-umap), which describes their downsampling from the [Smithsonian woolly mammoth model](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12). | The Smithsonian model is CC0; the Understanding UMAP repository is Apache-2.0 licensed. |
+| Isomap Swiss roll and faces | Archived copies of the original Isomap assets, cited to Tenenbaum, de Silva, and Langford (2000), *A Global Geometric Framework for Nonlinear Dimensionality Reduction*. | No separate dataset terms were identified on the archived source pages. |
+| Frey and Olivetti faces | Supplied by the suggested [`RnavGraphImageData`](https://cran.r-project.org/package=RnavGraphImageData) package, whose documentation traces both datasets to Sam Roweis’s data page and credits Brendan Frey and AT&T Laboratories Cambridge respectively. | These are not downloaded or redistributed by `snedata`; no separate dataset terms were identified in the supplying package documentation. |
 
 ## Notes
 
@@ -48,7 +77,7 @@ Supply `as = "matrix"`.
   `gzip` or `uncompress` command to read the Unix `compress` file.
 
 - Code to download and visualize the [MNIST
-  database](http://yann.lecun.com/exdb/mnist/), based on [a gist by
+  database](https://yann.lecun.com/exdb/mnist/), based on [a gist by
   Brendan O’Connor](https://gist.github.com/brendano/39760), who
   graciously allowed it to be MIT-licensed.
 
@@ -69,7 +98,13 @@ Supply `as = "matrix"`.
   dataset, which consists of pairs of images of 50 toys from different
   angles and under different lighting conditions.
 
-- The [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset,
+- The Columbia Object Image Library datasets
+  [COIL-20](https://cave.cs.columbia.edu/repository/COIL-20) and
+  [COIL-100](https://cave.cs.columbia.edu/repository/COIL-100), which
+  contain object images under different poses. Reading these PNG
+  datasets requires the suggested `png` package.
+
+- The [CIFAR-10](https://cave.cs.toronto.edu/kriz/cifar.html) dataset,
   which consists of 60,000 32 x 32 color images in ten different
   classes.
 

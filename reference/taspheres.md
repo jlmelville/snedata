@@ -35,7 +35,7 @@ taspheres(n_samples = 500, d = 100, n_spheres = 11, r = 5)
 ## Value
 
 Data frame with `d + 1` numerical columns containing the coordinates of
-the d-spheres and a `"label"` factor column giving the identity of each
+the d-spheres and a `labels` factor column giving the identity of each
 d-sphere: levels `0 .. n_spheres - 2` are the smaller d-spheres. Level
 `n_spheres - 1` is the label for the big d-sphere.
 
@@ -43,7 +43,7 @@ d-sphere: levels `0 .. n_spheres - 2` are the smaller d-spheres. Level
 
 This dataset was used by Moor and co-workers in their "Topological
 Autoencoders" paper and this function is based on the Python code in the
-github repo for the paper.
+GitHub repo for the paper.
 
 ## References
 

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">snedata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,11 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">synthetic_hierarchical_data</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span>, dim <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">synthetic_hierarchical_data</span><span class="op">(</span></span>
+<span>  n <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  dim <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"full"</span>, <span class="st">"macro"</span>, <span class="st">"none"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -54,13 +58,21 @@
 <dt id="arg-dim">dim<a class="anchor" aria-label="anchor" href="#arg-dim"></a></dt>
 <dd><p>Dimension of the Gaussian observations and cluster centers.</p></dd>
 
+
+<dt id="arg-colors">colors<a class="anchor" aria-label="anchor" href="#arg-colors"></a></dt>
+<dd><p>Color detail to include: <code>"full"</code> (the default) adds macro,
+meso, and micro plotting colors and requires the optional
+<a href="https://cran.r-project.org/package=colorspace" class="external-link">colorspace</a> package;
+<code>"macro"</code> adds a dependency-free anchor color for each macro cluster; and
+<code>"none"</code> returns coordinates and labels only.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Data frame with coordinates in the <code>X1</code>, <code>X2</code> ... <code>Xdim</code> columns,
-factor columns <code>macro_label</code>, <code>meso_label</code>, and <code>micro_label</code>, a <code>color</code>
-column containing the meso-level color, and <code>macro_color</code>, <code>meso_color</code>,
-and <code>micro_color</code> columns for plotting at each hierarchy level.</p>
+and factor columns <code>macro_label</code>, <code>meso_label</code>, and <code>micro_label</code>.
+<code>colors = "macro"</code> also includes <code>color</code> and <code>macro_color</code>; <code>colors = "full"</code> also includes <code>color</code>, <code>macro_color</code>, <code>meso_color</code>, and
+<code>micro_color</code> plotting columns.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

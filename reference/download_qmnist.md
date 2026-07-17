@@ -9,7 +9,8 @@ MNIST digits, but with an extended test dataset of 60,000 digits.
 download_qmnist(
   base_url = qmnist_url,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "list"),
+  timeout = 1800
 )
 ```
 
@@ -48,19 +49,25 @@ For more information see <https://github.com/facebookresearch/qmnist>.
 - as:
 
   Return format. Use `"data.frame"` for the original data frame shape,
-  or `"matrix"` for a list with `data` and `labels`.
+  or `"list"` for the canonical image result described in
+  [`download_mnist()`](https://jlmelville.github.io/snedata/reference/download_mnist.md).
+
+- timeout:
+
+  Minimum download timeout in seconds. The default is 30 minutes; a
+  larger existing global R timeout is preserved.
 
 ## Value
 
 If `as = "data.frame"`, a data frame containing the QMNIST digits. If
-`as = "matrix"`, a list with `data`, an integer matrix with one image
-per row, and `labels`, a factor of digit labels.
+`as = "list"`, a canonical image result. Its `meta` includes all eight
+QMNIST extended-label fields in addition to `id`, `split`, and `label`.
 
 ## Details
 
 Downloads the image and label files for the training and test datasets
 from <https://github.com/facebookresearch/qmnist> and converts them to a
-data frame or a matrix/list result.
+data frame or canonical list result.
 
 ## References
 

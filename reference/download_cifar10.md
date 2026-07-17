@@ -6,11 +6,12 @@ Download CIFAR-10 database of images.
 
 ``` r
 download_cifar10(
-  url = "https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz",
+  url = "https://cave.cs.toronto.edu/kriz/cifar-10-binary.tar.gz",
   destfile = NULL,
   cleanup = TRUE,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "list"),
+  timeout = 1800
 )
 ```
 
@@ -57,13 +58,14 @@ image. The `Label` levels correspond to the following class names
 - `9`: Truck
 
 There are 60,000 items in the data set. The first 50,000 are the
-training set, and the remaining 10,000 are the testing set.
+training set, and the remaining 10,000 are the testing set. Canonical
+list results carry this identity in `meta$split`.
 
 Items in the dataset can be visualized with the
 [`show_cifar()`](https://jlmelville.github.io/snedata/reference/show_cifar.md)
 function.
 
-For more information see <https://www.cs.toronto.edu/~kriz/cifar.html>.
+For more information see <https://cave.cs.toronto.edu/kriz/cifar.html>.
 
 ## Arguments
 
@@ -74,8 +76,8 @@ For more information see <https://www.cs.toronto.edu/~kriz/cifar.html>.
 - destfile:
 
   Filename for where to download the CIFAR-10 tarfile. If `NULL`, a file
-  in a temporary work directory is used. It will be untarred and
-  processed in the same directory.
+  in a temporary work directory is used. The archive is always extracted
+  to a separate temporary work directory.
 
 - cleanup:
 
@@ -90,26 +92,35 @@ For more information see <https://www.cs.toronto.edu/~kriz/cifar.html>.
 - as:
 
   Return format. Use `"data.frame"` for the original data frame shape,
-  or `"matrix"` for a list with `data`, `labels`, and `descriptions`.
+  or `"list"` for the canonical image result described in
+  [`download_mnist()`](https://jlmelville.github.io/snedata/reference/download_mnist.md).
+  The integer pixel matrix uses about 0.69 GiB; the wide data-frame
+  result needs additional memory. Use `"list"` if that result is
+  sufficient.
+
+- timeout:
+
+  Minimum download timeout in seconds. The default accommodates the
+  large archive on slower connections; a larger existing global R
+  timeout is preserved.
 
 ## Value
 
 If `as = "data.frame"`, a data frame containing the CIFAR-10 dataset. If
-`as = "matrix"`, a list with `data`, an integer matrix with one image
-per row, `labels`, a factor of numeric class labels, and `descriptions`,
-a factor of class names.
+`as = "list"`, a canonical image result with factor class labels and
+descriptions in `meta`.
 
 ## Details
 
 Downloads the image and label files for the training and test datasets
-and converts them to a data frame or a matrix/list result.
+and converts them to a data frame or canonical list result.
 
 The CIFAR-10 dataset contains 60000 32 x 32 color images, divided into
 ten different classes, with 6000 images per class.
 
 ## References
 
-The CIFAR-10 dataset <https://www.cs.toronto.edu/~kriz/cifar.html>
+The CIFAR-10 dataset <https://cave.cs.toronto.edu/kriz/cifar.html>
 
 Krizhevsky, A., & Hinton, G. (2009). *Learning multiple layers of
 features from tiny images* (Vol. 1, No. 4, p. 7). Technical report,
@@ -129,7 +140,7 @@ cifar10_test <- tail(cifar10, 10000)
 
 # PCA on 1000 examples
 cifar10_r1000 <- cifar10[sample(nrow(cifar10), 1000), ]
-pca <- prcomp(cifar10_r1000[, 1:(32 * 32)], retx = TRUE, rank. = 2)
+pca <- prcomp(cifar10_r1000[, 1:(32 * 32 * 3)], retx = TRUE, rank. = 2)
 # plot the scores of the first two components
 plot(pca$x[, 1:2], type = "n")
 text(pca$x[, 1:2],

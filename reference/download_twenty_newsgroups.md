@@ -11,7 +11,8 @@ download_twenty_newsgroups(
   subset = "all",
   verbose = FALSE,
   tmpdir = NULL,
-  cleanup = TRUE
+  cleanup = TRUE,
+  timeout = 1800
 )
 ```
 
@@ -19,11 +20,11 @@ download_twenty_newsgroups(
 
 A data frame with 6 variables:
 
-- `Id`: A unique identifier for the document, consisting of the subset
-  concatenated with the position in the subset, e.g. `train_1`.
+- `Id`: A stable source-derived identifier containing the subset,
+  newsgroup, and original filename, e.g. `train/alt.atheism/49960`.
 
-- `FileId`: The integer identifier of the document, from the filename of
-  the downloaded data. Be aware that these are *not* unique.
+- `FileId`: The original source filename as a character value. These are
+  *not* unique across subsets and newsgroups.
 
 - `Text`: The full text of the message including any header, footer, and
   quotes. Newlines are preserved.
@@ -31,11 +32,11 @@ A data frame with 6 variables:
 - `Subset`: A factor with two levels: `train` and `test`, indicating
   whether the document is from the training or test subset.
 
-- `Label`: The newsgroup represented by an integer id, in the range
-  0-19.
+- `Label`: A factor with levels `0` through `19`, identifying the
+  newsgroup using the canonical ordering below.
 
-- `Newsgroup`: A factor with 20 levels, indicating the newsgroup that
-  the document belongs to.
+- `Newsgroup`: A factor with the 20 newsgroups as levels in the
+  canonical ordering below.
 
 The labels correspond to:
 
@@ -79,7 +80,7 @@ The labels correspond to:
 
 - `19`: talk.religion.misc
 
-and are also present as the `Newsgroup` factor.
+`Newsgroup` contains the corresponding names.
 
 There are 11,314 items in the `train` dataset and 7,532 items in the
 `test` for a total of 18,846 items if you choose `subset = "all"`.
@@ -99,16 +100,22 @@ There are 11,314 items in the `train` dataset and 7,532 items in the
 
 - tmpdir:
 
-  A string specifying the directory where the dataset will be downloaded
-  and extracted. If `NULL` (default), a temporary directory is used. If
-  a path is provided and does not exist, it will be created.
+  A string specifying the parent directory for a dedicated download and
+  extraction work directory. If `NULL` (default), a temporary parent
+  directory is used. If a path is provided and does not exist, it will
+  be created.
 
 - cleanup:
 
   A logical flag indicating whether to delete the downloaded and
   extracted files after processing. If `TRUE` *and* `tmpdir` was created
   by this function, `tmpdir` will be deleted after processing. Default
-  is `FALSE`.
+  is `TRUE`.
+
+- timeout:
+
+  Minimum download timeout in seconds. The default is 30 minutes; a
+  larger existing global R timeout is preserved.
 
 ## Value
 
@@ -130,7 +137,7 @@ of the Twelfth International Conference on Machine Learning* 1995 (pp.
 
 ## See also
 
-<http://qwone.com/~jason/20Newsgroups/>
+<https://qwone.com/~jason/20Newsgroups/>
 
 Chapter 9 of [Tidy Text Mining with
 R](https://www.tidytextmining.com/usenet) for a case study using the

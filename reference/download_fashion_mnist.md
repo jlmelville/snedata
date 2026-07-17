@@ -5,7 +5,12 @@ Download Fashion-MNIST database of images of fashion products.
 ## Usage
 
 ``` r
-download_fashion_mnist(base_url = fashion_mnist_url, verbose = FALSE)
+download_fashion_mnist(
+  base_url = fashion_mnist_url,
+  verbose = FALSE,
+  as = c("data.frame", "list"),
+  timeout = 1800
+)
 ```
 
 ## Format
@@ -67,16 +72,29 @@ For more information see
 
   If `TRUE`, then download progress will be logged as a message.
 
+- as:
+
+  Return format. Use `"data.frame"` for the original data frame shape,
+  or `"list"` for the canonical image result described in
+  [`download_mnist()`](https://jlmelville.github.io/snedata/reference/download_mnist.md).
+
+- timeout:
+
+  Minimum download timeout in seconds. The default is 30 minutes; a
+  larger existing global R timeout is preserved.
+
 ## Value
 
-Data frame containing Fashion-MNIST.
+A data frame containing Fashion-MNIST, or a canonical image result with
+`label` and `description` factors in `meta`.
 
 ## Details
 
 Downloads the image and label files for the training and test datasets
-and converts them to a data frame. The dataset is intended to be a
-drop-in replacement for the MNIST digits dataset but with more relevance
-for benchmarking machine learning algorithms (i.e. it's more difficult).
+and converts them to a data frame or canonical image result. The dataset
+is intended to be a drop-in replacement for the MNIST digits dataset but
+with more relevance for benchmarking machine learning algorithms (i.e.
+it's more difficult).
 
 ## Note
 

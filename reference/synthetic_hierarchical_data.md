@@ -5,7 +5,11 @@ Simulation data from a hierarchy of Gaussian clusters.
 ## Usage
 
 ``` r
-synthetic_hierarchical_data(n = 500, dim = 50)
+synthetic_hierarchical_data(
+  n = 500,
+  dim = 50,
+  colors = c("full", "macro", "none")
+)
 ```
 
 ## Arguments
@@ -18,12 +22,21 @@ synthetic_hierarchical_data(n = 500, dim = 50)
 
   Dimension of the Gaussian observations and cluster centers.
 
+- colors:
+
+  Color detail to include: `"full"` (the default) adds macro, meso, and
+  micro plotting colors and requires the optional
+  [colorspace](https://cran.r-project.org/package=colorspace) package;
+  `"macro"` adds a dependency-free anchor color for each macro cluster;
+  and `"none"` returns coordinates and labels only.
+
 ## Value
 
-Data frame with coordinates in the `X1`, `X2` ... `Xdim` columns, factor
-columns `macro_label`, `meso_label`, and `micro_label`, a `color` column
-containing the meso-level color, and `macro_color`, `meso_color`, and
-`micro_color` columns for plotting at each hierarchy level.
+Data frame with coordinates in the `X1`, `X2` ... `Xdim` columns, and
+factor columns `macro_label`, `meso_label`, and `micro_label`.
+`colors = "macro"` also includes `color` and `macro_color`;
+`colors = "full"` also includes `color`, `macro_color`, `meso_color`,
+and `micro_color` plotting columns.
 
 ## Details
 

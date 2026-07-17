@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">snedata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -148,13 +148,23 @@ papers.</td>
 conditions.</td>
 </tr>
 <tr class="even">
+<td>COIL object images</td>
+<td>
+<code><a href="../reference/download_coil20.html">download_coil20()</a></code>, <code><a href="../reference/download_coil100.html">download_coil100()</a></code>,
+<code><a href="../reference/show_coil_object.html">show_coil_object()</a></code>
+</td>
+<td align="right">1,440 or 7,200</td>
+<td>Object-image datasets from Columbia; requires the suggested
+<code>png</code> package.</td>
+</tr>
+<tr class="odd">
 <td>20 Newsgroups</td>
 <td><code><a href="../reference/download_twenty_newsgroups.html">download_twenty_newsgroups()</a></code></td>
 <td align="right">18,846</td>
 <td>Text data; use packages such as <code>tm</code> or
 <code>tidytext</code> for preprocessing.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Frey and Olivetti faces</td>
 <td>
 <code><a href="../reference/frey_faces.html">frey_faces()</a></code>, <code><a href="../reference/olivetti_faces.html">olivetti_faces()</a></code>
@@ -163,7 +173,7 @@ conditions.</td>
 <td>Images of faces. Requires the suggested
 <code>RnavGraphImageData</code> package.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Isomap datasets</td>
 <td>
 <code><a href="../reference/download_isomap_swiss_roll.html">download_isomap_swiss_roll()</a></code>,
@@ -176,9 +186,135 @@ conditions.</td>
 </tr>
 </tbody>
 </table>
-<p>For MNIST, QMNIST, CIFAR-10, and Small NORB, you can return a list
-containing the matrix of the numeric data and any labels separately.
-Supply <code>as = "matrix"</code>.</p>
+<p>For MNIST, QMNIST, Fashion-MNIST, Kuzushiji-MNIST, CIFAR-10, Small
+NORB, and COIL, use <code>as = "list"</code> for the canonical image
+result. Its <code>data</code> matrix has one image per row and its
+<code>meta</code> data frame carries lower-case labels, descriptions,
+and explicit train/test split identity where applicable. For example,
+use <code>x$data[x$meta$split == "training", ]</code>. The legacy wide
+data frame remains available with <code>as = "data.frame"</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="sources-citations-and-data-terms">Sources, citations, and data terms<a class="anchor" aria-label="anchor" href="#sources-citations-and-data-terms"></a>
+</h2>
+<p>The MIT license for <code>snedata</code> covers the package code, not
+data obtained from external sources. The table below records the
+statements available from the cited source pages when they were checked
+on 2026-07-16. “No separate terms identified” means that the cited page
+provides access or citation information but does not state a dataset
+license; it should not be read as either permission or a restriction.
+Users remain responsible for checking current upstream terms for their
+intended use.</p>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th>Dataset family</th>
+<th>Source and citation</th>
+<th>Terms status</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>MNIST</td>
+<td>The package uses the <a href="https://github.com/fgnt/mnist" class="external-link"><code>fgnt/mnist</code> mirror</a>
+of <a href="https://yann.lecun.com/exdb/mnist/" class="external-link">Yann LeCun’s original
+files</a>. Cite LeCun, Bottou, Bengio, and Haffner (1998),
+<em>Gradient-Based Learning Applied to Document Recognition</em>.</td>
+<td>No separate dataset terms identified on the original page or
+mirror.</td>
+</tr>
+<tr class="even">
+<td>QMNIST</td>
+<td>
+<a href="https://github.com/facebookresearch/qmnist" class="external-link">Yadav and
+Bottou’s QMNIST repository</a> and their 2019 paper, <em>Cold Case: The
+Lost MNIST Digits</em>.</td>
+<td>The upstream README states that QMNIST uses the repository’s <a href="https://github.com/facebookresearch/qmnist/blob/main/LICENSE" class="external-link">BSD-style
+license</a>.</td>
+</tr>
+<tr class="odd">
+<td>Fashion-MNIST</td>
+<td>The <a href="https://github.com/zalandoresearch/fashion-mnist" class="external-link">Fashion-MNIST
+repository</a> and Xiao, Rasul, and Vollgraf (2017), <em>Fashion-MNIST:
+a Novel Image Dataset for Benchmarking Machine Learning
+Algorithms</em>.</td>
+<td>The official repository publishes an MIT license.</td>
+</tr>
+<tr class="even">
+<td>Kuzushiji-MNIST</td>
+<td>The <a href="https://github.com/rois-codh/kmnist" class="external-link">Kuzushiji-MNIST
+repository</a> and Clanuwat et al. (2018), <em>Deep Learning for
+Classical Japanese Literature</em>.</td>
+<td>The upstream README licenses the dataset and repository under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC BY-SA 4.0</a>
+and supplies the requested attribution.</td>
+</tr>
+<tr class="odd">
+<td>CIFAR-10</td>
+<td>The <a href="https://cave.cs.toronto.edu/kriz/cifar.html" class="external-link">CIFAR-10
+source page</a> and Krizhevsky (2009), <em>Learning Multiple Layers of
+Features from Tiny Images</em>.</td>
+<td>The source page requests citation and supplies archive checksums; no
+separate dataset license is stated there.</td>
+</tr>
+<tr class="even">
+<td>Small NORB</td>
+<td>The <a href="https://cs.nyu.edu/~yann/data/norb-v1.0/" class="external-link">NORB source
+and terms page</a> and LeCun, Huang, and Bottou (2004), <em>Learning
+Methods for Generic Object Recognition with Invariance to Pose and
+Lighting</em>.</td>
+<td>The source permits research use, prohibits sale, and requests
+citation.</td>
+</tr>
+<tr class="odd">
+<td>COIL-20 and COIL-100</td>
+<td>Columbia’s <a href="https://cave.cs.columbia.edu/repository/COIL-20" class="external-link">COIL-20</a> and
+<a href="https://cave.cs.columbia.edu/repository/COIL-100" class="external-link">COIL-100</a>
+pages and the corresponding Nene, Nayar, and Murase (1996) technical
+reports.</td>
+<td>The source pages provide download and citation information; no
+separate dataset license was identified on those pages.</td>
+</tr>
+<tr class="even">
+<td>20 Newsgroups</td>
+<td>Jason Rennie’s <a href="https://qwone.com/~jason/20Newsgroups/" class="external-link">20
+Newsgroups page</a> provides the by-date archive used here; the
+collection is associated with Lang (1995), <em>Newsweeder: Learning to
+Filter Netnews</em>.</td>
+<td>No separate terms were identified on the by-date source page. The <a href="https://kdd.ics.uci.edu/databases/20newsgroups/20newsgroups.data.html" class="external-link">UCI
+record for the related original collection</a> permits free educational
+use with attribution.</td>
+</tr>
+<tr class="odd">
+<td>Mammoth point clouds</td>
+<td>The JSON files come from <a href="https://github.com/PAIR-code/understanding-umap" class="external-link">Understanding
+UMAP</a>, which describes their downsampling from the <a href="https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12" class="external-link">Smithsonian
+woolly mammoth model</a>.</td>
+<td>The Smithsonian model is CC0; the Understanding UMAP repository is
+Apache-2.0 licensed.</td>
+</tr>
+<tr class="even">
+<td>Isomap Swiss roll and faces</td>
+<td>Archived copies of the original Isomap assets, cited to Tenenbaum,
+de Silva, and Langford (2000), <em>A Global Geometric Framework for
+Nonlinear Dimensionality Reduction</em>.</td>
+<td>No separate dataset terms were identified on the archived source
+pages.</td>
+</tr>
+<tr class="odd">
+<td>Frey and Olivetti faces</td>
+<td>Supplied by the suggested <a href="https://cran.r-project.org/package=RnavGraphImageData" class="external-link"><code>RnavGraphImageData</code></a>
+package, whose documentation traces both datasets to Sam Roweis’s data
+page and credits Brendan Frey and AT&amp;T Laboratories Cambridge
+respectively.</td>
+<td>These are not downloaded or redistributed by <code>snedata</code>;
+no separate dataset terms were identified in the supplying package
+documentation.</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level2">
 <h2 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a>
@@ -202,7 +338,8 @@ available via the Internet Archive. These functions require the <a href="https:/
 to read Matlab files, and the face-pose dataset also requires an
 external <code>gzip</code> or <code>uncompress</code> command to read
 the Unix <code>compress</code> file.</p></li>
-<li><p>Code to download and visualize the <a href="http://yann.lecun.com/exdb/mnist/" class="external-link">MNIST database</a>, based on <a href="https://gist.github.com/brendano/39760" class="external-link">a gist by Brendan
+<li><p>Code to download and visualize the <a href="https://yann.lecun.com/exdb/mnist/" class="external-link">MNIST database</a>, based on
+<a href="https://gist.github.com/brendano/39760" class="external-link">a gist by Brendan
 O’Connor</a>, who graciously allowed it to be MIT-licensed.</p></li>
 <li><p><a href="https://github.com/facebookresearch/qmnist" class="external-link">QMNIST</a>
 extends the MNIST test dataset to 60,000 digits (so 120,000 digits in
@@ -218,7 +355,11 @@ of cursive Japanese characters.</p></li>
 <li><p>The <a href="https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/" class="external-link">Small NORB</a>
 dataset, which consists of pairs of images of 50 toys from different
 angles and under different lighting conditions.</p></li>
-<li><p>The <a href="https://www.cs.toronto.edu/~kriz/cifar.html" class="external-link">CIFAR-10</a> dataset,
+<li><p>The Columbia Object Image Library datasets <a href="https://cave.cs.columbia.edu/repository/COIL-20" class="external-link">COIL-20</a> and
+<a href="https://cave.cs.columbia.edu/repository/COIL-100" class="external-link">COIL-100</a>,
+which contain object images under different poses. Reading these PNG
+datasets requires the suggested <code>png</code> package.</p></li>
+<li><p>The <a href="https://cave.cs.toronto.edu/kriz/cifar.html" class="external-link">CIFAR-10</a> dataset,
 which consists of 60,000 32 x 32 color images in ten different
 classes.</p></li>
 <li><p>A 3D point cloud of a <a href="https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12" class="external-link">mammoth

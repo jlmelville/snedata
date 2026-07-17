@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">snedata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,12 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_fashion_mnist</span><span class="op">(</span>base_url <span class="op">=</span> <span class="va">fashion_mnist_url</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_fashion_mnist</span><span class="op">(</span></span>
+<span>  base_url <span class="op">=</span> <span class="va">fashion_mnist_url</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  as <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data.frame"</span>, <span class="st">"list"</span><span class="op">)</span>,</span>
+<span>  timeout <span class="op">=</span> <span class="fl">1800</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -83,15 +88,27 @@ set, as found in the <code>train-images-idx3-ubyte.gz</code> file. The remaining
 <dd><p>If <code>TRUE</code>, then download progress will be logged as a
 message.</p></dd>
 
+
+<dt id="arg-as">as<a class="anchor" aria-label="anchor" href="#arg-as"></a></dt>
+<dd><p>Return format. Use <code>"data.frame"</code> for the original data frame
+shape, or <code>"list"</code> for the canonical image result described in
+<code><a href="download_mnist.html">download_mnist()</a></code>.</p></dd>
+
+
+<dt id="arg-timeout">timeout<a class="anchor" aria-label="anchor" href="#arg-timeout"></a></dt>
+<dd><p>Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Data frame containing Fashion-MNIST.</p>
+    <p>A data frame containing Fashion-MNIST, or a canonical image result
+with <code>label</code> and <code>description</code> factors in <code>meta</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Downloads the image and label files for the training and test datasets and
-converts them to a data frame. The dataset is intended to be a drop-in
+converts them to a data frame or canonical image result. The dataset is intended to be a drop-in
 replacement for the MNIST digits dataset but with more relevance for
 benchmarking machine learning algorithms (i.e. it's more difficult).</p>
     </div>

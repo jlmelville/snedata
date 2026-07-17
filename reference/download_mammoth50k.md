@@ -6,22 +6,25 @@ mammoth skeleton.
 ## Usage
 
 ``` r
-download_mammoth50k()
+download_mammoth50k(timeout = 1800)
 ```
 
 ## Format
 
-A data frame with 50,000 rows and 3 variables, `Y`, `X`, `Z`, containing
-the Y, X, and Z coordinates respectively. This labeling of axes
-preserves the ordering of the raw data, and makes the Z-coordinate the
-"height", i.e. the height of the mammoth varies with Z. Note that the
-ordering of the axes differs from that of
-[`download_mammoth10k()`](https://jlmelville.github.io/snedata/reference/download_mammoth10k.md).
-Use the X, Y, and Z labels rather than numerical indices for consistency
-between the two datasets.
+A data frame with 50,000 rows and 3 variables, `X`, `Y`, and `Z`. The
+source coordinate vectors are ordered Y, X, Z; this function reorders
+them to the canonical X, Y, Z order. The Z-coordinate is the "height",
+i.e. the height of the mammoth varies with Z.
 
 For more information see
 <https://pair-code.github.io/understanding-umap/>.
+
+## Arguments
+
+- timeout:
+
+  Minimum download timeout in seconds. The default is 30 minutes; a
+  larger existing global R timeout is preserved.
 
 ## Value
 
@@ -30,8 +33,8 @@ Data frame containing the Mammoth coordinates.
 ## Details
 
 Downloads a dataframe containing the 50,000 3D coordinates of a mammoth
-skeleton, digitized by [The Smithsonian
-Institute](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12).
+skeleton, digitized by [the Smithsonian
+Institution](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12).
 
 This dataset is from [Understanding
 UMAP](https://pair-code.github.io/understanding-umap/), based on work

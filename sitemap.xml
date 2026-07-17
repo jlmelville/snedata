@@ -11,6 +11,8 @@
 <url><loc>https://jlmelville.github.io/snedata/reference/cube_data.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/curve2d.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/download_cifar10.html</loc></url>
+<url><loc>https://jlmelville.github.io/snedata/reference/download_coil100.html</loc></url>
+<url><loc>https://jlmelville.github.io/snedata/reference/download_coil20.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/download_fashion_mnist.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/download_isomap_faces.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.html</loc></url>
@@ -25,6 +27,7 @@
 <url><loc>https://jlmelville.github.io/snedata/reference/gaussian_data.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/grid_data.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/helix.html</loc></url>
+<url><loc>https://jlmelville.github.io/snedata/reference/image-results.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/index.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/link_data.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/long_cluster_data.html</loc></url>
@@ -38,6 +41,7 @@
 <url><loc>https://jlmelville.github.io/snedata/reference/s_curve.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/s_curve_hole.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/show_cifar.html</loc></url>
+<url><loc>https://jlmelville.github.io/snedata/reference/show_coil_object.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/show_frey_face.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/show_isomap_face.html</loc></url>
 <url><loc>https://jlmelville.github.io/snedata/reference/show_mnist_digit.html</loc></url>

@@ -9,7 +9,8 @@ download_norb_small(
   base_url = "https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/",
   verbose = FALSE,
   split = c("all", "training", "testing"),
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "list"),
+  timeout = 1800
 )
 ```
 
@@ -60,7 +61,8 @@ image. The `Label` levels correspond to:
 
 There are 48,600 items in the data set. The first 24,300 are the
 training set, and the remaining 24,300 are the testing set, but you can
-also use the `Split` column to determine which split a given row is in.
+also use the `Split` column (or `meta$split` in a list result) to
+determine which split a given row is in.
 
 Items in the dataset can be visualized with the
 [`show_norb_object()`](https://jlmelville.github.io/snedata/reference/show_norb_object.md)
@@ -87,19 +89,27 @@ For more information see
 - as:
 
   Return format. Use `"data.frame"` for the original data frame shape,
-  or `"matrix"` for a list with `data` and `meta`.
+  or `"list"` for the canonical image result described in
+  [`download_mnist()`](https://jlmelville.github.io/snedata/reference/download_mnist.md).
+  For `split = "all"`, the integer pixel matrix uses about 3.34 GiB; the
+  wide data-frame result needs additional memory. Use `"list"` if that
+  result is sufficient.
+
+- timeout:
+
+  Minimum download timeout in seconds. The default is 30 minutes; a
+  larger existing global R timeout is preserved.
 
 ## Value
 
 If `as = "data.frame"`, a data frame containing the Small NORB dataset.
-If `as = "matrix"`, a list with `data`, an integer matrix with one image
-pair per row, and `meta`, a data frame with the non-pixel metadata
-columns.
+If `as = "list"`, a canonical image result with an integer image-pair
+matrix and lower-case metadata names in `meta`.
 
 ## Details
 
 Downloads the image and label files for the training and test datasets
-and converts them to a data frame or a matrix/list result.
+and converts them to a data frame or canonical list result.
 
 The Small NORB dataset contains images of 50 toys. The toys are divided
 into five categories (animal, human, airplane, truck, car) with ten
@@ -128,29 +138,31 @@ Recognition (CVPR) 2004* (pp. 97-104). IEEE.
 
 ``` r
 if (FALSE) { # \dontrun{
-# download the data set
-norb <- download_norb_small(verbose = TRUE)
+# download the data set as a canonical list
+norb <- download_norb_small(verbose = TRUE, as = "list")
 
 # first 24,300 instances are the training set
-norb_train <- head(norb, 24300)
+norb_train <- head(norb$data, 24300)
 # the remaining 24,300 are the test set
-norb_test <- tail(norb, 24300)
+norb_test <- tail(norb$data, 24300)
 
 # Or equivalently
-norb_train2 <- norb[norb$Split == "training", ]
-norb_test2 <- norb[norb$Split == "testing", ]
+norb_train2 <- norb$data[norb$meta$split == "training", ]
+norb_test2 <- norb$data[norb$meta$split == "testing", ]
 
 identical(norb_train, norb_train2) # TRUE
 identical(norb_test, norb_test2) # also TRUE
 
 # PCA on 1000 examples
-norb_r1000 <- norb[sample(nrow(norb), 1000), ]
-pca <- prcomp(norb_r1000[, 1:(96 * 96 * 2)], retx = TRUE, rank. = 2)
+sample_rows <- sample(nrow(norb$data), 1000)
+norb_r1000 <- norb$data[sample_rows, ]
+pca <- prcomp(norb_r1000, retx = TRUE, rank. = 2)
 # plot the scores of the first two components
 plot(pca$x[, 1:2], type = "n")
 text(pca$x[, 1:2],
-  labels = norb_r1000$Label,
-  col = rainbow(length(levels(norb$Label)))[norb_r1000$Label]
+  labels = norb$meta$label[sample_rows],
+  col = rainbow(length(levels(norb$meta$label)))[norb$meta$label[sample_rows]]
 )
+
 } # }
 ```

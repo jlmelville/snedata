@@ -8,7 +8,8 @@ Download MNIST database of handwritten digits.
 download_mnist(
   base_url = mnist_url,
   verbose = FALSE,
-  as = c("data.frame", "matrix")
+  as = c("data.frame", "list"),
+  timeout = 1800
 )
 ```
 
@@ -33,7 +34,7 @@ Items in the dataset can be visualized with
 [`show_mnist_digit()`](https://jlmelville.github.io/snedata/reference/show_mnist_digit.md).
 
 For more information about the original dataset see
-<http://yann.lecun.com/exdb/mnist>.
+<https://yann.lecun.com/exdb/mnist/>.
 
 ## Arguments
 
@@ -48,23 +49,38 @@ For more information about the original dataset see
 - as:
 
   Return format. Use `"data.frame"` for the original data frame shape,
-  or `"matrix"` for a list with `data` and `labels`.
+  or `"list"` for the canonical image result.
+
+- timeout:
+
+  Minimum download timeout in seconds. The default is 30 minutes; a
+  larger existing global R timeout is preserved.
 
 ## Value
 
 If `as = "data.frame"`, a data frame containing the MNIST digits. If
-`as = "matrix"`, a list with `data`, an integer matrix with one image
-per row, and `labels`, a factor of digit labels.
+`as = "list"`, a canonical image result with an integer matrix in `data`
+and factor digit labels in `meta$label`.
 
 ## Details
 
 Downloads the image and label files for the training and test datasets
 from the <https://github.com/fgnt/mnist> mirror of the original MNIST
-files and converts them to a data frame or a matrix/list result.
+files and converts them to a data frame or canonical list result.
 
 ## Note
 
 Originally based on a function by Brendan O'Connor.
+
+## Canonical list results
+
+`as = "list"` returns a shallow list with `data` (one image per row),
+`meta` (one metadata row per image), `image_dim`, `channel_order`, and
+`source`. Metadata uses lower-case invariant names when applicable:
+`label`, `description`, `split`, `id`, `object`, and `pose`;
+dataset-specific fields are retained in `meta`. `split` is explicit, so
+train/test identity does not depend on row position. `source` records
+the dataset and acquisition URL.
 
 ## Examples
 

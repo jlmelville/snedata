@@ -9,7 +9,7 @@ skeleton."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">snedata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,20 +43,26 @@ skeleton.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_mammoth50k</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_mammoth50k</span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">1800</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with 50,000 rows and 3 variables, <code>Y</code>, <code>X</code>,
-<code>Z</code>, containing the Y, X, and Z coordinates respectively. This
-labeling of axes preserves the ordering of the raw data, and makes the
-Z-coordinate the "height", i.e. the height of the mammoth varies with Z.
-Note that the ordering of the axes differs from that of
-<code><a href="download_mammoth10k.html">download_mammoth10k()</a></code>. Use the X, Y, and Z labels rather than
-numerical indices for consistency between the two datasets.</p>
+    <p>A data frame with 50,000 rows and 3 variables, <code>X</code>, <code>Y</code>, and <code>Z</code>.
+The source coordinate vectors are ordered Y, X, Z; this function reorders
+them to the canonical X, Y, Z order. The Z-coordinate is the "height",
+i.e. the height of the mammoth varies with Z.</p>
 <p>For more information see <a href="https://pair-code.github.io/understanding-umap/" class="external-link">https://pair-code.github.io/understanding-umap/</a>.</p>
     </div>
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-timeout">timeout<a class="anchor" aria-label="anchor" href="#arg-timeout"></a></dt>
+<dd><p>Minimum download timeout in seconds. The default is 30
+minutes; a larger existing global R timeout is preserved.</p></dd>
+
+</dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Data frame containing the Mammoth coordinates.</p>
@@ -65,7 +71,7 @@ numerical indices for consistency between the two datasets.</p>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Downloads a dataframe containing the 50,000 3D coordinates of a mammoth
 skeleton, digitized by
-<a href="https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12" class="external-link">The Smithsonian Institute</a>.</p>
+<a href="https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12" class="external-link">the Smithsonian Institution</a>.</p>
 <p>This dataset is from
 <a href="https://pair-code.github.io/understanding-umap/" class="external-link">Understanding UMAP</a>,
 based on work originally done by

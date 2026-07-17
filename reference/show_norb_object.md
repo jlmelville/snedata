@@ -19,7 +19,7 @@ show_norb_object(
 
 - df:
 
-  Data frame containing NORB objects.
+  A legacy NORB data frame or canonical image result.
 
 - category:
 

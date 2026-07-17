@@ -5,7 +5,7 @@ Download the original Isomap face-pose dataset.
 ## Usage
 
 ``` r
-download_isomap_faces(url = isomap_faces_url, verbose = FALSE)
+download_isomap_faces(url = isomap_faces_url, verbose = FALSE, timeout = 1800)
 ```
 
 ## Format
@@ -26,6 +26,11 @@ A data frame with 698 rows and 4,098 variables:
 - verbose:
 
   If `TRUE`, then download progress will be logged as a message.
+
+- timeout:
+
+  Minimum download timeout in seconds. The default is 30 minutes; a
+  larger existing global R timeout is preserved.
 
 ## Value
 

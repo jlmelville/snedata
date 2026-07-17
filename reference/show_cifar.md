@@ -12,7 +12,7 @@ show_cifar(df, n, interpolate = FALSE)
 
 - df:
 
-  Data frame containing the CIFAR-10 dataframe.
+  A legacy CIFAR-10 data frame or canonical image result.
 
 - n:
 

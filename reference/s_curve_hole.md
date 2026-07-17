@@ -31,7 +31,7 @@ points and `color` the RGB color.
 Creates a series of points sampled from an S-shaped curve in 3D, with
 optional normally-distributed noise. The S shape is oriented such that
 you should be able to see it if you plot the X and Z columns. There is a
-circular hole in the middle of the curve, centered at Y = 0.
+circular hole in the middle of the curve, centered at Y = 1.
 
 Points are colored based on their distance along the curve.
 

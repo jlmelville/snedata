@@ -1,5 +1,44 @@
 # Changelog
 
+## snedata 0.0.0.9003
+
+*July 16 2026*:
+
+- New functions:
+  [`download_coil20()`](https://jlmelville.github.io/snedata/reference/download_coil20.md),
+  [`download_coil100()`](https://jlmelville.github.io/snedata/reference/download_coil100.md),
+  and
+  [`show_coil_object()`](https://jlmelville.github.io/snedata/reference/show_coil_object.md)
+  for the COIL-20 and COIL-100 image datasets. Downloading the data
+  requires installing the optional `png` package. This functionality
+  formerly lived in the [coil20](https://github.com/jlmelville/coil20)
+  repo.
+- Improved validation and cleanup of downloaded binary data and
+  archives.
+- Improved validation of synthetic data generators.
+- Fixed QMNIST broken links due to project being archived.
+- [`download_mammoth10k()`](https://jlmelville.github.io/snedata/reference/download_mammoth10k.md)
+  and
+  [`download_mammoth50k()`](https://jlmelville.github.io/snedata/reference/download_mammoth50k.md)
+  now both return coordinates in `X`, `Y`, `Z` column order. Code that
+  selected Mammoth coordinates by position should be updated to use the
+  canonical order.
+- All network dataset downloaders now have a configurable `timeout`
+  argument, defaulting to 30 minutes. Their downloads preserve an
+  already-larger global R timeout and restore it afterward.
+- Image downloaders now share `as = "list"` canonical results with
+  `data`, `meta`, `image_dim`, `channel_order`, and source provenance.
+  Metadata uses lower-case names and records train/test identity
+  explicitly. Fashion-MNIST and Kuzushiji-MNIST now support this result.
+  Legacy data-frame results remain available.
+- [`synthetic_hierarchical_data()`](https://jlmelville.github.io/snedata/reference/synthetic_hierarchical_data.md)
+  adds `colors = "macro"`, and `colors = "none"` arguments, which do not
+  require the `colorspace` dependency to be installed.
+- Fixed non-unique document identifiers returned by
+  [`download_twenty_newsgroups()`](https://jlmelville.github.io/snedata/reference/download_twenty_newsgroups.md).
+  `Id` now has the form `subset/newsgroup/filename`, while `FileId`
+  preserves the original character filename.
+
 ## snedata 0.0.0.9002
 
 *July 2 2026*: Version 0.0.9002 is released, featuring:

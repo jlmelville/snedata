@@ -5,7 +5,11 @@ Download the original Swiss-roll dataset used in Isomap examples.
 ## Usage
 
 ``` r
-download_isomap_swiss_roll(url = isomap_swiss_roll_url, verbose = FALSE)
+download_isomap_swiss_roll(
+  url = isomap_swiss_roll_url,
+  verbose = FALSE,
+  timeout = 1800
+)
 ```
 
 ## Format
@@ -31,6 +35,11 @@ A data frame with 20,000 rows and 6 variables:
 
   If `TRUE`, then download progress will be logged as a message.
 
+- timeout:
+
+  Minimum download timeout in seconds. The default is 30 minutes; a
+  larger existing global R timeout is preserved.
+
 ## Value
 
 Data frame containing the Isomap Swiss-roll dataset.
@@ -43,8 +52,7 @@ URL uses an archived copy from the Internet Archive.
 ## Note
 
 Requires the [R.matlab](https://cran.r-project.org/package=R.matlab)
-package to be installed and an external gzip or uncompress command to be
-available on the system path.
+package to be installed.
 
 ## References
 

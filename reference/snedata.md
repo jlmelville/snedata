@@ -140,11 +140,11 @@ Another (much larger) image dataset is the MNIST digits dataset. The
 original data set is described at <http://yann.lecun.com/exdb/mnist/>,
 and this package downloads from the <https://github.com/fgnt/mnist>
 mirror. Functions are available to download the dataset as a data frame
-or matrix/list result and visualize individual digits:
+or canonical list result and visualize individual digits:
 
 - [`download_mnist()`](https://jlmelville.github.io/snedata/reference/download_mnist.md).
   Downloads the MNIST dataset files as a row-based data frame by
-  default, or as a matrix/list result with `as = "matrix"`.
+  default, or as a canonical list result with `as = "list"`.
 
 - [`show_mnist_digit()`](https://jlmelville.github.io/snedata/reference/show_mnist_digit.md).
   Display one of the MNIST digits.
@@ -180,8 +180,6 @@ Useful links:
 - <https://jlmelville.github.io/snedata/>
 
 - <https://github.com/jlmelville/snedata>
-
-- <http://jlmelville.github.io/snedata/>
 
 - Report bugs at <https://github.com/jlmelville/snedata/issues>
 

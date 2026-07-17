@@ -47,7 +47,7 @@ set, though):
     x <- phi * cos(phi)
     y <- phi * sin(phi)
 
-where `phi` is sampled between `3 * pi / 2` and `5 * pi / 2`, and `z` is
+where `phi` is sampled between `3 * pi / 2` and `4.5 * pi`, and `z` is
 sampled between 0 and 10. The ranges of `phi` and `z` can be modified,
 if desired.
 
