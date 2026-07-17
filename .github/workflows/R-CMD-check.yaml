@@ -25,6 +25,8 @@ jobs:
           - { os: ubuntu-latest, r: "release" }
           - { os: macos-latest, r: "release" }
           - { os: windows-latest, r: "release" }
+          - { os: ubuntu-latest, r: "devel" }
+          - { os: ubuntu-latest, r: "oldrel-1" }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -42,10 +44,87 @@ jobs:
           use-public-rspm: true
 
       - uses: r-lib/actions/setup-r-dependencies@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+        # This suggested package is unavailable from the configured
+        # repositories. The optional-dependencies job reports that limitation
+        # explicitly instead of weakening all checks.
         with:
           extra-packages: |
             any::rcmdcheck
             RnavGraphImageData=?ignore
           needs: check
+
+      - uses: r-lib/actions/check-r-package@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+
+  minimal-dependencies:
+    name: Linux (release, minimal dependencies)
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+      _R_CHECK_FORCE_SUGGESTS_: "false"
+
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - uses: r-lib/actions/setup-r@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+        with:
+          r-version: "release"
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+        with:
+          dependencies: '"hard"'
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+
+  optional-dependencies:
+    name: Linux (release, available optional dependencies)
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+      _R_CHECK_FORCE_SUGGESTS_: "false"
+
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - uses: r-lib/actions/setup-r@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+        with:
+          r-version: "release"
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+        # Keep this unavailable suggestion visible. All other direct
+        # suggested packages, including png, are installed by "all".
+        with:
+          dependencies: '"all"'
+          extra-packages: |
+            any::rcmdcheck
+            RnavGraphImageData=?ignore
+          needs: check
+
+      - name: Confirm optional dependency coverage
+        run: |
+          required <- c("colorspace", "png", "R.matlab", "rjson")
+          missing <- required[!vapply(required, requireNamespace, logical(1), quietly = TRUE)]
+          if (length(missing) > 0L) {
+            stop("Missing optional dependencies: ", paste(missing, collapse = ", "))
+          }
+          if (requireNamespace("RnavGraphImageData", quietly = TRUE)) {
+            message("RnavGraphImageData is available; face-loader tests will run.")
+          } else {
+            message("RnavGraphImageData is unavailable from the configured repositories; ",
+              "only face-loader tests are skipped. Other suggested paths, including png, ",
+              "are installed and tested.")
+          }
+        shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
