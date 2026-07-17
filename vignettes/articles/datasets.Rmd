@@ -142,8 +142,10 @@ kuzushiji <- download_kuzushiji_mnist(verbose = TRUE)
 # View the tenth character
 show_mnist_digit(kuzushiji, 10)
 
-# Download the small NORB dataset
-norb <- download_norb_small(verbose = TRUE)
+# Use a canonical list for small NORB to avoid the wide data-frame result
+norb <- download_norb_small(verbose = TRUE, as = "list")
+dim(norb$data)
+head(norb$meta)
 # View an image, compare with example at https://github.com/ndrplz/small_norb
 show_norb_object(norb, category = 2, instance = 6, elevation = 6, azimuth = 24, lighting = 2)
 ```
