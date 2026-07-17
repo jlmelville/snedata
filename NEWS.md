@@ -14,11 +14,8 @@
   canonical order.
 - All network dataset downloaders now have a configurable `timeout` argument, defaulting to 30
   minutes. Their downloads preserve an already-larger global R timeout and restore it afterward.
-- Image downloaders now share `as = "list"` canonical results with `data`, `meta`, `image_dim`,
-  `channel_order`, and source provenance. Metadata uses lower-case names and records train/test
-  identity explicitly. Fashion-MNIST and Kuzushiji-MNIST now support this result. Legacy data-frame
-  results remain available. The `as = "matrix"` option introduced in 0.0.0.9002 has been replaced
-  by `as = "list"`; numeric image data is now in `data` and labels and other metadata are in `meta`.
+- `as = "matrix"` from 0.0.0.9002 has been changed to `as = "list"` and used by all relevant
+   dataset functions.
 - `synthetic_hierarchical_data()` adds `colors = "macro"`, and `colors = "none"` arguments, which
    do not require the `colorspace` dependency to be installed.
 - `synthetic_hierarchical_data(colors = "full")` and COIL downloaders now fail fast if optional
