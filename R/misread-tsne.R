@@ -77,7 +77,7 @@ gaussian_data <- function(n, dim, sd = 1, color = NULL) {
 #' @export
 long_gaussian_data <- function(n, dim, color = NULL) {
   df <- gaussian_data(n, dim, color = color)
-  for (j in seq_len(ncol(df))) {
+  for (j in seq_len(dim)) {
     df[, j] <- df[, j] / j
   }
   df
