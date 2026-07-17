@@ -54,7 +54,7 @@ mnist_url <- "https://github.com/fgnt/mnist/raw/refs/heads/master/"
 #' [show_mnist_digit()].
 #'
 #' For more information about the original dataset see
-#' <http://yann.lecun.com/exdb/mnist>.
+#' <https://yann.lecun.com/exdb/mnist/>.
 #'
 #' @param base_url Base URL that the MNIST files are located at.
 #' @param verbose If `TRUE`, then download progress will be logged as a

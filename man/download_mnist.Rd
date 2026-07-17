@@ -22,7 +22,7 @@ Items in the dataset can be visualized with
 \code{\link[=show_mnist_digit]{show_mnist_digit()}}.
 
 For more information about the original dataset see
-\url{http://yann.lecun.com/exdb/mnist}.
+\url{https://yann.lecun.com/exdb/mnist/}.
 }
 \usage{
 download_mnist(
