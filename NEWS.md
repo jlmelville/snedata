@@ -17,7 +17,8 @@ repo.
 - Image downloaders now share `as = "list"` canonical results with `data`, `meta`, `image_dim`,
   `channel_order`, and source provenance. Metadata uses lower-case names and records train/test
   identity explicitly. Fashion-MNIST and Kuzushiji-MNIST now support this result. Legacy data-frame
-  results remain available.
+  results remain available. The `as = "matrix"` option introduced in 0.0.0.9002 has been replaced
+  by `as = "list"`; numeric image data is now in `data` and labels and other metadata are in `meta`.
 - `synthetic_hierarchical_data()` adds `colors = "macro"`, and `colors = "none"` arguments, which
    do not require the `colorspace` dependency to be installed.
 - Fixed non-unique document identifiers returned by `download_twenty_newsgroups()`. `Id` now has
