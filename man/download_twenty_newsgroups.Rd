@@ -120,7 +120,7 @@ In \emph{Proceedings of the Twelfth International Conference on Machine Learning
 Morgan Kaufmann.
 }
 \seealso{
-\url{https://qwone.com/~jason/20Newsgroups/}
+\url{http://qwone.com/~jason/20Newsgroups/}
 
 Chapter 9 of \href{https://www.tidytextmining.com/usenet}{Tidy Text Mining with R}
 for a case study using the same dataset.

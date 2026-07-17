@@ -2,7 +2,7 @@ file_base_url <- function(path) {
   paste0("file://", normalizePath(path, winslash = "/", mustWork = TRUE), "/")
 }
 
-test_that("image downloader defaults use HTTPS sources", {
+test_that("image downloader defaults use expected public sources", {
   expect_identical(
     snedata:::fashion_mnist_url,
     "https://raw.githubusercontent.com/zalandoresearch/fashion-mnist/master/data/fashion/"
@@ -13,7 +13,7 @@ test_that("image downloader defaults use HTTPS sources", {
   )
   expect_identical(
     snedata:::newsgroups_url,
-    "https://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
+    "http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
   )
 })
 

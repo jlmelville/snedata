@@ -69,7 +69,7 @@
 #'   minutes; a larger existing global R timeout is preserved.
 #' @return Data frame containing 20 Newsgroups Data.
 #' @seealso
-#' <https://qwone.com/~jason/20Newsgroups/>
+#' <http://qwone.com/~jason/20Newsgroups/>
 #'
 #' Chapter 9 of [Tidy Text Mining with R](https://www.tidytextmining.com/usenet)
 #' for a case study using the same dataset.
@@ -122,7 +122,7 @@ download_twenty_newsgroups <- function(
   result
 }
 
-newsgroups_url <- "https://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
+newsgroups_url <- "http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz"
 
 newsgroup_levels <- c(
   "alt.atheism",
