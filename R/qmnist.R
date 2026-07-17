@@ -76,7 +76,8 @@ download_qmnist <- function(
       )
       test <- parse_files(
         "qmnist-test-images-idx3-ubyte.gz",
-        "qmnist-test-labels-idx1-ubyte.gz",
+        "qmnist-test-labels-idx2-int.gz",
+        label_parser = parse_extended_label_file,
         base_url = base_url,
         verbose = verbose,
         split = "testing",
