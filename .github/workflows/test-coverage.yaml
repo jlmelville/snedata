@@ -33,6 +33,7 @@ jobs:
         with:
           extra-packages: |
             any::covr
+            any::xml2
             RnavGraphImageData=?ignore
           needs: coverage
 
