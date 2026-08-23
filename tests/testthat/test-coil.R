@@ -62,6 +62,131 @@ test_that("pixel name helpers match documented order", {
   )
 })
 
+test_that("COIL specifications produce canonical dimensions in both formats", {
+  cases <- list(
+    list(
+      spec = coil20_spec(),
+      raw_dim = c(height = 128L, width = 128L),
+      image_dim = c(height = 128L, width = 128L, channels = 1L),
+      channel_order = "gray"
+    ),
+    list(
+      spec = coil100_spec(),
+      raw_dim = c(height = 128L, width = 128L, channels = 3L),
+      image_dim = c(height = 128L, width = 128L, channels = 3L),
+      channel_order = c("red", "green", "blue")
+    )
+  )
+
+  for (case in cases) {
+    expect_identical(case$spec$dim, case$raw_dim)
+    images <- matrix(0, nrow = 1L, ncol = prod(case$spec$dim))
+
+    for (output in c("list", "data.frame")) {
+      result <- format_coil_result(
+        images,
+        objects = 1L,
+        poses = 0L,
+        pixel_names = case$spec$pixel_names(),
+        label_levels = case$spec$object_range,
+        image_dim = case$spec$dim,
+        channel_order = case$channel_order,
+        as = output
+      )
+
+      if (output == "list") {
+        expect_identical(result$image_dim, case$image_dim)
+        expect_identical(result$channel_order, case$channel_order)
+      } else {
+        expect_s3_class(result, "data.frame")
+        expect_identical(ncol(result), ncol(images) + 1L)
+      }
+    }
+  }
+})
+
+test_that("PNG shape checks ignore names on specification dimensions", {
+  skip_if_not_installed("png")
+
+  cases <- list(
+    list(
+      spec = coil20_spec(),
+      image = matrix(0, nrow = 128L, ncol = 128L)
+    ),
+    list(
+      spec = coil100_spec(),
+      image = array(0, dim = c(128L, 128L, 3L))
+    )
+  )
+
+  for (case in cases) {
+    path <- tempfile(fileext = ".png")
+    expected_dim <- unname(case$spec$dim)
+    png::writePNG(case$image, target = path)
+
+    expect_identical(dim(read_coil_png(path, spec = case$spec)), expected_dim)
+  }
+})
+
+test_that("complete miniature COIL specifications reach result formatting", {
+  skip_if_not_installed("png")
+
+  gray_spec <- coil20_spec()
+  gray_spec$name <- "Mini COIL-20"
+  gray_spec$dim <- c(height = 2L, width = 2L)
+  gray_spec$object_range <- 1L
+  gray_spec$pose_range <- 0L
+  gray_spec$pixel_names <- function() {
+    coil20_pixel_names(width = 2L, height = 2L)
+  }
+
+  rgb_spec <- coil100_spec()
+  rgb_spec$name <- "Mini COIL-100"
+  rgb_spec$dim <- c(height = 2L, width = 2L, channels = 3L)
+  rgb_spec$object_range <- 1L
+  rgb_spec$pose_range <- 0L
+  rgb_spec$pixel_names <- function() {
+    coil100_pixel_names(width = 2L, height = 2L)
+  }
+
+  cases <- list(
+    list(
+      spec = gray_spec,
+      image = matrix(seq(0, 1, length.out = 4L), nrow = 2L),
+      image_dim = c(height = 2L, width = 2L, channels = 1L)
+    ),
+    list(
+      spec = rgb_spec,
+      image = array(seq(0, 1, length.out = 12L), dim = c(2L, 2L, 3L)),
+      image_dim = c(height = 2L, width = 2L, channels = 3L)
+    )
+  )
+
+  for (case in cases) {
+    dir <- tempfile()
+    dir.create(dir)
+    png::writePNG(case$image, target = file.path(dir, "obj1__0.png"))
+
+    canonical <- read_coil_dir(
+      dir,
+      as = "list",
+      spec = case$spec,
+      complete = TRUE
+    )
+    legacy <- read_coil_dir(
+      dir,
+      as = "data.frame",
+      spec = case$spec,
+      complete = TRUE
+    )
+
+    expect_identical(canonical$image_dim, case$image_dim)
+    expect_identical(canonical$meta$id, "1_0")
+    expect_identical(ncol(legacy), as.integer(prod(case$spec$dim) + 1L))
+    expect_identical(rownames(legacy), "1_0")
+  }
+})
+
 test_that("read_coil_dir returns sorted data frames and canonical lists", {
   skip_if_not_installed("png")
 

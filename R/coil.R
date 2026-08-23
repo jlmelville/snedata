@@ -367,7 +367,7 @@ read_coil_files <- function(
 read_coil_png <- function(file, spec = NULL) {
   stop_if_not_installed("png")
   img <- png::readPNG(file)
-  if (!is.null(spec) && !identical(dim(img), spec$dim)) {
+  if (!is.null(spec) && !identical(unname(dim(img)), unname(spec$dim))) {
     stop(
       "Expected ",
       spec$name,
@@ -424,6 +424,9 @@ format_coil_result <- function(
       c(height = 1L, width = ncol(images), channels = 1L)
     }
   }
+  if (length(image_dim) == 2L) {
+    image_dim <- c(image_dim, channels = 1L)
+  }
   if (is.null(channel_order)) {
     channel_order <- if (length(image_dim) >= 3L && image_dim[[3]] == 3L) {
       c("red", "green", "blue")
@@ -443,7 +446,9 @@ format_coil_result <- function(
     channel_order = channel_order,
     source = source
   )
-  if (as == "list") return(result)
+  if (as == "list") {
+    return(result)
+  }
 
   df <- as.data.frame(images)
   df$Label <- labels
@@ -594,7 +599,7 @@ normalize_zip_entry <- function(entry) {
 coil20_spec <- function() {
   list(
     name = "COIL-20",
-    dim = c(128L, 128L),
+    dim = c(height = 128L, width = 128L),
     object_range = 1:20,
     pose_range = 0:71,
     pixel_names = coil20_pixel_names
@@ -604,7 +609,7 @@ coil20_spec <- function() {
 coil100_spec <- function() {
   list(
     name = "COIL-100",
-    dim = c(128L, 128L, 3L),
+    dim = c(height = 128L, width = 128L, channels = 3L),
     object_range = 1:100,
     pose_range = seq(0, 355, by = 5),
     pixel_names = coil100_pixel_names

@@ -1,7 +1,7 @@
 Type: Package
 Package: snedata
 Title: SNE and Dimensionality Reduction Dataset Functions
-Version: 0.0.0.9003
+Version: 0.0.0.9004
 Authors@R: 
     person("James", "Melville", , "jlmelville@gmail.com", role = c("aut", "cre"))
 Description: Generate simulation datasets and download example datasets used
