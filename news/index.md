@@ -1,5 +1,15 @@
 # Changelog
 
+## snedata 0.0.0.9004
+
+*August 22 2026*:
+
+- [`download_coil20()`](https://jlmelville.github.io/snedata/reference/download_coil20.md)
+  and
+  [`download_coil100()`](https://jlmelville.github.io/snedata/reference/download_coil100.md)
+  now return downloaded images correctly for both `as = "list"` and
+  `as = "data.frame"`.
+
 ## snedata 0.0.0.9003
 
 *July 16 2026*:
