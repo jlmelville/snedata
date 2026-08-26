@@ -60,65 +60,70 @@
 
     
     
-<p>This page has a compact table of the available data and some longer
-notes and examples.</p>
+<p>Use this guide to choose a generated or externally supplied dataset,
+check what is required to obtain it, and continue with the appropriate
+result shape. The functions below are representative; use the complete
+<a href="../reference/index.html">function reference</a> for the full
+catalogue and argument details.</p>
 <div class="section level2">
-<h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+<h2 id="choose-a-dataset">Choose a dataset<a class="anchor" aria-label="anchor" href="#choose-a-dataset"></a>
 </h2>
 <table class="table">
 <colgroup>
-<col width="23%">
-<col width="23%">
-<col width="30%">
-<col width="23%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
 </colgroup>
 <thead><tr class="header">
+<th>Choose this when you need…</th>
 <th>Dataset family</th>
-<th>Main functions</th>
-<th align="right">Rows</th>
-<th>Notes</th>
+<th>Representative functions</th>
+<th>Acquisition and scale</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Synthetic data</td>
+<td>A simple manifold or curve with a controllable sample size</td>
+<td>Basic synthetic data</td>
 <td>
 <code><a href="../reference/sphere.html">sphere()</a></code>, <code><a href="../reference/ball.html">ball()</a></code>, <code><a href="../reference/helix.html">helix()</a></code>,
 <code><a href="../reference/swiss_roll.html">swiss_roll()</a></code>, <code><a href="../reference/s_curve.html">s_curve()</a></code>
 </td>
-<td align="right">User-chosen</td>
-<td>Classic synthetic manifold and simple curve datasets.</td>
+<td>Generated locally; choose the number of rows.</td>
 </tr>
 <tr class="even">
+<td>Cluster and geometry stress tests from <em>How to Use t-SNE
+Effectively</em>
+</td>
 <td>Distill t-SNE simulations</td>
 <td>
 <code><a href="../reference/gaussian_data.html">gaussian_data()</a></code>, <code><a href="../reference/two_clusters_data.html">two_clusters_data()</a></code>,
 <code><a href="../reference/random_walk.html">random_walk()</a></code>, <code><a href="../reference/trefoil_data.html">trefoil_data()</a></code>
 </td>
-<td align="right">User-chosen</td>
-<td>R translations of the data used in ‘How to Use t-SNE
-Effectively’.</td>
+<td>Generated locally; choose the number of rows.</td>
 </tr>
 <tr class="odd">
+<td>Paper-derived topology or hierarchy examples</td>
 <td>PaCMAP and topological examples</td>
 <td>
 <code><a href="../reference/s_curve_hole.html">s_curve_hole()</a></code>, <code><a href="../reference/curve2d.html">curve2d()</a></code>,
 <code><a href="../reference/synthetic_hierarchical_data.html">synthetic_hierarchical_data()</a></code>,
 <code><a href="../reference/taspheres.html">taspheres()</a></code>
 </td>
-<td align="right">User-chosen</td>
-<td>More synthetic data used in the PaCMAP and Topological Autoencoders
-papers.</td>
+<td>Generated locally; size is controlled by function arguments.</td>
 </tr>
 <tr class="even">
+<td>A fixed 3D point cloud for embedding experiments</td>
 <td>Mammoth point clouds</td>
 <td>
 <code><a href="../reference/download_mammoth10k.html">download_mammoth10k()</a></code>,
 <code><a href="../reference/download_mammoth50k.html">download_mammoth50k()</a></code>
 </td>
-<td align="right">10,000 or 50,000</td>
-<td>Downloads JSON point-cloud data.</td>
+<td>Downloaded JSON; 10,000 or 50,000 rows.</td>
 </tr>
 <tr class="odd">
+<td>Grayscale image classification data with familiar train/test
+splits</td>
 <td>MNIST and relatives</td>
 <td>
 <code><a href="../reference/download_mnist.html">download_mnist()</a></code>,
@@ -126,76 +131,120 @@ papers.</td>
 <code><a href="../reference/download_kuzushiji_mnist.html">download_kuzushiji_mnist()</a></code>,
 <code><a href="../reference/download_qmnist.html">download_qmnist()</a></code>
 </td>
-<td align="right">70,000 or 120,000</td>
-<td>Images often in ten equally-sized classes.</td>
+<td>Downloaded; 70,000 rows for MNIST, Fashion-MNIST, and
+Kuzushiji-MNIST, or 120,000 for QMNIST.</td>
 </tr>
 <tr class="even">
+<td>Small color images in ten classes</td>
 <td>CIFAR-10</td>
 <td>
 <code><a href="../reference/download_cifar10.html">download_cifar10()</a></code>, <code><a href="../reference/show_cifar.html">show_cifar()</a></code>
 </td>
-<td align="right">60,000</td>
-<td>The well-known image dataset for machine learning.</td>
+<td>Downloaded; 60,000 images. The list result’s pixel matrix uses about
+0.69 GiB.</td>
 </tr>
 <tr class="odd">
+<td>Stereo views that vary object, pose, and lighting</td>
 <td>Small NORB</td>
 <td>
 <code><a href="../reference/download_norb_small.html">download_norb_small()</a></code>,
 <code><a href="../reference/show_norb_object.html">show_norb_object()</a></code>
 </td>
-<td align="right">48,600</td>
-<td>Stereo images of 50 toys under different angles and lighting
-conditions.</td>
+<td>Downloaded; 48,600 image pairs. The complete list result’s pixel
+matrix uses about 3.34 GiB.</td>
 </tr>
 <tr class="even">
+<td>Multiple poses of individual objects</td>
 <td>COIL object images</td>
 <td>
 <code><a href="../reference/download_coil20.html">download_coil20()</a></code>, <code><a href="../reference/download_coil100.html">download_coil100()</a></code>,
 <code><a href="../reference/show_coil_object.html">show_coil_object()</a></code>
 </td>
-<td align="right">1,440 or 7,200</td>
-<td>Object-image datasets from Columbia; requires the suggested
+<td>Downloaded; 1,440 or 7,200 images. Requires the suggested
 <code>png</code> package.</td>
 </tr>
 <tr class="odd">
+<td>Text documents for an embedding pipeline</td>
 <td>20 Newsgroups</td>
 <td><code><a href="../reference/download_twenty_newsgroups.html">download_twenty_newsgroups()</a></code></td>
-<td align="right">18,846</td>
-<td>Text data; use packages such as <code>tm</code> or
-<code>tidytext</code> for preprocessing.</td>
+<td>Downloaded; 18,846 documents. Preprocess with tools such as
+<code>tm</code> or <code>tidytext</code>.</td>
 </tr>
 <tr class="even">
+<td>A small face-image collection</td>
 <td>Frey and Olivetti faces</td>
 <td>
 <code><a href="../reference/frey_faces.html">frey_faces()</a></code>, <code><a href="../reference/olivetti_faces.html">olivetti_faces()</a></code>
 </td>
-<td align="right">1,965 and 400</td>
-<td>Images of faces. Requires the suggested
-<code>RnavGraphImageData</code> package.</td>
+<td>Supplied by the suggested <code>RnavGraphImageData</code> package;
+1,965 or 400 images.</td>
 </tr>
 <tr class="odd">
+<td>The original data used in historical Isomap examples</td>
 <td>Isomap datasets</td>
 <td>
 <code><a href="../reference/download_isomap_swiss_roll.html">download_isomap_swiss_roll()</a></code>,
 <code><a href="../reference/download_isomap_faces.html">download_isomap_faces()</a></code>
 </td>
-<td align="right">20,000 and 698</td>
-<td>Downloads archived Matlab data; requires the suggested
-<code>R.matlab</code> package, and <code>gzip</code> or
-<code>uncompress</code> for faces.</td>
+<td>Downloaded archived Matlab data; 20,000 or 698 rows. Requires
+<code>R.matlab</code>; faces also require <code>gzip</code> or
+<code>uncompress</code>.</td>
 </tr>
 </tbody>
 </table>
-<p>For MNIST, QMNIST, Fashion-MNIST, Kuzushiji-MNIST, CIFAR-10, Small
-NORB, and COIL, use <code>as = "list"</code> for the canonical image
-result. Its <code>data</code> matrix has one image per row and its
-<code>meta</code> data frame carries lower-case labels, descriptions,
-and explicit train/test split identity where applicable. For example,
-use <code>x$data[x$meta$split == "training", ]</code>. The legacy wide
-data frame remains available with <code>as = "data.frame"</code>.</p>
+<p>MNIST contains handwritten digits. Fashion-MNIST substitutes clothing
+images and is designed as a harder drop-in benchmark; Kuzushiji-MNIST
+substitutes cursive Japanese characters. QMNIST extends the MNIST test
+set to 60,000 digits, giving 120,000 rows in total.</p>
 </div>
 <div class="section level2">
-<h2 id="sources-citations-and-data-terms">Sources, citations, and data terms<a class="anchor" aria-label="anchor" href="#sources-citations-and-data-terms"></a>
+<h2 id="generate-a-local-dataset">Generate a local dataset<a class="anchor" aria-label="anchor" href="#generate-a-local-dataset"></a>
+</h2>
+<p>Synthetic datasets need no download or optional package. Here, the
+seed makes the sampled points reproducible.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jlmelville.github.io/snedata/">snedata</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2026</span><span class="op">)</span></span>
+<span><span class="va">sphere_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sphere.html">sphere</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">sphere_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 200   4</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">sphere_data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 1 1</span></span></code></pre>
+<p>The result has 200 rows, three coordinate columns, and a color
+column. The coordinate norm is 1 for every row, confirming that the
+points lie on the sphere’s surface.</p>
+</div>
+<div class="section level2">
+<h2 id="work-with-downloaded-images">Work with downloaded images<a class="anchor" aria-label="anchor" href="#work-with-downloaded-images"></a>
+</h2>
+<p>The MNIST-family, CIFAR-10, Small NORB, and COIL downloaders default
+to the legacy wide data frame. Ask for <code>as = "list"</code> when you
+want the shared image-result structure: its <code>data</code> matrix
+contains one image per row, while <code>meta</code> contains one
+matching metadata row with lower-case names. Where a dataset has
+training and testing sets, <code>meta$split</code> records that identity
+explicitly. The <a href="../reference/image-results.html">canonical
+image-result reference</a> documents the complete schema.</p>
+<p>The following workflow requires network access and is not run while
+this article is built.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mnist</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_mnist.html">download_mnist</a></span><span class="op">(</span>as <span class="op">=</span> <span class="st">"list"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">training_rows</span> <span class="op">&lt;-</span> <span class="va">mnist</span><span class="op">$</span><span class="va">meta</span><span class="op">$</span><span class="va">split</span> <span class="op">==</span> <span class="st">"training"</span></span>
+<span><span class="va">mnist_training</span> <span class="op">&lt;-</span> <span class="va">mnist</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">training_rows</span>, <span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">mnist_training</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/show_mnist_digit.html">show_mnist_digit</a></span><span class="op">(</span><span class="va">mnist</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">training_rows</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p><code>mnist_training</code> has 60,000 rows and 784 pixel columns,
+and the final call displays the first training digit. Fashion-MNIST and
+Kuzushiji-MNIST use the same visualization helper; CIFAR-10, Small NORB,
+and COIL have the matching helpers shown in the selection table.</p>
+</div>
+<div class="section level2">
+<h2 id="sources-and-terms-for-externally-supplied-data">Sources and terms for externally supplied data<a class="anchor" aria-label="anchor" href="#sources-and-terms-for-externally-supplied-data"></a>
 </h2>
 <p>The MIT license for <code>snedata</code> covers the package code, not
 data obtained from external sources. The table below records the
@@ -315,106 +364,6 @@ documentation.</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section level2">
-<h2 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a>
-</h2>
-<ul>
-<li><p>Synthetic data similar to those used by Lee and co-workers in
-their <a href="http://dx.doi.org/10.1016/j.neucom.2012.12.036" class="external-link">JSE</a>
-and <a href="http://dx.doi.org/10.1016/j.neucom.2014.12.095" class="external-link">multi-JSE</a>
-papers.</p></li>
-<li><p>Martin Wattenberg, Fernanda Viégas and Ian Johnson published an
-interactive article <a href="http://distill.pub/2016/misread-tsne/" class="external-link">How
-to use t-SNE Effectively</a>. The JavaScript functions used to create
-the simulation datasets (which can also be found at <a href="https://github.com/distillpub/post--misread-tsne" class="external-link uri">https://github.com/distillpub/post--misread-tsne</a>), have
-been translated into R.</p></li>
-<li><p>If you have the <a href="https://cran.r-project.org/package=RnavGraphImageData" class="external-link">RnavGraphImageData</a>
-package installed, there are also functions to convert the Olivetti and
-Frey faces datasets into a row-based data frame and functions to
-visualize them.</p></li>
-<li><p>The original Isomap Swiss Roll and face-pose datasets are
-available via the Internet Archive. These functions require the <a href="https://cran.r-project.org/package=R.matlab" class="external-link">R.matlab</a> package
-to read Matlab files, and the face-pose dataset also requires an
-external <code>gzip</code> or <code>uncompress</code> command to read
-the Unix <code>compress</code> file.</p></li>
-<li><p>Code to download and visualize the <a href="https://yann.lecun.com/exdb/mnist/" class="external-link">MNIST database</a>, based on
-<a href="https://gist.github.com/brendano/39760" class="external-link">a gist by Brendan
-O’Connor</a>, who graciously allowed it to be MIT-licensed.</p></li>
-<li><p><a href="https://github.com/facebookresearch/qmnist" class="external-link">QMNIST</a>
-extends the MNIST test dataset to 60,000 digits (so 120,000 digits in
-total).</p></li>
-<li><p>The <a href="https://github.com/zalandoresearch/fashion-mnist" class="external-link">Fashion-MNIST</a>
-dataset is intended as a drop-in replacement for the MNIST digits
-database, but using images of fashion items, and to be harder to perform
-well with machine learning benchmarks. Items can be visualized with the
-same function intended for the MNIST digits.</p></li>
-<li><p>The <a href="https://github.com/rois-codh/kmnist" class="external-link">Kuzushiji-MNIST</a> dataset,
-another drop-in replacement for the MNIST digits, but this time of types
-of cursive Japanese characters.</p></li>
-<li><p>The <a href="https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/" class="external-link">Small NORB</a>
-dataset, which consists of pairs of images of 50 toys from different
-angles and under different lighting conditions.</p></li>
-<li><p>The Columbia Object Image Library datasets <a href="https://cave.cs.columbia.edu/repository/COIL-20" class="external-link">COIL-20</a> and
-<a href="https://cave.cs.columbia.edu/repository/COIL-100" class="external-link">COIL-100</a>,
-which contain object images under different poses. Reading these PNG
-datasets requires the suggested <code>png</code> package.</p></li>
-<li><p>The <a href="https://cave.cs.toronto.edu/kriz/cifar.html" class="external-link">CIFAR-10</a> dataset,
-which consists of 60,000 32 x 32 color images in ten different
-classes.</p></li>
-<li><p>A 3D point cloud of a <a href="https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12" class="external-link">mammoth
-at the Smithsonian</a>, from <a href="https://pair-code.github.io/understanding-umap/" class="external-link">Understanding
-UMAP</a>, based on work originally done by <a href="https://github.com/MNoichl/UMAP-examples-mammoth-" class="external-link">Max
-Noichl</a>.</p></li>
-<li><p>A 3D S-curve with a hole data set, used to validate the <a href="https://arxiv.org/abs/2012.04456" class="external-link">PaCMAP method</a> (see also the
-<a href="https://github.com/YingfanWang/PaCMAP" class="external-link">github repo</a>). Bonus:
-a translation from Python of the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_s_curve.html" class="external-link">sklearn.datasets.make_s_curvefunction</a>.
-Also: a simple 2D curve dataset, useful for testing initialization
-strategies. The synthetic hierarchical data set from the same paper is
-also available via <code><a href="../reference/synthetic_hierarchical_data.html">synthetic_hierarchical_data()</a></code>.</p></li>
-</ul>
-</div>
-<div class="section level2">
-<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
-</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jlmelville.github.io/snedata/">snedata</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Install RnavGraphImageData to use the optional face-data helpers</span></span>
-<span></span>
-<span><span class="co"># Load the Frey faces dataset with each image as a row</span></span>
-<span><span class="va">frey</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/frey_faces.html">frey_faces</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co"># Display the first pose</span></span>
-<span><span class="fu"><a href="../reference/show_frey_face.html">show_frey_face</a></span><span class="op">(</span><span class="va">frey</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># PCA scores plot, with color indicating the frame index</span></span>
-<span><span class="va">frey_pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/prcomp.html" class="external-link">prcomp</a></span><span class="op">(</span><span class="va">frey</span><span class="op">[</span>, <span class="op">-</span><span class="fl">561</span><span class="op">]</span>, retx <span class="op">=</span> <span class="cn">TRUE</span>, rank. <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">frey_pca</span><span class="op">$</span><span class="va">x</span>, col <span class="op">=</span> <span class="va">frey</span><span class="op">$</span><span class="va">color</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Load the Olivetti faces dataset with each image as a row</span></span>
-<span><span class="va">olivetti</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/olivetti_faces.html">olivetti_faces</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co"># Show the second pose of the first face</span></span>
-<span><span class="fu"><a href="../reference/show_olivetti_face.html">show_olivetti_face</a></span><span class="op">(</span><span class="va">olivetti</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># fetch the Fashion-MNIST dataset</span></span>
-<span><span class="va">fashion</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_fashion_mnist.html">download_fashion_mnist</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Works as a drop-in replacement for the MNIST digits, can repeat the above</span></span>
-<span><span class="co"># view the fifth item etc.</span></span>
-<span><span class="fu"><a href="../reference/show_mnist_digit.html">show_mnist_digit</a></span><span class="op">(</span><span class="va">fashion</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># similarly for Kuzushiji-MNIST dataset of Japanese cursive characters</span></span>
-<span><span class="co"># (set verbose flag to see download progress)</span></span>
-<span><span class="va">kuzushiji</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_kuzushiji_mnist.html">download_kuzushiji_mnist</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co"># View the tenth character</span></span>
-<span><span class="fu"><a href="../reference/show_mnist_digit.html">show_mnist_digit</a></span><span class="op">(</span><span class="va">kuzushiji</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Use a canonical list for small NORB to avoid the wide data-frame result</span></span>
-<span><span class="va">norb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_norb_small.html">download_norb_small</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span>, as <span class="op">=</span> <span class="st">"list"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">norb</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">norb</span><span class="op">$</span><span class="va">meta</span><span class="op">)</span></span>
-<span><span class="co"># View an image, compare with example at https://github.com/ndrplz/small_norb</span></span>
-<span><span class="fu"><a href="../reference/show_norb_object.html">show_norb_object</a></span><span class="op">(</span><span class="va">norb</span>, category <span class="op">=</span> <span class="fl">2</span>, instance <span class="op">=</span> <span class="fl">6</span>, elevation <span class="op">=</span> <span class="fl">6</span>, azimuth <span class="op">=</span> <span class="fl">24</span>, lighting <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
