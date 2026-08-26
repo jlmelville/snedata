@@ -160,8 +160,8 @@ matrix uses about 3.34 GiB.</td>
 <code><a href="../reference/download_coil20.html">download_coil20()</a></code>, <code><a href="../reference/download_coil100.html">download_coil100()</a></code>,
 <code><a href="../reference/show_coil_object.html">show_coil_object()</a></code>
 </td>
-<td>Downloaded; 1,440 or 7,200 images. Requires the suggested
-<code>png</code> package.</td>
+<td>Downloaded; 1,440 or 7,200 images. Requires <code>png</code>; the
+COIL-100 list pixel matrix uses about 2.64 GiB.</td>
 </tr>
 <tr class="odd">
 <td>Text documents for an embedding pipeline</td>
@@ -222,12 +222,13 @@ points lie on the sphere’s surface.</p>
 </h2>
 <p>The MNIST-family, CIFAR-10, Small NORB, and COIL downloaders default
 to the legacy wide data frame. Ask for <code>as = "list"</code> when you
-want the shared image-result structure: its <code>data</code> matrix
-contains one image per row, while <code>meta</code> contains one
-matching metadata row with lower-case names. Where a dataset has
-training and testing sets, <code>meta$split</code> records that identity
-explicitly. The <a href="../reference/image-results.html">canonical
-image-result reference</a> documents the complete schema.</p>
+want the shared image-result structure. Its <code>data</code> matrix
+contains one observation per row: one image for MNIST, CIFAR-10, and
+COIL, and one stereo image pair for Small NORB. <code>meta</code>
+contains one matching row, with lower-case column names. Where a dataset
+has training and testing sets, <code>meta$split</code> records that
+identity explicitly. The <a href="../reference/image-results.html">canonical image-result
+reference</a> documents the complete schema.</p>
 <p>The following workflow requires network access and is not run while
 this article is built.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -239,9 +240,10 @@ this article is built.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/show_mnist_digit.html">show_mnist_digit</a></span><span class="op">(</span><span class="va">mnist</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">training_rows</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><code>mnist_training</code> has 60,000 rows and 784 pixel columns,
-and the final call displays the first training digit. Fashion-MNIST and
-Kuzushiji-MNIST use the same visualization helper; CIFAR-10, Small NORB,
-and COIL have the matching helpers shown in the selection table.</p>
+and the final call displays the first training digit. QMNIST,
+Fashion-MNIST, and Kuzushiji-MNIST use the same visualization helper;
+CIFAR-10, Small NORB, and COIL have the matching helpers shown in the
+selection table.</p>
 </div>
 <div class="section level2">
 <h2 id="sources-and-terms-for-externally-supplied-data">Sources and terms for externally supplied data<a class="anchor" aria-label="anchor" href="#sources-and-terms-for-externally-supplied-data"></a>

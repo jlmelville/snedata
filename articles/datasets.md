@@ -18,7 +18,7 @@ the full catalogue and argument details.
 | Grayscale image classification data with familiar train/test splits | MNIST and relatives | [`download_mnist()`](https://jlmelville.github.io/snedata/reference/download_mnist.md), [`download_fashion_mnist()`](https://jlmelville.github.io/snedata/reference/download_fashion_mnist.md), [`download_kuzushiji_mnist()`](https://jlmelville.github.io/snedata/reference/download_kuzushiji_mnist.md), [`download_qmnist()`](https://jlmelville.github.io/snedata/reference/download_qmnist.md) | Downloaded; 70,000 rows for MNIST, Fashion-MNIST, and Kuzushiji-MNIST, or 120,000 for QMNIST. |
 | Small color images in ten classes | CIFAR-10 | [`download_cifar10()`](https://jlmelville.github.io/snedata/reference/download_cifar10.md), [`show_cifar()`](https://jlmelville.github.io/snedata/reference/show_cifar.md) | Downloaded; 60,000 images. The list result’s pixel matrix uses about 0.69 GiB. |
 | Stereo views that vary object, pose, and lighting | Small NORB | [`download_norb_small()`](https://jlmelville.github.io/snedata/reference/download_norb_small.md), [`show_norb_object()`](https://jlmelville.github.io/snedata/reference/show_norb_object.md) | Downloaded; 48,600 image pairs. The complete list result’s pixel matrix uses about 3.34 GiB. |
-| Multiple poses of individual objects | COIL object images | [`download_coil20()`](https://jlmelville.github.io/snedata/reference/download_coil20.md), [`download_coil100()`](https://jlmelville.github.io/snedata/reference/download_coil100.md), [`show_coil_object()`](https://jlmelville.github.io/snedata/reference/show_coil_object.md) | Downloaded; 1,440 or 7,200 images. Requires the suggested `png` package. |
+| Multiple poses of individual objects | COIL object images | [`download_coil20()`](https://jlmelville.github.io/snedata/reference/download_coil20.md), [`download_coil100()`](https://jlmelville.github.io/snedata/reference/download_coil100.md), [`show_coil_object()`](https://jlmelville.github.io/snedata/reference/show_coil_object.md) | Downloaded; 1,440 or 7,200 images. Requires `png`; the COIL-100 list pixel matrix uses about 2.64 GiB. |
 | Text documents for an embedding pipeline | 20 Newsgroups | [`download_twenty_newsgroups()`](https://jlmelville.github.io/snedata/reference/download_twenty_newsgroups.md) | Downloaded; 18,846 documents. Preprocess with tools such as `tm` or `tidytext`. |
 | A small face-image collection | Frey and Olivetti faces | [`frey_faces()`](https://jlmelville.github.io/snedata/reference/frey_faces.md), [`olivetti_faces()`](https://jlmelville.github.io/snedata/reference/olivetti_faces.md) | Supplied by the suggested `RnavGraphImageData` package; 1,965 or 400 images. |
 | The original data used in historical Isomap examples | Isomap datasets | [`download_isomap_swiss_roll()`](https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.md), [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md) | Downloaded archived Matlab data; 20,000 or 698 rows. Requires `R.matlab`; faces also require `gzip` or `uncompress`. |
@@ -60,10 +60,12 @@ on the sphere’s surface.
 
 The MNIST-family, CIFAR-10, Small NORB, and COIL downloaders default to
 the legacy wide data frame. Ask for `as = "list"` when you want the
-shared image-result structure: its `data` matrix contains one image per
-row, while `meta` contains one matching metadata row with lower-case
-names. Where a dataset has training and testing sets, `meta$split`
-records that identity explicitly. The [canonical image-result
+shared image-result structure. Its `data` matrix contains one
+observation per row: one image for MNIST, CIFAR-10, and COIL, and one
+stereo image pair for Small NORB. `meta` contains one matching row, with
+lower-case column names. Where a dataset has training and testing sets,
+`meta$split` records that identity explicitly. The [canonical
+image-result
 reference](https://jlmelville.github.io/snedata/reference/image-results.md)
 documents the complete schema.
 
@@ -82,7 +84,7 @@ show_mnist_digit(mnist, which(training_rows)[1])
 ```
 
 `mnist_training` has 60,000 rows and 784 pixel columns, and the final
-call displays the first training digit. Fashion-MNIST and
+call displays the first training digit. QMNIST, Fashion-MNIST, and
 Kuzushiji-MNIST use the same visualization helper; CIFAR-10, Small NORB,
 and COIL have the matching helpers shown in the selection table.
 

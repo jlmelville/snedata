@@ -1,7 +1,6 @@
 # Visualize MNIST digit.
 
-Display an MNIST digit as an image the hand-written digit represented by
-the nth row in a data frame.
+Display the requested row of an MNIST-family dataset result.
 
 ## Usage
 
@@ -13,7 +12,7 @@ show_mnist_digit(df, n, col = grDevices::gray(1:255/255), ...)
 
 - df:
 
-  Data frame containing MNIST digits.
+  A legacy MNIST-family data frame or canonical image result.
 
 - n:
 

@@ -1,10 +1,10 @@
 # Canonical image-dataset results
 
 Image downloaders accept `as = "list"` to return one shared, shallow
-structure. It has `data`, a matrix with one image per row; `meta`, a
-data frame with matching rows; `image_dim`, named image dimensions;
-`channel_order`; and `source`, a list containing the dataset name and
-acquisition URL.
+structure. It has `data`, a matrix with one observation per row (an
+image item or multi-camera observation); `meta`, a data frame with
+matching rows; `image_dim`, named image dimensions; `channel_order`; and
+`source`, a list containing the dataset name and acquisition URL.
 
 ## Details
 
