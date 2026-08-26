@@ -7,4 +7,5 @@ docs/
 inst/doc
 vignettes/*.html
 vignettes/*.R
+plans/
 docs

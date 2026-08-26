@@ -8,3 +8,4 @@
 ^vignettes/articles$
 ^codecov\.yml$
 ^pkgdown$
+^plans$
