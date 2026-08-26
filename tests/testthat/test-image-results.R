@@ -99,7 +99,7 @@ test_that("new_image_result rejects inconsistent canonical objects", {
   )
   expect_error(
     make_result(meta = data.frame(id = 1:2)),
-    "one row per image"
+    "one row per observation"
   )
   expect_error(
     make_result(image_dim = c(height = 1.5, width = 2)),

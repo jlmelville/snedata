@@ -1,11 +1,10 @@
 #' Visualize MNIST digit.
 #'
-#' Display an MNIST digit as an image the hand-written digit represented by the
-#' nth row in a data frame.
+#' Display the requested row of an MNIST-family dataset result.
 #'
 #' @note Originally based on a function by Brendan O'Connor, which can be found
 #' at <https://gist.github.com/brendano/39760>.
-#' @param df Data frame containing MNIST digits.
+#' @param df A legacy MNIST-family data frame or canonical image result.
 #' @param n Row index of the digit to display.
 #' @param col List of colors to use in the display.
 #' @param ... Other arguments passed onto the [graphics::image()]

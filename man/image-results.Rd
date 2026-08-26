@@ -5,9 +5,10 @@
 \title{Canonical image-dataset results}
 \description{
 Image downloaders accept \code{as = "list"} to return one shared, shallow
-structure. It has \code{data}, a matrix with one image per row; \code{meta}, a data
-frame with matching rows; \code{image_dim}, named image dimensions; \code{channel_order};
-and \code{source}, a list containing the dataset name and acquisition URL.
+structure. It has \code{data}, a matrix with one observation per row (an image
+item or multi-camera observation); \code{meta}, a data frame with matching rows;
+\code{image_dim}, named image dimensions; \code{channel_order}; and \code{source}, a list
+containing the dataset name and acquisition URL.
 }
 \details{
 Metadata names are lower case: \code{label}, \code{description}, \code{split}, \code{id},

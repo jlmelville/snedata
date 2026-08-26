@@ -19,7 +19,7 @@ argument details.
 | Grayscale image classification data with familiar train/test splits | MNIST and relatives | `download_mnist()`, `download_fashion_mnist()`, `download_kuzushiji_mnist()`, `download_qmnist()` | Downloaded; 70,000 rows for MNIST, Fashion-MNIST, and Kuzushiji-MNIST, or 120,000 for QMNIST. |
 | Small color images in ten classes | CIFAR-10 | `download_cifar10()`, `show_cifar()` | Downloaded; 60,000 images. The list result's pixel matrix uses about 0.69 GiB. |
 | Stereo views that vary object, pose, and lighting | Small NORB | `download_norb_small()`, `show_norb_object()` | Downloaded; 48,600 image pairs. The complete list result's pixel matrix uses about 3.34 GiB. |
-| Multiple poses of individual objects | COIL object images | `download_coil20()`, `download_coil100()`, `show_coil_object()` | Downloaded; 1,440 or 7,200 images. Requires the suggested `png` package. |
+| Multiple poses of individual objects | COIL object images | `download_coil20()`, `download_coil100()`, `show_coil_object()` | Downloaded; 1,440 or 7,200 images. Requires `png`; the COIL-100 list pixel matrix uses about 2.64 GiB. |
 | Text documents for an embedding pipeline | 20 Newsgroups | `download_twenty_newsgroups()` | Downloaded; 18,846 documents. Preprocess with tools such as `tm` or `tidytext`. |
 | A small face-image collection | Frey and Olivetti faces | `frey_faces()`, `olivetti_faces()` | Supplied by the suggested `RnavGraphImageData` package; 1,965 or 400 images. |
 | The original data used in historical Isomap examples | Isomap datasets | `download_isomap_swiss_roll()`, `download_isomap_faces()` | Downloaded archived Matlab data; 20,000 or 698 rows. Requires `R.matlab`; faces also require `gzip` or `uncompress`. |
@@ -44,6 +44,15 @@ dim(sphere_data)
 round(range(sqrt(rowSums(sphere_data[c("x", "y", "z")]^2))), 6)
 ```
 
+```{r local-sphere-check, include=FALSE}
+sphere_norm <- sqrt(rowSums(sphere_data[c("x", "y", "z")]^2))
+
+stopifnot(
+  identical(dim(sphere_data), c(200L, 4L)),
+  max(abs(sphere_norm - 1)) < 1e-12
+)
+```
+
 The result has 200 rows, three coordinate columns, and a color column. The
 coordinate norm is 1 for every row, confirming that the points lie on the
 sphere's surface.
@@ -52,12 +61,12 @@ sphere's surface.
 
 The MNIST-family, CIFAR-10, Small NORB, and COIL downloaders default to the
 legacy wide data frame. Ask for `as = "list"` when you want the shared
-image-result structure: its `data` matrix contains one image per row, while
-`meta` contains one matching metadata row with lower-case names. Where a
-dataset has training and testing sets, `meta$split` records that identity
-explicitly. The
-[canonical image-result reference](../reference/image-results.html) documents
-the complete schema.
+image-result structure. Its `data` matrix contains one observation per row: one
+image for MNIST, CIFAR-10, and COIL, and one stereo image pair for Small NORB.
+`meta` contains one matching row, with lower-case column names. Where a dataset
+has training and testing sets, `meta$split` records that identity explicitly.
+The [canonical image-result reference](../reference/image-results.html)
+documents the complete schema.
 
 The following workflow requires network access and is not run while this
 article is built.
@@ -73,9 +82,9 @@ show_mnist_digit(mnist, which(training_rows)[1])
 ```
 
 `mnist_training` has 60,000 rows and 784 pixel columns, and the final call
-displays the first training digit. Fashion-MNIST and Kuzushiji-MNIST use the
-same visualization helper; CIFAR-10, Small NORB, and COIL have the matching
-helpers shown in the selection table.
+displays the first training digit. QMNIST, Fashion-MNIST, and Kuzushiji-MNIST
+use the same visualization helper; CIFAR-10, Small NORB, and COIL have the
+matching helpers shown in the selection table.
 
 ## Sources and terms for externally supplied data
 
