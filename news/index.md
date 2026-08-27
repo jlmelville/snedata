@@ -2,6 +2,11 @@
 
 ## snedata 0.0.0.9004
 
+*August 26 2026*:
+
+- [`download_cifar10()`](https://jlmelville.github.io/snedata/reference/download_cifar10.md)
+  now defaults to a one-hour download timeout.
+
 *August 22 2026*:
 
 - [`download_coil20()`](https://jlmelville.github.io/snedata/reference/download_coil20.md)
