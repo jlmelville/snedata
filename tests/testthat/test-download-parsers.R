@@ -718,7 +718,11 @@ test_that("downloaders expose a configurable timeout", {
     numeric(1)
   )
 
-  expect_identical(unname(defaults), rep(1800, length(downloaders)))
+  expect_identical(unname(defaults[["cifar10"]]), 3600)
+  expect_identical(
+    unname(defaults[names(defaults) != "cifar10"]),
+    rep(1800, length(downloaders) - 1L)
+  )
 })
 
 test_that("download timeout is raised and restored", {

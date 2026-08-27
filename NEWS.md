@@ -1,5 +1,9 @@
 # snedata 0.0.0.9004
 
+*August 26 2026*:
+
+- `download_cifar10()` now defaults to a one-hour download timeout.
+
 *August 22 2026*:
 
 - `download_coil20()` and `download_coil100()` now return downloaded images correctly for both

@@ -59,9 +59,8 @@
 #'   [download_mnist()]. The integer pixel matrix uses about 0.69 GiB; the wide
 #'   data-frame result needs additional memory. Use `"list"` if that result
 #'   is sufficient.
-#' @param timeout Minimum download timeout in seconds. The default accommodates
-#'   the large archive on slower connections; a larger existing global R timeout
-#'   is preserved.
+#' @param timeout Minimum download timeout in seconds. The CIFAR-10 archive is
+#'   about 170 MB and can take a long time to download. The default is one hour.
 #' @return If `as = "data.frame"`, a data frame containing the CIFAR-10
 #'   dataset. If `as = "list"`, a canonical image result with factor class
 #'   labels and descriptions in `meta`.
@@ -100,7 +99,7 @@ download_cifar10 <- function(
   cleanup = TRUE,
   verbose = FALSE,
   as = c("data.frame", "list"),
-  timeout = 1800
+  timeout = 3600
 ) {
   as <- image_result_as(as)
   if (is.null(destfile)) {

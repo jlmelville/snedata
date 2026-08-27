@@ -51,7 +51,7 @@ download_cifar10(
   cleanup = TRUE,
   verbose = FALSE,
   as = c("data.frame", "list"),
-  timeout = 1800
+  timeout = 3600
 )
 }
 \arguments{
@@ -74,9 +74,8 @@ shape, or \code{"list"} for the canonical image result described in
 data-frame result needs additional memory. Use \code{"list"} if that result
 is sufficient.}
 
-\item{timeout}{Minimum download timeout in seconds. The default accommodates
-the large archive on slower connections; a larger existing global R timeout
-is preserved.}
+\item{timeout}{Minimum download timeout in seconds. The CIFAR-10 archive is
+about 170 MB and can take a long time to download. The default is one hour.}
 }
 \value{
 If \code{as = "data.frame"}, a data frame containing the CIFAR-10
