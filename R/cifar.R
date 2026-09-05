@@ -49,6 +49,8 @@
 #' @param destfile Filename for where to download the CIFAR-10 tarfile. If
 #'   `NULL`, a file in a temporary work directory is used. The archive is
 #'   always extracted to a separate temporary work directory.
+#'   A `.tar.gz` suffix is appended if needed. The final archive path must
+#'   not already exist; existing files and directories are never overwritten.
 #' @param cleanup If `TRUE`, then `destfile` and the untarred data
 #'  will be deleted before the function returns. Only worth setting to
 #'  `FALSE` to debug problems.
@@ -104,24 +106,29 @@ download_cifar10 <- function(
   as <- image_result_as(as)
   if (is.null(destfile)) {
     workdir <- tempfile("cifar10-")
-    dir.create(workdir)
+    if (!dir.create(workdir)) {
+      stop("Cannot create work directory: ", workdir, call. = FALSE)
+    }
     destfile <- file.path(workdir, basename(url))
     owned_paths <- workdir
   } else {
     if (!endsWith(destfile, "tar.gz")) {
       destfile <- paste0(destfile, ".tar.gz")
     }
+    check_new_archive_path(destfile)
     parent <- dirname(destfile)
-    if (!dir.exists(parent)) {
-      stop("Directory does not exist: ", parent, call. = FALSE)
-    }
     workdir <- tempfile("cifar10-", tmpdir = parent)
-    dir.create(workdir)
-    owned_paths <- c(destfile, workdir)
+    if (!dir.create(workdir)) {
+      stop("Cannot create work directory: ", workdir, call. = FALSE)
+    }
+    owned_paths <- workdir
   }
   if (cleanup) {
     on.exit(cleanup_owned_paths(owned_paths, verbose = verbose), add = TRUE)
   }
+
+  create_archive_file(destfile)
+  owned_paths <- c(owned_paths, destfile)
 
   exdir <- file.path(workdir, "extracted")
   dir.create(exdir)

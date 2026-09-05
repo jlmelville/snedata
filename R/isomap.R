@@ -144,14 +144,13 @@ show_isomap_face <- function(
 
   pixels <- unlist(df[n, seq_len(64 * 64), drop = FALSE], use.names = FALSE)
   im <- matrix(as.numeric(pixels), nrow = 64, ncol = 64, byrow = TRUE)
-  graphics::image(
-    im[, 64:1],
-    col = col,
-    axes = FALSE,
-    xlab = "",
-    ylab = "",
-    ...
+  plot_args <- list(...)
+  defaults <- list(axes = FALSE, xlab = "", ylab = "")
+  plot_args <- c(
+    plot_args,
+    defaults[setdiff(names(defaults), names(plot_args))]
   )
+  do.call(graphics::image, c(list(im[, 64:1], col = col), plot_args))
 }
 
 read_isomap_mat_url <- function(

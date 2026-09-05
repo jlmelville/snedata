@@ -26,7 +26,7 @@ The variables are as follows:
 \item \code{px1}, \code{px2}, \code{px3} ... \code{px4096} 8-bit grayscale
 pixel values (0-255). The pixel index starts at the top right of the image
 (\code{px1}) and are then stored column-wise.
-\item \code{Label}: An integer in the range (1-40) indicating the person.
+\item \code{Label}: A factor with levels \code{1} through \code{40} indicating the person.
 }
 
 Each row has a name with the format \code{face_pose}, where \code{face} is the index

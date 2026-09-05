@@ -275,14 +275,14 @@ test_that("image viewers dispatch over legacy data frames and canonical lists", 
     norb_data,
     matrix(c(0L, 0L, 0L, 0L), nrow = 4),
     0L,
-    "training",
+    "testing",
     as = "list"
   )
   norb_df <- format_norb_result(
     norb_data,
     matrix(c(0L, 0L, 0L, 0L), nrow = 4),
     0L,
-    "training"
+    "testing"
   )
   coil_data <- matrix(seq(0, 1, length.out = 128L * 128L), nrow = 1)
   coil <- format_coil_result(coil_data, 1L, 0L, as = "list")

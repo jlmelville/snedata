@@ -571,7 +571,7 @@ ortho_curve <- function(n) {
 #' @param n Number of points to sample.
 #' @param dim Number of dimensions of the dataset.
 #' @return Data frame with coordinates in the `X1`, `X2` ...
-#'  `Xn` columns, and color in the `color` column.
+#'  `Xdim` columns, and color in the `color` column.
 #' @examples
 #' df <- random_walk(n = 100, dim = 100)
 #' @family distill functions
@@ -605,7 +605,7 @@ random_walk <- function(n, dim) {
 #' @param n Number of points to sample.
 #' @param dim Number of dimensions of the dataset.
 #' @return Data frame with coordinates in the `X1`, `X2` ...
-#'  `Xn` columns, and color in the `color` column.
+#'  `Xdim` columns, and color in the `color` column.
 #' @examples
 #' df <- random_jump(n = 100, dim = 100)
 #' @family distill functions

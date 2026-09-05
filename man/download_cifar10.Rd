@@ -59,7 +59,9 @@ download_cifar10(
 
 \item{destfile}{Filename for where to download the CIFAR-10 tarfile. If
 \code{NULL}, a file in a temporary work directory is used. The archive is
-always extracted to a separate temporary work directory.}
+always extracted to a separate temporary work directory.
+A \code{.tar.gz} suffix is appended if needed. The final archive path must
+not already exist; existing files and directories are never overwritten.}
 
 \item{cleanup}{If \code{TRUE}, then \code{destfile} and the untarred data
 will be deleted before the function returns. Only worth setting to

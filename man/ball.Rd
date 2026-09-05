@@ -14,8 +14,9 @@ ball(n = 1000, rad = 1, ndim = 3)
 \item{ndim}{Dimension of the ball.}
 }
 \value{
-Data frame with \code{x}, \code{y}, \code{z} columns containing the
-coordinates of the points and \code{color} the RGB color.
+Data frame with \code{ndim} coordinate columns and \code{color} containing
+RGB colors. For \code{ndim = 3}, coordinates are named \code{x}, \code{y}, \code{z};
+otherwise they are named \code{X1}, \code{X2}, ..., \code{Xndim}.
 }
 \description{
 Simulation data randomly sampled from the entire volume of a ball of the

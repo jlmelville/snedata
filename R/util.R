@@ -200,6 +200,24 @@ stop_if_not_installed <- function(pkg) {
   }
 }
 
+check_new_archive_path <- function(path) {
+  link <- Sys.readlink(path)
+  if (file.exists(path) || (!is.na(link) && nzchar(link))) {
+    stop("Archive destination already exists: ", path, call. = FALSE)
+  }
+  if (!dir.exists(dirname(path))) {
+    stop("Directory does not exist: ", dirname(path), call. = FALSE)
+  }
+}
+
+create_archive_file <- function(path) {
+  check_new_archive_path(path)
+  # Exclusive creation establishes ownership without truncating an existing file.
+  con <- file(path, open = "wx")
+  close(con)
+  invisible(path)
+}
+
 cleanup_owned_paths <- function(paths, verbose = FALSE) {
   for (path in unique(paths)) {
     if (file.exists(path) || dir.exists(path)) {
@@ -342,10 +360,12 @@ validate_tar_entry_types <- function(tarfile, asset) {
       )
     }
 
-    remaining_blocks <- ceiling(tar_header_size(header[125:136], asset) / 512)
-    while (remaining_blocks > 0) {
-      payload <- readBin(con, what = "raw", n = 512L)
-      if (length(payload) != 512L) {
+    remaining_bytes <- ceiling(tar_header_size(header[125:136], asset) / 512) *
+      512
+    while (remaining_bytes > 0) {
+      chunk_size <- min(remaining_bytes, 1024L * 1024L)
+      payload <- readBin(con, what = "raw", n = chunk_size)
+      if (length(payload) != chunk_size) {
         stop(
           asset,
           " has a truncated tar payload for entry: ",
@@ -353,7 +373,7 @@ validate_tar_entry_types <- function(tarfile, asset) {
           call. = FALSE
         )
       }
-      remaining_blocks <- remaining_blocks - 1
+      remaining_bytes <- remaining_bytes - chunk_size
     }
   }
 }

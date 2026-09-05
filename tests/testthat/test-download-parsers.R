@@ -1246,11 +1246,11 @@ test_that("NORB formatter can return a data frame or a canonical list", {
   )
   info <- matrix(
     c(
-      1,
+      4,
       2,
       4,
       5,
-      5,
+      6,
       6,
       8,
       0
@@ -1310,7 +1310,7 @@ test_that("NORB formatter can return a data frame or a canonical list", {
 
 test_that("NORB validation rejects wrong counts and out-of-range metadata", {
   images <- matrix(0L, nrow = 1L, ncol = 96L * 96L * 2L)
-  info <- matrix(c(0L, 0L, 0L, 0L), nrow = 4L)
+  info <- matrix(c(4L, 0L, 0L, 0L), nrow = 4L)
 
   expect_error(
     snedata:::format_norb_result(
@@ -1367,7 +1367,7 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
   )
   write_gz_norb_info(
     file.path(tmpdir, paste0(training_base, "-info.mat.gz")),
-    values = c(0, 0, 0, 0, 1, 1, 2, 1)
+    values = c(4, 0, 0, 0, 6, 1, 2, 1)
   )
 
   write_gz_norb_images(file.path(tmpdir, paste0(testing_base, "-dat.mat.gz")))
@@ -1377,7 +1377,7 @@ test_that("NORB downloader assembles requested splits from local fixtures", {
   )
   write_gz_norb_info(
     file.path(tmpdir, paste0(testing_base, "-info.mat.gz")),
-    values = c(4, 2, 4, 2, 6, 3, 6, 3)
+    values = c(0, 2, 4, 2, 1, 3, 6, 3)
   )
 
   expect_error(

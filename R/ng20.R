@@ -106,17 +106,24 @@ download_twenty_newsgroups <- function(
   subset <- match.arg(subset, choices = c("train", "test", "all"))
   temp_info <- setup_temp_directory(tmpdir)
   tmpdir <- temp_info$tmpdir
+  if (cleanup && temp_info$created_tmpdir) {
+    on.exit(cleanup_owned_paths(tmpdir, verbose = verbose), add = TRUE)
+  }
   workdir <- tempfile("20news-", tmpdir = tmpdir)
-  dir.create(workdir)
+  if (!dir.create(workdir)) {
+    stop("Cannot create work directory: ", workdir, call. = FALSE)
+  }
 
   if (cleanup) {
     on.exit(cleanup_owned_paths(workdir, verbose = verbose), add = TRUE)
-    if (temp_info$created_tmpdir) {
-      on.exit(cleanup_owned_paths(tmpdir, verbose = verbose), add = TRUE)
-    }
   }
 
-  download_twenty_newsgroups_data(workdir, verbose, timeout = timeout)
+  download_twenty_newsgroups_data(
+    workdir,
+    verbose,
+    timeout = timeout,
+    cleanup = FALSE
+  )
   result <- read_newsgroups_data(workdir, subset, verbose)
   validate_newsgroups_dataset(result, subset)
   result
@@ -151,7 +158,8 @@ download_twenty_newsgroups_data <- function(
   tmpdir = NULL,
   verbose = FALSE,
   url = newsgroups_url,
-  timeout = 1800
+  timeout = 1800,
+  cleanup = TRUE
 ) {
   if (is.null(tmpdir)) {
     tmpdir <- tempdir()
@@ -161,7 +169,9 @@ download_twenty_newsgroups_data <- function(
   }
 
   tarfile <- tempfile("20news-bydate-", fileext = ".tar.gz", tmpdir = tmpdir)
-  on.exit(cleanup_owned_paths(tarfile, verbose = verbose), add = TRUE)
+  if (cleanup) {
+    on.exit(cleanup_owned_paths(tarfile, verbose = verbose), add = TRUE)
+  }
 
   download_asset(url, tarfile, verbose = verbose, timeout = timeout)
   extract_tar_safely(
@@ -348,13 +358,12 @@ setup_temp_directory <- function(tmpdir) {
 
   if (is.null(tmpdir)) {
     tmpdir <- tempfile()
-    dir.create(tmpdir)
-    created_tmpdir <- TRUE
-  } else {
-    if (!dir.exists(tmpdir)) {
-      dir.create(tmpdir, recursive = TRUE)
-      created_tmpdir <- TRUE
+  }
+  if (!dir.exists(tmpdir)) {
+    if (!dir.create(tmpdir, recursive = TRUE)) {
+      stop("Cannot create temporary directory: ", tmpdir, call. = FALSE)
     }
+    created_tmpdir <- TRUE
   }
 
   list(tmpdir = tmpdir, created_tmpdir = created_tmpdir)

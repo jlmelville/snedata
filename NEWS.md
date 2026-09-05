@@ -1,5 +1,15 @@
 # snedata 0.0.0.9004
 
+*September 5 2026*:
+
+- CIFAR-10 and COIL downloaders now protect existing files and directories from being overwritten or
+  removed during cleanup.
+- `download_twenty_newsgroups(cleanup = FALSE)` now keeps the archive alongside extracted files,
+  even if extraction fails.
+- Improved checks for malformed Small NORB files and inconsistent or duplicate observation metadata.
+- Reduced the number of file reads needed to validate CIFAR-10 and Newsgroups archives.
+- `show_isomap_face()` now allows custom axes and labels via `axes`, `xlab`, and `ylab`.
+
 *August 26 2026*:
 
 - `download_cifar10()` now defaults to a one-hour download timeout.
@@ -52,7 +62,7 @@ package installed. The faces dataset is stored as a Unix `compress` file, so you
 external `gzip` or `uncompress` command (I tried and failed to get this to work with the `archive`
 package). Based on a [gist](https://gist.github.com/jlmelville/339dfeb80c3e836e887d70a37679b244) I
 wrote a few years ago.
-- new(er) dataset: `synthetic_hierarchical_data()` generates the 5 x 5 x 5 hierarchical Gaussian 
+- new(er) dataset: `synthetic_hierarchical_data()` generates the 5 x 5 x 5 hierarchical Gaussian
 cluster data set used in the PaCMAP paper.
 
 # snedata 0.0.0.9001 and earlier

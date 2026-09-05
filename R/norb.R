@@ -352,9 +352,24 @@ validate_norb_dataset <- function(
       observed = nrow(info)
     )
   }
+  validate_norb_metadata(info, cats, split, expected_count)
+  invisible(NULL)
+}
+
+validate_norb_metadata <- function(info, cats, split, expected_count = NULL) {
+  dataset <- "Small NORB"
+  if (!is.null(expected_count) && ncol(info) != expected_count) {
+    stop_dataset_field(
+      dataset,
+      split,
+      "row_count",
+      allowed = expected_count,
+      observed = ncol(info)
+    )
+  }
   validate_dataset_values(cats, 0:4, dataset, split, "category")
   metadata_fields <- list(
-    instance = 0:9,
+    instance = if (split == "training") c(4L, 6:9) else c(0:3, 5L),
     elevation = 0:8,
     azimuth = seq(0, 34, 2),
     lighting = 0:5
@@ -366,6 +381,16 @@ validate_norb_dataset <- function(
       dataset,
       split,
       names(metadata_fields)[[i]]
+    )
+  }
+  tuples <- data.frame(category = cats, t(info))
+  if (anyDuplicated(tuples)) {
+    stop_dataset_field(
+      dataset,
+      split,
+      "metadata",
+      allowed = "unique observation tuples",
+      observed = "duplicate observation tuples"
     )
   }
   invisible(NULL)
@@ -705,32 +730,33 @@ show_norb_vec <- function(x) {
 # - 0x1E3D4C54 for an integer matrix
 # - 0x1E3D4C55 for a byte matrix
 # - 0x1E3D4C56 for a short matrix
-# Function uses the equivalent integer string
+# Identify the type using an unambiguous hexadecimal representation.
 magic_to_matrix_type <- function(magic) {
   switch(
-    magic,
-    "81766130" = "single precision",
-    "82766130" = "packed",
-    "83766130" = "double precision",
-    "84766130" = "integer",
-    "85766130" = "byte",
-    "86766130" = "short",
+    paste(sprintf("%02x", magic), collapse = ""),
+    "514c3d1e" = "single precision",
+    "524c3d1e" = "packed",
+    "534c3d1e" = "double precision",
+    "544c3d1e" = "integer",
+    "554c3d1e" = "byte",
+    "564c3d1e" = "short",
     "Unknown"
   )
 }
 
-# Convert a binary matrix type to its magic number indentifier
+# Convert a binary matrix type to its four-byte magic identifier.
 matrix_type_to_magic <- function(type) {
-  switch(
+  first_byte <- switch(
     type,
-    "single precision" = "81766130",
-    packed = "82766130",
-    "double precision" = "83766130",
-    integer = "84766130",
-    byte = "85766130",
-    short = "86766130",
+    "single precision" = 81L,
+    packed = 82L,
+    "double precision" = 83L,
+    integer = 84L,
+    byte = 85L,
+    short = 86L,
     stop("Bad binary matrix type '", type, "'")
   )
+  c(first_byte, 76L, 61L, 30L)
 }
 
 read_norb_header <- function(f, type, expected_ndim, asset) {
@@ -744,16 +770,16 @@ read_norb_header <- function(f, type, expected_ndim, asset) {
     asset = asset,
     component = "matrix magic"
   )
-  actual_magic <- paste0(magic_bytes, collapse = "")
+  actual_magic <- paste(sprintf("%02x", magic_bytes), collapse = " ")
   expected_magic <- matrix_type_to_magic(type)
 
-  if (actual_magic != expected_magic) {
+  if (!identical(magic_bytes, expected_magic)) {
     stop(
       asset,
       " has an invalid matrix magic: expected ",
       type,
       " matrix (4 bytes); actual ",
-      magic_to_matrix_type(actual_magic),
+      magic_to_matrix_type(magic_bytes),
       " (",
       actual_magic,
       "); header dimensions unavailable",

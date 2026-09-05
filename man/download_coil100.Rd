@@ -33,7 +33,9 @@ download_coil100(
 }
 \arguments{
 \item{file}{File path to download the ZIP archive to. If \code{NULL}, a file in a
-temporary work directory is used.}
+temporary work directory is used.
+A \code{.zip} suffix is appended if needed. The final archive path must not
+already exist; existing files and directories are never overwritten.}
 
 \item{cleanup}{If \code{TRUE}, delete temporary download and extraction files
 before returning. If \code{file} is supplied, only the downloaded ZIP and the

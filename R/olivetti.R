@@ -11,7 +11,7 @@
 #' * `px1`, `px2`, `px3` ... `px4096` 8-bit grayscale
 #'   pixel values (0-255). The pixel index starts at the top right of the image
 #'   (`px1`) and are then stored column-wise.
-#' * `Label`: An integer in the range (1-40) indicating the person.
+#' * `Label`: A factor with levels `1` through `40` indicating the person.
 #'
 #' Each row has a name with the format `face_pose`, where `face` is the index
 #' of the face, and `pose` is the index of the pose, e.g. the row with name

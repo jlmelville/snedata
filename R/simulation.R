@@ -49,8 +49,9 @@ sphere <- function(n = 1000) {
 #' @param n Number of points to create.
 #' @param rad Radius of the ball.
 #' @param ndim Dimension of the ball.
-#' @return Data frame with `x`, `y`, `z` columns containing the
-#'  coordinates of the points and `color` the RGB color.
+#' @return Data frame with `ndim` coordinate columns and `color` containing
+#'   RGB colors. For `ndim = 3`, coordinates are named `x`, `y`, `z`;
+#'   otherwise they are named `X1`, `X2`, ..., `Xndim`.
 #' @references
 #' A dataset like this was used in:
 #' Lee, J. A., Peluffo-Ordo'nez, D. H., & Verleysen, M. (2015).

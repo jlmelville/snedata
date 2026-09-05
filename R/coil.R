@@ -27,6 +27,8 @@ coil_base_url <- "https://cave.cs.columbia.edu/old/databases/SLAM_coil-20_coil-1
 #'
 #' @param file File path to download the ZIP archive to. If `NULL`, a file in a
 #'   temporary work directory is used.
+#'   A `.zip` suffix is appended if needed. The final archive path must not
+#'   already exist; existing files and directories are never overwritten.
 #' @param cleanup If `TRUE`, delete temporary download and extraction files
 #'   before returning. If `file` is supplied, only the downloaded ZIP and the
 #'   dedicated extraction directory are removed.
@@ -197,6 +199,9 @@ download_coil <- function(
     )
   }
 
+  create_archive_file(paths$destfile)
+  paths$owned_paths <- c(paths$owned_paths, paths$destfile)
+
   download_asset(
     url,
     paths$destfile,
@@ -217,7 +222,9 @@ download_coil <- function(
 setup_coil_download_paths <- function(url, file = NULL) {
   if (is.null(file)) {
     workdir <- tempfile("coil-")
-    dir.create(workdir)
+    if (!dir.create(workdir)) {
+      stop("Cannot create work directory: ", workdir, call. = FALSE)
+    }
     return(list(
       destfile = file.path(workdir, basename(url)),
       exdir = file.path(workdir, "extracted"),
@@ -226,11 +233,15 @@ setup_coil_download_paths <- function(url, file = NULL) {
   }
 
   destfile <- add_zip_extension(file)
+  check_new_archive_path(destfile)
   exdir <- tempfile("coil-extract-", tmpdir = dirname(destfile))
+  if (!dir.create(exdir)) {
+    stop("Cannot create extraction directory: ", exdir, call. = FALSE)
+  }
   list(
     destfile = destfile,
     exdir = exdir,
-    owned_paths = c(destfile, exdir)
+    owned_paths = exdir
   )
 }
 
@@ -247,12 +258,17 @@ read_coil_zip <- function(
   owns_exdir <- is.null(exdir)
   if (owns_exdir) {
     exdir <- tempfile("coil-unzip-")
+    if (!dir.create(exdir)) {
+      stop("Cannot create extraction directory: ", exdir, call. = FALSE)
+    }
   }
   if (cleanup && owns_exdir) {
     on.exit(cleanup_owned_paths(exdir, verbose = verbose), add = TRUE)
   }
 
-  dir.create(exdir, recursive = TRUE, showWarnings = FALSE)
+  if (!dir.exists(exdir) && !dir.create(exdir, recursive = TRUE)) {
+    stop("Cannot create extraction directory: ", exdir, call. = FALSE)
+  }
   entries <- zip_entries(zipfile)
   validate_zip_entries(entries)
 
