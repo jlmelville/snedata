@@ -53,7 +53,7 @@ jobs:
             RnavGraphImageData=?ignore
           needs: check
 
-      - uses: r-lib/actions/check-r-package@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+      - uses: r-lib/actions/check-r-package@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
 
   minimal-dependencies:
     name: Linux (release, minimal dependencies)
@@ -99,7 +99,7 @@ jobs:
           message("testthat is installed and ordinary optional dependencies are absent.")
         shell: Rscript {0}
 
-      - uses: r-lib/actions/check-r-package@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+      - uses: r-lib/actions/check-r-package@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
 
   optional-dependencies:
     name: Linux (release, available optional dependencies)
@@ -146,4 +146,4 @@ jobs:
           }
         shell: Rscript {0}
 
-      - uses: r-lib/actions/check-r-package@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+      - uses: r-lib/actions/check-r-package@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
