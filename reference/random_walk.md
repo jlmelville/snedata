@@ -21,7 +21,7 @@ random_walk(n, dim)
 
 ## Value
 
-Data frame with coordinates in the `X1`, `X2` ... `Xn` columns, and
+Data frame with coordinates in the `X1`, `X2` ... `Xdim` columns, and
 color in the `color` column.
 
 ## Details

@@ -93,7 +93,9 @@ carry this identity in <code>meta$split</code>.</p>
 <dt id="arg-destfile">destfile<a class="anchor" aria-label="anchor" href="#arg-destfile"></a></dt>
 <dd><p>Filename for where to download the CIFAR-10 tarfile. If
 <code>NULL</code>, a file in a temporary work directory is used. The archive is
-always extracted to a separate temporary work directory.</p></dd>
+always extracted to a separate temporary work directory.
+A <code>.tar.gz</code> suffix is appended if needed. The final archive path must
+not already exist; existing files and directories are never overwritten.</p></dd>
 
 
 <dt id="arg-cleanup">cleanup<a class="anchor" aria-label="anchor" href="#arg-cleanup"></a></dt>

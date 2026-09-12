@@ -2,6 +2,19 @@
 
 ## snedata 0.0.0.9004
 
+*September 5 2026*:
+
+- CIFAR-10 and COIL downloaders now protect existing files and
+  directories from being overwritten or removed during cleanup.
+- `download_twenty_newsgroups(cleanup = FALSE)` now keeps the archive
+  alongside extracted files, even if extraction fails.
+- Improved checks for malformed Small NORB files and inconsistent or
+  duplicate observation metadata.
+- Reduced the number of file reads needed to validate CIFAR-10 and
+  Newsgroups archives.
+- [`show_isomap_face()`](https://jlmelville.github.io/snedata/reference/show_isomap_face.md)
+  now allows custom axes and labels via `axes`, `xlab`, and `ylab`.
+
 *August 26 2026*:
 
 - [`download_cifar10()`](https://jlmelville.github.io/snedata/reference/download_cifar10.md)

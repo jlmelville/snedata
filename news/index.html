@@ -35,7 +35,15 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.0.9004" id="snedata-0009004">snedata 0.0.0.9004<a class="anchor" aria-label="anchor" href="#snedata-0009004"></a></h2>
-<p><em>August 26 2026</em>:</p>
+<p><em>September 5 2026</em>:</p>
+<ul><li>CIFAR-10 and COIL downloaders now protect existing files and directories from being overwritten or removed during cleanup.</li>
+<li>
+<code>download_twenty_newsgroups(cleanup = FALSE)</code> now keeps the archive alongside extracted files, even if extraction fails.</li>
+<li>Improved checks for malformed Small NORB files and inconsistent or duplicate observation metadata.</li>
+<li>Reduced the number of file reads needed to validate CIFAR-10 and Newsgroups archives.</li>
+<li>
+<code><a href="../reference/show_isomap_face.html">show_isomap_face()</a></code> now allows custom axes and labels via <code>axes</code>, <code>xlab</code>, and <code>ylab</code>.</li>
+</ul><p><em>August 26 2026</em>:</p>
 <ul><li>
 <code><a href="../reference/download_cifar10.html">download_cifar10()</a></code> now defaults to a one-hour download timeout.</li>
 </ul><p><em>August 22 2026</em>:</p>

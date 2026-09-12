@@ -25,8 +25,9 @@ ball(n = 1000, rad = 1, ndim = 3)
 
 ## Value
 
-Data frame with `x`, `y`, `z` columns containing the coordinates of the
-points and `color` the RGB color.
+Data frame with `ndim` coordinate columns and `color` containing RGB
+colors. For `ndim = 3`, coordinates are named `x`, `y`, `z`; otherwise
+they are named `X1`, `X2`, ..., `Xndim`.
 
 ## Details
 

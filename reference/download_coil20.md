@@ -33,7 +33,9 @@ Row names are `"<object>_<pose>"`, where `<object>` is the object id and
 - file:
 
   File path to download the ZIP archive to. If `NULL`, a file in a
-  temporary work directory is used.
+  temporary work directory is used. A `.zip` suffix is appended if
+  needed. The final archive path must not already exist; existing files
+  and directories are never overwritten.
 
 - cleanup:
 

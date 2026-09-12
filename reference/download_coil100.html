@@ -70,7 +70,9 @@ increments.</p>
 
 <dl><dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
 <dd><p>File path to download the ZIP archive to. If <code>NULL</code>, a file in a
-temporary work directory is used.</p></dd>
+temporary work directory is used.
+A <code>.zip</code> suffix is appended if needed. The final archive path must not
+already exist; existing files and directories are never overwritten.</p></dd>
 
 
 <dt id="arg-cleanup">cleanup<a class="anchor" aria-label="anchor" href="#arg-cleanup"></a></dt>

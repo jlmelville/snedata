@@ -23,6 +23,11 @@ the full catalogue and argument details.
 | A small face-image collection | Frey and Olivetti faces | [`frey_faces()`](https://jlmelville.github.io/snedata/reference/frey_faces.md), [`olivetti_faces()`](https://jlmelville.github.io/snedata/reference/olivetti_faces.md) | Supplied by the suggested `RnavGraphImageData` package; 1,965 or 400 images. |
 | The original data used in historical Isomap examples | Isomap datasets | [`download_isomap_swiss_roll()`](https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.md), [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md) | Downloaded archived Matlab data; 20,000 or 698 rows. Requires `R.matlab`; faces also require `gzip` or `uncompress`. |
 
+[`synthetic_hierarchical_data()`](https://jlmelville.github.io/snedata/reference/synthetic_hierarchical_data.md)
+requires `colorspace` for its default full plotting colors. Use
+`colors = "macro"` or `colors = "none"` to generate it without that
+optional dependency.
+
 MNIST contains handwritten digits. Fashion-MNIST substitutes clothing
 images and is designed as a harder drop-in benchmark; Kuzushiji-MNIST
 substitutes cursive Japanese characters. QMNIST extends the MNIST test

@@ -60,7 +60,7 @@ person.</p>
 <p>The variables are as follows:</p><ul><li><p><code>px1</code>, <code>px2</code>, <code>px3</code> ... <code>px4096</code> 8-bit grayscale
 pixel values (0-255). The pixel index starts at the top right of the image
 (<code>px1</code>) and are then stored column-wise.</p></li>
-<li><p><code>Label</code>: An integer in the range (1-40) indicating the person.</p></li>
+<li><p><code>Label</code>: A factor with levels <code>1</code> through <code>40</code> indicating the person.</p></li>
 </ul><p>Each row has a name with the format <code>face_pose</code>, where <code>face</code> is the index
 of the face, and <code>pose</code> is the index of the pose, e.g. the row with name
 <code>20_10</code> is the tenth pose of the twentieth face.</p>

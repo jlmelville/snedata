@@ -77,7 +77,9 @@ For more information see <https://cave.cs.toronto.edu/kriz/cifar.html>.
 
   Filename for where to download the CIFAR-10 tarfile. If `NULL`, a file
   in a temporary work directory is used. The archive is always extracted
-  to a separate temporary work directory.
+  to a separate temporary work directory. A `.tar.gz` suffix is appended
+  if needed. The final archive path must not already exist; existing
+  files and directories are never overwritten.
 
 - cleanup:
 
