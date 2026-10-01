@@ -43,7 +43,7 @@ jobs:
           r-version: ${{ matrix.config.r }}
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+      - uses: r-lib/actions/setup-r-dependencies@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
         # This suggested package is unavailable from the configured
         # repositories. The optional-dependencies job reports that limitation
         # explicitly instead of weakening all checks.
@@ -74,7 +74,7 @@ jobs:
           r-version: "release"
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+      - uses: r-lib/actions/setup-r-dependencies@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
         with:
           dependencies: '"hard"'
           # A restored suggested-package cache would invalidate this job's
@@ -120,7 +120,7 @@ jobs:
           r-version: "release"
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+      - uses: r-lib/actions/setup-r-dependencies@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
         # Keep this unavailable suggestion visible. All other direct
         # suggested packages, including png, are installed by "all".
         with:
