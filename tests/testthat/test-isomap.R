@@ -102,3 +102,106 @@ test_that("Isomap URL reader cleans downloaded and decompressed paths on errors"
   expect_false(file.exists(paths$downloaded))
   expect_false(file.exists(paths$decompressed))
 })
+
+
+test_that("Isomap faces keeps compressed defaults and positional arguments", {
+  observed <- list()
+  local_mocked_bindings(
+    read_isomap_mat_url = function(
+      url,
+      fileext,
+      compression,
+      verbose,
+      timeout
+    ) {
+      observed[[length(observed) + 1L]] <<- list(
+        url = url,
+        fileext = fileext,
+        compression = compression,
+        verbose = verbose,
+        timeout = timeout
+      )
+      list(images = matrix(1:4096, nrow = 4096), poses = matrix(1:2, nrow = 2))
+    },
+    .package = "snedata"
+  )
+  download_isomap_faces()
+  download_isomap_faces("https://example.invalid/faces.Z", TRUE, 123)
+  expect_identical(
+    observed[[1]],
+    list(
+      url = snedata:::isomap_faces_url,
+      fileext = ".mat.Z",
+      compression = "compress",
+      verbose = FALSE,
+      timeout = 1800
+    )
+  )
+  expect_identical(
+    observed[[2]],
+    list(
+      url = "https://example.invalid/faces.Z",
+      fileext = ".mat.Z",
+      compression = "compress",
+      verbose = TRUE,
+      timeout = 123
+    )
+  )
+})
+
+test_that("Isomap faces reads an uncompressed MAT file without a decompressor", {
+  skip_if_not_installed("R.matlab")
+  path <- tempfile(fileext = ".mat")
+  on.exit(unlink(path), add = TRUE)
+  images <- matrix(seq_len(4096 * 2), nrow = 4096)
+  poses <- matrix(c(1, 2, 3, 4), nrow = 2)
+  R.matlab::writeMat(path, images = images, poses = poses)
+  local_mocked_bindings(
+    decompress_isomap_compress = function(...) stop("must not decompress"),
+    .package = "snedata"
+  )
+  faces <- download_isomap_faces(
+    url = paste0("file://", normalizePath(path, winslash = "/")),
+    compression = "none"
+  )
+  expect_identical(dim(faces), c(2L, 4098L))
+  expect_identical(names(faces), c(paste0("px", 1:4096), "pose1", "pose2"))
+  expect_equal(as.matrix(faces[, 1:4096]), t(images), ignore_attr = TRUE)
+  expect_equal(as.matrix(faces[, 4097:4098]), t(poses), ignore_attr = TRUE)
+})
+
+test_that("Isomap faces cleans a malformed uncompressed download", {
+  skip_if_not_installed("R.matlab")
+  source <- tempfile(fileext = ".mat")
+  on.exit(unlink(source), add = TRUE)
+  R.matlab::writeMat(source, images = matrix(1:4096, nrow = 4096))
+  paths <- new.env(parent = emptyenv())
+  local_mocked_bindings(
+    download_asset = function(url, destfile, verbose, timeout) {
+      file.copy(source, destfile)
+      paths$downloaded <- destfile
+    },
+    decompress_isomap_compress = function(...) stop("must not decompress"),
+    .package = "snedata"
+  )
+  expect_error(
+    download_isomap_faces(
+      "https://example.invalid/faces.mat",
+      compression = "none"
+    ),
+    "component 'poses'"
+  )
+  expect_false(file.exists(paths$downloaded))
+  expect_true(file.exists(source))
+})
+
+test_that("Isomap faces rejects unsupported compression before downloading", {
+  local_mocked_bindings(
+    download_asset = function(...) stop("download must not start"),
+    .package = "snedata"
+  )
+  expect_error(
+    download_isomap_faces(compression = "gzip"),
+    "'arg' should be one of"
+  )
+})

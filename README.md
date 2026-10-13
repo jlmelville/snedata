@@ -104,6 +104,7 @@ isomap_swiss <- download_isomap_swiss_roll()
 
 # download the original Isomap faces dataset from the Internet Archive
 # requires R.matlab and an external gzip or uncompress command
+# See ?download_isomap_faces for an uncompressed mirror fallback.
 isomap_faces <- download_isomap_faces()
 show_isomap_face(isomap_faces, 1)
 

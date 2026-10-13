@@ -13,16 +13,24 @@ dataset.
 }
 }
 \usage{
-download_isomap_faces(url = isomap_faces_url, verbose = FALSE, timeout = 1800)
+download_isomap_faces(
+  url = isomap_faces_url,
+  verbose = FALSE,
+  timeout = 1800,
+  compression = c("compress", "none")
+)
 }
 \arguments{
-\item{url}{URL of the compressed Matlab data file.}
+\item{url}{URL of the Matlab data file.}
 
 \item{verbose}{If \code{TRUE}, then download progress will be logged as a
 message.}
 
 \item{timeout}{Minimum download timeout in seconds. The default is 30
 minutes; a larger existing global R timeout is preserved.}
+
+\item{compression}{Compression used by \code{url}: \code{"compress"} for Unix
+\code{compress} files (the default), or \code{"none"} for uncompressed Matlab files.}
 }
 \value{
 Data frame containing the Isomap face-pose dataset.
@@ -32,21 +40,28 @@ Download the original Isomap face-pose dataset.
 }
 \details{
 The original Stanford URL for this dataset is no longer available, so the
-default URL uses an archived copy from the Internet Archive. The archived
-data is stored as a Unix \code{compress} file, and this function uses an
-external \code{gzip} or \code{uncompress} command for decompression.
+default URL uses an archived Unix \code{compress} file from the Internet Archive.
+An uncompressed mirror can be selected with \code{url} and \code{compression = "none"};
+see the fallback example below.
 }
 \note{
 Requires the
 \href{https://cran.r-project.org/package=R.matlab}{R.matlab}
-package to be installed. The face data also requires an external
-\code{gzip} or \code{uncompress} command that can decompress Unix
-\code{compress} files.
+package to be installed. When \code{compression = "compress"}, an external
+\code{gzip} or \code{uncompress} command is also required.
 }
 \examples{
 \dontrun{
 faces <- download_isomap_faces()
 show_isomap_face(faces, 1)
+
+# If the Internet Archive download is unavailable, use this commit-pinned
+# mirror of the uncompressed MAT file.
+mirror_url <- paste0(
+  "https://raw.githubusercontent.com/Mashimo/datascience/",
+  "85cd93b9159edb906bf025eadd8aa1b648277ebc/datasets/face_data.mat"
+)
+faces <- download_isomap_faces(mirror_url, compression = "none")
 }
 }
 \references{

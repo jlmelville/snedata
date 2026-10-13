@@ -1,5 +1,10 @@
 # snedata 0.0.0.9004
 
+*October 12 2026*:
+
+- `download_isomap_faces()` now accepts `compression = "none"` for uncompressed MAT files.
+  Its help includes a commit-pinned mirror fallback.
+
 *September 5 2026*:
 
 - CIFAR-10 and COIL downloaders now protect existing files and directories from being overwritten or
