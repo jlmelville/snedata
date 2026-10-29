@@ -21,7 +21,9 @@ download_isomap_faces(
 )
 }
 \arguments{
-\item{url}{URL of the Matlab data file.}
+\item{url}{URL of the Matlab data file. If omitted, uses the uncompressed
+mirror by default. If \code{compression} is supplied without \code{url}, uses the
+archived Stanford file instead.}
 
 \item{verbose}{If \code{TRUE}, then download progress will be logged as a
 message.}
@@ -30,7 +32,10 @@ message.}
 minutes; a larger existing global R timeout is preserved.}
 
 \item{compression}{Compression used by \code{url}: \code{"compress"} for Unix
-\code{compress} files (the default), or \code{"none"} for uncompressed Matlab files.}
+\code{compress} files, or \code{"none"} for uncompressed Matlab files. When omitted,
+uses \code{"none"} with the default mirror and \code{"compress"} with a supplied
+\code{url}. Supplying \code{"none"} without a \code{url} selects the compressed archived
+file and will fail; provide the URL of an uncompressed file instead.}
 }
 \value{
 Data frame containing the Isomap face-pose dataset.
@@ -39,10 +44,13 @@ Data frame containing the Isomap face-pose dataset.
 Download the original Isomap face-pose dataset.
 }
 \details{
-The original Stanford URL for this dataset is no longer available, so the
-default URL uses an archived Unix \code{compress} file from the Internet Archive.
-An uncompressed mirror can be selected with \code{url} and \code{compression = "none"};
-see the fallback example below.
+By default, downloads an uncompressed MAT file from a commit-pinned
+\href{https://github.com/Mashimo/datascience}{Mashimo/datascience} mirror. On
+October 29, 2026, this file matched the decompressed
+\href{https://web.archive.org/web/20150922051706id_/http://isomap.stanford.edu/face_data.mat.Z}{archived Stanford file}
+byte for byte. To use the archived Unix \code{compress} file, see the example below.
+
+No other source is tried if a download fails.
 }
 \note{
 Requires the
@@ -55,13 +63,8 @@ package to be installed. When \code{compression = "compress"}, an external
 faces <- download_isomap_faces()
 show_isomap_face(faces, 1)
 
-# If the Internet Archive download is unavailable, use this commit-pinned
-# mirror of the uncompressed MAT file.
-mirror_url <- paste0(
-  "https://raw.githubusercontent.com/Mashimo/datascience/",
-  "85cd93b9159edb906bf025eadd8aa1b648277ebc/datasets/face_data.mat"
-)
-faces <- download_isomap_faces(mirror_url, compression = "none")
+# To use the archived Stanford file instead (requires gzip or uncompress):
+faces <- download_isomap_faces(compression = "compress")
 }
 }
 \references{

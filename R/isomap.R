@@ -3,7 +3,14 @@ isomap_swiss_roll_url <- paste0(
   "http://web.mit.edu/cocosci/isomap/swiss_roll_data.mat"
 )
 
+# On 2026-10-29 the pinned MAT file and decompressed archived file both had
+# SHA-256: 7bf75078a1e83094aea54391a95e84b3eed8e210889df93b198d58f623ad0c27.
 isomap_faces_url <- paste0(
+  "https://raw.githubusercontent.com/Mashimo/datascience/",
+  "85cd93b9159edb906bf025eadd8aa1b648277ebc/datasets/face_data.mat"
+)
+
+isomap_faces_archive_url <- paste0(
   "https://web.archive.org/web/20150922051706id_/",
   "http://isomap.stanford.edu/face_data.mat.Z"
 )
@@ -62,10 +69,13 @@ download_isomap_swiss_roll <- function(
 #'
 #' Download the original Isomap face-pose dataset.
 #'
-#' The original Stanford URL for this dataset is no longer available, so the
-#' default URL uses an archived Unix `compress` file from the Internet Archive.
-#' An uncompressed mirror can be selected with `url` and `compression = "none"`;
-#' see the fallback example below.
+#' By default, downloads an uncompressed MAT file from a commit-pinned
+#' [Mashimo/datascience](https://github.com/Mashimo/datascience) mirror. On
+#' October 29, 2026, this file matched the decompressed
+#' [archived Stanford file](https://web.archive.org/web/20150922051706id_/http://isomap.stanford.edu/face_data.mat.Z)
+#' byte for byte. To use the archived Unix `compress` file, see the example below.
+#'
+#' No other source is tried if a download fails.
 #'
 #' @format A data frame with 698 rows and 4,098 variables:
 #'
@@ -74,13 +84,18 @@ download_isomap_swiss_roll <- function(
 #' * `pose1`, `pose2`: Pose values supplied with the original
 #'   dataset.
 #'
-#' @param url URL of the Matlab data file.
+#' @param url URL of the Matlab data file. If omitted, uses the uncompressed
+#'   mirror by default. If `compression` is supplied without `url`, uses the
+#'   archived Stanford file instead.
 #' @param verbose If `TRUE`, then download progress will be logged as a
 #'   message.
 #' @param timeout Minimum download timeout in seconds. The default is 30
 #'   minutes; a larger existing global R timeout is preserved.
 #' @param compression Compression used by `url`: `"compress"` for Unix
-#'   `compress` files (the default), or `"none"` for uncompressed Matlab files.
+#'   `compress` files, or `"none"` for uncompressed Matlab files. When omitted,
+#'   uses `"none"` with the default mirror and `"compress"` with a supplied
+#'   `url`. Supplying `"none"` without a `url` selects the compressed archived
+#'   file and will fail; provide the URL of an uncompressed file instead.
 #' @return Data frame containing the Isomap face-pose dataset.
 #' @note Requires the
 #' [R.matlab](https://cran.r-project.org/package=R.matlab)
@@ -93,13 +108,8 @@ download_isomap_swiss_roll <- function(
 #' faces <- download_isomap_faces()
 #' show_isomap_face(faces, 1)
 #'
-#' # If the Internet Archive download is unavailable, use this commit-pinned
-#' # mirror of the uncompressed MAT file.
-#' mirror_url <- paste0(
-#'   "https://raw.githubusercontent.com/Mashimo/datascience/",
-#'   "85cd93b9159edb906bf025eadd8aa1b648277ebc/datasets/face_data.mat"
-#' )
-#' faces <- download_isomap_faces(mirror_url, compression = "none")
+#' # To use the archived Stanford file instead (requires gzip or uncompress):
+#' faces <- download_isomap_faces(compression = "compress")
 #' }
 #' @references
 #' Tenenbaum, J. B., de Silva, V., & Langford, J. C. (2000).
@@ -111,6 +121,13 @@ download_isomap_faces <- function(
   timeout = 1800,
   compression = c("compress", "none")
 ) {
+  if (missing(url)) {
+    if (missing(compression)) {
+      compression <- "none"
+    } else {
+      url <- isomap_faces_archive_url
+    }
+  }
   compression <- match.arg(compression)
   mat <- read_isomap_mat_url(
     url = url,

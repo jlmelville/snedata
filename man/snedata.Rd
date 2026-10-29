@@ -91,10 +91,11 @@ Olivetti faces.
 
 \section{Historical Isomap dataset functions}{
 
-The original Isomap Swiss Roll and face-pose datasets can be downloaded from
-the Internet Archive. The download functions require optional packages:
-\code{R.matlab} for Matlab files. The compressed face data also requires an
-external \code{gzip} or \code{uncompress} command.
+The original Isomap Swiss Roll dataset is downloaded from the Internet
+Archive; the face-pose dataset defaults to an uncompressed, commit-pinned
+GitHub mirror. Both download functions require \code{R.matlab} for Matlab files.
+Selecting the archived compressed face data also requires an external
+\code{gzip} or \code{uncompress} command.
 \itemize{
 \item \code{\link[=download_isomap_swiss_roll]{download_isomap_swiss_roll()}}. Downloads the original
 Isomap Swiss-roll data as a row-based data frame.

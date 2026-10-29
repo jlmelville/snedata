@@ -26,6 +26,6 @@ COIL-20	archive	https://cave.cs.columbia.edu/old/databases/SLAM_coil-20_coil-100
 COIL-100	archive	https://cave.cs.columbia.edu/old/databases/SLAM_coil-20_coil-100/coil-100/coil-100.zip
 20 Newsgroups	archive	http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz
 Isomap	swiss roll	https://web.archive.org/web/20151031205619id_/http://web.mit.edu/cocosci/isomap/swiss_roll_data.mat
-Isomap	faces	https://web.archive.org/web/20150922051706id_/http://isomap.stanford.edu/face_data.mat.Z
+Isomap	faces	https://raw.githubusercontent.com/Mashimo/datascience/85cd93b9159edb906bf025eadd8aa1b648277ebc/datasets/face_data.mat
 Mammoth	10k	https://raw.githubusercontent.com/PAIR-code/understanding-umap/master/raw_data/mammoth_3d.json
 Mammoth	50k	https://raw.githubusercontent.com/PAIR-code/understanding-umap/master/raw_data/mammoth_3d_50k.json

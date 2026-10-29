@@ -103,8 +103,15 @@ test_that("Isomap URL reader cleans downloaded and decompressed paths on errors"
   expect_false(file.exists(paths$decompressed))
 })
 
-
-test_that("Isomap faces keeps compressed defaults and positional arguments", {
+test_that("Isomap faces uses the mirror and preserves explicit argument behavior", {
+  mirror_url <- paste0(
+    "https://raw.githubusercontent.com/Mashimo/datascience/",
+    "85cd93b9159edb906bf025eadd8aa1b648277ebc/datasets/face_data.mat"
+  )
+  archive_url <- paste0(
+    "https://web.archive.org/web/20150922051706id_/",
+    "http://isomap.stanford.edu/face_data.mat.Z"
+  )
   observed <- list()
   local_mocked_bindings(
     read_isomap_mat_url = function(
@@ -127,12 +134,16 @@ test_that("Isomap faces keeps compressed defaults and positional arguments", {
   )
   download_isomap_faces()
   download_isomap_faces("https://example.invalid/faces.Z", TRUE, 123)
+  download_isomap_faces(compression = "compress")
+  download_isomap_faces(compression = "none")
+  download_isomap_faces(mirror_url)
+  download_isomap_faces(verbose = TRUE, timeout = 123)
   expect_identical(
     observed[[1]],
     list(
-      url = snedata:::isomap_faces_url,
-      fileext = ".mat.Z",
-      compression = "compress",
+      url = mirror_url,
+      fileext = ".mat",
+      compression = "none",
       verbose = FALSE,
       timeout = 1800
     )
@@ -147,6 +158,90 @@ test_that("Isomap faces keeps compressed defaults and positional arguments", {
       timeout = 123
     )
   )
+  expect_identical(
+    observed[[3]],
+    list(
+      url = archive_url,
+      fileext = ".mat.Z",
+      compression = "compress",
+      verbose = FALSE,
+      timeout = 1800
+    )
+  )
+  expect_identical(
+    observed[[4]],
+    list(
+      url = archive_url,
+      fileext = ".mat",
+      compression = "none",
+      verbose = FALSE,
+      timeout = 1800
+    )
+  )
+  expect_identical(
+    observed[[5]],
+    list(
+      url = mirror_url,
+      fileext = ".mat.Z",
+      compression = "compress",
+      verbose = FALSE,
+      timeout = 1800
+    )
+  )
+  expect_identical(
+    observed[[6]],
+    list(
+      url = mirror_url,
+      fileext = ".mat",
+      compression = "none",
+      verbose = TRUE,
+      timeout = 123
+    )
+  )
+})
+
+test_that("Isomap faces default reads MAT data without a decompressor", {
+  skip_if_not_installed("R.matlab")
+  source <- tempfile(fileext = ".mat")
+  on.exit(unlink(source), add = TRUE)
+  images <- matrix(seq_len(4096 * 2), nrow = 4096)
+  poses <- matrix(c(1, 2, 3, 4), nrow = 2)
+  R.matlab::writeMat(source, images = images, poses = poses)
+  downloaded <- NULL
+  local_mocked_bindings(
+    download_asset = function(url, destfile, verbose, timeout) {
+      file.copy(source, destfile)
+      downloaded <<- destfile
+    },
+    decompress_isomap_compress = function(...) stop("must not decompress"),
+    .package = "snedata"
+  )
+
+  faces <- download_isomap_faces()
+
+  expect_identical(names(faces), c(paste0("px", 1:4096), "pose1", "pose2"))
+  expect_equal(as.matrix(faces[, 1:4096]), t(images), ignore_attr = TRUE)
+  expect_equal(as.matrix(faces[, 4097:4098]), t(poses), ignore_attr = TRUE)
+  expect_false(file.exists(downloaded))
+  expect_true(file.exists(source))
+})
+
+test_that("Isomap faces default propagates download failures without retrying", {
+  skip_if_not_installed("R.matlab")
+  downloaded <- character()
+  local_mocked_bindings(
+    download_asset = function(url, destfile, verbose, timeout) {
+      downloaded <<- c(downloaded, destfile)
+      writeBin(as.raw(1), destfile)
+      stop("download failed")
+    },
+    .package = "snedata"
+  )
+
+  expect_error(download_isomap_faces(), "download failed")
+
+  expect_length(downloaded, 1L)
+  expect_false(any(file.exists(downloaded)))
 })
 
 test_that("Isomap faces reads an uncompressed MAT file without a decompressor", {
