@@ -2,6 +2,21 @@
 
 ## snedata 0.0.0.9004
 
+*October 29 2026*:
+
+- [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md)
+  now uses a commit-pinned uncompressed mirror when both `url` and
+  `compression` are omitted, so the default no longer requires an
+  external decompressor. A supplied URL still defaults to `"compress"`,
+  and supplying only `compression` still selects the archived Stanford
+  file.
+
+*October 12 2026*:
+
+- [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md)
+  now accepts `compression = "none"` for uncompressed MAT files. Its
+  help includes a commit-pinned mirror fallback.
+
 *September 5 2026*:
 
 - CIFAR-10 and COIL downloaders now protect existing files and

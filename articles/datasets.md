@@ -21,7 +21,7 @@ the full catalogue and argument details.
 | Multiple poses of individual objects | COIL object images | [`download_coil20()`](https://jlmelville.github.io/snedata/reference/download_coil20.md), [`download_coil100()`](https://jlmelville.github.io/snedata/reference/download_coil100.md), [`show_coil_object()`](https://jlmelville.github.io/snedata/reference/show_coil_object.md) | Downloaded; 1,440 or 7,200 images. Requires `png`; the COIL-100 list pixel matrix uses about 2.64 GiB. |
 | Text documents for an embedding pipeline | 20 Newsgroups | [`download_twenty_newsgroups()`](https://jlmelville.github.io/snedata/reference/download_twenty_newsgroups.md) | Downloaded; 18,846 documents. Preprocess with tools such as `tm` or `tidytext`. |
 | A small face-image collection | Frey and Olivetti faces | [`frey_faces()`](https://jlmelville.github.io/snedata/reference/frey_faces.md), [`olivetti_faces()`](https://jlmelville.github.io/snedata/reference/olivetti_faces.md) | Supplied by the suggested `RnavGraphImageData` package; 1,965 or 400 images. |
-| The original data used in historical Isomap examples | Isomap datasets | [`download_isomap_swiss_roll()`](https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.md), [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md) | Downloaded archived Matlab data; 20,000 or 698 rows. Requires `R.matlab`; faces also require `gzip` or `uncompress`. |
+| The original data used in historical Isomap examples | Isomap datasets | [`download_isomap_swiss_roll()`](https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.md), [`download_isomap_faces()`](https://jlmelville.github.io/snedata/reference/download_isomap_faces.md) | Downloaded MATLAB data; 20,000 Swiss-roll observations or 698 faces. Requires `R.matlab`. |
 
 [`synthetic_hierarchical_data()`](https://jlmelville.github.io/snedata/reference/synthetic_hierarchical_data.md)
 requires `colorspace` for its default full plotting colors. Use
@@ -96,12 +96,13 @@ and COIL have the matching helpers shown in the selection table.
 ## Sources and terms for externally supplied data
 
 The MIT license for `snedata` covers the package code, not data obtained
-from external sources. The table below records the statements available
-from the cited source pages when they were checked on 2026-07-16. “No
-separate terms identified” means that the cited page provides access or
-citation information but does not state a dataset license; it should not
-be read as either permission or a restriction. Users remain responsible
-for checking current upstream terms for their intended use.
+from external sources. Except where noted, the table below records the
+statements available from the cited source pages when they were checked
+on 2026-07-16. “No separate terms identified” means that the cited page
+provides access or citation information but does not state a dataset
+license; it should not be read as either permission or a restriction.
+Users remain responsible for checking current upstream terms for their
+intended use.
 
 | Dataset family | Source and citation | Terms status |
 |----|----|----|
@@ -114,5 +115,5 @@ for checking current upstream terms for their intended use.
 | COIL-20 and COIL-100 | Columbia’s [COIL-20](https://cave.cs.columbia.edu/repository/COIL-20) and [COIL-100](https://cave.cs.columbia.edu/repository/COIL-100) pages and the corresponding Nene, Nayar, and Murase (1996) technical reports. | The source pages provide download and citation information; no separate dataset license was identified on those pages. |
 | 20 Newsgroups | Jason Rennie’s [20 Newsgroups page](http://qwone.com/~jason/20Newsgroups/) provides the by-date archive used here; the collection is associated with Lang (1995), *Newsweeder: Learning to Filter Netnews*. | No separate terms were identified on the by-date source page. The [UCI record for the related original collection](https://kdd.ics.uci.edu/databases/20newsgroups/20newsgroups.data.html) permits free educational use with attribution. |
 | Mammoth point clouds | The JSON files come from [Understanding UMAP](https://github.com/PAIR-code/understanding-umap), which describes their downsampling from the [Smithsonian woolly mammoth model](https://3d.si.edu/object/3d/mammuthus-primigenius-blumbach:341c96cd-f967-4540-8ed1-d3fc56d31f12). | The Smithsonian model is CC0; the Understanding UMAP repository is Apache-2.0 licensed. |
-| Isomap Swiss roll and faces | Archived copies of the original Isomap assets, cited to Tenenbaum, de Silva, and Langford (2000), *A Global Geometric Framework for Nonlinear Dimensionality Reduction*. | No separate dataset terms were identified on the archived source pages. |
+| Isomap Swiss roll and faces | Swiss roll is downloaded from an [archived MIT file](https://web.archive.org/web/20151031205619id_/http://web.mit.edu/cocosci/isomap/swiss_roll_data.mat); faces default to a commit-pinned mirror in [Mashimo/datascience](https://github.com/Mashimo/datascience). Cite Tenenbaum, de Silva, and Langford (2000), *A Global Geometric Framework for Nonlinear Dimensionality Reduction*. | No separate dataset terms were identified on the archived source pages. Terms for the faces mirror have not been assessed. |
 | Frey and Olivetti faces | Supplied by the suggested [`RnavGraphImageData`](https://cran.r-project.org/package=RnavGraphImageData) package, whose documentation traces both datasets to Sam Roweis’s data page and credits Brendan Frey and AT&T Laboratories Cambridge respectively. | These are not downloaded or redistributed by `snedata`; no separate dataset terms were identified in the supplying package documentation. |

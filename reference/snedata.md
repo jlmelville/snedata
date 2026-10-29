@@ -118,9 +118,10 @@ a row-based format, and functions to visualize the images.
 
 ## Historical Isomap dataset functions
 
-The original Isomap Swiss Roll and face-pose datasets can be downloaded
-from the Internet Archive. The download functions require optional
-packages: `R.matlab` for Matlab files. The compressed face data also
+The original Isomap Swiss Roll dataset is downloaded from the Internet
+Archive; the face-pose dataset defaults to an uncompressed,
+commit-pinned GitHub mirror. Both download functions require `R.matlab`
+for Matlab files. Selecting the archived compressed face data also
 requires an external `gzip` or `uncompress` command.
 
 - [`download_isomap_swiss_roll()`](https://jlmelville.github.io/snedata/reference/download_isomap_swiss_roll.md).

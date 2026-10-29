@@ -102,8 +102,8 @@ mnist_train <- mnist_list$data[mnist_list$meta$split == "training", ]
 # requires the optional R.matlab package
 isomap_swiss <- download_isomap_swiss_roll()
 
-# download the original Isomap faces dataset from the Internet Archive
-# requires R.matlab and an external gzip or uncompress command
+# download the original Isomap faces dataset from a commit-pinned mirror
+# requires the optional R.matlab package
 isomap_faces <- download_isomap_faces()
 show_isomap_face(isomap_faces, 1)
 
