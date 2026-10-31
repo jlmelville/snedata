@@ -85,6 +85,8 @@ download_kuzushiji_mnist <- function(
     timeout = timeout,
     dataset = "Kuzushiji-MNIST"
   )
-  if (as == "list") return(res)
+  if (as == "list") {
+    return(res)
+  }
   data.frame(res$data, Label = res$meta$label)
 }

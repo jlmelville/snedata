@@ -157,7 +157,9 @@ validate_image_source <- function(source) {
 }
 
 stop_dataset_field <- function(dataset, split, field, allowed, observed) {
-  if (length(observed) == 0L) observed <- "<none>"
+  if (length(observed) == 0L) {
+    observed <- "<none>"
+  }
   stop(
     dataset,
     " ",

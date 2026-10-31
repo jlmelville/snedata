@@ -115,7 +115,9 @@ download_fashion_mnist <- function(
     description_levels[as.integer(as.character(res$meta$label)) + 1L],
     levels = description_levels
   )
-  if (as == "list") return(res)
+  if (as == "list") {
+    return(res)
+  }
   data.frame(
     res$data,
     Label = res$meta$label,

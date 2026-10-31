@@ -456,7 +456,9 @@ format_norb_result <- function(
     channel_order = c("camera_left", "camera_right"),
     source = source
   )
-  if (as == "list") return(result)
+  if (as == "list") {
+    return(result)
+  }
   data.frame(data, legacy_meta)
 }
 
@@ -538,7 +540,9 @@ read_norb_all_data <- function(base_url, verbose, as, expected_count = 24300L) {
     channel_order = channel_order,
     source = source
   )
-  if (as == "list") return(result)
+  if (as == "list") {
+    return(result)
+  }
   legacy_meta <- data.frame(
     Instance = meta$instance,
     Elevation = meta$elevation,

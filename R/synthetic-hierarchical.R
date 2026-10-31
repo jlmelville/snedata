@@ -53,7 +53,9 @@ synthetic_hierarchical_data <- function(
   n <- positive_integer_scalar(n, "n")
   dim <- positive_integer_scalar(dim, "dim")
   colors <- match.arg(colors)
-  if (colors == "full") stop_if_not_installed("colorspace")
+  if (colors == "full") {
+    stop_if_not_installed("colorspace")
+  }
 
   n_macro <- 5L
   n_meso <- 5L
@@ -138,7 +140,9 @@ synthetic_hierarchical_data <- function(
   anchors <- c("#377EB8", "#E41A1C", "#4DAF4A", "#A65628", "#999999")
   macro_color <- unname(stats::setNames(anchors, macro_levels)[macro_labels])
 
-  if (colors == "none") return(result)
+  if (colors == "none") {
+    return(result)
+  }
   if (colors == "macro") {
     return(
       data.frame(

@@ -473,6 +473,8 @@ combine_image_label_results <- function(
     source = train$source
   )
   result$meta$id <- seq_len(nrow(result$data))
-  if (as == "list") return(result)
+  if (as == "list") {
+    return(result)
+  }
   data.frame(result$data, Label = result$meta$label)
 }

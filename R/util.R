@@ -96,8 +96,12 @@ linear_color_map <- function(x, h = 300, s = 50, l = 50) {
 # Helper function needed by hsl_to_rgb, from the CSS spec
 # https://www.w3.org/TR/2011/REC-css3-color-20110607/#hsl-color
 hue_to_rgb <- function(m1, m2, h) {
-  if (h < 0) h <- h + 1
-  if (h > 1) h <- h - 1
+  if (h < 0) {
+    h <- h + 1
+  }
+  if (h > 1) {
+    h <- h - 1
+  }
   if (h * 6 < 1) {
     return(m1 + (m2 - m1) * h * 6)
   }

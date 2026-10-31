@@ -78,8 +78,9 @@ test_that("partial archives follow cleanup and leave caller siblings intact", {
 
 test_that("Newsgroups retains downloaded archives on extraction failure when requested", {
   local_mocked_bindings(
-    download_asset = function(url, destfile, ...)
-      writeBin(as.raw(1:3), destfile),
+    download_asset = function(url, destfile, ...) {
+      writeBin(as.raw(1:3), destfile)
+    },
     extract_tar_safely = function(...) stop("extraction failed"),
     .package = "snedata"
   )

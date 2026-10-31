@@ -257,7 +257,9 @@ format_cifar_result <- function(
     channel_order = c("red", "green", "blue"),
     source = source
   )
-  if (as == "list") return(result)
+  if (as == "list") {
+    return(result)
+  }
   data.frame(images, Label = label_factor, Description = descriptions)
 }
 
