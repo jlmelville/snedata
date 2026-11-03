@@ -2,8 +2,89 @@ url: https://jlmelville.github.io/snedata/
 template:
   bootstrap: 5
   math-rendering: katex
+  light-switch: true
+  theme: github-light
+  theme-dark: github-dark
+  bslib:
+    danger: "#A6081A"
+
+development:
+  mode: unreleased
+
+llm-docs: true
 
 articles:
 - title: Datasets
   contents:
   - articles/datasets
+
+reference:
+  - title: Basic shapes and manifolds
+    desc: Generate points on simple shapes, curves, and manifolds.
+    contents:
+      - ball
+      - sphere
+      - helix
+      - swiss_roll
+      - s_curve
+      - s_curve_hole
+      - curve2d
+      - ortho_curve
+      - taspheres
+  - title: Clusters and geometry
+    desc: Generate clusters and geometric examples for embedding experiments.
+    contents:
+      - circle_data
+      - cube_data
+      - gaussian_data
+      - grid_data
+      - long_cluster_data
+      - long_gaussian_data
+      - random_circle_cluster_data
+      - random_circle_data
+      - simplex_data
+      - subset_clusters_data
+      - synthetic_hierarchical_data
+      - three_clusters_data
+      - two_clusters_data
+      - two_different_clusters_data
+  - title: Walks, knots, and rings
+    desc: Generate paths and linked or unlinked structures.
+    contents:
+      - random_jump
+      - random_walk
+      - trefoil_data
+      - link_data
+      - unlink_data
+  - title: Image datasets
+    desc: Obtain image datasets and display individual images.
+    contents:
+      - image-results
+      - download_mnist
+      - download_fashion_mnist
+      - download_kuzushiji_mnist
+      - download_qmnist
+      - show_mnist_digit
+      - download_cifar10
+      - show_cifar
+      - download_norb_small
+      - show_norb_object
+      - download_coil20
+      - download_coil100
+      - show_coil_object
+      - download_isomap_faces
+      - show_isomap_face
+      - frey_faces
+      - show_frey_face
+      - olivetti_faces
+      - show_olivetti_face
+  - title: Other downloaded datasets
+    desc: Obtain point clouds, the Isomap Swiss roll, and text documents.
+    contents:
+      - download_mammoth10k
+      - download_mammoth50k
+      - download_isomap_swiss_roll
+      - download_twenty_newsgroups
+  - title: Package overview
+    contents:
+      - snedata

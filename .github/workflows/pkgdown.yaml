@@ -47,43 +47,40 @@ jobs:
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
+      - name: Upload site artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: pkgdown-site
+          path: docs
+          if-no-files-found: error
+
   deploy-site:
     name: Deploy pkgdown site
     if: github.event_name != 'pull_request'
     needs: build-site
     runs-on: ubuntu-latest
+    # This deploy job needs contents: write to push the built pkgdown site
+    # to the gh-pages branch.
     permissions:
       contents: write # zizmor: ignore[undocumented-permissions] required to publish docs
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      _R_CHECK_FORCE_SUGGESTS_: "false"
-
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # Pinned to a full-length commit SHA for immutability; Dependabot updates this reference.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
 
-      - uses: r-lib/actions/setup-pandoc@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
-
-      - uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
+      - name: Download site artifact
+        # Pinned to a full-length commit SHA for immutability; Dependabot updates this reference.
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
-          use-public-rspm: true
+          name: pkgdown-site
+          path: docs
 
-      - uses: r-lib/actions/setup-r-dependencies@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
+      - name: Deploy to GitHub pages
+        # Pinned to a full-length commit SHA for immutability; Dependabot updates this reference.
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445
         with:
-          extra-packages: |
-            any::pkgdown
-            RnavGraphImageData=?ignore
-            local::.
-          needs: website
-
-      - name: Build site
-        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
-        shell: Rscript {0}
-
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
-        with:
-          clean: false
+          clean: true
           branch: gh-pages
           folder: docs
